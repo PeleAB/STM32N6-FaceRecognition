@@ -1,0 +1,10 @@
+{
+    "Globals": {
+    },
+    "Profiles": {
+        "default": {
+            "memory_pool": "./my_mpools/stm32n6-app2.mpool",
+            "options" : "--all-buffers-info --no-hw-sw-parallelism --cache-maintenance --enable-virtual-mem-pools --native-float --optimization 3 --Os --Omax-ca-pipe 4 --Ocache-opt --enable-epoch-controller"
+        }
+    }
+}
