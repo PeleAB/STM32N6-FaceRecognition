@@ -4,18 +4,21 @@
 #include "stm32n6xx_hal_uart.h"
 #include "app_config.h"
 #include <stdio.h>
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+#define UART_CHUNK_SIZE 1024*16  // adjust as needed
 
 #if (USE_BSP_COM_FEATURE > 0)
 extern UART_HandleTypeDef hcom_uart[COMn];
 
 static MX_UART_InitTypeDef PcUartInit = {
-    .BaudRate = 921600,
+    .BaudRate = 921600*8,
     .WordLength = UART_WORDLENGTH_8B,
     .StopBits = UART_STOPBITS_1,
     .Parity = UART_PARITY_NONE,
     .HwFlowCtl = UART_HWCONTROL_NONE
 };
-
+static uint8_t jpeg_buf[64 * 512];
 void PC_STREAM_Init(void)
 {
     BSP_COM_Init(COM1, &PcUartInit);
@@ -24,11 +27,27 @@ void PC_STREAM_Init(void)
 #endif
 }
 
-#define STREAM_SCALE 5
-#define STREAM_WIDTH  (LCD_FG_WIDTH / STREAM_SCALE)
-#define STREAM_HEIGHT (LCD_FG_HEIGHT / STREAM_SCALE)
+#define STREAM_SCALE 2
+#define STREAM_MAX_WIDTH  (LCD_FG_WIDTH / STREAM_SCALE)
+#define STREAM_MAX_HEIGHT (LCD_FG_HEIGHT / STREAM_SCALE)
 
-static uint8_t stream_buffer[STREAM_WIDTH * STREAM_HEIGHT];
+static uint8_t stream_buffer[STREAM_MAX_WIDTH * STREAM_MAX_HEIGHT];
+
+typedef struct {
+    uint8_t *buf;
+    int size;
+    int cap;
+} mem_writer_t;
+
+static void mem_write(void *context, void *data, int size)
+{
+    mem_writer_t *wr = (mem_writer_t *)context;
+    if (wr->size + size <= wr->cap)
+    {
+        memcpy(wr->buf + wr->size, data, size);
+        wr->size += size;
+    }
+}
 
 static uint8_t rgb565_to_gray(uint16_t pixel)
 {
@@ -41,24 +60,51 @@ static uint8_t rgb565_to_gray(uint16_t pixel)
 void PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height, uint32_t bpp)
 {
     (void)bpp; /* expect RGB565 */
+
+    uint32_t sw = width / STREAM_SCALE;
+    uint32_t sh = height / STREAM_SCALE;
+    if (sw > STREAM_MAX_WIDTH)  sw = STREAM_MAX_WIDTH;
+    if (sh > STREAM_MAX_HEIGHT) sh = STREAM_MAX_HEIGHT;
+
+    // Convert RGB565 → grayscale and store in stream_buffer
     const uint16_t *src = (const uint16_t *)frame;
-    for (uint32_t y = 0; y < STREAM_HEIGHT; y++)
+    for (uint32_t y = 0; y < sh; y++)
     {
         const uint16_t *line = src + (y * STREAM_SCALE) * width;
-        for (uint32_t x = 0; x < STREAM_WIDTH; x++)
+        for (uint32_t x = 0; x < sw; x++)
         {
             uint16_t px = line[x * STREAM_SCALE];
-            stream_buffer[y * STREAM_WIDTH + x] = rgb565_to_gray(px);
+            stream_buffer[y * sw + x] = rgb565_to_gray(px);
         }
     }
 
+    // Encode to JPEG into jpeg_buf
+    mem_writer_t w = { jpeg_buf, 0, sizeof(jpeg_buf) };
+    stbi_write_jpg_to_func(mem_write, &w, sw, sh, 1, stream_buffer, 80);
+
+    // Send a simple header first
     char header[32];
-    int hl = snprintf(header, sizeof(header), "FRAME %u %u 1\n", (unsigned)STREAM_WIDTH, (unsigned)STREAM_HEIGHT);
+    int hl = snprintf(header, sizeof(header), "JPG %u %u %u\n",
+                      (unsigned)sw, (unsigned)sh, (unsigned)w.size);
     if (hl > 0)
     {
         HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)header, (uint16_t)hl, HAL_MAX_DELAY);
     }
-    HAL_UART_Transmit(&hcom_uart[COM1], stream_buffer, sizeof(stream_buffer), HAL_MAX_DELAY);
+
+    // Now send jpeg_buf in chunks
+    uint32_t bytes_left = w.size;
+    uint8_t *ptr = jpeg_buf;
+    while (bytes_left > 0)
+    {
+        uint16_t this_chunk = (bytes_left > UART_CHUNK_SIZE)
+                               ? UART_CHUNK_SIZE
+                               : (uint16_t)bytes_left;
+
+        HAL_UART_Transmit(&hcom_uart[COM1], ptr, this_chunk, HAL_MAX_DELAY);
+
+        ptr         += this_chunk;
+        bytes_left  -= this_chunk;
+    }
 }
 
 void PC_STREAM_SendDetections(const od_pp_out_t *detections, uint32_t frame_id)

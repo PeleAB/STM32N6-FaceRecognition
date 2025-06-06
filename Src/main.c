@@ -398,17 +398,26 @@ static void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference
     UTIL_LCDEx_PrintfAt(-x0-width, y0, RIGHT_MODE, "%.0f%%", rois[i].conf*100.0f);
   }
 
+  SCB_InvalidateDCache_by_Addr(lcd_bg_buffer, sizeof(lcd_bg_buffer));
+   static uint32_t stream_frame_id = 0;
+
+   uint32_t ts[2] = { 0 };
+   ts[0] = HAL_GetTick();
+   PC_STREAM_SendFrame(lcd_bg_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2);
+
+   PC_STREAM_SendDetections(p_postprocess, stream_frame_id++);
+   ts[1] = HAL_GetTick();
+
+
   UTIL_LCD_SetBackColor(0x40000000);
   UTIL_LCDEx_PrintfAt(0, LINE(2), CENTER_MODE, "Objects %u", nb_rois);
-  UTIL_LCDEx_PrintfAt(0, LINE(20), CENTER_MODE, "Inference: %ums", inference_ms);
+  UTIL_LCDEx_PrintfAt(0, LINE(20), CENTER_MODE, "Inference: %ums", ts[1] - ts[0]);
   UTIL_LCD_SetBackColor(0);
 
   Display_WelcomeScreen();
 
 
-  PC_STREAM_SendFrame(lcd_fg_buffer[lcd_fg_buffer_rd_idx], LCD_FG_WIDTH, LCD_FG_HEIGHT, 2);
 
-  SCB_CleanDCache_by_Addr(lcd_fg_buffer[lcd_fg_buffer_rd_idx], LCD_FG_FRAMEBUFFER_SIZE);
 
 
   ret = HAL_LTDC_ReloadLayer(&hlcd_ltdc, LTDC_RELOAD_VERTICAL_BLANKING, LTDC_LAYER_2);
