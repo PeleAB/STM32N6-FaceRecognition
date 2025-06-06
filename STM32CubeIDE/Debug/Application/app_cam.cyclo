@@ -1,3 +1,5 @@
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:35:13:DCMIPP_PipeInitDisplay	3
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:97:13:DCMIPP_PipeInitNn	1
 C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:127:6:CAM_Init	1
 C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:145:6:CAM_DeInit	1
 C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:152:6:CAM_DisplayPipe_Start	1

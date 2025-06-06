@@ -8,7 +8,8 @@ import cv2
 import threading
 import queue
 
-
+lala = 0
+saved_frame = None
 def read_frame(ser):
     line = ser.readline().decode(errors='ignore').strip()
     if line.startswith('FRAME'):
@@ -30,6 +31,7 @@ def read_frame(ser):
         img = np.frombuffer(raw, dtype=np.uint8)
         frame = cv2.imdecode(img, cv2.IMREAD_COLOR)
         return frame, w, h
+
     return None, None, None
 
 
@@ -63,7 +65,7 @@ def draw_detections(img, dets):
 
 def display_loop(q, stop_event):
     """Display frames from the queue with FPS counter."""
-    scale = 2.5
+    scale = 2
     last_time = time.time()
     frame_count = 0
     fps = 0.0
