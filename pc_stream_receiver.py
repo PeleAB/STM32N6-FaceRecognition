@@ -13,8 +13,12 @@ def read_frame(ser):
     w, h, bpp = int(w), int(h), int(bpp)
     size = w * h * bpp
     raw = ser.read(size)
-    frame = np.frombuffer(raw, dtype=np.uint16).reshape((h, w))
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR5652BGR)
+    if bpp == 2:
+        frame = np.frombuffer(raw, dtype=np.uint16).reshape((h, w))
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR5652BGR)
+    else:
+        frame = np.frombuffer(raw, dtype=np.uint8).reshape((h, w))
+        frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
     return frame, w, h
 
 def read_detections(ser):

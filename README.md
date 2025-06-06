@@ -220,5 +220,6 @@ Do a power cycle to boot from the external flash.
 - ASPECT_RATIO_FULLSCREEN does not work as expected
 
 ## PC streaming receiver
-Run `python3 pc_stream_receiver.py /dev/ttyUSB0` to display frames and detections streamed from the board.
+The board streams a downsampled grayscale view (160x96) and detection results over UART.
+Run `python3 pc_stream_receiver.py /dev/ttyUSB0` to display the stream.
 
