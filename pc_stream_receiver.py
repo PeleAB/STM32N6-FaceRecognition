@@ -11,19 +11,26 @@ import queue
 
 def read_frame(ser):
     line = ser.readline().decode(errors='ignore').strip()
-    if not line.startswith('FRAME'):
-        return None, None, None
-    _, w, h, bpp = line.split()
-    w, h, bpp = int(w), int(h), int(bpp)
-    size = w * h * bpp
-    raw = ser.read(size)
-    if bpp == 2:
-        frame = np.frombuffer(raw, dtype=np.uint16).reshape((h, w))
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR5652BGR)
-    else:
-        frame = np.frombuffer(raw, dtype=np.uint8).reshape((h, w))
-        frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
-    return frame, w, h
+    if line.startswith('FRAME'):
+        _, w, h, bpp = line.split()
+        w, h, bpp = int(w), int(h), int(bpp)
+        size = w * h * bpp
+        raw = ser.read(size)
+        if bpp == 2:
+            frame = np.frombuffer(raw, dtype=np.uint16).reshape((h, w))
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR5652BGR)
+        else:
+            frame = np.frombuffer(raw, dtype=np.uint8).reshape((h, w))
+            frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
+        return frame, w, h
+    if line.startswith('JPG'):
+        _, w, h, size = line.split()
+        w, h, size = int(w), int(h), int(size)
+        raw = ser.read(size)
+        img = np.frombuffer(raw, dtype=np.uint8)
+        frame = cv2.imdecode(img, cv2.IMREAD_COLOR)
+        return frame, w, h
+    return None, None, None
 
 
 def read_detections(ser):
