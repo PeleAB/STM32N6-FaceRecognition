@@ -1,0 +1,7 @@
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:127:6:CAM_Init	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:145:6:CAM_DeInit	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:152:6:CAM_DisplayPipe_Start	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:159:6:CAM_NNPipe_Start	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:167:6:CAM_DisplayPipe_Stop	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:174:6:CAM_IspUpdate	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:186:5:CMW_CAMERA_PIPE_FrameEventCallback	2

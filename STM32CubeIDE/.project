@@ -82,6 +82,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/npu_cache.c</locationURI>
 		</link>
 		<link>
+			<name>Application/pc_stream.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/pc_stream.c</locationURI>
+		</link>
+		<link>
 			<name>Application/stm32_lcd_ex.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/stm32_lcd_ex.c</locationURI>
@@ -97,9 +102,14 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/syscalls.c</locationURI>
 		</link>
 		<link>
-			<name>lib_vision_models_pp/vision_models_pp.c</name>
+			<name>lib_vision_models_pp/od_pp_ssd_st.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_ssd_st.c</locationURI>
+		</link>
+		<link>
+			<name>lib_vision_models_pp/od_pp_st_yolox.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c</locationURI>
 		</link>
 		<link>
 			<name>lib_vision_models_pp/od_pp_yolov2.c</name>
@@ -112,19 +122,14 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_yolov5.c</locationURI>
 		</link>
 		<link>
-			<name>lib_vision_models_pp/od_pp_st_yolox.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c</locationURI>
-		</link>
-		<link>
-			<name>lib_vision_models_pp/od_pp_ssd_st.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_ssd_st.c</locationURI>
-		</link>
-		<link>
 			<name>lib_vision_models_pp/od_pp_yolov8.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_yolov8.c</locationURI>
+		</link>
+		<link>
+			<name>lib_vision_models_pp/vision_models_pp.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.c</locationURI>
 		</link>
 		<link>
 			<name>ll_aton/ll_aton.c</name>
@@ -255,6 +260,11 @@
 			<name>Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_rif.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_rif.c</locationURI>
+		</link>
+		<link>
+			<name>Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_uart.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_uart.c</locationURI>
 		</link>
 		<link>
 			<name>Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_xspi.c</name>

@@ -1,0 +1,17 @@
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:277:20:__LL_ATON_RT_Init_Network	6
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.h:63:22:__ll_clear_aton_owner	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.h:113:22:__LL_ATON_RT_SetWaitMask	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h:552:26:EpochBlock_EpochControllerUnit	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:170:20:__LL_ATON_RT_ExecEndEpochBlock	13
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:222:13:__LL_ATON_RT_DetermineNextEpochBlock	4
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:49:19:dump_dma_state	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:685:13:__LL_ATON_RT_IrqErr	10
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:331:6:LL_ATON_RT_SetRuntimeCallback	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:349:6:LL_ATON_RT_SetEpochCallback	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:359:6:LL_ATON_RT_Init_Network	3
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:387:6:LL_ATON_RT_DeInit_Network	4
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:436:6:LL_ATON_RT_Reset_Network	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:445:6:LL_ATON_RT_RuntimeInit	4
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:493:6:LL_ATON_RT_RuntimeDeInit	2
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:525:24:LL_ATON_RT_RunEpochBlock	21
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c:852:6:NPU0_IRQHandler	8
