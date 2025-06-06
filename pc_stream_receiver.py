@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import argparse
+import time
+
 import serial
 import numpy as np
 import cv2
@@ -22,6 +24,7 @@ def read_frame(ser):
         frame = np.frombuffer(raw, dtype=np.uint8).reshape((h, w))
         frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
     return frame, w, h
+
 
 def read_detections(ser):
     line = ser.readline().decode(errors='ignore').strip()
@@ -52,20 +55,43 @@ def draw_detections(img, dets):
 
 
 def display_loop(q, stop_event):
-    """Display frames from the queue."""
+    """Display frames from the queue with FPS counter."""
+    scale = 2.5
+    last_time = time.time()
+    frame_count = 0
+    fps = 0.0
+
     while not stop_event.is_set():
         frame = q.get()
         if frame is None:
             break
-        cv2.imshow('stream', frame)
+
+        frame_count += 1
+        current_time = time.time()
+        elapsed = current_time - last_time
+
+        # Update FPS every second
+        if elapsed >= 1.0:
+            fps = frame_count / elapsed
+            frame_count = 0
+            last_time = current_time
+
+        resized = cv2.resize(frame, (0, 0), fx=scale, fy=scale)
+
+        # Draw FPS on the frame
+        cv2.putText(resized, f"FPS: {fps:.2f}", (10, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
+
+        cv2.imshow('stream', resized)
         if cv2.waitKey(1) == 27:
             stop_event.set()
+
     cv2.destroyAllWindows()
 
 def main():
     parser = argparse.ArgumentParser(description='Receive frames and detections over UART')
     parser.add_argument('--port', default='COM3', help='Serial port device')
-    parser.add_argument('--baud', type=int, default=921600, help='Baud rate')
+    parser.add_argument('--baud', type=int, default=921600*8, help='Baud rate')
     args = parser.parse_args()
 
     ser = serial.Serial(args.port, args.baud, timeout=1)

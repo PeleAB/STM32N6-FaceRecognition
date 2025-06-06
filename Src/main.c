@@ -405,10 +405,14 @@ static void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference
 
   Display_WelcomeScreen();
 
+  SCB_InvalidateDCache_by_Addr(lcd_bg_buffer, sizeof(lcd_bg_buffer));
+   static uint32_t stream_frame_id = 0;
 
-  PC_STREAM_SendFrame(lcd_fg_buffer[lcd_fg_buffer_rd_idx], LCD_FG_WIDTH, LCD_FG_HEIGHT, 2);
 
-  SCB_CleanDCache_by_Addr(lcd_fg_buffer[lcd_fg_buffer_rd_idx], LCD_FG_FRAMEBUFFER_SIZE);
+   PC_STREAM_SendFrame(lcd_bg_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2);
+
+   PC_STREAM_SendDetections(p_postprocess, stream_frame_id++);
+
 
 
   ret = HAL_LTDC_ReloadLayer(&hlcd_ltdc, LTDC_RELOAD_VERTICAL_BLANKING, LTDC_LAYER_2);
