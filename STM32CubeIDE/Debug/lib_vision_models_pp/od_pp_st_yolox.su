@@ -1,8 +1,8 @@
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:19:9:st_yolox_nms_comparator	8	static
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:53:9:st_yolox_pp_nmsFiltering_centroid	48	static
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:114:9:st_yolox_pp_scoreFiltering_centroid	20	static
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:19:9:st_yolox_nms_comparator	88	static
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:53:9:st_yolox_pp_nmsFiltering_centroid	56	static
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:114:9:st_yolox_pp_scoreFiltering_centroid	24	static
 C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:139:9:st_yolox_pp_level_decode	96	static
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:205:9:st_yolox_pp_store_detections	56	static
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:238:9:st_yolox_pp_getNNBoxes_centroid	48	dynamic
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:304:9:od_st_yolox_pp_reset	0	static
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:313:9:od_st_yolox_pp_process	16	static
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:205:9:st_yolox_pp_store_detections	40	static
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:238:9:st_yolox_pp_getNNBoxes_centroid	120	dynamic
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:304:9:od_st_yolox_pp_reset	16	static
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_st_yolox.c:313:9:od_st_yolox_pp_process	32	static
