@@ -9,7 +9,7 @@
 extern UART_HandleTypeDef hcom_uart[COMn];
 
 static MX_UART_InitTypeDef PcUartInit = {
-    .BaudRate = 115200,
+    .BaudRate = 921600,
     .WordLength = UART_WORDLENGTH_8B,
     .StopBits = UART_STOPBITS_1,
     .Parity = UART_PARITY_NONE,

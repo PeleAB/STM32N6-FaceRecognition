@@ -51,7 +51,7 @@ def draw_detections(img, dets):
 def main():
     parser = argparse.ArgumentParser(description='Receive frames and detections over UART')
     parser.add_argument('port', help='Serial port device')
-    parser.add_argument('--baud', type=int, default=115200, help='Baud rate')
+    parser.add_argument('--baud', type=int, default=921600, help='Baud rate')
     args = parser.parse_args()
 
     ser = serial.Serial(args.port, args.baud, timeout=1)

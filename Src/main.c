@@ -264,9 +264,6 @@ int main(void)
 
     Display_NetworkOutput(&pp_output, ts[1] - ts[0]);
 
-    static uint32_t stream_frame_id = 0;
-    PC_STREAM_SendFrame(lcd_fg_buffer[1 - lcd_fg_buffer_rd_idx], LCD_FG_WIDTH, LCD_FG_HEIGHT, 2);
-    PC_STREAM_SendDetections(&pp_output, stream_frame_id++);
     /* Discard nn_out region (used by pp_input and pp_outputs variables) to avoid Dcache evictions during nn inference */
     for (int i = 0; i < number_output; i++)
     {
@@ -409,6 +406,9 @@ static void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference
   Display_WelcomeScreen();
 
   SCB_CleanDCache_by_Addr(lcd_fg_buffer[lcd_fg_buffer_rd_idx], LCD_FG_FRAMEBUFFER_SIZE);
+  static uint32_t stream_frame_id = 0;
+  PC_STREAM_SendFrame(lcd_fg_buffer[lcd_fg_buffer_rd_idx], LCD_FG_WIDTH, LCD_FG_HEIGHT, 2);
+  PC_STREAM_SendDetections(p_postprocess, stream_frame_id++);
   ret = HAL_LTDC_ReloadLayer(&hlcd_ltdc, LTDC_RELOAD_VERTICAL_BLANKING, LTDC_LAYER_2);
   assert(ret == HAL_OK);
   lcd_fg_buffer_rd_idx = 1 - lcd_fg_buffer_rd_idx;
