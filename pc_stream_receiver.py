@@ -3,6 +3,8 @@ import argparse
 import serial
 import numpy as np
 import cv2
+import threading
+import queue
 
 
 def read_frame(ser):
@@ -48,6 +50,18 @@ def draw_detections(img, dets):
         cv2.putText(img, f"{conf:.2f}", (x0, y0-5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 1)
     return img
 
+
+def display_loop(q, stop_event):
+    """Display frames from the queue."""
+    while not stop_event.is_set():
+        frame = q.get()
+        if frame is None:
+            break
+        cv2.imshow('stream', frame)
+        if cv2.waitKey(1) == 27:
+            stop_event.set()
+    cv2.destroyAllWindows()
+
 def main():
     parser = argparse.ArgumentParser(description='Receive frames and detections over UART')
     parser.add_argument('--port', default='COM3', help='Serial port device')
@@ -56,19 +70,25 @@ def main():
 
     ser = serial.Serial(args.port, args.baud, timeout=1)
 
+    frame_queue = queue.Queue(maxsize=2)
+    stop_event = threading.Event()
+    disp_thread = threading.Thread(target=display_loop, args=(frame_queue, stop_event))
+    disp_thread.start()
+
     try:
-        while True:
+        while not stop_event.is_set():
             frame, w, h = read_frame(ser)
             if frame is None:
                 continue
             dets = read_detections(ser)
             frame = draw_detections(frame, dets)
-            cv2.imshow('stream', frame)
-            if cv2.waitKey(1) == 27:
-                break
+            if not frame_queue.full():
+                frame_queue.put(frame)
     finally:
+        stop_event.set()
+        frame_queue.put(None)
+        disp_thread.join()
         ser.close()
-        cv2.destroyAllWindows()
 
 if __name__ == '__main__':
     main()

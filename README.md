@@ -222,4 +222,5 @@ Do a power cycle to boot from the external flash.
 ## PC streaming receiver
 The board streams a downsampled grayscale view (160x96) and detection results over UART at 921600 baud.
 Run `python3 pc_stream_receiver.py /dev/ttyUSB0` to display the stream.
+The receiver uses a dedicated display thread so the UI remains responsive even when frames arrive quickly.
 
