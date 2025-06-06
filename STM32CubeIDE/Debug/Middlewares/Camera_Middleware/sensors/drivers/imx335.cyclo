@@ -1,0 +1,16 @@
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:312:16:IMX335_WriteTable	4
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:337:16:IMX335_Delay	2
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:355:16:IMX335_ReadRegWrap	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:370:16:IMX335_WriteRegWrap	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:389:9:IMX335_RegisterBusIO	3
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:430:9:IMX335_Init	6
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:473:9:IMX335_Start	2
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:493:9:IMX335_DeInit	2
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:510:9:IMX335_ReadID	2
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:538:9:IMX335_GetCapabilities	2
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:576:9:IMX335_SetGain	6
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:621:9:IMX335_SetExposure	6
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:674:9:IMX335_SetFrequency	10
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:722:9:IMX335_SetFramerate	10
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:769:9:IMX335_MirrorFlipConfig	5
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/imx335/imx335.c:811:9:IMX335_SetTestPattern	5

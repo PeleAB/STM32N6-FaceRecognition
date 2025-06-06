@@ -29,6 +29,7 @@
 #include "main.h"
 #include <stdio.h>
 #include "stm32n6xx_hal_rif.h"
+#include "pc_stream.h"
 #include "app_config.h"
 #include "crop_img.h"
 #include "stlogo.h"
@@ -166,6 +167,8 @@ int main(void)
 
   NPUCache_config();
 
+  PC_STREAM_Init();
+
   /*** External RAM and NOR Flash *********************************************/
   BSP_XSPI_RAM_Init(0);
   BSP_XSPI_RAM_EnableMemoryMappedMode(0);
@@ -260,6 +263,7 @@ int main(void)
     assert(ret == 0);
 
     Display_NetworkOutput(&pp_output, ts[1] - ts[0]);
+
     /* Discard nn_out region (used by pp_input and pp_outputs variables) to avoid Dcache evictions during nn inference */
     for (int i = 0; i < number_output; i++)
     {
@@ -394,14 +398,28 @@ static void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference
     UTIL_LCDEx_PrintfAt(-x0-width, y0, RIGHT_MODE, "%.0f%%", rois[i].conf*100.0f);
   }
 
+  SCB_InvalidateDCache_by_Addr(lcd_bg_buffer, sizeof(lcd_bg_buffer));
+   static uint32_t stream_frame_id = 0;
+
+   uint32_t ts[2] = { 0 };
+   ts[0] = HAL_GetTick();
+   PC_STREAM_SendFrame(lcd_bg_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2);
+
+   PC_STREAM_SendDetections(p_postprocess, stream_frame_id++);
+   ts[1] = HAL_GetTick();
+
+
   UTIL_LCD_SetBackColor(0x40000000);
   UTIL_LCDEx_PrintfAt(0, LINE(2), CENTER_MODE, "Objects %u", nb_rois);
-  UTIL_LCDEx_PrintfAt(0, LINE(20), CENTER_MODE, "Inference: %ums", inference_ms);
+  UTIL_LCDEx_PrintfAt(0, LINE(20), CENTER_MODE, "Inference: %ums", ts[1] - ts[0]);
   UTIL_LCD_SetBackColor(0);
 
   Display_WelcomeScreen();
 
-  SCB_CleanDCache_by_Addr(lcd_fg_buffer[lcd_fg_buffer_rd_idx], LCD_FG_FRAMEBUFFER_SIZE);
+
+
+
+
   ret = HAL_LTDC_ReloadLayer(&hlcd_ltdc, LTDC_RELOAD_VERTICAL_BLANKING, LTDC_LAYER_2);
   assert(ret == HAL_OK);
   lcd_fg_buffer_rd_idx = 1 - lcd_fg_buffer_rd_idx;

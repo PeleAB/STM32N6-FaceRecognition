@@ -218,3 +218,9 @@ Do a power cycle to boot from the external flash.
 - Only RGB888 format for nn input has been tested.
 - Only UINT8 format for nn input is supported.
 - ASPECT_RATIO_FULLSCREEN does not work as expected
+
+## PC streaming receiver
+The board streams a downsampled view (160x96) compressed as JPEG and detection results over UART at 921600 baud.
+Run `python3 pc_stream_receiver.py /dev/ttyUSB0` to display the JPEG stream.
+The receiver uses a dedicated display thread so the UI remains responsive even when frames arrive quickly.
+
