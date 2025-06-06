@@ -29,6 +29,7 @@
 #include "main.h"
 #include <stdio.h>
 #include "stm32n6xx_hal_rif.h"
+#include "pc_stream.h"
 #include "app_config.h"
 #include "crop_img.h"
 #include "stlogo.h"
@@ -166,6 +167,8 @@ int main(void)
 
   NPUCache_config();
 
+  PC_STREAM_Init();
+
   /*** External RAM and NOR Flash *********************************************/
   BSP_XSPI_RAM_Init(0);
   BSP_XSPI_RAM_EnableMemoryMappedMode(0);
@@ -260,6 +263,10 @@ int main(void)
     assert(ret == 0);
 
     Display_NetworkOutput(&pp_output, ts[1] - ts[0]);
+
+    static uint32_t stream_frame_id = 0;
+    PC_STREAM_SendFrame(lcd_fg_buffer[1 - lcd_fg_buffer_rd_idx], LCD_FG_WIDTH, LCD_FG_HEIGHT, 2);
+    PC_STREAM_SendDetections(&pp_output, stream_frame_id++);
     /* Discard nn_out region (used by pp_input and pp_outputs variables) to avoid Dcache evictions during nn inference */
     for (int i = 0; i < number_output; i++)
     {
