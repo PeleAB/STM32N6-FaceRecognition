@@ -62,9 +62,6 @@ default.size.stdout \
 OBJDUMP_LIST += \
 STM32N6_GettingStarted_ObjectDetection.list \
 
-OBJCOPY_HEX += \
-STM32N6_GettingStarted_ObjectDetection.hex \
-
 OBJCOPY_BIN += \
 STM32N6_GettingStarted_ObjectDetection.bin \
 
@@ -91,11 +88,6 @@ STM32N6_GettingStarted_ObjectDetection.list: $(EXECUTABLES) makefile objects.lis
 	@echo 'Finished building: $@'
 	@echo ' '
 
-STM32N6_GettingStarted_ObjectDetection.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "STM32N6_GettingStarted_ObjectDetection.hex"
-	@echo 'Finished building: $@'
-	@echo ' '
-
 STM32N6_GettingStarted_ObjectDetection.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "STM32N6_GettingStarted_ObjectDetection.bin"
 	@echo 'Finished building: $@'
@@ -103,10 +95,10 @@ STM32N6_GettingStarted_ObjectDetection.bin: $(EXECUTABLES) makefile objects.list
 
 # Other Targets
 clean:
-	-$(RM) STM32N6_GettingStarted_ObjectDetection.bin STM32N6_GettingStarted_ObjectDetection.elf STM32N6_GettingStarted_ObjectDetection.hex STM32N6_GettingStarted_ObjectDetection.list STM32N6_GettingStarted_ObjectDetection.map default.size.stdout
+	-$(RM) STM32N6_GettingStarted_ObjectDetection.bin STM32N6_GettingStarted_ObjectDetection.elf STM32N6_GettingStarted_ObjectDetection.list STM32N6_GettingStarted_ObjectDetection.map default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

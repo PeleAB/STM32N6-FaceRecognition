@@ -2,3 +2,8 @@
 *.o
 *.su
 *.mk
+*.cyclo
+*.su
+*.su
+*.o
+*.mk

@@ -1,5 +1,0 @@
-C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_i2c_ex.c:95:19:HAL_I2CEx_ConfigAnalogFilter	12
-C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_i2c_ex.c:139:19:HAL_I2CEx_ConfigDigitalFilter	12
-C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_i2c_ex.c:207:19:HAL_I2CEx_EnableWakeUp	11
-C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_i2c_ex.c:246:19:HAL_I2CEx_DisableWakeUp	11
-C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_i2c_ex.c:303:19:HAL_I2CEx_ConfigFastModePlus	13
