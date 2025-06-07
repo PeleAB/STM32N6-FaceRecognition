@@ -1,9 +1,7 @@
-C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:35:13:DCMIPP_PipeInitDisplay	88	static
-C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:97:13:DCMIPP_PipeInitNn	72	static
-C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:127:6:CAM_Init	56	static
-C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:145:6:CAM_DeInit	16	static
-C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:152:6:CAM_DisplayPipe_Start	24	static
-C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:159:6:CAM_NNPipe_Start	24	static
-C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:167:6:CAM_DisplayPipe_Stop	16	static
-C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:174:6:CAM_IspUpdate	16	static
-C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:186:5:CMW_CAMERA_PIPE_FrameEventCallback	16	static
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:127:6:CAM_Init	88	static
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:145:6:CAM_DeInit	8	static
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:152:6:CAM_DisplayPipe_Start	8	static
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:159:6:CAM_NNPipe_Start	8	static
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:167:6:CAM_DisplayPipe_Stop	8	static
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:174:6:CAM_IspUpdate	8	static
+C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c:186:5:CMW_CAMERA_PIPE_FrameEventCallback	0	static

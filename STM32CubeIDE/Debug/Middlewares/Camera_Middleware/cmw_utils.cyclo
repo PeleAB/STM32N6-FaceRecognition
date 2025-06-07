@@ -1,7 +1,2 @@
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.c:40:6:CMW_UTILS_GetPipeConfig	4
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.c:73:13:CMW_UTILS_get_crop_config	4
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.c:89:13:CMW_UTILS_get_crop_config_from_manual	1
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.c:97:13:CMW_UTILS_get_down_config	1
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.c:107:17:CMW_UTILS_get_dec_ratio_from_decimal_ratio	7
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.c:125:17:CMW_UTILS_get_dec_ratio_and_update	2
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.c:137:13:CMW_UTILS_get_scale_configs	1
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.c:125:17:CMW_UTILS_get_dec_ratio_and_update	5
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.c:40:6:CMW_UTILS_GetPipeConfig	6
