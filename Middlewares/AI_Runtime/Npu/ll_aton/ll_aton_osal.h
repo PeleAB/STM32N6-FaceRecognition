@@ -96,16 +96,19 @@
 #define LL_ATON_OSAL_WFE()          aton_osal_threadx_wfe()
 #define LL_ATON_OSAL_SIGNAL_EVENT() aton_osal_threadx_signal_event()
 
-#if TX_HAS_PARALLEL_NETWORKS
-
 /* Locks */
-#define LL_ATON_LOCK_ATON()   aton_osal_threadx_pb_lock()
-#define LL_ATON_UNLOCK_ATON() aton_osal_threadx_pb_unlock()
+#if APP_HAS_PARALLEL_NETWORKS
+#ifdef LL_ATON_OSAL_TX_OLD
+#define LL_ATON_OSAL_LOCK_ATON()   aton_osal_threadx_pb_lock()
+#define LL_ATON_OSAL_UNLOCK_ATON() aton_osal_threadx_pb_unlock()
+#else // LL_ATON_OSAL_TX_OLD
+#define LL_ATON_OSAL_LOCK_ATON()   aton_osal_threadx_dao_lock()
+#define LL_ATON_OSAL_UNLOCK_ATON() aton_osal_threadx_dao_unlock()
+#endif // LL_ATON_OSAL_TX_OLD
+#endif // APP_HAS_PARALLEL_NETWORKS
 
-#define LL_ATON_LOCK_NPU_CACHE()   aton_osal_threadx_lock()
-#define LL_ATON_UNLOCK_NPU_CACHE() aton_osal_threadx_unlock()
-
-#endif // TX_HAS_PARALLEL_NETWORKS
+#define LL_ATON_OSAL_LOCK_NPU_CACHE()   aton_osal_threadx_lock()
+#define LL_ATON_OSAL_UNLOCK_NPU_CACHE() aton_osal_threadx_unlock()
 
 #elif (LL_ATON_OSAL == LL_ATON_OSAL_FREERTOS)
 #include "ll_aton_osal_freertos.h"
@@ -117,39 +120,42 @@
 #define LL_ATON_OSAL_WFE()          aton_osal_freertos_wfe()
 #define LL_ATON_OSAL_SIGNAL_EVENT() aton_osal_freertos_signal_event()
 
-#if FREERTOS_HAS_PARALLEL_NETWORKS
+/* Locks */
+#if APP_HAS_PARALLEL_NETWORKS
+#define LL_ATON_OSAL_LOCK_ATON()   aton_osal_freertos_dao_lock()
+#define LL_ATON_OSAL_UNLOCK_ATON() aton_osal_freertos_dao_unlock()
+#endif // APP_HAS_PARALLEL_NETWORKS
+
+#define LL_ATON_OSAL_LOCK_NPU_CACHE()   aton_osal_freertos_lock()
+#define LL_ATON_OSAL_UNLOCK_NPU_CACHE() aton_osal_freertos_unlock()
+
+#elif (LL_ATON_OSAL == LL_ATON_OSAL_ZEPHYR)
+#include "ll_aton_osal_zephyr.h"
+
+/* Init & De-Initialization */
+#define LL_ATON_OSAL_INIT()                                 aton_osal_zephyr_init()
+#define LL_ATON_OSAL_DEINIT()                               aton_osal_zephyr_deinit()
+
+/* IRQ handling */
+#define LL_ATON_OSAL_INSTALL_IRQ(irq_aton_line_nr, handler) aton_osal_zephyr_install_irq(irq_aton_line_nr, handler)
+#define LL_ATON_OSAL_REMOVE_IRQ(irq_aton_line_nr)           aton_osal_zephyr_uninstall_irq(irq_aton_line_nr)
+#define LL_ATON_OSAL_ENABLE_IRQ(irq_aton_line_nr)           aton_osal_zephyr_enable_irq(irq_aton_line_nr)
+#define LL_ATON_OSAL_DISABLE_IRQ(irq_aton_line_nr)          aton_osal_zephyr_disable_irq(irq_aton_line_nr)
+#define LL_ATON_OSAL_ENTER_CS()                             aton_osal_zephyr_enter_cs()
+#define LL_ATON_OSAL_EXIT_CS()                              aton_osal_zephyr_exit_cs()
+
+/* Wait for / signal event from ATON runtime */
+#define LL_ATON_OSAL_WFE()                                  aton_osal_zephyr_wfe()
+#define LL_ATON_OSAL_SIGNAL_EVENT()                         aton_osal_zephyr_signal_event()
 
 /* Locks */
-#define LL_ATON_LOCK_ATON()   aton_osal_freertos_pb_lock()
-#define LL_ATON_UNLOCK_ATON() aton_osal_freertos_pb_unlock()
+#if APP_HAS_PARALLEL_NETWORKS
+#define LL_ATON_OSAL_LOCK_ATON()   aton_osal_zephyr_dao_lock()
+#define LL_ATON_OSAL_UNLOCK_ATON() aton_osal_zephyr_dao_unlock()
+#endif // APP_HAS_PARALLEL_NETWORKS
 
-#define LL_ATON_LOCK_NPU_CACHE()   aton_osal_freertos_lock()
-#define LL_ATON_UNLOCK_NPU_CACHE() aton_osal_freertos_unlock()
-
-#endif // FREERTOS_HAS_PARALLEL_NETWORKS
-
-#define LL_ATON_OSAL_SET_PRIORITY(irq_aton_line_nr, prio)                                                              \
-  do                                                                                                                   \
-  {                                                                                                                    \
-    switch (irq_aton_line_nr)                                                                                          \
-    {                                                                                                                  \
-    case 0:                                                                                                            \
-      NVIC_SetPriority(CDNN0_IRQn, prio);                                                                              \
-      break;                                                                                                           \
-    case 1:                                                                                                            \
-      NVIC_SetPriority(CDNN1_IRQn, prio);                                                                              \
-      break;                                                                                                           \
-    case 2:                                                                                                            \
-      NVIC_SetPriority(CDNN2_IRQn, prio);                                                                              \
-      break;                                                                                                           \
-    case 3:                                                                                                            \
-      NVIC_SetPriority(CDNN3_IRQn, prio);                                                                              \
-      break;                                                                                                           \
-    default:                                                                                                           \
-      assert(0);                                                                                                       \
-      break;                                                                                                           \
-    }                                                                                                                  \
-  } while (0)
+#define LL_ATON_OSAL_LOCK_NPU_CACHE()   aton_osal_zephyr_lock()
+#define LL_ATON_OSAL_UNLOCK_NPU_CACHE() aton_osal_zephyr_unlock()
 
 #elif (LL_ATON_OSAL == LL_ATON_OSAL_USER_IMPL)
 #include "ll_aton_osal_user_impl.h" /* file to be provided together with an implemetation of the custom OSAL by the user */
@@ -219,6 +225,31 @@
   } while (0)
 #endif // LL_ATON_OSAL_DISABLE_IRQ
 
+#ifndef LL_ATON_OSAL_SET_PRIORITY
+#define LL_ATON_OSAL_SET_PRIORITY(irq_aton_line_nr, prio)                                                              \
+  do                                                                                                                   \
+  {                                                                                                                    \
+    switch (irq_aton_line_nr)                                                                                          \
+    {                                                                                                                  \
+    case 0:                                                                                                            \
+      NVIC_SetPriority(CDNN0_IRQn, prio);                                                                              \
+      break;                                                                                                           \
+    case 1:                                                                                                            \
+      NVIC_SetPriority(CDNN1_IRQn, prio);                                                                              \
+      break;                                                                                                           \
+    case 2:                                                                                                            \
+      NVIC_SetPriority(CDNN2_IRQn, prio);                                                                              \
+      break;                                                                                                           \
+    case 3:                                                                                                            \
+      NVIC_SetPriority(CDNN3_IRQn, prio);                                                                              \
+      break;                                                                                                           \
+    default:                                                                                                           \
+      assert(0);                                                                                                       \
+      break;                                                                                                           \
+    }                                                                                                                  \
+  } while (0)
+#endif // LL_ATON_OSAL_SET_PRIORITY
+
 /* Enter/exit a critical section for the ATON runtime thread/task */
 
 // NOTE: here we need to block also execution of IRQ handler
@@ -238,36 +269,38 @@
 /** Locking mechanisms for thread-safe ATON runtime **/
 
 /* ATON IP */
-#ifndef LL_ATON_LOCK_ATON
-#define LL_ATON_LOCK_ATON()
-#endif // !LL_ATON_LOCK_ATON
+#ifndef LL_ATON_OSAL_LOCK_ATON
+#define LL_ATON_OSAL_LOCK_ATON()
+#endif // !LL_ATON_OSAL_LOCK_ATON
 
-#ifndef LL_ATON_UNLOCK_ATON
-#define LL_ATON_UNLOCK_ATON()
-#endif // !LL_ATON_LOCK_ATON
+#ifndef LL_ATON_OSAL_UNLOCK_ATON
+#define LL_ATON_OSAL_UNLOCK_ATON()
+#endif // !LL_ATON_OSAL_UNLOCK_ATON
 
 /* NPU Cache Lock */
 // NOTE: Needs to be implemented only if NPU cache maintenance operations cannot be performed in parallel
-// NOTE: This lock may be taken while the ATON IP lock (aka `LL_ATON_LOCK_ATON`) is held.
+// NOTE: This lock may be taken while the ATON IP lock (aka `LL_ATON_OSAL_LOCK_ATON`) is held.
 //       Therfore, either use two independent locking mechanisms for them or one re-entrant mechanism
-#ifndef LL_ATON_LOCK_NPU_CACHE
-#define LL_ATON_LOCK_NPU_CACHE()
-#endif // !LL_ATON_LOCK_NPU_CACHE
+#ifndef LL_ATON_OSAL_LOCK_NPU_CACHE
+#define LL_ATON_OSAL_LOCK_NPU_CACHE()
+#define LL_HAS_NO_ATON_OSAL_LOCK_NPU_CACHE
+#endif // !LL_ATON_OSAL_LOCK_NPU_CACHE
 
-#ifndef LL_ATON_UNLOCK_NPU_CACHE
-#define LL_ATON_UNLOCK_NPU_CACHE()
-#endif // !LL_ATON_LOCK_NPU_CACHE
+#ifndef LL_ATON_OSAL_UNLOCK_NPU_CACHE
+#define LL_ATON_OSAL_UNLOCK_NPU_CACHE()
+#endif // !LL_ATON_OSAL_UNLOCK_NPU_CACHE
 
 /* MCU Cache Lock */
-// NOTE: Needs to be implemented only if NPU cache maintenance operations cannot be performed in parallel
-// NOTE: This lock may be taken while the ATON IP lock (aka `LL_ATON_LOCK_ATON`) is held.
+// NOTE: Needs to be implemented only if MCU cache maintenance operations cannot be performed in parallel
+// NOTE: This lock may be taken while the ATON IP lock (aka `LL_ATON_OSAL_LOCK_ATON`) is held.
 //       Therfore, either use two independent locking mechanisms for them or one re-entrant mechanism
-#ifndef LL_ATON_LOCK_MCU_CACHE
-#define LL_ATON_LOCK_MCU_CACHE()
-#endif // !LL_ATON_LOCK_MCU_CACHE
+#ifndef LL_ATON_OSAL_LOCK_MCU_CACHE
+#define LL_ATON_OSAL_LOCK_MCU_CACHE()
+#define LL_HAS_NO_ATON_OSAL_LOCK_MCU_CACHE
+#endif // !LL_ATON_OSAL_LOCK_MCU_CACHE
 
-#ifndef LL_ATON_UNLOCK_MCU_CACHE
-#define LL_ATON_UNLOCK_MCU_CACHE()
-#endif // !LL_ATON_LOCK_MCU_CACHE
+#ifndef LL_ATON_OSAL_UNLOCK_MCU_CACHE
+#define LL_ATON_OSAL_UNLOCK_MCU_CACHE()
+#endif // !LL_ATON_OSAL_UNLOCK_MCU_CACHE
 
 #endif // __LL_ATON_OSAL_H

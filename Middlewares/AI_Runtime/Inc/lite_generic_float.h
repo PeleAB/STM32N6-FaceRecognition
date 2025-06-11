@@ -19,6 +19,7 @@
 #define LITE_GENERIC_FLOAT_H
 
 #include "ai_lite_interface.h"
+#include "layers_generic.h"
 
 /*****************************************************************************/
 /*  Generic Forward Functions Section                                        */
@@ -43,12 +44,17 @@ void forward_lite_func_reduce_l2_if32of32(
 /*!
  * @brief C struct for a gather_nd layer.
  * @ingroup lite_generic
- * @param outputs_ptr list of pointers for the outputs buffers.
- * @param n_outputs_ptr the number of outputs
- * @param n_outer_elems the number of elements to copy in a single split
- * @param input_ptr the pointer to input buffer to split.
- * @param splits_strides the pointer to array defining outputs split strides.
- * @param splits_step the offset between split strides
+ * @param src_in list of pointers for the outputs buffers.
+ * @param dst_out list of pointers for the outputs buffers.
+ * @param index_data indices to select slices of input tensor.
+ * @param height_in H dimension of input tensor.
+ * @param width_in W dimension of input tensor.
+ * @param n_channel_in CH dimension of input tensor.
+ * @param height_index H dimension of indices tensor.
+ * @param width_index W dimension of indices tensor.
+ * @param d_in D dimension of input tensor.
+ * @param ch_index CH dimension of indices tensor.
+ * @param ch_stride_in CH stride of input tensor.
  */
 typedef struct {
     stai_ptr src_in;
@@ -72,14 +78,22 @@ void forward_lite_gather_nd(
 /**  GatherND channel first Kernels  **************************************************/
 
 /*!
- * @brief C struct for a gather_nd channel first layer.
+ * @brief C struct for a gather_nd layer (Channel first).
  * @ingroup lite_generic
- * @param outputs_ptr list of pointers for the outputs buffers.
- * @param n_outputs_ptr the number of outputs
- * @param n_outer_elems the number of elements to copy in a single split
- * @param input_ptr the pointer to input buffer to split.
- * @param splits_strides the pointer to array defining outputs split strides.
- * @param splits_step the offset between split strides
+ * @param src_in list of pointers for the outputs buffers.
+ * @param dst_out list of pointers for the outputs buffers.
+ * @param index_data indices to select slices of input tensor.
+ * @param height_in H dimension of input tensor.
+ * @param width_in W dimension of input tensor.
+ * @param n_channel_in CH dimension of input tensor.
+ * @param height_index H dimension of indices tensor.
+ * @param width_index W dimension of indices tensor.
+ * @param ch_index CH dimension of indices tensor.
+ * @param ch_stride_in CH stride of input tensor.
+ * @param height_out H dimension of output tensor.
+ * @param width_out W dimension of output tensor.
+ * @param d_out D dimension of output tensor.
+ * @param ch_out CH dimension of output tensor.
  */
 typedef struct {
     stai_ptr src_in;
@@ -102,6 +116,47 @@ typedef struct {
 LITE_API_ENTRY
 void forward_lite_gather_nd_channel_first(
   forward_lite_gather_nd_channel_first_args* args);
+
+/**  ScatterND Kernels  **************************************************/
+
+/*!
+ * @brief C struct for a scatter_nd layer.
+ * @ingroup lite_generic
+ * @param src_in list of pointers for the outputs buffers.
+ * @param dst_out list of pointers for the outputs buffers.
+ * @param index_data indices to select slices of input tensor.
+ * @param update_data values to be inserted into the input tensor.
+ * @param height_in H dimension of input tensor.
+ * @param width_in W dimension of input tensor.
+ * @param n_channel_in CH dimension of input tensor.
+ * @param height_index H dimension of indices tensor.
+ * @param width_index W dimension of indices tensor.
+ * @param d_in D dimension of input tensor.
+ * @param ch_index CH dimension of indices tensor.
+ * @param ch_stride_in CH stride of input tensor.
+ */
+typedef struct {
+  stai_ptr src_in;
+  stai_ptr dst_out;
+  ai_i32* index_data;
+  stai_ptr update_data;
+  ai_scatter_nd_reduction reduction;
+  func_binary func;
+  ai_size height_in;
+  ai_size width_in;
+  ai_size n_channel_in;
+  ai_size height_index;
+  ai_size width_index;
+  ai_size d_index;
+  ai_size d_in;
+  ai_size ch_index;
+  int32_t ch_stride_in;
+} forward_lite_scatter_nd_args;
+
+
+LITE_API_ENTRY
+void forward_lite_scatter_nd(
+  forward_lite_scatter_nd_args* args);
 
 /**  Split Generic Kernels  **************************************************/
 

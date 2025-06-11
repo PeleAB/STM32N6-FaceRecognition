@@ -140,7 +140,6 @@ typedef AI_ALIGNED_TYPE(struct, 4) ai_layer_tile_{
   AI_CONST ai_array* repeats;  /*!< numbers of repeated copies along each dimension */
 } ai_layer_tile;
 
-
 /*!
  * @struct ai_layer_shape
  * @ingroup layers generic
@@ -369,6 +368,22 @@ typedef AI_ALIGNED_TYPE(struct, 4) ai_layer_eltwise_integer_ {
 } ai_layer_eltwise_integer;
 
 /*!
+ * @struct ai_layer_scatter_nd
+ * @ingroup layers_generic
+ * @brief ScatterND layer definition
+ *
+ * This layer defines the params of a scattering layer (ND). It is intended to be used
+ * by his associated forward function @ref forward_scatter_nd
+ */
+typedef AI_ALIGNED_TYPE(struct, 4) ai_layer_scatter_nd_ {
+  AI_LAYER_COMMON_FIELDS_DECLARE
+  ai_tensor* indices;  /*!< Indices of corrisponding slices of inputs*/
+  ai_tensor* updates;  /*!< Updates of corrisponding slices of inputs*/
+  func_binary operation;    /*!< operation to apply elementwise */
+  ai_scatter_nd_reduction reduction; /*!< Reduction operation in ScatterND layer*/
+} ai_layer_scatter_nd;
+
+/*!
  * @struct ai_layer_reduce
  * @ingroup layers_generic
  * @brief General dimension reduction layer
@@ -588,6 +603,14 @@ void forward_gather_nd(ai_layer* layer);
  */
 AI_INTERNAL_API
 void forward_gather_nd_channel_first(ai_layer* layer);
+
+/*!
+ * @brief ScatterND an input tensor
+ * @ingroup layers_generic
+ * @param layer the scattered layer (ND)
+ */
+AI_INTERNAL_API
+void forward_scatter_nd(ai_layer* layer);
 
 /*!
  * @brief Slice an input tensors

@@ -1,8 +1,8 @@
 Application/network.o: \
  C:/Users/pele/Documents/GitHub/ObjectDet/Model/network.c \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h \
- ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h \
+ ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal.h \
@@ -54,6 +54,7 @@ Application/network.o: \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h \
+ ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_caches_interface.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib_sw_operators.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_version.h \
@@ -65,8 +66,8 @@ Application/network.o: \
  C:/Users/pele/Documents/GitHub/ObjectDet/Model/network_ecblobs.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_caches_interface.h
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h:
-../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h:
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h:
+../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h:
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h:
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.h:
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal.h:
@@ -118,6 +119,7 @@ Application/network.o: \
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib.h:
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.h:
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h:
+../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_caches_interface.h:
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib_sw_operators.h:
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib.h:
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_version.h:

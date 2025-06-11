@@ -26,9 +26,8 @@
 
 #include "ll_aton_util.h" // Leave blank line after the include
 
+#include "ll_aton_caches_interface.h"
 #include "ll_aton_lib.h"
-#include "ll_aton_platform.h"
-
 #include "ll_aton_runtime.h"
 
 #if _LL_LIB_DEBUG
@@ -156,7 +155,7 @@ static inline void __ll_lib_dump_strswitch(int dma_in, int dma_out)
   LL_ATON_PRINTF("context1: %d\n", switch_init[0].context1);
   LL_ATON_PRINTF("===\n");
 
-#if (LL_ATON_HAVE_FFLUSH)
+#if (ATON_PLAT_HAS_FFLUSH)
   LL_ATON_FFLUSH(stdout);
 #endif
 #endif // !DUMP_DEBUG_SW_OPS
@@ -285,9 +284,7 @@ static inline void __ll_lib_prepare_outputs_epoch(const LL_LIB_TensorShape_TypeD
 /* `memcpy` generic epoch blocks */
 static inline size_t __ll_lib_memcpy_prolog(void **dst, void **src, size_t n)
 {
-#if (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
   uint8_t *_dst_orig = *dst;
-#endif // (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
 
   int prolog_len = (n % 3);
   int i;
@@ -305,18 +302,11 @@ static inline size_t __ll_lib_memcpy_prolog(void **dst, void **src, size_t n)
   }
   n -= prolog_len;
 
-#if (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
   if (prolog_len > 0)
   {
-    LL_ATON_LOCK_MCU_CACHE();
-
     /* *** MCU cache clean & invalidate operation (SW) *** */
-    mcu_cache_clean_invalidate_range(__LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)_dst_orig),
-                                     __LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)(_dst_orig + prolog_len)));
-
-    LL_ATON_UNLOCK_MCU_CACHE();
+    LL_ATON_Cache_MCU_Clean_Invalidate_Range(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)_dst_orig), prolog_len);
   }
-#endif // (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
 
   return n;
 }
@@ -798,7 +788,7 @@ static void __LL_LIB_DMA_Pad_Filling_Start_EpochBlock(const void *epoch_block)
 #if defined(DUMP_DEBUG_SW_OPS)
   LL_ATON_PRINTF("%s(%d): ASSIGN in=%lx, out=%lx, bytes=%u\n", __func__, __LINE__, (uintptr_t)common_params->in_target,
                  (uintptr_t)common_params->out_target, common_params->consecutive_bytes);
-#if (LL_ATON_HAVE_FFLUSH)
+#if (ATON_PLAT_HAS_FFLUSH)
   LL_ATON_FFLUSH(stdout);
 #endif
 #endif
@@ -3087,8 +3077,8 @@ int LL_ATON_LIB_DMA_Outputs_Slice_SplitLike(const LL_LIB_TensorShape_TypeDef *in
     for (unsigned source = 0, dest = 0; dest < tot_out_size; source += line_offset, dest += width_in_bytes)
     {
       // LL_ATON_PRINTF("dest=%d, source=%d\n", dest, source);
-      memcpy(__LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start(output) + dest),
-             __LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start(input) + source), width_in_bytes);
+      memcpy(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start(output) + dest),
+             ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start(input) + source), width_in_bytes);
     }
   }
   else
@@ -3267,9 +3257,7 @@ static inline uint32_t __ll_lib_match_preload_with_busport(size_t size, uint8_t 
 
 static inline void __ll_lib_load_const_val(void **dst, int32_t constant_value, size_t size, uint8_t nbytes)
 {
-#if (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
   uint8_t *_dst_orig = *dst;
-#endif // (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
 
   switch (nbytes)
   {
@@ -3325,18 +3313,11 @@ static inline void __ll_lib_load_const_val(void **dst, int32_t constant_value, s
     return;
   }
 
-#if (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
   if (size > 0)
   {
-    LL_ATON_LOCK_MCU_CACHE();
-
     /* *** MCU cache clean & invalidate operation (SW) *** */
-    mcu_cache_clean_invalidate_range(__LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)_dst_orig),
-                                     __LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)(_dst_orig + size)));
-
-    LL_ATON_UNLOCK_MCU_CACHE();
+    LL_ATON_Cache_MCU_Clean_Invalidate_Range(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)_dst_orig), size);
   }
-#endif // (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
 }
 
 /* NOTE: function assumes that `size`, `*dst`, & `min_bytes_to_preload` are correctly aligned */

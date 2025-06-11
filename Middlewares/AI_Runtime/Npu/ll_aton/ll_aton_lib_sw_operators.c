@@ -23,11 +23,8 @@
 #include "ll_aton_util.h" // Leave blank line after the include
 
 #include "ll_aton_lib.h"
-#include "ll_aton_platform.h"
-
-#include "ll_aton_runtime.h"
-
 #include "ll_aton_lib_sw_operators.h"
+#include "ll_aton_runtime.h"
 
 /* Common data structure(s) */
 typedef struct __ll_stack_lnklst
@@ -348,10 +345,10 @@ static int __ll_aton_lib_sw_outputs_flat_copy(const LL_LIB_TensorShape_TypeDef *
     __LL_LIB_ERROR(_ERR_NOUTPUTS, LL_ATON_INVALID_PARAM);
   }
 
-  unsigned char *curr_in_addr = __LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start(input));
+  unsigned char *curr_in_addr = ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start(input));
   for (int i = 0; i < nr_of_outputs; i++)
   {
-    unsigned char *out_addr = __LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start((*outputs) + i));
+    unsigned char *out_addr = ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start((*outputs) + i));
     unsigned out_size = LL_Buffer_len((*outputs) + i);
 
     memcpy(out_addr, curr_in_addr, out_size);
@@ -397,8 +394,8 @@ static void __ll_aton_lib_split_aton_canonical(const LL_LIB_TensorShape_TypeDef 
     for (source = start; source < stop; source += jump, dest += copy_val)
     {
       // LL_ATON_PRINTF("i=%d, dest=%d, source=%d\n", i, dest, source);
-      memcpy(__LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start((*outputs) + i) + dest),
-             __LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start(input) + source), copy_val);
+      memcpy(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start((*outputs) + i) + dest),
+             ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start(input) + source), copy_val);
     }
     start += copy_val;
   }
@@ -430,8 +427,8 @@ static void __ll_aton_lib_split_onnx_canonical(const LL_LIB_TensorShape_TypeDef 
     for (source = start; source < stop; source += jump, dest += copy_val)
     {
       // LL_ATON_PRINTF("i=%d, dest=%d, source=%d\n", i, dest, source);
-      memcpy(__LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start((*outputs) + i) + dest),
-             __LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start(input) + source), copy_val);
+      memcpy(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start((*outputs) + i) + dest),
+             ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start(input) + source), copy_val);
     }
     start += copy_val;
   }
@@ -456,7 +453,7 @@ static void __ll_aton_lib_split_channel_batched(const LL_LIB_TensorShape_TypeDef
 
   // assuming that all leading dimensions up to channel are equal to 1!
 
-  unsigned char *outer_addr = __LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start(input));
+  unsigned char *outer_addr = ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start(input));
   for (int i = 0; i < nr_of_outputs; i++)
   {
     uint16_t out_batch = (*outputs)[i].batch;
@@ -468,7 +465,7 @@ static void __ll_aton_lib_split_channel_batched(const LL_LIB_TensorShape_TypeDef
     LL_ATON_ASSERT((out_nchannels % out_batch) == 0);
     uint32_t frame_tot_cnt = out_nchannels / out_batch;
 
-    unsigned char *output_addr = __LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start((*outputs) + i));
+    unsigned char *output_addr = ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(LL_Buffer_addr_start((*outputs) + i));
 
     /* main loop */
     unsigned char *addr_main_loop = outer_addr;
@@ -1228,7 +1225,7 @@ static inline void __ll_aton_lib_reflect_inner_framing_sw(uint32_t curr_axis, ui
 #if defined(DUMP_DEBUG_SW_OPS)
   LL_ATON_PRINTF("%s(%d): reflect, curr_axis=%d, dst=%p, src=%p, min_shape_elems=%d, bytes=%d\n", __func__, __LINE__,
                  curr_axis, dst, src, n_elems, length);
-#if (LL_ATON_HAVE_FFLUSH)
+#if (ATON_PLAT_HAS_FFLUSH)
   LL_ATON_FFLUSH(stdout);
 #endif
 #endif
@@ -1364,7 +1361,7 @@ static void __ll_aton_lib_pad_filling_sw(uint32_t curr_axis, __ll_pad_sw_params_
     LL_ATON_PRINTF("%s(%d): ASSIGN in=%lx, out=%lx, bytes=%u\n", __func__, __LINE__,
                    (uintptr_t)common_params->in_target, (uintptr_t)common_params->out_target,
                    common_params->consecutive_bytes);
-#if (LL_ATON_HAVE_FFLUSH)
+#if (ATON_PLAT_HAS_FFLUSH)
     LL_ATON_FFLUSH(stdout);
 #endif
 #endif
@@ -1443,7 +1440,7 @@ static void __ll_aton_lib_pad_reflect_sw(uint32_t curr_axis, __ll_pad_sw_params_
 #if defined(DUMP_DEBUG_SW_OPS)
     LL_ATON_PRINTF("%s(%d): out=%p, end=%p\n", __func__, __LINE__, (int8_t *)common_params->out_target,
                    (int8_t *)common_params->end_out_target);
-#if (LL_ATON_HAVE_FFLUSH)
+#if (ATON_PLAT_HAS_FFLUSH)
     LL_ATON_FFLUSH(stdout);
 #endif
 #endif
@@ -1481,7 +1478,7 @@ static void __ll_aton_lib_pad_reflect_sw(uint32_t curr_axis, __ll_pad_sw_params_
         LL_ATON_PRINTF("%s(%d): memcpy, curr_axis=%d, dst=%p, src=%p, src_idx=%d, bytes=%d, n_elems=%d, times=%d/%d\n",
                        __func__, __LINE__, curr_axis, (int8_t *)dst_ptr, (int8_t *)src_ptr + (src_idx * padding_bytes),
                        src_idx, padding_bytes, n_elems, i + 1, nr_loops);
-#if (LL_ATON_HAVE_FFLUSH)
+#if (ATON_PLAT_HAS_FFLUSH)
         LL_ATON_FFLUSH(stdout);
 #endif
 #endif
@@ -1554,7 +1551,7 @@ static void __ll_aton_lib_pad_reflect_sw(uint32_t curr_axis, __ll_pad_sw_params_
         LL_ATON_PRINTF("%s(%d): memcpy, curr_axis=%d, dst=%p, src=%p, src_idx=%d, bytes=%d, n_elems=%d, times=%d/%d\n",
                        __func__, __LINE__, curr_axis, (int8_t *)dst_ptr, (int8_t *)src_ptr + (src_idx * padding_bytes),
                        src_idx, padding_bytes, n_elems, i + 1, nr_loops);
-#if (LL_ATON_HAVE_FFLUSH)
+#if (ATON_PLAT_HAS_FFLUSH)
         LL_ATON_FFLUSH(stdout);
 #endif
 #endif
@@ -1597,7 +1594,7 @@ static void __ll_aton_lib_pad_reflect_sw(uint32_t curr_axis, __ll_pad_sw_params_
 #if defined(DUMP_DEBUG_SW_OPS)
     LL_ATON_PRINTF("%s(%d): out=%p, end=%p\n", __func__, __LINE__, (int8_t *)common_params->out_target,
                    (int8_t *)common_params->end_out_target);
-#if (LL_ATON_HAVE_FFLUSH)
+#if (ATON_PLAT_HAS_FFLUSH)
     LL_ATON_FFLUSH(stdout);
 #endif
 #endif
@@ -1649,7 +1646,7 @@ static void __ll_aton_lib_pad_edge_sw(uint32_t curr_axis, __ll_pad_sw_params_t *
 #if defined(DUMP_DEBUG_SW_OPS)
     LL_ATON_PRINTF("%s(%d): out=%p, end=%p\n", __func__, __LINE__, (int8_t *)common_params->out_target,
                    (int8_t *)common_params->end_out_target);
-#if (LL_ATON_HAVE_FFLUSH)
+#if (ATON_PLAT_HAS_FFLUSH)
     LL_ATON_FFLUSH(stdout);
 #endif
 #endif
@@ -1716,7 +1713,7 @@ static void __ll_aton_lib_pad_edge_sw(uint32_t curr_axis, __ll_pad_sw_params_t *
 #if defined(DUMP_DEBUG_SW_OPS)
     LL_ATON_PRINTF("%s(%d): out=%p, end=%p\n", __func__, __LINE__, (int8_t *)common_params->out_target,
                    (int8_t *)common_params->end_out_target);
-#if (LL_ATON_HAVE_FFLUSH)
+#if (ATON_PLAT_HAS_FFLUSH)
     LL_ATON_FFLUSH(stdout);
 #endif
 #endif
@@ -1752,21 +1749,16 @@ static int __ll_aton_lib_pad_filling(__ll_pad_sw_params_t *common_params)
   { // do it without HW support
     __ll_aton_lib_pad_filling_sw(0, common_params);
 
-#if (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
     if (common_params->callback_function != NULL) /* take this as indication for "called as callback" */
     {
       if ((common_params->end_out_target - common_params->saved_out_target) > 0)
       {
-        LL_ATON_LOCK_MCU_CACHE();
-
         /* *** MCU cache clean operation (SW) *** */
-        mcu_cache_clean_range(__LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)common_params->saved_out_target),
-                              __LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)(common_params->end_out_target)));
-
-        LL_ATON_UNLOCK_MCU_CACHE();
+        uint32_t size = (uintptr_t)(common_params->end_out_target) - (uintptr_t)(common_params->saved_out_target);
+        LL_ATON_Cache_MCU_Clean_Range(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)common_params->saved_out_target),
+                                      size);
       }
     }
-#endif // (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
 
   dump_results:
 #if defined(DUMP_RESULTS_PAD_OP)
@@ -1853,19 +1845,13 @@ static int __ll_aton_lib_pad_filling(__ll_pad_sw_params_t *common_params)
     }
     else
     { // not a callback => `memset` (i.e. `framing`) has been executed in SW
-#if (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
       if ((common_params->end_out_target - common_params->saved_out_target) > 0)
       {
-        LL_ATON_LOCK_MCU_CACHE();
-
         /* *** MCU cache clean & invalidate operation (SW) *** */
-        mcu_cache_clean_invalidate_range(
-            __LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)common_params->saved_out_target),
-            __LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)(common_params->end_out_target)));
-
-        LL_ATON_UNLOCK_MCU_CACHE();
+        uint32_t size = (uintptr_t)(common_params->end_out_target) - (uintptr_t)(common_params->saved_out_target);
+        LL_ATON_Cache_MCU_Clean_Invalidate_Range(
+            ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)common_params->saved_out_target), size);
       }
-#endif // (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
 
       return LL_ATON_LIB_DMA_Pad_Filling(common_params);
     }
@@ -1902,18 +1888,12 @@ static int __ll_aton_lib_pad_framing_sw(__ll_pad_sw_params_t *common_params)
   }
 
   LL_ATON_ASSERT(common_params->callback_function != NULL); /* always "called as callback" */
-#if (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
   if ((common_params->end_out_target - common_params->saved_out_target) > 0)
   {
-    LL_ATON_LOCK_MCU_CACHE();
-
     /* *** MCU cache clean operation (SW) *** */
-    mcu_cache_clean_range(__LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)common_params->saved_out_target),
-                          __LL_ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)(common_params->end_out_target)));
-
-    LL_ATON_UNLOCK_MCU_CACHE();
+    uint32_t size = (uintptr_t)(common_params->end_out_target) - (uintptr_t)(common_params->saved_out_target);
+    LL_ATON_Cache_MCU_Clean_Range(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR((uintptr_t)common_params->saved_out_target), size);
   }
-#endif // (LL_ATON_PLATFORM == LL_ATON_PLAT_STM32N6)
 
 #if defined(DUMP_RESULTS_PAD_OP)
   /* debug output print */
@@ -2035,7 +2015,7 @@ int LL_ATON_LIB_Pad(unsigned char *input, unsigned char *output, unsigned char *
 
   if (consecutive_bytes == 0)
   {
-    // corner case: nothing needs to be copied/filled in (just `memset`), align with `Caffe2 / onnxruntime (v1.2.0)`
+    // corner case: nothing needs to be copied/filled in (just `memset`), align with `onnxruntime (v1.2.0)`
     // reference implementation
     constant_value = 0;
   }

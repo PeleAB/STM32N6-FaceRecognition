@@ -19,10 +19,10 @@
 #ifndef __LL_ATON_VERSION_H
 #define __LL_ATON_VERSION_H
 
-#define LL_ATON_VERSION_NAME  "atonn-v1.0.0-rc0-16-g0307e413"
+#define LL_ATON_VERSION_NAME  "atonn-v1.1.0-31-g27f5d5bc"
 #define LL_ATON_VERSION_MAJOR (1)
-#define LL_ATON_VERSION_MINOR (0)
+#define LL_ATON_VERSION_MINOR (1)
 #define LL_ATON_VERSION_MICRO (0)
-#define LL_ATON_VERSION_DEV   (16)
+#define LL_ATON_VERSION_DEV   (31)
 
 #endif

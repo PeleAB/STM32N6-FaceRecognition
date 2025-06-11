@@ -28,13 +28,13 @@ extern "C"
 #include <stddef.h>
 #include <stdint.h>
 
+#include "ll_aton_attributes.h"
 #include "ll_aton_config.h"
 
-#include "ll_aton_attributes.h"
 #if (LL_ATON_PLATFORM != LL_ATON_PLAT_EC_TRACE)
 #include "ll_aton_osal.h"
 #include "ll_aton_platform.h"
-#endif
+#endif // LL_ATON_PLATFORM != LL_ATON_PLAT_EC_TRACE
 
 /** @defgroup ATON_LL ATON_LL_Driver
  * @{
@@ -222,7 +222,7 @@ extern "C"
     unsigned inbytes_x : 2;    /**< Input data width in bytes for stream X. Valid values are 1, 2 or 3 bytes */
     unsigned outbytes_x : 2;   /**< Number of output bytes to use for input feature data of stream X after rounding or
                                 *  saturation. Valid values are 1 or 2 bytes */
-    unsigned char shift_x;     /**< Input feature data shift for stream X. USe negative values for left shift */
+    signed char shift_x;       /**< Input feature data shift for stream X. Use negative values for left shift */
     unsigned rounding_y : 1;   /**< Input feature data rounding for stream Y */
     unsigned saturation_y : 1; /**< Input feature data saturation for stream Y */
     unsigned round_mode_y : 2; /**< Input feature data rounding mode for stream Y */
@@ -232,7 +232,7 @@ extern "C"
     unsigned combinebc : 1;    /**< Combine coeff B and C to form a 32b coeff BC = {B[15:0],C[15:0]} */
     unsigned clipout : 1;      /**< Controls output clipping to range specified by clip range configuration, 1=enable,
                                 *  0=disable */
-    unsigned char shift_y;     /**< Input feature data shift for stream Y. USe negative values for left shift */
+    signed char shift_y;       /**< Input feature data shift for stream Y. Use negative values for left shift */
     unsigned rounding_o : 1;   /**< Rounding control, 1=enable, 0=disable */
     unsigned saturation_o : 1; /**< Saturation control, 1=enable, 0=disable */
     unsigned round_mode_o : 1; /**< Otput rounding mode control */
@@ -313,7 +313,7 @@ extern "C"
     unsigned char kernelWidth;         /**< Kernel width */
     unsigned char kernelHeight;        /**< Kernel height */
     unsigned char nKernels;            /**< Total number of parallel kernels */
-    unsigned char batchDepth;          /**< Batch Depth */
+    unsigned short batchDepth;         /**< Batch Depth */
     unsigned char hstride;             /**< Horizontal stride */
     unsigned char vstride;             /**< Vertical stride */
     unsigned short left_padding;       /**< Number of vertical left dummy columns */
@@ -511,15 +511,6 @@ extern "C"
    * @}
    */
 
-  /** @defgroup LL_STRENG64 64-bits Streaming Engine configuration and operation functions
-   * @{
-   */
-  int LL_Streng64_TensorInit(int id, const LL_Streng_TensorInitTypeDef *conf, int n);
-  int LL_Streng64_Wait(uint32_t mask);
-  /**
-   * @}
-   */
-
   /** @defgroup LL_BUSIF Bus Interface configuration functions
    * @{
    */
@@ -603,7 +594,6 @@ static inline unsigned _atonn_getDstPortID(DestPort d)
 #define ARITH_SRC(I, P)   ATONN_SRCPORT(STRSWITCH, 0, ARITH, I, P)
 #define POOL_SRC(I, P)    ATONN_SRCPORT(STRSWITCH, 0, POOL, I, P)
 #define RECBUF_SRC(I, P)  ATONN_SRCPORT(STRSWITCH, 0, RECBUF, I, P)
-#define IMC_SRC(I, P)     ATONN_SRCPORT(STRSWITCH64, 0, IMC, I, P)
 
 /**
  * @brief Stream Switch destination ports identifiers
@@ -615,8 +605,6 @@ static inline unsigned _atonn_getDstPortID(DestPort d)
 #define ARITH_DST(I, P)   ATONN_DSTPORT(STRSWITCH, 0, ARITH, I, P)
 #define POOL_DST(I, P)    ATONN_DSTPORT(STRSWITCH, 0, POOL, I, P)
 #define RECBUF_DST(I, P)  ATONN_DSTPORT(STRSWITCH, 0, RECBUF, I, P)
-#define IMC_DST_FEAT(P)   ATON_STRSWITCH64_DST_OFFSET(0, 4 + 2 * ##P)
-#define IMC_DST_PSIN(P)   ATON_STRSWITCH64_DST_OFFSET(0, 4 + 2 * ##P + 1)
 
 /**
  * @brief Streaming switch configuration structure
@@ -686,16 +674,6 @@ typedef struct
   int LL_Switch_Init(const LL_Switch_InitTypeDef *LL_Switch_InitStruct, int n);
   int LL_Switch_Deinit(const LL_Switch_DeinitTypeDef *LL_Switch_DenitStruct, int n);
   int LL_Switch_Deinit_Fine_Grained(const LL_Switch_DeinitTypeDef *LL_Switch_DenitStruct, int n);
-  /**
-   * @}
-   */
-
-  /** @defgroup STRSWITCH64 64-bits Streaming Switch connection/disconnection functions
-   * @{
-   */
-  int LL_Switch64_Init_NoReset(const LL_Switch_InitTypeDef *LL_Switch_InitStruct, int n);
-  int LL_Switch64_Init(const LL_Switch_InitTypeDef *LL_Switch_InitStruct, int n);
-  int LL_Switch64_Deinit(const LL_Switch_InitTypeDef *LL_Switch_InitStruct, int n);
   /**
    * @}
    */

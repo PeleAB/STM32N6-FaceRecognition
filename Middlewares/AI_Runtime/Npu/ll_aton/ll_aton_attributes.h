@@ -43,7 +43,7 @@
 #endif /* __GNUC__ */
 #define LL_ATON_WEAK __weak
 
-#define LL_ATON_LIB_UNUSED(x) ((void)(x))
+#define LL_ATON_LIB_UNUSED(x) ((void)(x)) // prevent from eventual compiler warnings due to unused variables
 
 #define __LL_ATON_CONCAT_ARG(a, b) a##b
 #define LL_ATON_CONCAT(a, b)       __LL_ATON_CONCAT_ARG(a, b)

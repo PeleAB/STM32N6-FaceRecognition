@@ -32,7 +32,7 @@
  */
 int LL_Dbgtrc_Init(int id)
 {
-  uint32_t t = ATON_DEBUG_TRACE_CTRL_DT;
+  uint32_t t = ATON_DEBUG_TRACE_CTRL_DT(id);
 
   /* Enable clock and unit */
   LL_ATON_EnableClock(ATON_DEBUG_TRACE_CLKB_CLK(id));
@@ -222,9 +222,8 @@ int LL_Dbgtrc_Counter_Init(int id, int counter, LL_Dbgtrc_Counter_InitTypdef *Co
   t = ATON_DEBUG_TRACE_EVENT_SET_EVENT_TYPE(t, Counter_InitStruct->evt_type);
   t = ATON_DEBUG_TRACE_EVENT_SET_WRAP(t, Counter_InitStruct->wrap);
   t = ATON_DEBUG_TRACE_EVENT_SET_CNT_DOWN(t, Counter_InitStruct->countdown);
-#if defined(ATON_DEBUG_TRACE_EVENT_0_SET_INT_DISABLE)
-  t = ATON_DEBUG_TRACE_EVENT_0_SET_INT_DISABLE(t, Counter_InitStruct->int_disable);
-#endif
+  t = ATON_DEBUG_TRACE_EVENT_SET_INT_DISABLE(t, Counter_InitStruct->int_disable);
+
   *reg = t;
 
   reg = (volatile uint32_t *)(ATON_DEBUG_TRACE_EVENT_CNT_ADDR(id, counter));
@@ -286,16 +285,15 @@ uint32_t LL_Dbgtrc_Counter_Read(int id, int counter)
  * @param dstcounter The counter which starts upon srccounter contdown event
  * @TODO: add parameters checkers, e.g. throw error if source counter countdown is not enabled
  */
-int LL_Dbgtrc_Counter_BindStart(int id, int srccounter, int dstunit)
+int LL_Dbgtrc_Counter_BindStart(int id, int srccounter, int dstcounter)
 {
-#if defined(ATON_DEBUG_TRACE_EVENT_0_SET_START_EVENT_SEL)
-  volatile uint32_t *reg = (volatile uint32_t *)(ATON_DEBUG_TRACE_EVENT_0_ADDR(id) + (dstunit << 2));
+  volatile uint32_t *reg = (volatile uint32_t *)(ATON_DEBUG_TRACE_EVENT_ADDR(id, dstcounter));
   uint32_t t = *reg;
 
-  t = ATON_DEBUG_TRACE_EVENT_0_SET_START_EVENT_EN(t, 1);
-  t = ATON_DEBUG_TRACE_EVENT_0_SET_START_EVENT_SEL(t, srccounter);
+  t = ATON_DEBUG_TRACE_EVENT_SET_START_EVENT_EN(t, 1);
+  t = ATON_DEBUG_TRACE_EVENT_SET_START_EVENT_SEL(t, srccounter);
   *reg = t;
-#endif
+
   return 0;
 }
 
@@ -308,14 +306,13 @@ int LL_Dbgtrc_Counter_BindStart(int id, int srccounter, int dstunit)
  */
 int LL_Dbgtrc_Counter_BindStop(int id, int srccounter, int dstcounter)
 {
-#if defined(ATON_DEBUG_TRACE_EVENT_0_SET_START_EVENT_SEL)
-  volatile uint32_t *reg = (volatile uint32_t *)(ATON_DEBUG_TRACE_EVENT_0_ADDR(id) + (dstcounter << 2));
+  volatile uint32_t *reg = (volatile uint32_t *)(ATON_DEBUG_TRACE_EVENT_ADDR(id, dstcounter));
   uint32_t t = *reg;
 
-  t = ATON_DEBUG_TRACE_EVENT_0_SET_STOP_EVENT_EN(t, 1);
-  t = ATON_DEBUG_TRACE_EVENT_0_SET_STOP_EVENT_SEL(t, srccounter);
+  t = ATON_DEBUG_TRACE_EVENT_SET_STOP_EVENT_EN(t, 1);
+  t = ATON_DEBUG_TRACE_EVENT_SET_STOP_EVENT_SEL(t, srccounter);
   *reg = t;
-#endif
+
   return 0;
 }
 

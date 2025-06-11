@@ -219,7 +219,6 @@ const char* ai_layer_type_name(const ai_layer_type type);
 AI_INTERNAL_API
 ai_bool ai_layer_type_is_valid(const ai_layer_type type);
 
-#ifdef HAS_AI_ASSERT
 
 /*!
  * @brief check scratch size computed with actual scratch buffer size
@@ -248,6 +247,7 @@ void ai_layer_check_scratch_size( ai_layer_type layer_type, ai_array_format fmt,
                           ai_bool is_sssa, ai_u32 tensor_scratch_size_bytes,
                           const char *p_function_name, const int line_nb);
 
+#ifdef HAS_AI_ASSERT
 #define CHECK_SCRATCH_BUFFER_SIZE( layer_type, fmt, \
                                    filt_width, filt_height, \
                                    n_channel_in, n_channel_out, \
@@ -261,7 +261,15 @@ void ai_layer_check_scratch_size( ai_layer_type layer_type, ai_array_format fmt,
                                  is_depthwise, is_ch1st, is_ch_wise, \
                                  is_sssa_ch, tensor_scratch_size_bytes, \
                                  __FUNCTION__, __LINE__);
-
+#else
+#define CHECK_SCRATCH_BUFFER_SIZE( layer_type, fmt, \
+                                   filt_width, filt_height, \
+                                   n_channel_in, n_channel_out, \
+                                   is_pointwise, is_rgb, \
+                                   is_depthwise, is_ch1st, is_ch_wise, \
+                                   is_sssa_ch, tensor_scratch_size_bytes) \
+	AI_WRAP_FUNC(/*NULL*/)
+#endif
 #define IS_PW 1
 #define IS_RGB 1
 #define IS_DW 1
@@ -276,7 +284,6 @@ void ai_layer_check_scratch_size( ai_layer_type layer_type, ai_array_format fmt,
 #define NOT_CH_WISE 0
 #define NOT_SSSA_CH 0
 
-#endif
 
 AI_API_DECLARE_END
 

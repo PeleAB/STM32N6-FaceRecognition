@@ -26,9 +26,7 @@
 
 #include "ll_aton_util.h" // Leave blank line after the include
 
-#include "ll_aton_platform.h"
 #include "ll_aton_profiler.h"
-
 #include "ll_aton_runtime.h"
 
 #if _LL_LIB_DEBUG

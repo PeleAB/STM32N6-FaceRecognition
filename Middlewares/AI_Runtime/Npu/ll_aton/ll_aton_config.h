@@ -72,6 +72,7 @@
 #define LL_ATON_OSAL_LINUX_BW   3
 #define LL_ATON_OSAL_THREADX    4
 #define LL_ATON_OSAL_FREERTOS   5
+#define LL_ATON_OSAL_ZEPHYR     6
 
 #define LL_ATON_OSAL_USER_IMPL                                                                                         \
   ((1 << LL_ATON_CONFIG_OSAL_BSIZE) -                                                                                  \
@@ -160,8 +161,10 @@
 #if (LL_ATON_OSAL != LL_ATON_OSAL_LINUX_BW)
 #if (LL_ATON_OSAL != LL_ATON_OSAL_THREADX)
 #if (LL_ATON_OSAL != LL_ATON_OSAL_FREERTOS)
+#if (LL_ATON_OSAL != LL_ATON_OSAL_ZEPHYR)
 #if (LL_ATON_OSAL != LL_ATON_OSAL_USER_IMPL)
 #error "Wrong definition of `LL_ATON_OSAL`"
+#endif
 #endif
 #endif
 #endif

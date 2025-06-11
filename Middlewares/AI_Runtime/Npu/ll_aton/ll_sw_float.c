@@ -620,6 +620,13 @@ void ll_sw_forward_activ(/* int processor, */ void *sw_info_struct)
     nonlinearity_layer.forward(AI_LAYER_OBJ(&nonlinearity_layer));
   }
   break;
+  case LL_SW_SWISH:
+  {
+    AI_LAYER_OBJ_DECLARE(nonlinearity_layer, 2, NL_TYPE, 0x0, NULL, nl, forward_swish, &activ_chain, NULL, NULL, ,
+                         .nl_params = NULL, )
+    nonlinearity_layer.forward(AI_LAYER_OBJ(&nonlinearity_layer));
+  }
+  break;
   case LL_SW_HARDSWISH:
   {
     AI_LAYER_OBJ_DECLARE(nonlinearity_layer, 2, NL_TYPE, 0x0, NULL, nl, forward_hard_swish, &activ_chain, NULL, NULL, ,
@@ -1396,8 +1403,8 @@ void ll_sw_forward_tile(/* int processor, */ void *sw_info_struct)
                               AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, TENSORS(&tile_output)), AI_TENSOR_LIST_OBJ_EMPTY,
                               AI_TENSOR_LIST_OBJ_EMPTY)
 
-  AI_ARRAY_OBJ_DECLARE_STATIC(repeats, ai_i16, AI_ARRAY_FORMAT_S16, AI_CONST, 4, sw_info->repeats[2],
-                              sw_info->repeats[3], sw_info->repeats[1], sw_info->repeats[0])
+  AI_ARRAY_OBJ_DECLARE_STATIC(repeats, ai_i16, AI_ARRAY_FORMAT_S16, AI_CONST, 5, sw_info->repeats[2],
+                              sw_info->repeats[3], sw_info->repeats[1], sw_info->repeats[0], 1)
 
   // TODO//layer initialization
   AI_LAYER_OBJ_DECLARE(Tile_layer, 2, TILE_TYPE, 0x0, NULL, tile, forward_tile, &tile_chain, NULL, NULL, ,

@@ -4,18 +4,193 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c982fc48-7cf4-41a9-90d7-0061582bf1c4" name="Changes" comment="" />
+    <list default="true" id="c982fc48-7cf4-41a9-90d7-0061582bf1c4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_common_config.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_common_config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_datatypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_datatypes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_datatypes_defines.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_datatypes_defines.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_datatypes_format.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_datatypes_format.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_datatypes_internal.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_datatypes_internal.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_layer_custom_interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_layer_custom_interface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_lite.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_lite.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_lite_inspect.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_lite_inspect.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_lite_interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_lite_interface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_lite_math_helpers.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_lite_math_helpers.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_math_helpers.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_math_helpers.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_platform.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_platform.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_platform_interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/ai_platform_interface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_assert.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_assert.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_common.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_common.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_convert.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_convert.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_datatypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_datatypes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_log.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_log.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_net_inspect.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_net_inspect.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_net_inspect_interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_net_inspect_interface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_private.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/core_private.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/datatypes_network.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/datatypes_network.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/formats_list.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/formats_list.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_argminmax.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_argminmax.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_common.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_common.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_conv2d.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_conv2d.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_conv2d_dqnn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_conv2d_dqnn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_custom.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_custom.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_dense.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_dense.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_dense_dqnn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_dense_dqnn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_formats_converters.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_formats_converters.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_generic.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_generic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_generic_dqnn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_generic_dqnn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_list.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_list.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_lite_graph.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_lite_graph.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml_iforest.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml_iforest.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml_linearclassifier.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml_linearclassifier.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml_svc.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml_svc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml_svmregressor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml_svmregressor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml_treeensembleclassifier.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml_treeensembleclassifier.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml_treeensembleregressor.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_ml_treeensembleregressor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_nl.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_nl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_norm.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_norm.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_pad_dqnn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_pad_dqnn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_pad_generic.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_pad_generic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_pool.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_pool.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_pool_dqnn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_pool_dqnn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_resize.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_resize.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_rnn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_rnn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_sm.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_sm.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_upsample.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_upsample.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_upsample_generic.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_upsample_generic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_wrappers.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/layers_wrappers.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_argminmax.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_argminmax.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_bn_f32.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_bn_f32.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_bn_integer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_bn_integer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_conv2d.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_conv2d.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_conv2d_dqnn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_conv2d_dqnn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_conv2d_sssa8_ch.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_conv2d_sssa8_ch.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_convert_dqnn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_convert_dqnn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dense_if32.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dense_if32.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dense_is1.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dense_is1.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dense_is1ws1.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dense_is1ws1.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dense_is8os1ws1.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dense_is8os1ws1.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dense_is8os8ws8.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dense_is8os8ws8.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dense_ws1.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dense_ws1.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dw.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dw.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dw_dqnn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_dw_dqnn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_generic_float.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_generic_float.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_gru_f32.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_gru_f32.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_internal_apis.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_internal_apis.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_lstm.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_lstm.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_maxpool_dqnn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_maxpool_dqnn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_nl_generic_integer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_nl_generic_integer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_nl_list.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_nl_list.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_norm_f32.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_norm_f32.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_operators.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_operators.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_pad_dqnn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_pad_dqnn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_pad_generic.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_pad_generic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_pool_f32.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_pool_f32.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_pool_is8os8.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_pool_is8os8.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_pw.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_pw.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_pw_dqnn.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_pw_dqnn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_resize.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_resize.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_upsample.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_upsample.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_upsample_generic.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/lite_upsample_generic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/stai.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/stai.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/stai_debug.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/stai_debug.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/stai_events.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Inc/stai_events.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/ATON.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/ATON.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/npu_cache.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/npu_cache.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/npu_cache.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/npu_cache.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ec.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ec.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ecloader.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ecloader.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ecloader.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ecloader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_caches_interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_caches_interface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_cipher.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_cipher.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_cipher.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_cipher.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_dbgtrc.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_dbgtrc.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_dbgtrc.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_dbgtrc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_debug.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_debug.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_debug.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_debug.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_ec_trace.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_ec_trace.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib_sw_operators.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib_sw_operators.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib_sw_operators.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib_sw_operators.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_freertos.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_freertos.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_freertos.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_freertos.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_threadx.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_threadx.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_threadx.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_threadx.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_platform.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_platform.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_profiler.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_profiler.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_profiler.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_profiler.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rcompat.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rcompat.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rt_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rt_main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_version.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_version.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_float.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_float.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_float.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_float.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_integer.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_integer.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_integer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_integer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/network.c" beforeDir="false" afterPath="$PROJECT_DIR$/Model/network.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/network_data.hex" beforeDir="false" afterPath="$PROJECT_DIR$/Model/network_data.hex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/network_ecblobs.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/network_ecblobs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/network.d" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/network.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection_signed.bin" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection_signed.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection_signed.hex" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection_signed.hex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/ll_aton/ll_aton.d" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/ll_aton/ll_aton.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/ll_aton/ll_aton_lib.d" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/ll_aton/ll_aton_lib.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/ll_aton/ll_aton_lib_sw_operators.d" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/ll_aton/ll_aton_lib_sw_operators.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/ll_aton/ll_aton_rt_main.d" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/ll_aton/ll_aton_rt_main.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/ll_aton/ll_aton_runtime.d" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/ll_aton/ll_aton_runtime.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/main.c" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.pc_stream_receiver.executor&quot;: &quot;Run&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="2yHinPq4g6YpOOakz4AdtOHT3Mg" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.pc_stream_receiver.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="pc_stream_receiver" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ObjectDet" />
@@ -46,8 +221,27 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-PY-251.25410.159" />
+        <option value="bundled-python-sdk-e0ed3721d81e-36ea0e71a18c-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.25410.159" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c982fc48-7cf4-41a9-90d7-0061582bf1c4" name="Changes" comment="" />
+      <created>1749498066618</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1749498066618</updated>
+      <workItem from="1749498067646" duration="1558000" />
+    </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -78,6 +272,6 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ObjectDet$pc_stream_receiver.coverage" NAME="pc_stream_receiver Coverage Results" MODIFIED="1749223316469" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ObjectDet$pc_stream_receiver.coverage" NAME="pc_stream_receiver Coverage Results" MODIFIED="1749316009010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

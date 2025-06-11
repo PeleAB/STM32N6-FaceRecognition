@@ -310,6 +310,17 @@ void forward_mp_integer_INT8(ai_layer *pLayer);
 AI_INTERNAL_API
 void forward_mp_hsp_INT8(ai_layer *pLayer);
 
+
+/*!
+ * @brief Computes the activations of an integer-quantized max pooling layer
+ *        with int8 I/O. Optimized for HSP: 2 Step variant for bigger tensors
+ * @ingroup layers_pool
+ * @param layer the pooling (pool) layer
+ */
+AI_INTERNAL_API
+void forward_mp_hsp_2step_INT8(ai_layer *pLayer);
+
+
 /*!
  * @brief Computes the activations of an integer-quantized max pooling layer
  *        with uint8 I/O
@@ -369,6 +380,15 @@ void forward_ap_integer(ai_layer *pLayer);
  */
 AI_INTERNAL_API
 void forward_ap_hsp_INT8(ai_layer *pLayer);
+
+/*!
+ * @brief Computes the activations of an average pooling layer. Optimized for HSP
+ * Variant for larger tensors
+ * @ingroup layers_pool
+ * @param layer the pooling (pool) layer,
+ */
+AI_INTERNAL_API
+void forward_ap_hsp_2step_INT8(ai_layer *pLayer);
 
 /*!
  * @brief Computes the activations of an integer-quantized average pooling layer

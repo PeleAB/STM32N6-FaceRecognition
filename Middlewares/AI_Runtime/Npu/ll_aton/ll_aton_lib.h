@@ -26,6 +26,7 @@ extern "C"
 
 #include "ll_aton.h"
 #include "ll_aton_NN_interface.h"
+#include "ll_aton_caches_interface.h"
 #include "ll_aton_lib_sw_operators.h"
 
 #ifndef _LL_LIB_DEBUG

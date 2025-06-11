@@ -29,9 +29,9 @@ extern "C"
 #include <stddef.h>
 #include <stdint.h>
 
-#include "ll_aton_attributes.h"
 #include "ll_aton_config.h"
 
+#include "ll_aton_attributes.h"
 #include "ll_aton_util.h"
 
   /* this is needed to avoid some compilers (e.g. KEIL) that observe a strict semantic about conversion of
@@ -460,6 +460,11 @@ extern "C"
 #endif                                          // NDEBUG
 
     TraceEpochBlock_FuncPtr_t epoch_callback_function; // epoch callback function
+
+#if defined(LL_ATON_RT_RELOC)
+    uint32_t inst_reloc;
+#endif
+
   } NN_Execution_State_TypeDef;
 
   struct __nn_instance_struct

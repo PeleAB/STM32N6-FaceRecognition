@@ -564,6 +564,9 @@ AI_INTERFACE_ENTRY void ai_not_equal_buffer_u8(ai_handle out, const ai_handle a,
 AI_INTERFACE_ENTRY void ai_squared_diff(ai_handle out, const ai_handle a, const ai_handle b);
 AI_INTERFACE_ENTRY void ai_squared_diff_buffer(ai_handle out, const ai_handle a, const ai_handle b, const ai_size loop);
 
+AI_INTERFACE_ENTRY void ai_atan2(ai_handle out, const ai_handle a, const ai_handle b);
+AI_INTERFACE_ENTRY void ai_atan2_buffer(ai_handle out, const ai_handle a, const ai_handle b, const ai_size loop);
+
 AI_API_DECLARE_END
 
 #endif /* AI_MATH_HELPERS_H */

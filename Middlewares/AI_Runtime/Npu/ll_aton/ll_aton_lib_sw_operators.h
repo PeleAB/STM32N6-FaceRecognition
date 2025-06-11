@@ -19,16 +19,17 @@
 #ifndef __LL_ATON_LIB_SW_OPERATORS_H
 #define __LL_ATON_LIB_SW_OPERATORS_H
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 #include <stdbool.h>
 #include <stdint.h>
 
 #include "ll_aton_NN_interface.h"
+#include "ll_aton_caches_interface.h"
 #include "ll_aton_lib.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 #define __LL_PAD_FRAMING_DMA_MIN_BUFF_LEN 9500
 #define __LL_PAD_FILLING_DMA_MIN_BUFF_LEN 1200

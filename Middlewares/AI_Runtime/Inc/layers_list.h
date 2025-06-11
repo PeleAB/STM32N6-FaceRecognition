@@ -142,6 +142,8 @@ LAYER_ENTRY(POOL_DQNN, LAYER_ID(49), pool_dqnn, forward_maxpool_is1os1, NULL, NU
 LAYER_ENTRY(DENSE_DQNN, LAYER_ID(50), dense_dqnn, forward_dense_is1os1ws1, NULL, NULL)
 /*!< Reverse layer */
 LAYER_ENTRY(REVERSE, LAYER_ID(51), reverse, forward_reverse, NULL, NULL)
+/*!< ScatterND layer */
+LAYER_ENTRY(SCATTER_ND, LAYER_ID(69), scatter_nd, forward_scatter_nd, NULL, NULL)
 
 /*!< TFLite wrapper */
 LAYER_ENTRY(TFLITE_WRAPPER, LAYER_ID(52), tflite_wrapper, NULL, NULL, NULL)

@@ -48,7 +48,7 @@ extern "C"
     extern NN_Instance_TypeDef *volatile __ll_current_aton_ip_owner;
     LL_ATON_ASSERT(new_owner != __ll_current_aton_ip_owner);
 
-    LL_ATON_LOCK_ATON();
+    LL_ATON_OSAL_LOCK_ATON();
 
     LL_ATON_ASSERT(__ll_current_aton_ip_owner == NULL);
 
@@ -71,7 +71,7 @@ extern "C"
 #endif // NDEBUG
 
     __ll_current_aton_ip_owner = NULL;
-    LL_ATON_UNLOCK_ATON();
+    LL_ATON_OSAL_UNLOCK_ATON();
   }
 
   /**

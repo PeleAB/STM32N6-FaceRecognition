@@ -78,6 +78,7 @@ extern "C"
 #define CYPHER_CACHE_SIZE    0x40000 /**< N6 cache size */
 
   int LL_Streng_EncryptionInit(int id, LL_Streng_EncryptionTypedef *);
+  int LL_Streng_WeightEncryptionInit(int id);
   int LL_EpochCtrl_EncryptionInit(int id, LL_Streng_EncryptionTypedef *conf);
   int LL_DmaCypherInit(LL_Cypher_InitTypeDef *cypherInfo);
 

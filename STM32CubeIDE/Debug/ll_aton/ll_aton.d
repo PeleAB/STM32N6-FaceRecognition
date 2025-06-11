@@ -1,8 +1,8 @@
 ll_aton/ll_aton.o: \
  C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.c \
  C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h \
  C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h \
+ C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h \
  C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal.h \
  C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_platform.h \
  ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.h \
@@ -49,10 +49,11 @@ ll_aton/ll_aton.o: \
  ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/npu_cache.h \
  ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/ATON.h \
  C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rcompat.h \
+ C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_caches_interface.h \
  C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h
 C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h:
 C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h:
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h:
 C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal.h:
 C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_platform.h:
 ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.h:
@@ -99,4 +100,5 @@ C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_a
 ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/npu_cache.h:
 ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/ATON.h:
 C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rcompat.h:
+C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_caches_interface.h:
 C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h:

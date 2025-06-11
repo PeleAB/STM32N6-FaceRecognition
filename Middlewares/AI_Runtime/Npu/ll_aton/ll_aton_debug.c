@@ -32,7 +32,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ll_aton_util.h" // Leave space
+#include "ll_aton_util.h" // Leave blank line after the include
 
 #include "ll_aton_NN_interface.h"
 #include "ll_aton_debug.h"
@@ -669,7 +669,7 @@ static void __dump_buffer(int mode, const LL_Buffer_InfoTypeDef *buf)
           LL_ATON_PRINTF("%f\n", *lfd);
         }
 
-#if (LL_ATON_HAVE_FFLUSH)
+#if (ATON_PLAT_HAS_FFLUSH)
         LL_ATON_FFLUSH(stdout);
 #endif
         return;

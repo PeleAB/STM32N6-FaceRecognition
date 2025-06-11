@@ -21,7 +21,6 @@
 #include "ai_lite_interface.h"
 #include "ai_math_helpers.h"
 
-/* TODO CEN: TMP */
 #include "lite_internal_apis.h"
 
 enum {
@@ -68,6 +67,7 @@ void forward_lite_lstm_is8os8ws8(  AI_CONST ai_i8* kernel[AI_LITE_LSTM_MAX],
                                    AI_CONST ai_i32* bias[AI_LITE_LSTM_MAX],
                                    AI_CONST ai_i8* initial_hidden,
                                    ai_i8* out_hidden,
+                                   ai_u16 batch_size,
                                    ai_u16 n_features,
                                    ai_u16 n_cell,
                                    AI_CONST ai_i16* initial_cell,
@@ -85,6 +85,7 @@ void forward_lite_lstm_is8os8ws8(  AI_CONST ai_i8* kernel[AI_LITE_LSTM_MAX],
                                    ai_bool go_backwards,
                                    ai_bool reverse_seq,
                                    ai_bool stateful,
+                                   ai_bool time_major,
                                    ai_bool return_state,
                                    ai_i32 scratch_size,
                                    ai_i8 *p_scratch_data);
