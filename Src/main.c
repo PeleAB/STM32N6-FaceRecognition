@@ -203,6 +203,7 @@ int main(void)
       continue;
     }
     SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
+    PC_STREAM_SendFrame(nn_in, NN_WIDTH, NN_HEIGHT, NN_BPP);
 #endif
 
     ts[0] = HAL_GetTick();

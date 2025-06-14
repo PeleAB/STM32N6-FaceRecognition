@@ -5,6 +5,8 @@ import serial
 import cv2
 import time
 
+import pc_stream_receiver as recv
+
 
 def send_image(ser, img_path, size):
     img = cv2.imread(img_path)
@@ -14,6 +16,12 @@ def send_image(ser, img_path, size):
     img = cv2.resize(img, (size[0], size[1]))
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     ser.write(img.tobytes())
+    echo, w, h = recv.read_frame(ser)
+    if echo is not None:
+        print(f"Echo frame {w}x{h} received for {img_path}")
+    dets = recv.read_detections(ser)
+    if dets:
+        print(f"Detections: {dets}")
 
 
 def main():
