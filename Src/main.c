@@ -32,11 +32,9 @@
 #include "pc_stream.h"
 #include "app_config.h"
 #include "crop_img.h"
-#include "stlogo.h"
 #include "display_utils.h"
 #include "system_utils.h"
 
-CLASSES_TABLE;
 
 #define MAX_NUMBER_OUTPUT 5
 

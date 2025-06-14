@@ -1,6 +1,7 @@
 #include "system_utils.h"
 #include "stm32n6xx_hal_rif.h"
 #include "npu_cache.h"
+#include "stm32n6570_discovery.h"
 
 void NPURam_enable(void)
 {

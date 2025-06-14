@@ -1,10 +1,15 @@
 #include "display_utils.h"
 #include "stm32n6570_discovery_lcd.h"
 #include "stm32_lcd_ex.h"
+#include "app_config.h"
 #include "pc_stream.h"
+
 #include "stlogo.h"
 
 #define NUMBER_COLORS 10
+
+CLASSES_TABLE;
+
 static const uint32_t colors[NUMBER_COLORS] = {
     UTIL_LCD_COLOR_GREEN,
     UTIL_LCD_COLOR_RED,
