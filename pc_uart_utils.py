@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-import argparse
-import time
+"""Utility functions for UART image streaming."""
 
 import serial
 import numpy as np
 import cv2
-import threading
-import queue
+import time
 
-lala = 0
-saved_frame = None
+
 def read_frame(ser):
+    """Read a frame from the serial port.
+
+    Returns a tuple (image, width, height) or (None, None, None) if no frame is
+    available."""
     line = ser.readline().decode(errors='ignore').strip()
     if line.startswith('FRAME'):
         _, w, h, bpp = line.split()
@@ -31,40 +32,42 @@ def read_frame(ser):
         img = np.frombuffer(raw, dtype=np.uint8)
         frame = cv2.imdecode(img, cv2.IMREAD_COLOR)
         return frame, w, h
-
     return None, None, None
 
 
 def read_detections(ser):
+    """Read detection results for the current frame."""
     line = ser.readline().decode(errors='ignore').strip()
     if not line.startswith('DETS'):
         return []
     parts = line.split()
-    frame_id = int(parts[1])
     count = int(parts[2])
     dets = []
     for _ in range(count):
         line = ser.readline().decode(errors='ignore').strip()
         c, xc, yc, w, h, conf = line.split()
         dets.append((int(c), float(xc), float(yc), float(w), float(h), float(conf)))
-    ser.readline()  # read END
+    ser.readline()  # END marker
     return dets
 
+
 def draw_detections(img, dets):
+    """Draw detection boxes on an image."""
     h, w, _ = img.shape
     for d in dets:
         _, xc, yc, ww, hh, conf = d
-        x0 = int((xc - ww/2) * w)
-        y0 = int((yc - hh/2) * h)
-        x1 = int((xc + ww/2) * w)
-        y1 = int((yc + hh/2) * h)
+        x0 = int((xc - ww / 2) * w)
+        y0 = int((yc - hh / 2) * h)
+        x1 = int((xc + ww / 2) * w)
+        y1 = int((yc + hh / 2) * h)
         cv2.rectangle(img, (x0, y0), (x1, y1), (0, 255, 0), 2)
-        cv2.putText(img, f"{conf:.2f}", (x0, y0-5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,0), 1)
+        cv2.putText(img, f"{conf:.2f}", (x0, y0 - 5),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
     return img
 
 
 def display_loop(q, stop_event):
-    """Display frames from the queue with FPS counter."""
+    """Display frames from a queue with FPS counter."""
     scale = 2
     last_time = time.time()
     frame_count = 0
@@ -78,52 +81,34 @@ def display_loop(q, stop_event):
         frame_count += 1
         current_time = time.time()
         elapsed = current_time - last_time
-
-        # Update FPS every second
         if elapsed >= 1.0:
             fps = frame_count / elapsed
             frame_count = 0
             last_time = current_time
 
         resized = cv2.resize(frame, (0, 0), fx=scale, fy=scale)
-
-        # Draw FPS on the frame
         cv2.putText(resized, f"FPS: {fps:.2f}", (10, 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2)
-
         cv2.imshow('stream', resized)
         if cv2.waitKey(1) == 27:
             stop_event.set()
 
     cv2.destroyAllWindows()
 
-def main():
-    parser = argparse.ArgumentParser(description='Receive frames and detections over UART')
-    parser.add_argument('--port', default='COM3', help='Serial port device')
-    parser.add_argument('--baud', type=int, default=921600*8, help='Baud rate')
-    args = parser.parse_args()
 
-    ser = serial.Serial(args.port, args.baud, timeout=1)
+def send_image(ser, img_path, size):
+    """Send an image file to the board and print any response."""
+    img = cv2.imread(img_path)
+    if img is None:
+        print(f"Failed to read {img_path}")
+        return
+    img = cv2.resize(img, size)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    ser.write(img.tobytes())
+    echo, w, h = read_frame(ser)
+    if echo is not None:
+        print(f"Echo frame {w}x{h} received for {img_path}")
+    dets = read_detections(ser)
+    if dets:
+        print(f"Detections: {dets}")
 
-    frame_queue = queue.Queue(maxsize=2)
-    stop_event = threading.Event()
-    disp_thread = threading.Thread(target=display_loop, args=(frame_queue, stop_event))
-    disp_thread.start()
-
-    try:
-        while not stop_event.is_set():
-            frame, w, h = read_frame(ser)
-            if frame is None:
-                continue
-            dets = read_detections(ser)
-            frame = draw_detections(frame, dets)
-            if not frame_queue.full():
-                frame_queue.put(frame)
-    finally:
-        stop_event.set()
-        frame_queue.put(None)
-        disp_thread.join()
-        ser.close()
-
-if __name__ == '__main__':
-    main()
