@@ -11,6 +11,7 @@ extern "C" {
 void PC_STREAM_Init(void);
 void PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height, uint32_t bpp);
 void PC_STREAM_SendDetections(const od_pp_out_t *detections, uint32_t frame_id);
+int  PC_STREAM_ReceiveImage(uint8_t *buffer, uint32_t length);
 
 #ifdef __cplusplus
 }

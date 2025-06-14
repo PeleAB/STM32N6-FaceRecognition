@@ -56,6 +56,14 @@
 #define CLASSES_TABLE const char* classes_table[NB_CLASSES] = {\
 "person",   "not_person"}
 
+/* Application input source configuration */
+#define INPUT_SRC_CAMERA 0
+#define INPUT_SRC_PC     1
+/* Select input source: INPUT_SRC_CAMERA or INPUT_SRC_PC */
+#ifndef INPUT_SRC_MODE
+#define INPUT_SRC_MODE INPUT_SRC_CAMERA
+#endif
+
 /* I/O configuration */
 #define AI_OBJDETECT_YOLOV2_PP_NB_CLASSES        (1)
 #define AI_OBJDETECT_YOLOV2_PP_NB_ANCHORS        (5)

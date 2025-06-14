@@ -130,4 +130,10 @@ void PC_STREAM_SendDetections(const od_pp_out_t *detections, uint32_t frame_id)
     HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)end_marker, sizeof(end_marker) - 1, HAL_MAX_DELAY);
 }
 
+int PC_STREAM_ReceiveImage(uint8_t *buffer, uint32_t length)
+{
+    HAL_StatusTypeDef st = HAL_UART_Receive(&hcom_uart[COM1], buffer, (uint16_t)length, HAL_MAX_DELAY);
+    return (st == HAL_OK) ? 0 : -1;
+}
+
 #endif /* USE_BSP_COM_FEATURE */

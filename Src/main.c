@@ -157,18 +157,20 @@ int main(void)
   /*** Post Processing Init ***************************************************/
   app_postprocess_init(&pp_params);
 
-  /*** Camera Init ************************************************************/
-
+  /*** Input source initialization *********************************************/
+#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
   CAM_Init(&lcd_bg_area.XSize, &lcd_bg_area.YSize, &pitch_nn);
-
   LCD_init();
-
   /* Start LCD Display camera pipe stream */
   CAM_DisplayPipe_Start(lcd_bg_buffer, CMW_MODE_CONTINUOUS);
+#else
+  LCD_init();
+#endif
 
   /*** App Loop ***************************************************************/
   while (1)
   {
+#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
     CAM_IspUpdate();
 
     if (pitch_nn != (NN_WIDTH * NN_BPP))
@@ -193,6 +195,15 @@ int main(void)
       img_crop(dcmipp_out_nn, nn_in, pitch_nn, NN_WIDTH, NN_HEIGHT, NN_BPP);
       SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
     }
+#else
+    uint32_t ts[2] = { 0 };
+    /* Receive frame from PC */
+    if (PC_STREAM_ReceiveImage(nn_in, nn_in_len) != 0)
+    {
+      continue;
+    }
+    SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
+#endif
 
     ts[0] = HAL_GetTick();
     /* run ATON inference */
@@ -202,7 +213,11 @@ int main(void)
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
     assert(ret == 0);
 
+#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
     Display_NetworkOutput(&pp_output, ts[1] - ts[0]);
+#else
+    PC_STREAM_SendDetections(&pp_output, 0);
+#endif
 
     /* Discard nn_out region (used by pp_input and pp_outputs variables) to avoid Dcache evictions during nn inference */
     for (int i = 0; i < number_output; i++)
