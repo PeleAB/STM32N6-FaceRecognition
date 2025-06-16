@@ -11,7 +11,9 @@
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compare_detections.py" beforeDir="false" afterPath="$PROJECT_DIR$/compare_detections.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pc_uart_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/pc_uart_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pc_uart_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/pc_uart_utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +35,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.compare_detections.executor": "Run",
     "Python.pc_stream_receiver.executor": "Run",
     "Python.pc_uart_client.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -45,7 +48,30 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Python.pc_uart_client">
+  <component name="RunManager" selected="Python.compare_detections">
+    <configuration name="compare_detections" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ObjectDet" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/compare_detections.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="pc_stream_receiver" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ObjectDet" />
       <option name="ENV_FILES" value="" />
@@ -94,6 +120,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.compare_detections" />
         <item itemvalue="Python.pc_uart_client" />
         <item itemvalue="Python.pc_stream_receiver" />
       </list>
@@ -121,6 +148,17 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -139,6 +177,11 @@
           <line>15</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pc_uart_client.py</url>
+          <line>25</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -152,7 +195,8 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ObjectDet$pc_stream_receiver.coverage" NAME="pc_stream_receiver Coverage Results" MODIFIED="1749316009010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_stream_receiver.coverage" NAME="pc_stream_receiver Coverage Results" MODIFIED="1750095011140" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/pc_send_photos_py$compare_detections.coverage" NAME="compare_detections Coverage Results" MODIFIED="1750102813503" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_send_photos.coverage" NAME="pc_send_photos Coverage Results" MODIFIED="1749918113217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_uart_client.coverage" NAME="pc_uart_client Coverage Results" MODIFIED="1750096435344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_uart_client.coverage" NAME="pc_uart_client Coverage Results" MODIFIED="1750102779912" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -148,6 +148,7 @@ class App(QtWidgets.QMainWindow):
                 img,
                 (int(self.width_edit.text()), int(self.height_edit.text())),
                 display=False,
+                rx=False
             )
 
         if was_streaming:

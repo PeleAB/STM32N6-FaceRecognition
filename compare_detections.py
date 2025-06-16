@@ -101,8 +101,8 @@ def run_model(
 # ------------------------------------------------------------
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("image", help="Image file to send")
-    parser.add_argument("port", help="Serial port, e.g. COM3 or /dev/ttyUSB0")
+    parser.add_argument("--image", default='trump.jpg', help="Image file to send")
+    parser.add_argument("--port", default='COM3', help="Serial port, e.g. COM3 or /dev/ttyUSB0")
     parser.add_argument(
         "--model",
         default="Model/quantized_tiny_yolo_v2_224_.tflite",
@@ -120,9 +120,8 @@ def main() -> None:
     pc_dets = run_model(interpreter, img)
 
     with serial.Serial(args.port, args.baud, timeout=1) as ser:
-        utils.send_image(ser, args.image, (224, 224), display=False)
         _frame, mcu_dets = utils.send_image(
-            ser, args.image, (224, 224), display=False
+            ser, args.image, (224, 224), display=False, rx=True
         )
     print("PC detections:")
     for d in pc_dets:
