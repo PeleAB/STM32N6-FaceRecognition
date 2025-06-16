@@ -96,19 +96,31 @@ def display_loop(q, stop_event):
     cv2.destroyAllWindows()
 
 
-def send_image(ser, img_path, size):
-    """Send an image file to the board and print any response."""
+def send_image(ser, img_path, size, display=False):
+    """Send an image file to the board.
+
+    Returns the echoed frame and detections from the MCU. If *display* is True,
+    the received frame with detection boxes is shown using OpenCV."""
+
     img = cv2.imread(img_path)
     if img is None:
         print(f"Failed to read {img_path}")
-        return
+        return None, []
+
     img = cv2.resize(img, size)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     ser.write(img.tobytes())
+
     echo, w, h = read_frame(ser)
-    if echo is not None:
-        print(f"Echo frame {w}x{h} received for {img_path}")
     dets = read_detections(ser)
-    if dets:
-        print(f"Detections: {dets}")
+
+    if echo is not None:
+        echo = draw_detections(echo, dets)
+        if display:
+            cv2.imshow("send_result", echo)
+            cv2.waitKey(1)
+    else:
+        print("No echo frame received")
+
+    return echo, dets
 

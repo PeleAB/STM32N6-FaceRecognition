@@ -5,8 +5,8 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 import threading
 import queue
-import time
 import serial
+import cv2
 
 import pc_uart_utils as utils
 
@@ -85,8 +85,17 @@ class App:
             return
         files = filedialog.askopenfilenames(title='Select image files')
         for img in files:
-            utils.send_image(self.ser, img, (int(self.width_entry.get()), int(self.height_entry.get())))
-            time.sleep(0.1)
+            utils.send_image(
+                self.ser,
+                img,
+                (
+                    int(self.width_entry.get()),
+                    int(self.height_entry.get()),
+                ),
+                display=True,
+            )
+            # give OpenCV a moment to update the window
+            cv2.waitKey(10)
 
     def stream_loop(self):
         while not self.stop_event.is_set():
