@@ -230,3 +230,12 @@ python3 pc_uart_client.py
 
 The client automatically starts streaming once connected and shows the frames in a larger view embedded in the interface.
 
+## Compare detections
+Use `compare_detections.py` to run the Tiny YOLOv2 TFLite model on the PC and
+compare the results with the MCU:
+
+```bash
+pip install tensorflow-cpu opencv-python-headless pyserial
+python3 compare_detections.py my_image.jpg /dev/ttyUSB0
+```
+
