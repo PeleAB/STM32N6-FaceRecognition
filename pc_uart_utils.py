@@ -118,16 +118,16 @@ def send_image(ser, img_path, size, display=False):
     img = cv2.resize(img, size)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     ser.write(img.tobytes())
-
-    echo, w, h = read_frame(ser)
-    dets = read_detections(ser)
-
-    if echo is not None:
-        echo = draw_detections(echo, dets)
-        if display:
-            cv2.imshow("send_result", echo)
-            cv2.waitKey(1)
-    else:
-        print("No echo frame received")
-
-    return echo, dets
+    #
+    # echo, w, h = read_frame(ser)
+    # dets = read_detections(ser)
+    #
+    # if echo is not None:
+    #     echo = draw_detections(echo, dets)
+    #     if display:
+    #         cv2.imshow("send_result", echo)
+    #         cv2.waitKey(1)
+    # else:
+    #     print("No echo frame received")
+    #
+    # return echo, dets
