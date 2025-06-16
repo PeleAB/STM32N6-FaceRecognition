@@ -1,146 +1,170 @@
 #!/usr/bin/env python3
-"""GUI application to send images and view detection stream over UART."""
+"""PyQt5 GUI to send images and display the UART detection stream."""
 
-import tkinter as tk
-from tkinter import filedialog, messagebox
-import threading
-import queue
+import sys
+
 import serial
 import cv2
+import numpy as np
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 import pc_uart_utils as utils
 
 
-class App:
-    def __init__(self, master):
-        self.master = master
-        master.title('UART Object Detection Client')
+class StreamThread(QtCore.QThread):
+    """Background thread reading frames from the MCU."""
 
-        tk.Label(master, text='Port').grid(row=0, column=0, sticky='e')
-        self.port_entry = tk.Entry(master)
-        self.port_entry.insert(0, 'COM3')
-        self.port_entry.grid(row=0, column=1)
+    frame_received = QtCore.pyqtSignal(np.ndarray)
 
-        tk.Label(master, text='Baud').grid(row=1, column=0, sticky='e')
-        self.baud_entry = tk.Entry(master)
-        self.baud_entry.insert(0, str(921600 * 8))
-        self.baud_entry.grid(row=1, column=1)
+    def __init__(self, ser: serial.Serial):
+        super().__init__()
+        self.ser = ser
+        self._running = True
 
-        tk.Label(master, text='Width').grid(row=2, column=0, sticky='e')
-        self.width_entry = tk.Entry(master)
-        self.width_entry.insert(0, '224')
-        self.width_entry.grid(row=2, column=1)
-
-        tk.Label(master, text='Height').grid(row=3, column=0, sticky='e')
-        self.height_entry = tk.Entry(master)
-        self.height_entry.insert(0, '224')
-        self.height_entry.grid(row=3, column=1)
-
-        self.connect_btn = tk.Button(master, text='Connect', command=self.connect)
-        self.connect_btn.grid(row=4, column=0, sticky='ew')
-        self.disconnect_btn = tk.Button(master, text='Disconnect', command=self.disconnect, state='disabled')
-        self.disconnect_btn.grid(row=4, column=1, sticky='ew')
-
-        self.send_btn = tk.Button(master, text='Send Images', command=self.send_images, state='disabled')
-        self.send_btn.grid(row=5, column=0, columnspan=2, sticky='ew')
-
-        self.stream_btn = tk.Button(master, text='Start Stream', command=self.start_stream, state='disabled')
-        self.stream_btn.grid(row=6, column=0, columnspan=2, sticky='ew')
-
-        self.stop_btn = tk.Button(master, text='Stop Stream', command=self.stop_stream, state='disabled')
-        self.stop_btn.grid(row=7, column=0, columnspan=2, sticky='ew')
-
-        self.ser = None
-        self.stop_event = threading.Event()
-        self.frame_queue = queue.Queue(maxsize=2)
-        self.stream_thread = None
-        self.display_thread = None
-
-        master.protocol('WM_DELETE_WINDOW', self.on_close)
-
-    def connect(self):
-        try:
-            self.ser = serial.Serial(self.port_entry.get(), int(self.baud_entry.get()), timeout=1)
-        except Exception as e:
-            messagebox.showerror('Connection error', str(e))
-            return
-        self.connect_btn.config(state='disabled')
-        self.disconnect_btn.config(state='normal')
-        self.send_btn.config(state='normal')
-        self.stream_btn.config(state='normal')
-
-    def disconnect(self):
-        self.stop_stream()
-        if self.ser:
-            self.ser.close()
-            self.ser = None
-        self.connect_btn.config(state='normal')
-        self.disconnect_btn.config(state='disabled')
-        self.send_btn.config(state='disabled')
-        self.stream_btn.config(state='disabled')
-
-    def send_images(self):
-        if not self.ser:
-            messagebox.showwarning('Not connected', 'Connect to the device first')
-            return
-        files = filedialog.askopenfilenames(title='Select image files')
-        for img in files:
-            utils.send_image(
-                self.ser,
-                img,
-                (
-                    int(self.width_entry.get()),
-                    int(self.height_entry.get()),
-                ),
-                display=True,
-            )
-            # give OpenCV a moment to update the window
-            cv2.waitKey(10)
-
-    def stream_loop(self):
-        while not self.stop_event.is_set():
-            frame, w, h = utils.read_frame(self.ser)
+    def run(self) -> None:
+        while self._running:
+            frame, _, _ = utils.read_frame(self.ser)
             if frame is None:
                 continue
             dets = utils.read_detections(self.ser)
             frame = utils.draw_detections(frame, dets)
-            if not self.frame_queue.full():
-                self.frame_queue.put(frame)
-        self.frame_queue.put(None)
+            self.frame_received.emit(frame)
 
-    def start_stream(self):
-        if not self.ser:
-            messagebox.showwarning('Not connected', 'Connect to the device first')
+    def stop(self) -> None:
+        self._running = False
+        self.wait()
+
+
+class App(QtWidgets.QMainWindow):
+    """Main application window."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.setWindowTitle("UART Object Detection Client")
+
+        central = QtWidgets.QWidget()
+        self.setCentralWidget(central)
+
+        layout = QtWidgets.QGridLayout(central)
+
+        layout.addWidget(QtWidgets.QLabel("Port"), 0, 0)
+        self.port_edit = QtWidgets.QLineEdit("COM3")
+        layout.addWidget(self.port_edit, 0, 1)
+
+        layout.addWidget(QtWidgets.QLabel("Baud"), 1, 0)
+        self.baud_edit = QtWidgets.QLineEdit(str(921600 * 8))
+        layout.addWidget(self.baud_edit, 1, 1)
+
+        layout.addWidget(QtWidgets.QLabel("Width"), 2, 0)
+        self.width_edit = QtWidgets.QLineEdit("224")
+        layout.addWidget(self.width_edit, 2, 1)
+
+        layout.addWidget(QtWidgets.QLabel("Height"), 3, 0)
+        self.height_edit = QtWidgets.QLineEdit("224")
+        layout.addWidget(self.height_edit, 3, 1)
+
+        self.connect_btn = QtWidgets.QPushButton("Connect")
+        self.connect_btn.clicked.connect(self.connect)
+        layout.addWidget(self.connect_btn, 4, 0)
+
+        self.disconnect_btn = QtWidgets.QPushButton("Disconnect")
+        self.disconnect_btn.setEnabled(False)
+        self.disconnect_btn.clicked.connect(self.disconnect)
+        layout.addWidget(self.disconnect_btn, 4, 1)
+
+        self.send_btn = QtWidgets.QPushButton("Send Images")
+        self.send_btn.setEnabled(False)
+        self.send_btn.clicked.connect(self.send_images)
+        layout.addWidget(self.send_btn, 5, 0, 1, 2)
+
+        self.image_label = QtWidgets.QLabel()
+        self.image_label.setFixedSize(640, 480)
+        self.image_label.setAlignment(QtCore.Qt.AlignCenter)
+        layout.addWidget(self.image_label, 6, 0, 1, 2)
+
+        self.ser: serial.Serial | None = None
+        self.stream_thread: StreamThread | None = None
+
+    # ------------------------------------------------------------------
+    def connect(self) -> None:
+        try:
+            self.ser = serial.Serial(
+                self.port_edit.text(), int(self.baud_edit.text()), timeout=1
+            )
+        except Exception as exc:  # pragma: no cover - UI feedback only
+            QtWidgets.QMessageBox.critical(self, "Connection error", str(exc))
             return
-        self.stop_event.clear()
-        self.stream_thread = threading.Thread(target=self.stream_loop, daemon=True)
-        self.display_thread = threading.Thread(target=utils.display_loop, args=(self.frame_queue, self.stop_event), daemon=True)
+
+        self.connect_btn.setEnabled(False)
+        self.disconnect_btn.setEnabled(True)
+        self.send_btn.setEnabled(True)
+
+        self.start_stream()
+
+    # ------------------------------------------------------------------
+    def start_stream(self) -> None:
+        if not self.ser:
+            return
+        self.stream_thread = StreamThread(self.ser)
+        self.stream_thread.frame_received.connect(self.update_frame)
         self.stream_thread.start()
-        self.display_thread.start()
-        self.stream_btn.config(state='disabled')
-        self.stop_btn.config(state='normal')
 
-    def stop_stream(self):
-        self.stop_event.set()
+    # ------------------------------------------------------------------
+    def disconnect(self) -> None:
         if self.stream_thread:
-            self.stream_thread.join()
+            self.stream_thread.stop()
             self.stream_thread = None
-        if self.display_thread:
-            self.display_thread.join()
-            self.display_thread = None
-        self.stop_btn.config(state='disabled')
-        self.stream_btn.config(state='normal')
+        if self.ser:
+            self.ser.close()
+            self.ser = None
+        self.connect_btn.setEnabled(True)
+        self.disconnect_btn.setEnabled(False)
+        self.send_btn.setEnabled(False)
 
-    def on_close(self):
+    # ------------------------------------------------------------------
+    def send_images(self) -> None:
+        if not self.ser:
+            QtWidgets.QMessageBox.warning(
+                self,
+                "Not connected",
+                "Connect first",
+            )
+            return
+        files, _ = QtWidgets.QFileDialog.getOpenFileNames(
+            self, "Select image files"
+        )
+        for img in files:
+            utils.send_image(
+                self.ser,
+                img,
+                (int(self.width_edit.text()), int(self.height_edit.text())),
+                display=False,
+            )
+
+    # ------------------------------------------------------------------
+    def update_frame(self, frame: np.ndarray) -> None:
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        h, w, _ = rgb.shape
+        qimg = QtGui.QImage(
+            rgb.data, w, h, 3 * w, QtGui.QImage.Format.Format_RGB888
+        )
+        pix = QtGui.QPixmap.fromImage(qimg).scaled(
+            self.image_label.size(), QtCore.Qt.AspectRatioMode.KeepAspectRatio
+        )
+        self.image_label.setPixmap(pix)
+
+    # ------------------------------------------------------------------
+    def closeEvent(self, event: QtGui.QCloseEvent) -> None:  # pragma: no cover
         self.disconnect()
-        self.master.destroy()
+        event.accept()
 
 
-def main():
-    root = tk.Tk()
-    App(root)
-    root.mainloop()
+def main() -> None:
+    app = QtWidgets.QApplication(sys.argv)
+    window = App()
+    window.show()
+    sys.exit(app.exec_())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

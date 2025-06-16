@@ -221,6 +221,12 @@ Do a power cycle to boot from the external flash.
 
 ## PC streaming receiver
 The board streams a downsampled view (160x96) compressed as JPEG and detection results over UART at 921600 baud.
-Run `python3 pc_stream_receiver.py /dev/ttyUSB0` to display the JPEG stream.
-The receiver uses a dedicated display thread so the UI remains responsive even when frames arrive quickly.
+Install PyQt5 and run `pc_uart_client.py` to display the stream with a modern GUI:
+
+```bash
+pip install pyqt5
+python3 pc_uart_client.py
+```
+
+The client automatically starts streaming once connected and shows the frames in a larger view embedded in the interface.
 

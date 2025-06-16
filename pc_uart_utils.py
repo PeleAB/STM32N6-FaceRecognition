@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Utility functions for UART image streaming."""
 
-import serial
 import numpy as np
 import cv2
 import time
@@ -46,7 +45,16 @@ def read_detections(ser):
     for _ in range(count):
         line = ser.readline().decode(errors='ignore').strip()
         c, xc, yc, w, h, conf = line.split()
-        dets.append((int(c), float(xc), float(yc), float(w), float(h), float(conf)))
+        dets.append(
+            (
+                int(c),
+                float(xc),
+                float(yc),
+                float(w),
+                float(h),
+                float(conf),
+            )
+        )
     ser.readline()  # END marker
     return dets
 
@@ -123,4 +131,3 @@ def send_image(ser, img_path, size, display=False):
         print("No echo frame received")
 
     return echo, dets
-
