@@ -232,7 +232,9 @@ The client automatically starts streaming once connected and shows the frames in
 
 ## Compare detections
 Use `compare_detections.py` to run the Tiny YOLOv2 TFLite model on the PC and
-compare the results with the MCU:
+compare the results with the MCU. The script displays the detections from both
+sources on the image and prints the IoU for each bounding box sorted left to
+right:
 
 ```bash
 pip install tensorflow-cpu opencv-python-headless pyserial

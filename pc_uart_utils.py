@@ -59,8 +59,11 @@ def read_detections(ser):
     return dets
 
 
-def draw_detections(img, dets):
-    """Draw detection boxes on an image."""
+def draw_detections(img, dets, color=(0, 255, 0)):
+    """Draw detection boxes on an image.
+
+    *color* selects the rectangle and text color.
+    """
     h, w, _ = img.shape
     for d in dets:
         _, xc, yc, ww, hh, conf = d
@@ -68,9 +71,16 @@ def draw_detections(img, dets):
         y0 = int((yc - hh / 2) * h)
         x1 = int((xc + ww / 2) * w)
         y1 = int((yc + hh / 2) * h)
-        cv2.rectangle(img, (x0, y0), (x1, y1), (0, 255, 0), 2)
-        cv2.putText(img, f"{conf:.2f}", (x0, y0 - 5),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1)
+        cv2.rectangle(img, (x0, y0), (x1, y1), color, 2)
+        cv2.putText(
+            img,
+            f"{conf:.2f}",
+            (x0, y0 - 5),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.5,
+            color,
+            1,
+        )
     return img
 
 

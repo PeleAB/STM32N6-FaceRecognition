@@ -22,6 +22,12 @@ IOU_THRESHOLD = 0.3
 MAX_DET = 10
 
 
+def det_box(det: tuple) -> np.ndarray:
+    """Convert (class, xc, yc, w, h, conf) to [x0, y0, x1, y1]."""
+    _, xc, yc, w, h, _ = det
+    return np.array([xc - w / 2, yc - h / 2, xc + w / 2, yc + h / 2])
+
+
 # ------------------------------------------------------------
 def sigmoid(x: np.ndarray) -> np.ndarray:
     return 1.0 / (1.0 + np.exp(-x))
@@ -121,6 +127,24 @@ def main() -> None:
 
     with serial.Serial(args.port, args.baud, timeout=1) as ser:
         _frame, mcu_dets = utils.send_image(
+    # compute IoU sorted left to right
+    pc_boxes = [det_box(d) for d in pc_dets]
+    mcu_boxes = [det_box(d) for d in mcu_dets]
+    pc_sorted = sorted(pc_boxes, key=lambda b: b[0])
+    mcu_sorted = sorted(mcu_boxes, key=lambda b: b[0])
+    count = min(len(pc_sorted), len(mcu_sorted))
+    for i in range(count):
+        score = iou(pc_sorted[i], mcu_sorted[i])
+        print(f"IoU box {i}: {score:.2f}")
+
+    # show both detections
+    overlay = img.copy()
+    utils.draw_detections(overlay, pc_dets, color=(0, 0, 255))
+    utils.draw_detections(overlay, mcu_dets, color=(0, 255, 0))
+    cv2.imshow("Detections", overlay)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
             ser, args.image, (224, 224), display=False, rx=True
         )
     print("PC detections:")
