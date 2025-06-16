@@ -133,6 +133,15 @@ class App(QtWidgets.QMainWindow):
         files, _ = QtWidgets.QFileDialog.getOpenFileNames(
             self, "Select image files"
         )
+        if not files:
+            return
+
+        # pause streaming while sending
+        was_streaming = self.stream_thread is not None
+        if was_streaming:
+            self.stream_thread.stop()
+            self.stream_thread = None
+
         for img in files:
             utils.send_image(
                 self.ser,
@@ -140,6 +149,9 @@ class App(QtWidgets.QMainWindow):
                 (int(self.width_edit.text()), int(self.height_edit.text())),
                 display=False,
             )
+
+        if was_streaming:
+            self.start_stream()
 
     # ------------------------------------------------------------------
     def update_frame(self, frame: np.ndarray) -> None:
