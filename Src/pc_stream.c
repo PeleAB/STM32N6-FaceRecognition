@@ -4,6 +4,7 @@
 #include "stm32n6xx_hal_uart.h"
 #include "app_config.h"
 #include <stdio.h>
+#include <string.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 #define UART_CHUNK_SIZE 1024*16  // adjust as needed
@@ -57,24 +58,40 @@ static uint8_t rgb565_to_gray(uint16_t pixel)
     return (uint8_t)((r8 * 30 + g8 * 59 + b8 * 11) / 100);
 }
 
+static uint8_t rgb888_to_gray(uint8_t r, uint8_t g, uint8_t b)
+{
+    return (uint8_t)((r * 30 + g * 59 + b * 11) / 100);
+}
+
 void PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height, uint32_t bpp)
 {
-    (void)bpp; /* expect RGB565 */
 
     uint32_t sw = width / STREAM_SCALE;
     uint32_t sh = height / STREAM_SCALE;
     if (sw > STREAM_MAX_WIDTH)  sw = STREAM_MAX_WIDTH;
     if (sh > STREAM_MAX_HEIGHT) sh = STREAM_MAX_HEIGHT;
 
-    // Convert RGB565 → grayscale and store in stream_buffer
-    const uint16_t *src = (const uint16_t *)frame;
+    // Convert input to grayscale and store in stream_buffer
     for (uint32_t y = 0; y < sh; y++)
     {
-        const uint16_t *line = src + (y * STREAM_SCALE) * width;
+        const uint8_t *line = frame + (y * STREAM_SCALE) * width * bpp;
         for (uint32_t x = 0; x < sw; x++)
         {
-            uint16_t px = line[x * STREAM_SCALE];
-            stream_buffer[y * sw + x] = rgb565_to_gray(px);
+            if (bpp == 2)
+            {
+                const uint16_t *line16 = (const uint16_t *)line;
+                uint16_t px = line16[x * STREAM_SCALE];
+                stream_buffer[y * sw + x] = rgb565_to_gray(px);
+            }
+            else if (bpp == 3)
+            {
+                const uint8_t *px = line + x * STREAM_SCALE * 3;
+                stream_buffer[y * sw + x] = rgb888_to_gray(px[0], px[1], px[2]);
+            }
+            else
+            {
+                stream_buffer[y * sw + x] = line[x * STREAM_SCALE];
+            }
         }
     }
 
@@ -128,6 +145,28 @@ void PC_STREAM_SendDetections(const od_pp_out_t *detections, uint32_t frame_id)
     }
     static const char end_marker[] = "END\n";
     HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)end_marker, sizeof(end_marker) - 1, HAL_MAX_DELAY);
+}
+
+int PC_STREAM_ReceiveImage(uint8_t *buffer, uint32_t length)
+{
+    HAL_StatusTypeDef st = HAL_OK;
+    uint32_t remaining = length;
+    uint8_t *ptr = buffer;
+
+    while (remaining > 0 && st == HAL_OK)
+    {
+        /* HAL API uses uint16_t size parameter */
+        uint16_t chunk = (remaining > 0xFFFFU) ? 0xFFFFU : (uint16_t)remaining;
+        st = HAL_UART_Receive(&hcom_uart[COM1], ptr, chunk, HAL_MAX_DELAY);
+        if (st != HAL_OK)
+        {
+            break;
+        }
+        ptr += chunk;
+        remaining -= chunk;
+    }
+
+    return (st == HAL_OK && remaining == 0U) ? 0 : -1;
 }
 
 #endif /* USE_BSP_COM_FEATURE */

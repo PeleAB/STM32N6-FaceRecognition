@@ -128,7 +128,9 @@ Application/main.o: C:/Users/pele/Documents/GitHub/ObjectDet/Src/main.c \
  ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/ATON.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rcompat.h \
  ../../Inc/app_cam.h ../../Inc/main.h ../../Inc/pc_stream.h \
- ../../Inc/app_config.h ../../Inc/crop_img.h ../../Inc/stlogo.h
+ ../../Inc/app_config.h ../../Inc/crop_img.h ../../Inc/display_utils.h \
+ ../../Inc/app_postprocess.h ../../Inc/app_config.h \
+ ../../Inc/system_utils.h
 ../../Middlewares/Camera_Middleware/cmw_camera.h:
 ../../Middlewares/Camera_Middleware/cmw_errno.h:
 ../../Inc/cmw_camera_conf.h:
@@ -263,4 +265,7 @@ Application/main.o: C:/Users/pele/Documents/GitHub/ObjectDet/Src/main.c \
 ../../Inc/pc_stream.h:
 ../../Inc/app_config.h:
 ../../Inc/crop_img.h:
-../../Inc/stlogo.h:
+../../Inc/display_utils.h:
+../../Inc/app_postprocess.h:
+../../Inc/app_config.h:
+../../Inc/system_utils.h:
