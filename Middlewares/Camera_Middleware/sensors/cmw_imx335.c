@@ -213,13 +213,13 @@ static int32_t CMW_IMX335_Run(void *io_ctx)
 static void CMW_IMX335_PowerOn(CMW_IMX335_t *io_ctx)
 {
   io_ctx->ShutdownPin(0);  /* Disable MB1723 2V8 signal  */
-  io_ctx->Delay(100);
+  io_ctx->Delay(1);
   io_ctx->EnablePin(0);  /* RESET low (reset active low) */
-  io_ctx->Delay(100);
+  io_ctx->Delay(1);
   io_ctx->ShutdownPin(1);  /* Disable MB1723 2V8 signal  */
-  io_ctx->Delay(100);
+  io_ctx->Delay(1);
   io_ctx->EnablePin(1);  /* RESET low (reset active low) */
-  io_ctx->Delay(100);
+  io_ctx->Delay(1);
 }
 
 static void CMW_IMX335_VsyncEventCallback(void *io_ctx, uint32_t pipe)

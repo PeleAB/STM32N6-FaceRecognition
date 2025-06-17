@@ -54,16 +54,12 @@ Middlewares/Camera_Middleware/cmw_camera.o: \
  ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_core.h \
  C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.h \
  C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_io.h \
- ../../Middlewares/Camera_Middleware/sensors/cmw_vd55g1.h \
+ ../../Middlewares/Camera_Middleware/sensors/cmw_imx335.h \
  ../../Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h \
  ../../Middlewares/Camera_Middleware/cmw_errno.h \
- ../../Middlewares/Camera_Middleware/sensors/vd55g1/vd55g1.h \
- ../../Middlewares/Camera_Middleware/sensors/cmw_imx335.h \
  ../../Middlewares/Camera_Middleware/sensors/imx335/imx335.h \
  ../../Middlewares/Camera_Middleware/sensors/imx335/imx335_reg.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h \
- ../../Middlewares/Camera_Middleware/sensors/cmw_vd66gy.h \
- ../../Middlewares/Camera_Middleware/sensors/vd6g/vd6g.h
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h
 C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_camera.h:
 C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_errno.h:
 ../../Inc/cmw_camera_conf.h:
@@ -118,13 +114,9 @@ C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_errno
 ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_core.h:
 C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.h:
 C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_io.h:
-../../Middlewares/Camera_Middleware/sensors/cmw_vd55g1.h:
+../../Middlewares/Camera_Middleware/sensors/cmw_imx335.h:
 ../../Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h:
 ../../Middlewares/Camera_Middleware/cmw_errno.h:
-../../Middlewares/Camera_Middleware/sensors/vd55g1/vd55g1.h:
-../../Middlewares/Camera_Middleware/sensors/cmw_imx335.h:
 ../../Middlewares/Camera_Middleware/sensors/imx335/imx335.h:
 ../../Middlewares/Camera_Middleware/sensors/imx335/imx335_reg.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h:
-../../Middlewares/Camera_Middleware/sensors/cmw_vd66gy.h:
-../../Middlewares/Camera_Middleware/sensors/vd6g/vd6g.h:

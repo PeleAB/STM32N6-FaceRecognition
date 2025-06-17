@@ -166,7 +166,7 @@ int main(void)
 #else
   LCD_init();
 #endif
-
+  uint32_t ts[2] = { 0 };
   /*** App Loop ***************************************************************/
   while (1)
   {
@@ -187,7 +187,7 @@ int main(void)
     while (cameraFrameReceived == 0) {};
     cameraFrameReceived = 0;
 
-    uint32_t ts[2] = { 0 };
+
 
     if (pitch_nn != (NN_WIDTH * NN_BPP))
     {
@@ -209,13 +209,18 @@ int main(void)
     ts[0] = HAL_GetTick();
     /* run ATON inference */
     LL_ATON_RT_Main(&NN_Instance_Default);
-    ts[1] = HAL_GetTick();
+
+
 
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
+    if(ts[1]==0)
+    {
+    	ts[1] = HAL_GetTick();
+    }
     assert(ret == 0);
 
 #if INPUT_SRC_MODE == INPUT_SRC_CAMERA
-    Display_NetworkOutput(&pp_output, ts[1] - ts[0]);
+    Display_NetworkOutput(&pp_output, ts[1]);
 #else
     PC_STREAM_SendDetections(&pp_output, 0);
 #endif
