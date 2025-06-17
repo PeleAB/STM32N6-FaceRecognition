@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import serial
 import tensorflow as tf
-
+TF_ENABLE_ONEDNN_OPTS=0
 import pc_uart_utils as utils
 
 ANCHORS = np.array([
@@ -107,7 +107,7 @@ def run_model(
 # ------------------------------------------------------------
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--image", default='trump.jpg', help="Image file to send")
+    parser.add_argument("--image", default='trump2.jpeg', help="Image file to send")
     parser.add_argument("--port", default='COM3', help="Serial port, e.g. COM3 or /dev/ttyUSB0")
     parser.add_argument(
         "--model",
@@ -122,11 +122,13 @@ def main() -> None:
     img = cv2.imread(args.image)
     if img is None:
         raise FileNotFoundError(args.image)
-
+    img = cv2.resize(img, (224, 224))
     pc_dets = run_model(interpreter, img)
 
     with serial.Serial(args.port, args.baud, timeout=1) as ser:
         _frame, mcu_dets = utils.send_image(
+            ser, args.image, (224, 224), display=False, rx=True
+        )
     # compute IoU sorted left to right
     pc_boxes = [det_box(d) for d in pc_dets]
     mcu_boxes = [det_box(d) for d in mcu_dets]
@@ -144,9 +146,6 @@ def main() -> None:
     cv2.imshow("Detections", overlay)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
-            ser, args.image, (224, 224), display=False, rx=True
-        )
     print("PC detections:")
     for d in pc_dets:
         print(d)

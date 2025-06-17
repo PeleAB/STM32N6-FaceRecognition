@@ -61,7 +61,7 @@
 #define INPUT_SRC_PC     1
 /* Select input source: INPUT_SRC_CAMERA or INPUT_SRC_PC */
 #ifndef INPUT_SRC_MODE
-#define INPUT_SRC_MODE INPUT_SRC_PC
+#define INPUT_SRC_MODE INPUT_SRC_CAMERA
 #endif
 
 /* I/O configuration */
