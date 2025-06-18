@@ -4,8 +4,6 @@
 #include "app_config.h"
 #include "pc_stream.h"
 
-#include "stlogo.h"
-
 #define NUMBER_COLORS 10
 
 CLASSES_TABLE;
@@ -82,16 +80,17 @@ static void StreamOutput(const od_pp_out_t *p_postprocess)
   PC_STREAM_SendDetections(p_postprocess, stream_frame_id++);
 }
 
-static void PrintInfo(uint32_t nb_rois, uint32_t inference_ms)
+static void PrintInfo(uint32_t nb_rois, uint32_t inference_ms, uint32_t boottime_ms)
 {
   UTIL_LCD_SetBackColor(0x40000000);
   UTIL_LCDEx_PrintfAt(0, LINE(2), CENTER_MODE, "Objects %u", nb_rois);
   UTIL_LCDEx_PrintfAt(0, LINE(20), CENTER_MODE, "Inference: %ums", inference_ms);
+  UTIL_LCDEx_PrintfAt(0, LINE(21), CENTER_MODE, "Boot time: %ums", boottime_ms);
   UTIL_LCD_SetBackColor(0);
   Display_WelcomeScreen();
 }
 
-void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference_ms)
+void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ts)
 {
   int ret = HAL_LTDC_SetAddress_NoReload(&hlcd_ltdc,
                                          (uint32_t)lcd_fg_buffer[lcd_fg_buffer_rd_idx],
@@ -100,7 +99,8 @@ void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference_ms)
 
   DrawBoundingBoxes(p_postprocess->pOutBuff, p_postprocess->nb_detect);
   StreamOutput(p_postprocess);
-  PrintInfo(p_postprocess->nb_detect, inference_ms);
+  PrintInfo(p_postprocess->nb_detect, inference_ms, boottime_ts);
+
 
   ret = HAL_LTDC_ReloadLayer(&hlcd_ltdc, LTDC_RELOAD_VERTICAL_BLANKING, LTDC_LAYER_2);
   assert(ret == HAL_OK);
@@ -143,7 +143,6 @@ void Display_WelcomeScreen(void)
 
   if (HAL_GetTick() - t0 < 4000)
   {
-    UTIL_LCD_FillRGBRect(300, 100, (uint8_t *)stlogo, 200, 107);
     UTIL_LCD_SetBackColor(0x40000000);
     UTIL_LCDEx_PrintfAt(0, LINE(16), CENTER_MODE, "Object detection");
     UTIL_LCDEx_PrintfAt(0, LINE(17), CENTER_MODE, WELCOME_MSG_1);

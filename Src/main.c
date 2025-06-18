@@ -166,7 +166,7 @@ int main(void)
 #else
   LCD_init();
 #endif
-  uint32_t ts[2] = { 0 };
+  uint32_t ts[3] = { 0 };
   /*** App Loop ***************************************************************/
   while (1)
   {
@@ -213,14 +213,15 @@ int main(void)
 
 
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
-    if(ts[1]==0)
+    ts[1] = HAL_GetTick();
+    if(ts[2]==0)
     {
-    	ts[1] = HAL_GetTick();
+    	ts[2] = HAL_GetTick();
     }
     assert(ret == 0);
 
 #if INPUT_SRC_MODE == INPUT_SRC_CAMERA
-    Display_NetworkOutput(&pp_output, ts[1]);
+    Display_NetworkOutput(&pp_output, ts[1] - ts[0], ts[2]);
 #else
     PC_STREAM_SendDetections(&pp_output, 0);
 #endif
