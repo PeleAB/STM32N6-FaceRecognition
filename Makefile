@@ -78,6 +78,7 @@ C_SOURCES += Middlewares/Camera_Middleware/sensors/cmw_vd66gy.c
 C_SOURCES += Middlewares/Camera_Middleware/sensors/cmw_imx335.c
 C_SOURCES += Src/crop_img.c
 C_SOURCES += Src/app_cam.c
+C_SOURCES += Src/img_buffer.c
 C_SOURCES += Src/display_utils.c
 C_SOURCES += Src/system_utils.c
 C_SOURCES += Src/pc_stream.c

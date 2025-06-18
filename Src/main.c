@@ -33,6 +33,7 @@
 #include "app_config.h"
 #include "crop_img.h"
 #include "display_utils.h"
+#include "img_buffer.h"
 #include "system_utils.h"
 
 
@@ -162,7 +163,7 @@ int main(void)
   CAM_Init(&lcd_bg_area.XSize, &lcd_bg_area.YSize, &pitch_nn);
   LCD_init();
   /* Start LCD Display camera pipe stream */
-  CAM_DisplayPipe_Start(lcd_bg_buffer, CMW_MODE_CONTINUOUS);
+  CAM_DisplayPipe_Start(img_buffer, CMW_MODE_CONTINUOUS);
 #else
   LCD_init();
 #endif

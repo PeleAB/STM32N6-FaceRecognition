@@ -1,9 +1,13 @@
 #include "display_utils.h"
-#include "stm32n6570_discovery_lcd.h"
-#include "stm32_lcd_ex.h"
+#include "img_buffer.h"
 #include "app_config.h"
 #include "pc_stream.h"
+#if USE_LCD
+#include "stm32n6570_discovery_lcd.h"
+#include "stm32_lcd_ex.h"
+#endif
 
+#if USE_LCD
 #define NUMBER_COLORS 10
 
 CLASSES_TABLE;
@@ -20,6 +24,7 @@ static const uint32_t colors[NUMBER_COLORS] = {
     UTIL_LCD_COLOR_BLUE,
     UTIL_LCD_COLOR_ORANGE
 };
+#endif
 
 Rectangle_TypeDef lcd_bg_area = {
 #if ASPECT_RATIO_MODE == ASPECT_RATIO_CROP || ASPECT_RATIO_MODE == ASPECT_RATIO_FIT
@@ -39,17 +44,16 @@ Rectangle_TypeDef lcd_fg_area = {
   .YSize = LCD_FG_HEIGHT,
 };
 
-__attribute__ ((section (".psram_bss")))
-__attribute__ ((aligned (32)))
-uint8_t lcd_bg_buffer[800 * 480 * 2];
-
+#if USE_LCD
 __attribute__ ((section (".psram_bss")))
 __attribute__ ((aligned (32)))
 uint8_t lcd_fg_buffer[2][LCD_FG_WIDTH * LCD_FG_HEIGHT * 2];
 static int lcd_fg_buffer_rd_idx;
 
 static BSP_LCD_LayerConfig_t LayerConfig = {0};
+#endif
 
+#if USE_LCD
 static void DrawBoundingBoxes(const od_pp_outBuffer_t *rois, uint32_t nb_rois)
 {
   UTIL_LCD_FillRect(lcd_fg_area.X0, lcd_fg_area.Y0, lcd_fg_area.XSize,
@@ -68,15 +72,16 @@ static void DrawBoundingBoxes(const od_pp_outBuffer_t *rois, uint32_t nb_rois)
     height = ((y0 + height) < lcd_bg_area.Y0 + lcd_bg_area.YSize) ? height : (lcd_bg_area.Y0 + lcd_bg_area.YSize - y0 - 1);
     UTIL_LCD_DrawRect(x0, y0, width, height, colors[rois[i].class_index % NUMBER_COLORS]);
     UTIL_LCDEx_PrintfAt(x0, y0, LEFT_MODE, classes_table[rois[i].class_index]);
-    UTIL_LCDEx_PrintfAt(-x0-width, y0, RIGHT_MODE, "%.0f%%", rois[i].conf*100.0f);
+  UTIL_LCDEx_PrintfAt(-x0-width, y0, RIGHT_MODE, "%.0f%%", rois[i].conf*100.0f);
   }
 }
 
+#if USE_LCD
 static void StreamOutput(const od_pp_out_t *p_postprocess)
 {
   static uint32_t stream_frame_id = 0;
-  SCB_InvalidateDCache_by_Addr(lcd_bg_buffer, sizeof(lcd_bg_buffer));
-  PC_STREAM_SendFrame(lcd_bg_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2);
+  SCB_InvalidateDCache_by_Addr(img_buffer, sizeof(img_buffer));
+  PC_STREAM_SendFrame(img_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2);
   PC_STREAM_SendDetections(p_postprocess, stream_frame_id++);
 }
 
@@ -89,7 +94,6 @@ static void PrintInfo(uint32_t nb_rois, uint32_t inference_ms, uint32_t boottime
   UTIL_LCD_SetBackColor(0);
   Display_WelcomeScreen();
 }
-
 void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ts)
 {
   int ret = HAL_LTDC_SetAddress_NoReload(&hlcd_ltdc,
@@ -116,7 +120,7 @@ void LCD_init(void)
   LayerConfig.X1          = lcd_bg_area.X0 + lcd_bg_area.XSize;
   LayerConfig.Y1          = lcd_bg_area.Y0 + lcd_bg_area.YSize;
   LayerConfig.PixelFormat = LCD_PIXEL_FORMAT_RGB565;
-  LayerConfig.Address     = (uint32_t)lcd_bg_buffer;
+  LayerConfig.Address     = (uint32_t)img_buffer;
 
   BSP_LCD_ConfigLayer(0, LTDC_LAYER_1, &LayerConfig);
 
@@ -150,3 +154,23 @@ void Display_WelcomeScreen(void)
     UTIL_LCD_SetBackColor(0);
   }
 }
+#else /* USE_LCD */
+
+void LCD_init(void)
+{
+}
+
+void Display_WelcomeScreen(void)
+{
+}
+
+void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ts)
+{
+  (void)inference_ms;
+  (void)boottime_ts;
+  static uint32_t stream_frame_id = 0;
+  SCB_InvalidateDCache_by_Addr(img_buffer, sizeof(img_buffer));
+  PC_STREAM_SendFrame(img_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2);
+  PC_STREAM_SendDetections(p_postprocess, stream_frame_id++);
+}
+#endif
