@@ -108,7 +108,9 @@ int main(void)
 
   NPUCache_config();
 
+#ifdef ENABLE_PC_STREAM
   PC_STREAM_Init();
+#endif
 
   /*** External RAM and NOR Flash *********************************************/
   BSP_XSPI_RAM_Init(0);
@@ -204,7 +206,9 @@ int main(void)
       continue;
     }
     SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
+#ifdef ENABLE_PC_STREAM
     PC_STREAM_SendFrame(nn_in, NN_WIDTH, NN_HEIGHT, NN_BPP);
+#endif
 #endif
 
     ts[0] = HAL_GetTick();
@@ -221,11 +225,7 @@ int main(void)
     }
     assert(ret == 0);
 
-#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
     Display_NetworkOutput(&pp_output, ts[1] - ts[0], ts[2]);
-#else
-    PC_STREAM_SendDetections(&pp_output, 0);
-#endif
 
     /* Discard nn_out region (used by pp_input and pp_outputs variables) to avoid Dcache evictions during nn inference */
     for (int i = 0; i < number_output; i++)
