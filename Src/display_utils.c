@@ -2,10 +2,12 @@
 #include "img_buffer.h"
 #include "app_config.h"
 #include "pc_stream.h"
+#include "stm32n6570_discovery_errno.h"
 #ifdef ENABLE_LCD_DISPLAY
 #include "stm32n6570_discovery_lcd.h"
 #include "stm32_lcd_ex.h"
 #endif
+#include "stm32n6570_discovery_conf.h"
 
 #ifdef ENABLE_LCD_DISPLAY
 #define NUMBER_COLORS 10

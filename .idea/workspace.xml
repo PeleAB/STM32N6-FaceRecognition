@@ -6,16 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="c982fc48-7cf4-41a9-90d7-0061582bf1c4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Inc/display_utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/Inc/display_utils.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Inc/stlogo.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Inc/app_config.h" beforeDir="false" afterPath="$PROJECT_DIR$/Inc/app_config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/.project" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/.project" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/display_utils.d" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/display_utils.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/main.d" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/main.d" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/objects.list" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/objects.list" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Src/display_utils.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/display_utils.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/pc_stream.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/pc_stream.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,13 +44,13 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.compare_detections.executor": "Run",
+    "Python.compare_detections.executor": "Debug",
     "Python.genLogo.executor": "Run",
     "Python.pc_stream_receiver.executor": "Run",
     "Python.pc_uart_client.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "codex/add-generic-image-buffer-for-lcd-toggle",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -154,8 +154,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.pc_uart_client" />
-        <item itemvalue="Python.genLogo" />
         <item itemvalue="Python.compare_detections" />
+        <item itemvalue="Python.genLogo" />
         <item itemvalue="Python.pc_stream_receiver" />
       </list>
     </recent_temporary>
@@ -212,9 +212,19 @@
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/pc_uart_client.py</url>
-          <line>25</line>
-          <option name="timeStamp" value="26" />
+          <url>file://$PROJECT_DIR$/pc_uart_utils.py</url>
+          <line>134</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pc_uart_utils.py</url>
+          <line>133</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pc_uart_utils.py</url>
+          <line>132</line>
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -229,9 +239,9 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ObjectDet$pc_stream_receiver.coverage" NAME="pc_stream_receiver Coverage Results" MODIFIED="1749316009010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_stream_receiver.coverage" NAME="pc_stream_receiver Coverage Results" MODIFIED="1750193783390" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/pc_send_photos_py$compare_detections.coverage" NAME="compare_detections Coverage Results" MODIFIED="1750186450581" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/pc_send_photos_py$compare_detections.coverage" NAME="compare_detections Coverage Results" MODIFIED="1750364633739" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_send_photos.coverage" NAME="pc_send_photos Coverage Results" MODIFIED="1749918113217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$genLogo.coverage" NAME="genLogo Coverage Results" MODIFIED="1750200716157" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_uart_client.coverage" NAME="pc_uart_client Coverage Results" MODIFIED="1750248801286" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_uart_client.coverage" NAME="pc_uart_client Coverage Results" MODIFIED="1750364650160" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
