@@ -149,8 +149,24 @@ void PC_STREAM_SendDetections(const od_pp_out_t *detections, uint32_t frame_id)
 
 int PC_STREAM_ReceiveImage(uint8_t *buffer, uint32_t length)
 {
-    HAL_StatusTypeDef st = HAL_UART_Receive(&hcom_uart[COM1], buffer, (uint16_t)length, HAL_MAX_DELAY);
-    return (st == HAL_OK) ? 0 : -1;
+    HAL_StatusTypeDef st = HAL_OK;
+    uint32_t remaining = length;
+    uint8_t *ptr = buffer;
+
+    while (remaining > 0 && st == HAL_OK)
+    {
+        /* HAL UART API takes a uint16_t size parameter */
+        uint16_t chunk = (remaining > 0xFFFFU) ? 0xFFFFU : (uint16_t)remaining;
+        st = HAL_UART_Receive(&hcom_uart[COM1], ptr, chunk, HAL_MAX_DELAY);
+        if (st != HAL_OK)
+        {
+            break;
+        }
+        ptr += chunk;
+        remaining -= chunk;
+    }
+
+    return (st == HAL_OK && remaining == 0U) ? 0 : -1;
 }
 
 #endif /* USE_BSP_COM_FEATURE */
