@@ -20,7 +20,7 @@
 #include "app_postprocess.h"
 #include "app_config.h"
 #include "ll_aton_NN_interface.h"
-#include "network.h"
+//#include "network.h"
 #include <assert.h>
 
 #if POSTPROCESS_TYPE == POSTPROCESS_OD_YOLO_V5_UU

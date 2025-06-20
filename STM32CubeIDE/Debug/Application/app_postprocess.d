@@ -56,7 +56,11 @@ Application/app_postprocess.o: \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/sseg_deeplabv3_pp_if.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/sseg_pp_output_if.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/sseg_pp_output_if.h \
- ../../Inc/app_config.h
+ ../../Inc/app_config.h \
+ ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h \
+ ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h \
+ ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h \
+ ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h
 ../../Inc/app_postprocess.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov2_pp_if.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_pp_output_if.h:
@@ -114,3 +118,7 @@ Application/app_postprocess.o: \
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/sseg_pp_output_if.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/sseg_pp_output_if.h:
 ../../Inc/app_config.h:
+../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h:
+../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h:
+../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h:
+../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h:

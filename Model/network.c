@@ -24,7 +24,7 @@
  *
  * Command Line options:
  * --onnx-input = "C:/Users/pele/.stm32cubemx/network_output/MediaPipeFaceLandmarkDetector_OE_3_2_0.onnx"
- * --out-dir-prefix = "C:/Users/pele/AppData/Local/Temp/mxAI_workspace56242813400690016056447958253063960/neural_art__network/"
+ * --out-dir-prefix = "C:/Users/pele/AppData/Local/Temp/mxAI_workspace5718631238004007927204329073858663/neural_art__network/"
  * --all-buffers-info = true
  * --mvei = true
  * --load-mdesc-file = "C:/ST/STEdgeAI/2.1/Utilities/configs/stm32n6"
@@ -33,8 +33,6 @@
  * --enable-virtual-mem-pools = true
  * --native-float = true
  * --json-quant-file = "C:/Users/pele/.stm32cubemx/network_output/MediaPipeFaceLandmarkDetector_OE_3_2_0_Q.json"
- * --optimization = 3
- * --Os = true
  * --Omax-ca-pipe = 4
  * --Ocache-opt = true
  * --enable-epoch-controller = true
@@ -134,9 +132,9 @@ static void LL_ATON_End_EpochBlock_12(const void *epoch_block)
 {
   /* *** MCU cache invalidate (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
-  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) */
-  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 36864))) */
-  LL_ATON_Cache_MCU_Invalidate_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) /* Equivalent hex address = 0x342e0000UL */, 36864);
+  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 73728))) */
+  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 110592))) */
+  LL_ATON_Cache_MCU_Invalidate_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 73728))) /* Equivalent hex address = 0x342f2000UL */, 36864);
 
   LL_ATON_LIB_UNUSED(epoch_block);
 
@@ -168,9 +166,9 @@ static void LL_ATON_End_EpochBlock_12(const void *epoch_block)
   static const LL_LIB_TensorShape_TypeDef Transpose_40_tensor_shape_out_12[] = {
     {
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 36864,
-      .offset_limit = 36928,
+      .offset_start = 73728,
+      .offset_end = 110592,
+      .offset_limit = 110656,
       .ndims = 4,
       .nbits = 8,
       .shape = Transpose_40_tensor_shape_out_12_shape_0,
@@ -189,9 +187,9 @@ static void LL_ATON_End_EpochBlock_12(const void *epoch_block)
 
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
-  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) */
-  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 36864))) */
-  LL_ATON_Cache_MCU_Clean_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) /* Equivalent hex address = 0x342e0000UL */, 36864);
+  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 73728))) */
+  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 110592))) */
+  LL_ATON_Cache_MCU_Clean_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 73728))) /* Equivalent hex address = 0x342f2000UL */, 36864);
 
 }
 
@@ -211,9 +209,9 @@ static void _ec_blob_cache_start_func_13(const void *epoch_block) {
 };
 
 
-/* scheduling epoch=15   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=14   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_15(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_14(const void *epoch_block)
 {
   /* *** MCU cache invalidate (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -228,8 +226,8 @@ static void LL_ATON_End_EpochBlock_15(const void *epoch_block)
 
 /* Unit= 27 [PROCESSOR 0] */
 /* kind=Transpose node=Transpose_42 */
-  static const uint32_t Transpose_42_tensor_shape_in_15_shape_0[] = { 1, 48, 32, 48 };
-  static const LL_LIB_TensorShape_TypeDef Transpose_42_tensor_shape_in_15[] = {
+  static const uint32_t Transpose_42_tensor_shape_in_14_shape_0[] = { 1, 48, 32, 48 };
+  static const LL_LIB_TensorShape_TypeDef Transpose_42_tensor_shape_in_14[] = {
     {
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
@@ -237,18 +235,18 @@ static void LL_ATON_End_EpochBlock_15(const void *epoch_block)
       .offset_limit = 73792,
       .ndims = 4,
       .nbits = 8,
-      .shape = Transpose_42_tensor_shape_in_15_shape_0,
+      .shape = Transpose_42_tensor_shape_in_14_shape_0,
       .batch = 1,
     }
   };
 
-  static const uint32_t Transpose_42_tensor_axes_offsets_in_15_0[] = { 73728, 1536, 48, 1 };
-  static const uint32_t* Transpose_42_tensor_axes_offsets_in_15[] = {
-    Transpose_42_tensor_axes_offsets_in_15_0
+  static const uint32_t Transpose_42_tensor_axes_offsets_in_14_0[] = { 73728, 1536, 48, 1 };
+  static const uint32_t* Transpose_42_tensor_axes_offsets_in_14[] = {
+    Transpose_42_tensor_axes_offsets_in_14_0
   };
 
-  static const uint32_t Transpose_42_tensor_shape_out_15_shape_0[] = { 1, 32, 48, 48 };
-  static const LL_LIB_TensorShape_TypeDef Transpose_42_tensor_shape_out_15[] = {
+  static const uint32_t Transpose_42_tensor_shape_out_14_shape_0[] = { 1, 32, 48, 48 };
+  static const LL_LIB_TensorShape_TypeDef Transpose_42_tensor_shape_out_14[] = {
     {
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 73728,
@@ -256,19 +254,19 @@ static void LL_ATON_End_EpochBlock_15(const void *epoch_block)
       .offset_limit = 147520,
       .ndims = 4,
       .nbits = 8,
-      .shape = Transpose_42_tensor_shape_out_15_shape_0,
+      .shape = Transpose_42_tensor_shape_out_14_shape_0,
       .batch = 1,
     }
   };
 
-  static const uint32_t Transpose_42_tensor_axes_offsets_out_15_0[] = { 73728, 2304, 48, 1 };
-  static const uint32_t* Transpose_42_tensor_axes_offsets_out_15[] = {
-    Transpose_42_tensor_axes_offsets_out_15_0
+  static const uint32_t Transpose_42_tensor_axes_offsets_out_14_0[] = { 73728, 2304, 48, 1 };
+  static const uint32_t* Transpose_42_tensor_axes_offsets_out_14[] = {
+    Transpose_42_tensor_axes_offsets_out_14_0
   };
 
-  static const uint8_t Transpose_42_perm_to_use_array_in_15[] = { 0, 2, 1, 3 };
-  static const uint8_t Transpose_42_target_pos_array_in_15[] = { 0, 2, 1, 3 };
-  LL_ATON_LIB_DMA_Transpose(&Transpose_42_tensor_shape_in_15[0], Transpose_42_tensor_axes_offsets_in_15[0], &Transpose_42_tensor_shape_out_15[0], Transpose_42_tensor_axes_offsets_out_15[0], Transpose_42_target_pos_array_in_15, Transpose_42_perm_to_use_array_in_15, 1, 8);
+  static const uint8_t Transpose_42_perm_to_use_array_in_14[] = { 0, 2, 1, 3 };
+  static const uint8_t Transpose_42_target_pos_array_in_14[] = { 0, 2, 1, 3 };
+  LL_ATON_LIB_DMA_Transpose(&Transpose_42_tensor_shape_in_14[0], Transpose_42_tensor_axes_offsets_in_14[0], &Transpose_42_tensor_shape_out_14[0], Transpose_42_tensor_axes_offsets_out_14[0], Transpose_42_target_pos_array_in_14, Transpose_42_perm_to_use_array_in_14, 7, 9);
 
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -279,10 +277,10 @@ static void LL_ATON_End_EpochBlock_15(const void *epoch_block)
 }
 
 
-// Epoch Controller Blob (name='_ec_blob_16') micro instructions needed
+// Epoch Controller Blob (name='_ec_blob_15') micro instructions needed
 
-// Epoch Controller Blob (name='_ec_blob_16') start function
-static void _ec_blob_cache_start_func_16(const void *epoch_block) {
+// Epoch Controller Blob (name='_ec_blob_15') start function
+static void _ec_blob_cache_start_func_15(const void *epoch_block) {
   LL_ATON_LIB_UNUSED(epoch_block);
 
   /* *** MCU cache invalidate (only) operation (HW, whole range) *** */
@@ -294,15 +292,15 @@ static void _ec_blob_cache_start_func_16(const void *epoch_block) {
 };
 
 
-/* scheduling epoch=27   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=26   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_27(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_26(const void *epoch_block)
 {
   /* *** MCU cache invalidate (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
-  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 423936))) */
-  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 442368))) */
-  LL_ATON_Cache_MCU_Invalidate_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 423936))) /* Equivalent hex address = 0x34347800UL */, 18432);
+  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) */
+  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 18432))) */
+  LL_ATON_Cache_MCU_Invalidate_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) /* Equivalent hex address = 0x342e0000UL */, 18432);
 
   LL_ATON_LIB_UNUSED(epoch_block);
 
@@ -311,8 +309,8 @@ static void LL_ATON_End_EpochBlock_27(const void *epoch_block)
 
 /* Unit= 27 [PROCESSOR 0] */
 /* kind=Transpose node=Transpose_81 */
-  static const uint32_t Transpose_81_tensor_shape_in_27_shape_0[] = { 1, 24, 24, 32 };
-  static const LL_LIB_TensorShape_TypeDef Transpose_81_tensor_shape_in_27[] = {
+  static const uint32_t Transpose_81_tensor_shape_in_26_shape_0[] = { 1, 24, 24, 32 };
+  static const LL_LIB_TensorShape_TypeDef Transpose_81_tensor_shape_in_26[] = {
     {
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 405504,
@@ -320,52 +318,52 @@ static void LL_ATON_End_EpochBlock_27(const void *epoch_block)
       .offset_limit = 424000,
       .ndims = 4,
       .nbits = 8,
-      .shape = Transpose_81_tensor_shape_in_27_shape_0,
+      .shape = Transpose_81_tensor_shape_in_26_shape_0,
       .batch = 32,
     }
   };
 
-  static const uint32_t Transpose_81_tensor_axes_offsets_in_27_0[] = { 18432, 768, 32, 1 };
-  static const uint32_t* Transpose_81_tensor_axes_offsets_in_27[] = {
-    Transpose_81_tensor_axes_offsets_in_27_0
+  static const uint32_t Transpose_81_tensor_axes_offsets_in_26_0[] = { 18432, 768, 32, 1 };
+  static const uint32_t* Transpose_81_tensor_axes_offsets_in_26[] = {
+    Transpose_81_tensor_axes_offsets_in_26_0
   };
 
-  static const uint32_t Transpose_81_tensor_shape_out_27_shape_0[] = { 1, 32, 24, 24 };
-  static const LL_LIB_TensorShape_TypeDef Transpose_81_tensor_shape_out_27[] = {
+  static const uint32_t Transpose_81_tensor_shape_out_26_shape_0[] = { 1, 32, 24, 24 };
+  static const LL_LIB_TensorShape_TypeDef Transpose_81_tensor_shape_out_26[] = {
     {
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 423936,
-      .offset_end = 442368,
-      .offset_limit = 442432,
+      .offset_start = 0,
+      .offset_end = 18432,
+      .offset_limit = 18496,
       .ndims = 4,
       .nbits = 8,
-      .shape = Transpose_81_tensor_shape_out_27_shape_0,
+      .shape = Transpose_81_tensor_shape_out_26_shape_0,
       .batch = 24,
     }
   };
 
-  static const uint32_t Transpose_81_tensor_axes_offsets_out_27_0[] = { 18432, 576, 24, 1 };
-  static const uint32_t* Transpose_81_tensor_axes_offsets_out_27[] = {
-    Transpose_81_tensor_axes_offsets_out_27_0
+  static const uint32_t Transpose_81_tensor_axes_offsets_out_26_0[] = { 18432, 576, 24, 1 };
+  static const uint32_t* Transpose_81_tensor_axes_offsets_out_26[] = {
+    Transpose_81_tensor_axes_offsets_out_26_0
   };
 
-  static const uint8_t Transpose_81_perm_to_use_array_in_27[] = { 0, 3, 2, 1 };
-  static const uint8_t Transpose_81_target_pos_array_in_27[] = { 0, 3, 2, 1 };
-  LL_ATON_LIB_DMA_Transpose(&Transpose_81_tensor_shape_in_27[0], Transpose_81_tensor_axes_offsets_in_27[0], &Transpose_81_tensor_shape_out_27[0], Transpose_81_tensor_axes_offsets_out_27[0], Transpose_81_target_pos_array_in_27, Transpose_81_perm_to_use_array_in_27, 2, 4);
+  static const uint8_t Transpose_81_perm_to_use_array_in_26[] = { 0, 3, 2, 1 };
+  static const uint8_t Transpose_81_target_pos_array_in_26[] = { 0, 3, 2, 1 };
+  LL_ATON_LIB_DMA_Transpose(&Transpose_81_tensor_shape_in_26[0], Transpose_81_tensor_axes_offsets_in_26[0], &Transpose_81_tensor_shape_out_26[0], Transpose_81_tensor_axes_offsets_out_26[0], Transpose_81_target_pos_array_in_26, Transpose_81_perm_to_use_array_in_26, 3, 4);
 
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
-  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 423936))) */
-  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 442368))) */
-  LL_ATON_Cache_MCU_Clean_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 423936))) /* Equivalent hex address = 0x34347800UL */, 18432);
+  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) */
+  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 18432))) */
+  LL_ATON_Cache_MCU_Clean_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) /* Equivalent hex address = 0x342e0000UL */, 18432);
 
 }
 
 
-// Epoch Controller Blob (name='_ec_blob_28') micro instructions needed
+// Epoch Controller Blob (name='_ec_blob_27') micro instructions needed
 
-// Epoch Controller Blob (name='_ec_blob_28') start function
-static void _ec_blob_cache_start_func_28(const void *epoch_block) {
+// Epoch Controller Blob (name='_ec_blob_27') start function
+static void _ec_blob_cache_start_func_27(const void *epoch_block) {
   LL_ATON_LIB_UNUSED(epoch_block);
 
   /* *** MCU cache invalidate (only) operation (HW, whole range) *** */
@@ -377,9 +375,9 @@ static void _ec_blob_cache_start_func_28(const void *epoch_block) {
 };
 
 
-/* scheduling epoch=30   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=28   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_30(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_28(const void *epoch_block)
 {
   /* *** MCU cache invalidate (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -394,8 +392,8 @@ static void LL_ATON_End_EpochBlock_30(const void *epoch_block)
 
 /* Unit= 27 [PROCESSOR 0] */
 /* kind=Transpose node=Transpose_83 */
-  static const uint32_t Transpose_83_tensor_shape_in_30_shape_0[] = { 1, 24, 64, 24 };
-  static const LL_LIB_TensorShape_TypeDef Transpose_83_tensor_shape_in_30[] = {
+  static const uint32_t Transpose_83_tensor_shape_in_28_shape_0[] = { 1, 24, 64, 24 };
+  static const LL_LIB_TensorShape_TypeDef Transpose_83_tensor_shape_in_28[] = {
     {
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 405504,
@@ -403,18 +401,18 @@ static void LL_ATON_End_EpochBlock_30(const void *epoch_block)
       .offset_limit = 442432,
       .ndims = 4,
       .nbits = 8,
-      .shape = Transpose_83_tensor_shape_in_30_shape_0,
+      .shape = Transpose_83_tensor_shape_in_28_shape_0,
       .batch = 1,
     }
   };
 
-  static const uint32_t Transpose_83_tensor_axes_offsets_in_30_0[] = { 36864, 1536, 24, 1 };
-  static const uint32_t* Transpose_83_tensor_axes_offsets_in_30[] = {
-    Transpose_83_tensor_axes_offsets_in_30_0
+  static const uint32_t Transpose_83_tensor_axes_offsets_in_28_0[] = { 36864, 1536, 24, 1 };
+  static const uint32_t* Transpose_83_tensor_axes_offsets_in_28[] = {
+    Transpose_83_tensor_axes_offsets_in_28_0
   };
 
-  static const uint32_t Transpose_83_tensor_shape_out_30_shape_0[] = { 1, 64, 24, 24 };
-  static const LL_LIB_TensorShape_TypeDef Transpose_83_tensor_shape_out_30[] = {
+  static const uint32_t Transpose_83_tensor_shape_out_28_shape_0[] = { 1, 64, 24, 24 };
+  static const LL_LIB_TensorShape_TypeDef Transpose_83_tensor_shape_out_28[] = {
     {
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
@@ -422,19 +420,19 @@ static void LL_ATON_End_EpochBlock_30(const void *epoch_block)
       .offset_limit = 36928,
       .ndims = 4,
       .nbits = 8,
-      .shape = Transpose_83_tensor_shape_out_30_shape_0,
+      .shape = Transpose_83_tensor_shape_out_28_shape_0,
       .batch = 1,
     }
   };
 
-  static const uint32_t Transpose_83_tensor_axes_offsets_out_30_0[] = { 36864, 576, 24, 1 };
-  static const uint32_t* Transpose_83_tensor_axes_offsets_out_30[] = {
-    Transpose_83_tensor_axes_offsets_out_30_0
+  static const uint32_t Transpose_83_tensor_axes_offsets_out_28_0[] = { 36864, 576, 24, 1 };
+  static const uint32_t* Transpose_83_tensor_axes_offsets_out_28[] = {
+    Transpose_83_tensor_axes_offsets_out_28_0
   };
 
-  static const uint8_t Transpose_83_perm_to_use_array_in_30[] = { 0, 2, 1, 3 };
-  static const uint8_t Transpose_83_target_pos_array_in_30[] = { 0, 2, 1, 3 };
-  LL_ATON_LIB_DMA_Transpose(&Transpose_83_tensor_shape_in_30[0], Transpose_83_tensor_axes_offsets_in_30[0], &Transpose_83_tensor_shape_out_30[0], Transpose_83_tensor_axes_offsets_out_30[0], Transpose_83_target_pos_array_in_30, Transpose_83_perm_to_use_array_in_30, 7, 8);
+  static const uint8_t Transpose_83_perm_to_use_array_in_28[] = { 0, 2, 1, 3 };
+  static const uint8_t Transpose_83_target_pos_array_in_28[] = { 0, 2, 1, 3 };
+  LL_ATON_LIB_DMA_Transpose(&Transpose_83_tensor_shape_in_28[0], Transpose_83_tensor_axes_offsets_in_28[0], &Transpose_83_tensor_shape_out_28[0], Transpose_83_tensor_axes_offsets_out_28[0], Transpose_83_target_pos_array_in_28, Transpose_83_perm_to_use_array_in_28, 1, 2);
 
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -445,10 +443,10 @@ static void LL_ATON_End_EpochBlock_30(const void *epoch_block)
 }
 
 
-// Epoch Controller Blob (name='_ec_blob_31') micro instructions needed
+// Epoch Controller Blob (name='_ec_blob_29') micro instructions needed
 
-// Epoch Controller Blob (name='_ec_blob_31') start function
-static void _ec_blob_cache_start_func_31(const void *epoch_block) {
+// Epoch Controller Blob (name='_ec_blob_29') start function
+static void _ec_blob_cache_start_func_29(const void *epoch_block) {
   LL_ATON_LIB_UNUSED(epoch_block);
 
   /* *** MCU cache invalidate (only) operation (HW, whole range) *** */
@@ -460,15 +458,15 @@ static void _ec_blob_cache_start_func_31(const void *epoch_block) {
 };
 
 
-/* scheduling epoch=42   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=40   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_42(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_40(const void *epoch_block)
 {
   /* *** MCU cache invalidate (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
-  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) */
-  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 9216))) */
-  LL_ATON_Cache_MCU_Invalidate_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) /* Equivalent hex address = 0x342e0000UL */, 9216);
+  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 18432))) */
+  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 27648))) */
+  LL_ATON_Cache_MCU_Invalidate_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 18432))) /* Equivalent hex address = 0x342e4800UL */, 9216);
 
   LL_ATON_LIB_UNUSED(epoch_block);
 
@@ -477,8 +475,8 @@ static void LL_ATON_End_EpochBlock_42(const void *epoch_block)
 
 /* Unit= 27 [PROCESSOR 0] */
 /* kind=Transpose node=Transpose_126 */
-  static const uint32_t Transpose_126_tensor_shape_in_42_shape_0[] = { 1, 12, 12, 64 };
-  static const LL_LIB_TensorShape_TypeDef Transpose_126_tensor_shape_in_42[] = {
+  static const uint32_t Transpose_126_tensor_shape_in_40_shape_0[] = { 1, 12, 12, 64 };
+  static const LL_LIB_TensorShape_TypeDef Transpose_126_tensor_shape_in_40[] = {
     {
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 55296,
@@ -486,52 +484,52 @@ static void LL_ATON_End_EpochBlock_42(const void *epoch_block)
       .offset_limit = 64576,
       .ndims = 4,
       .nbits = 8,
-      .shape = Transpose_126_tensor_shape_in_42_shape_0,
+      .shape = Transpose_126_tensor_shape_in_40_shape_0,
       .batch = 64,
     }
   };
 
-  static const uint32_t Transpose_126_tensor_axes_offsets_in_42_0[] = { 9216, 768, 64, 1 };
-  static const uint32_t* Transpose_126_tensor_axes_offsets_in_42[] = {
-    Transpose_126_tensor_axes_offsets_in_42_0
+  static const uint32_t Transpose_126_tensor_axes_offsets_in_40_0[] = { 9216, 768, 64, 1 };
+  static const uint32_t* Transpose_126_tensor_axes_offsets_in_40[] = {
+    Transpose_126_tensor_axes_offsets_in_40_0
   };
 
-  static const uint32_t Transpose_126_tensor_shape_out_42_shape_0[] = { 1, 64, 12, 12 };
-  static const LL_LIB_TensorShape_TypeDef Transpose_126_tensor_shape_out_42[] = {
+  static const uint32_t Transpose_126_tensor_shape_out_40_shape_0[] = { 1, 64, 12, 12 };
+  static const LL_LIB_TensorShape_TypeDef Transpose_126_tensor_shape_out_40[] = {
     {
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 9216,
-      .offset_limit = 9280,
+      .offset_start = 18432,
+      .offset_end = 27648,
+      .offset_limit = 27712,
       .ndims = 4,
       .nbits = 8,
-      .shape = Transpose_126_tensor_shape_out_42_shape_0,
+      .shape = Transpose_126_tensor_shape_out_40_shape_0,
       .batch = 12,
     }
   };
 
-  static const uint32_t Transpose_126_tensor_axes_offsets_out_42_0[] = { 9216, 144, 12, 1 };
-  static const uint32_t* Transpose_126_tensor_axes_offsets_out_42[] = {
-    Transpose_126_tensor_axes_offsets_out_42_0
+  static const uint32_t Transpose_126_tensor_axes_offsets_out_40_0[] = { 9216, 144, 12, 1 };
+  static const uint32_t* Transpose_126_tensor_axes_offsets_out_40[] = {
+    Transpose_126_tensor_axes_offsets_out_40_0
   };
 
-  static const uint8_t Transpose_126_perm_to_use_array_in_42[] = { 0, 3, 2, 1 };
-  static const uint8_t Transpose_126_target_pos_array_in_42[] = { 0, 3, 2, 1 };
-  LL_ATON_LIB_DMA_Transpose(&Transpose_126_tensor_shape_in_42[0], Transpose_126_tensor_axes_offsets_in_42[0], &Transpose_126_tensor_shape_out_42[0], Transpose_126_tensor_axes_offsets_out_42[0], Transpose_126_target_pos_array_in_42, Transpose_126_perm_to_use_array_in_42, 7, 8);
+  static const uint8_t Transpose_126_perm_to_use_array_in_40[] = { 0, 3, 2, 1 };
+  static const uint8_t Transpose_126_target_pos_array_in_40[] = { 0, 3, 2, 1 };
+  LL_ATON_LIB_DMA_Transpose(&Transpose_126_tensor_shape_in_40[0], Transpose_126_tensor_axes_offsets_in_40[0], &Transpose_126_tensor_shape_out_40[0], Transpose_126_tensor_axes_offsets_out_40[0], Transpose_126_target_pos_array_in_40, Transpose_126_perm_to_use_array_in_40, 7, 8);
 
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
-  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) */
-  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 9216))) */
-  LL_ATON_Cache_MCU_Clean_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) /* Equivalent hex address = 0x342e0000UL */, 9216);
+  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 18432))) */
+  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 27648))) */
+  LL_ATON_Cache_MCU_Clean_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 18432))) /* Equivalent hex address = 0x342e4800UL */, 9216);
 
 }
 
 
-// Epoch Controller Blob (name='_ec_blob_43') micro instructions needed
+// Epoch Controller Blob (name='_ec_blob_41') micro instructions needed
 
-// Epoch Controller Blob (name='_ec_blob_43') start function
-static void _ec_blob_cache_start_func_43(const void *epoch_block) {
+// Epoch Controller Blob (name='_ec_blob_41') start function
+static void _ec_blob_cache_start_func_41(const void *epoch_block) {
   LL_ATON_LIB_UNUSED(epoch_block);
 
   /* *** MCU cache invalidate (only) operation (HW, whole range) *** */
@@ -543,9 +541,9 @@ static void _ec_blob_cache_start_func_43(const void *epoch_block) {
 };
 
 
-/* scheduling epoch=45   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=42   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_45(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_42(const void *epoch_block)
 {
   /* *** MCU cache invalidate (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -560,8 +558,8 @@ static void LL_ATON_End_EpochBlock_45(const void *epoch_block)
 
 /* Unit= 27 [PROCESSOR 0] */
 /* kind=Transpose node=Transpose_128 */
-  static const uint32_t Transpose_128_tensor_shape_in_45_shape_0[] = { 1, 12, 128, 12 };
-  static const LL_LIB_TensorShape_TypeDef Transpose_128_tensor_shape_in_45[] = {
+  static const uint32_t Transpose_128_tensor_shape_in_42_shape_0[] = { 1, 12, 128, 12 };
+  static const LL_LIB_TensorShape_TypeDef Transpose_128_tensor_shape_in_42[] = {
     {
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
@@ -569,18 +567,18 @@ static void LL_ATON_End_EpochBlock_45(const void *epoch_block)
       .offset_limit = 18496,
       .ndims = 4,
       .nbits = 8,
-      .shape = Transpose_128_tensor_shape_in_45_shape_0,
+      .shape = Transpose_128_tensor_shape_in_42_shape_0,
       .batch = 1,
     }
   };
 
-  static const uint32_t Transpose_128_tensor_axes_offsets_in_45_0[] = { 18432, 1536, 12, 1 };
-  static const uint32_t* Transpose_128_tensor_axes_offsets_in_45[] = {
-    Transpose_128_tensor_axes_offsets_in_45_0
+  static const uint32_t Transpose_128_tensor_axes_offsets_in_42_0[] = { 18432, 1536, 12, 1 };
+  static const uint32_t* Transpose_128_tensor_axes_offsets_in_42[] = {
+    Transpose_128_tensor_axes_offsets_in_42_0
   };
 
-  static const uint32_t Transpose_128_tensor_shape_out_45_shape_0[] = { 1, 128, 12, 12 };
-  static const LL_LIB_TensorShape_TypeDef Transpose_128_tensor_shape_out_45[] = {
+  static const uint32_t Transpose_128_tensor_shape_out_42_shape_0[] = { 1, 128, 12, 12 };
+  static const LL_LIB_TensorShape_TypeDef Transpose_128_tensor_shape_out_42[] = {
     {
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 18432,
@@ -588,19 +586,19 @@ static void LL_ATON_End_EpochBlock_45(const void *epoch_block)
       .offset_limit = 36928,
       .ndims = 4,
       .nbits = 8,
-      .shape = Transpose_128_tensor_shape_out_45_shape_0,
+      .shape = Transpose_128_tensor_shape_out_42_shape_0,
       .batch = 1,
     }
   };
 
-  static const uint32_t Transpose_128_tensor_axes_offsets_out_45_0[] = { 18432, 144, 12, 1 };
-  static const uint32_t* Transpose_128_tensor_axes_offsets_out_45[] = {
-    Transpose_128_tensor_axes_offsets_out_45_0
+  static const uint32_t Transpose_128_tensor_axes_offsets_out_42_0[] = { 18432, 144, 12, 1 };
+  static const uint32_t* Transpose_128_tensor_axes_offsets_out_42[] = {
+    Transpose_128_tensor_axes_offsets_out_42_0
   };
 
-  static const uint8_t Transpose_128_perm_to_use_array_in_45[] = { 0, 2, 1, 3 };
-  static const uint8_t Transpose_128_target_pos_array_in_45[] = { 0, 2, 1, 3 };
-  LL_ATON_LIB_DMA_Transpose(&Transpose_128_tensor_shape_in_45[0], Transpose_128_tensor_axes_offsets_in_45[0], &Transpose_128_tensor_shape_out_45[0], Transpose_128_tensor_axes_offsets_out_45[0], Transpose_128_target_pos_array_in_45, Transpose_128_perm_to_use_array_in_45, 5, 6);
+  static const uint8_t Transpose_128_perm_to_use_array_in_42[] = { 0, 2, 1, 3 };
+  static const uint8_t Transpose_128_target_pos_array_in_42[] = { 0, 2, 1, 3 };
+  LL_ATON_LIB_DMA_Transpose(&Transpose_128_tensor_shape_in_42[0], Transpose_128_tensor_axes_offsets_in_42[0], &Transpose_128_tensor_shape_out_42[0], Transpose_128_tensor_axes_offsets_out_42[0], Transpose_128_target_pos_array_in_42, Transpose_128_perm_to_use_array_in_42, 3, 4);
 
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -611,23 +609,17 @@ static void LL_ATON_End_EpochBlock_45(const void *epoch_block)
 }
 
 
-// Epoch Controller Blob (name='_ec_blob_46') micro instructions needed
+// Epoch Controller Blob (name='_ec_blob_43') micro instructions needed
 
-// Epoch Controller Blob (name='_ec_blob_46') start function
-static void _ec_blob_cache_start_func_46(const void *epoch_block) {
+// Epoch Controller Blob (name='_ec_blob_43') start function
+static void _ec_blob_cache_start_func_43(const void *epoch_block) {
   LL_ATON_LIB_UNUSED(epoch_block);
 
   /* *** MCU cache invalidate (only) operation (HW, whole range) *** */
   /*     memory pool: 1 */
   /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 1408))) */
-  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 2816))) */
-  LL_ATON_Cache_MCU_Invalidate_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 1408))) /* Equivalent hex address = 0x342e0580UL */, 1408);
-
-  /* *** MCU cache invalidate (only) operation (HW, whole range) *** */
-  /*     memory pool: 1 */
-  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 5760))) */
-  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 5792))) */
-  LL_ATON_Cache_MCU_Invalidate_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 5760))) /* Equivalent hex address = 0x342e1680UL */, 32);
+  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 2848))) */
+  LL_ATON_Cache_MCU_Invalidate_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 1408))) /* Equivalent hex address = 0x342e0580UL */, 1440);
 
 };
 
@@ -670,17 +662,17 @@ const EpochBlock_ItemTypeDef *LL_ATON_EpochBlockItems_Default(void) {
       .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
 #ifdef LL_ATON_EB_DBG_INFO
       .epoch_num = 13,
-      .last_epoch_num = 14,
+      .last_epoch_num = 13,
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
       .start_epoch_block = NULL,
-      .end_epoch_block = LL_ATON_End_EpochBlock_15,
+      .end_epoch_block = LL_ATON_End_EpochBlock_14,
       .wait_mask = 0x00000000,
       .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
 #ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 15,
-      .last_epoch_num = 15,
+      .epoch_num = 14,
+      .last_epoch_num = 14,
       .in_streng_mask = 0x00000000,
       .out_streng_mask = 0x00000000,
       .estimated_npu_cycles = 0,
@@ -688,49 +680,49 @@ const EpochBlock_ItemTypeDef *LL_ATON_EpochBlockItems_Default(void) {
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
-      .start_epoch_block = _ec_blob_cache_start_func_16,
+      .start_epoch_block = _ec_blob_cache_start_func_15,
       .end_epoch_block = NULL,
-      .blob_address = (uintptr_t)(_ec_blob_16),
+      .blob_address = (uintptr_t)(_ec_blob_15),
       .wait_mask = 0,
       .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
 #ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 16,
-      .last_epoch_num = 26,
+      .epoch_num = 15,
+      .last_epoch_num = 25,
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
       .start_epoch_block = NULL,
-      .end_epoch_block = LL_ATON_End_EpochBlock_27,
+      .end_epoch_block = LL_ATON_End_EpochBlock_26,
       .wait_mask = 0x00000000,
       .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
+#ifdef LL_ATON_EB_DBG_INFO
+      .epoch_num = 26,
+      .last_epoch_num = 26,
+      .in_streng_mask = 0x00000000,
+      .out_streng_mask = 0x00000000,
+      .estimated_npu_cycles = 0,
+      .estimated_tot_cycles = 0,
+#endif // LL_ATON_EB_DBG_INFO
+    },
+    {
+      .start_epoch_block = _ec_blob_cache_start_func_27,
+      .end_epoch_block = NULL,
+      .blob_address = (uintptr_t)(_ec_blob_27),
+      .wait_mask = 0,
+      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
 #ifdef LL_ATON_EB_DBG_INFO
       .epoch_num = 27,
       .last_epoch_num = 27,
-      .in_streng_mask = 0x00000000,
-      .out_streng_mask = 0x00000000,
-      .estimated_npu_cycles = 0,
-      .estimated_tot_cycles = 0,
-#endif // LL_ATON_EB_DBG_INFO
-    },
-    {
-      .start_epoch_block = _ec_blob_cache_start_func_28,
-      .end_epoch_block = NULL,
-      .blob_address = (uintptr_t)(_ec_blob_28),
-      .wait_mask = 0,
-      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
-#ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 28,
-      .last_epoch_num = 29,
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
       .start_epoch_block = NULL,
-      .end_epoch_block = LL_ATON_End_EpochBlock_30,
+      .end_epoch_block = LL_ATON_End_EpochBlock_28,
       .wait_mask = 0x00000000,
       .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
 #ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 30,
-      .last_epoch_num = 30,
+      .epoch_num = 28,
+      .last_epoch_num = 28,
       .in_streng_mask = 0x00000000,
       .out_streng_mask = 0x00000000,
       .estimated_npu_cycles = 0,
@@ -738,13 +730,38 @@ const EpochBlock_ItemTypeDef *LL_ATON_EpochBlockItems_Default(void) {
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
-      .start_epoch_block = _ec_blob_cache_start_func_31,
+      .start_epoch_block = _ec_blob_cache_start_func_29,
       .end_epoch_block = NULL,
-      .blob_address = (uintptr_t)(_ec_blob_31),
+      .blob_address = (uintptr_t)(_ec_blob_29),
       .wait_mask = 0,
       .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
 #ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 31,
+      .epoch_num = 29,
+      .last_epoch_num = 39,
+#endif // LL_ATON_EB_DBG_INFO
+    },
+    {
+      .start_epoch_block = NULL,
+      .end_epoch_block = LL_ATON_End_EpochBlock_40,
+      .wait_mask = 0x00000000,
+      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
+#ifdef LL_ATON_EB_DBG_INFO
+      .epoch_num = 40,
+      .last_epoch_num = 40,
+      .in_streng_mask = 0x00000000,
+      .out_streng_mask = 0x00000000,
+      .estimated_npu_cycles = 0,
+      .estimated_tot_cycles = 0,
+#endif // LL_ATON_EB_DBG_INFO
+    },
+    {
+      .start_epoch_block = _ec_blob_cache_start_func_41,
+      .end_epoch_block = NULL,
+      .blob_address = (uintptr_t)(_ec_blob_41),
+      .wait_mask = 0,
+      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
+#ifdef LL_ATON_EB_DBG_INFO
+      .epoch_num = 41,
       .last_epoch_num = 41,
 #endif // LL_ATON_EB_DBG_INFO
     },
@@ -770,32 +787,7 @@ const EpochBlock_ItemTypeDef *LL_ATON_EpochBlockItems_Default(void) {
       .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
 #ifdef LL_ATON_EB_DBG_INFO
       .epoch_num = 43,
-      .last_epoch_num = 44,
-#endif // LL_ATON_EB_DBG_INFO
-    },
-    {
-      .start_epoch_block = NULL,
-      .end_epoch_block = LL_ATON_End_EpochBlock_45,
-      .wait_mask = 0x00000000,
-      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
-#ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 45,
-      .last_epoch_num = 45,
-      .in_streng_mask = 0x00000000,
-      .out_streng_mask = 0x00000000,
-      .estimated_npu_cycles = 0,
-      .estimated_tot_cycles = 0,
-#endif // LL_ATON_EB_DBG_INFO
-    },
-    {
-      .start_epoch_block = _ec_blob_cache_start_func_46,
-      .end_epoch_block = NULL,
-      .blob_address = (uintptr_t)(_ec_blob_46),
-      .wait_mask = 0,
-      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
-#ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 46,
-      .last_epoch_num = 94,
+      .last_epoch_num = 87,
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
@@ -2022,9 +2014,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_Default(void)
     {
       .name = "Conv2D_254_weights_inflated_460",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 616320,
-      .offset_end = 625536,
-      .offset_limit = 625600,
+      .offset_start = 625536,
+      .offset_end = 634752,
+      .offset_limit = 634816,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -2046,9 +2038,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_Default(void)
     {
       .name = "Conv2D_265_weights_inflated_462",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 625536,
-      .offset_end = 634752,
-      .offset_limit = 634816,
+      .offset_start = 616320,
+      .offset_end = 625536,
+      .offset_limit = 625600,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -2177,12 +2169,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Output_Buffers_Info_Default(void)
     {
       .name = "Quantize_242_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 5760,
-      .offset_end = 5761,
-      .offset_limit = 5832,
+      .offset_start = 2816,
+      .offset_end = 2817,
+      .offset_limit = 2888,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 81,
+      .epoch = 76,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_U_1_1,
       .mem_ndims = 2,
@@ -2206,7 +2198,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Output_Buffers_Info_Default(void)
       .offset_limit = 2880,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 93,
+      .epoch = 86,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_468_3,
       .mem_ndims = 3,
@@ -2277,13 +2269,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
   static const uint32_t buff_info__mem_shape_L_1_48_16_48[] = { 1, 16, 48, 48 };
   static const float buff_info_Transpose_40_out_0_quant_scale[] = { 0.0393866337835789 };
   static const int16_t buff_info_Transpose_40_out_0_quant_offset[] = { -103 };
-  static const uint32_t buff_info__mem_shape_F_1_48_16_48[] = { 1, 48, 16, 48 };
+  static const uint32_t buff_info__shape_1_48_32_48[] = { 1, 32, 48, 48 };
+  static const uint32_t buff_info__mem_shape_F_1_48_32_48[] = { 1, 48, 32, 48 };
   static const uint32_t buff_info__shape_1_32_48_48[] = { 1, 48, 48, 32 };
   static const uint32_t buff_info__mem_shape_M_1_32_48_48[] = { 1, 2, 48, 48, 16 };
   static const float buff_info_Conv2D_47_off_bias_out_81_quant_scale[] = { 0.0817158445715904 };
   static const int16_t buff_info_Conv2D_47_off_bias_out_81_quant_offset[] = { 63 };
-  static const uint32_t buff_info__shape_1_48_32_48[] = { 1, 32, 48, 48 };
-  static const uint32_t buff_info__mem_shape_F_1_48_32_48[] = { 1, 48, 32, 48 };
   static const uint32_t buff_info__mem_shape_F_1_32_48_48[] = { 1, 32, 48, 48 };
   static const float buff_info_Transpose_42_out_0_quant_scale[] = { 0.0393866337835789 };
   static const int16_t buff_info_Transpose_42_out_0_quant_offset[] = { -103 };
@@ -2292,8 +2283,8 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
   static const int16_t buff_info_Transpose_42_out_0_inserted_out1101_quant_offset[] = { -103 };
   static const float buff_info_PReLU_53_3_relu_x_quant_scale[] = { 0.0532291084527969 };
   static const int16_t buff_info_PReLU_53_3_relu_x_quant_offset[] = { -39 };
-  static const float buff_info_PReLU_53_3_mul_x_cp_in_147_quant_scale[] = { 0.0532291084527969 };
-  static const int16_t buff_info_PReLU_53_3_mul_x_cp_in_147_quant_offset[] = { -39 };
+  static const float buff_info_PReLU_53_3_mul_x_cp_in_173_quant_scale[] = { 0.0532291084527969 };
+  static const int16_t buff_info_PReLU_53_3_mul_x_cp_in_173_quant_offset[] = { -39 };
   static const float buff_info_PReLU_53_out_0_quant_scale[] = { 0.0532291084527969 };
   static const int16_t buff_info_PReLU_53_out_0_quant_offset[] = { -39 };
   static const float buff_info_Conv2D_55_off_bias_out_90_quant_scale[] = { 0.049899760633707 };
@@ -2330,7 +2321,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
   static const uint32_t buff_info__mem_shape_L_1_24_32_24[] = { 1, 32, 24, 24 };
   static const float buff_info_Transpose_81_out_0_quant_scale[] = { 0.0426714867353439 };
   static const int16_t buff_info_Transpose_81_out_0_quant_offset[] = { -116 };
-  static const uint32_t buff_info__mem_shape_F_1_24_32_24[] = { 1, 24, 32, 24 };
   static const uint32_t buff_info__shape_1_24_64_24[] = { 1, 64, 24, 24 };
   static const uint32_t buff_info__mem_shape_F_1_24_64_24[] = { 1, 24, 64, 24 };
   static const uint32_t buff_info__mem_shape_F_1_64_24_24[] = { 1, 64, 24, 24 };
@@ -2341,8 +2331,8 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
   static const int16_t buff_info_Transpose_83_out_0_inserted_out1119_quant_offset[] = { -116 };
   static const float buff_info_PReLU_98_6_relu_x_quant_scale[] = { 0.0465451516211033 };
   static const int16_t buff_info_PReLU_98_6_relu_x_quant_offset[] = { -77 };
-  static const float buff_info_PReLU_98_6_mul_x_cp_in_154_quant_scale[] = { 0.0465451516211033 };
-  static const int16_t buff_info_PReLU_98_6_mul_x_cp_in_154_quant_offset[] = { -77 };
+  static const float buff_info_PReLU_98_6_mul_x_cp_in_180_quant_scale[] = { 0.0465451516211033 };
+  static const int16_t buff_info_PReLU_98_6_mul_x_cp_in_180_quant_offset[] = { -77 };
   static const float buff_info_PReLU_98_out_0_quant_scale[] = { 0.0465451516211033 };
   static const int16_t buff_info_PReLU_98_out_0_quant_offset[] = { -77 };
   static const float buff_info_Conv2D_100_off_bias_out_144_quant_scale[] = { 0.0752403885126114 };
@@ -2379,7 +2369,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
   static const uint32_t buff_info__mem_shape_L_1_12_64_12[] = { 1, 64, 12, 12 };
   static const float buff_info_Transpose_126_out_0_quant_scale[] = { 0.0569714047014713 };
   static const int16_t buff_info_Transpose_126_out_0_quant_offset[] = { -103 };
-  static const uint32_t buff_info__mem_shape_F_1_12_64_12[] = { 1, 12, 64, 12 };
   static const uint32_t buff_info__shape_1_12_128_12[] = { 1, 128, 12, 12 };
   static const uint32_t buff_info__mem_shape_F_1_12_128_12[] = { 1, 12, 128, 12 };
   static const uint32_t buff_info__mem_shape_F_1_128_12_12[] = { 1, 128, 12, 12 };
@@ -2390,8 +2379,8 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
   static const int16_t buff_info_Transpose_128_out_0_inserted_out1143_quant_offset[] = { -103 };
   static const float buff_info_PReLU_143_9_relu_x_quant_scale[] = { 0.0527671985328197 };
   static const int16_t buff_info_PReLU_143_9_relu_x_quant_offset[] = { -77 };
-  static const float buff_info_PReLU_143_9_mul_x_cp_in_167_quant_scale[] = { 0.0527671985328197 };
-  static const int16_t buff_info_PReLU_143_9_mul_x_cp_in_167_quant_offset[] = { -77 };
+  static const float buff_info_PReLU_143_9_mul_x_cp_in_193_quant_scale[] = { 0.0527671985328197 };
+  static const int16_t buff_info_PReLU_143_9_mul_x_cp_in_193_quant_offset[] = { -77 };
   static const float buff_info_PReLU_143_out_0_quant_scale[] = { 0.0527671985328197 };
   static const int16_t buff_info_PReLU_143_out_0_quant_offset[] = { -77 };
   static const float buff_info_Conv2D_145_off_bias_out_198_quant_scale[] = { 0.0483245402574539 };
@@ -2419,8 +2408,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
   static const float buff_info_Conv2D_172_off_bias_out_234_quant_scale[] = { 0.0711776465177536 };
   static const int16_t buff_info_Conv2D_172_off_bias_out_234_quant_offset[] = { -14 };
   static const uint32_t buff_info__mem_shape_M_1_128_6_6[] = { 1, 8, 6, 6, 16 };
-  static const float buff_info_Conv2D_172_off_bias_out_234_cp_in_204_quant_scale[] = { 0.0711776465177536 };
-  static const int16_t buff_info_Conv2D_172_off_bias_out_234_cp_in_204_quant_offset[] = { -14 };
   static const float buff_info_PReLU_181_12_relu_x_quant_scale[] = { 0.0972811281681061 };
   static const int16_t buff_info_PReLU_181_12_relu_x_quant_offset[] = { -65 };
   static const float buff_info_PReLU_181_12_clip_x_quant_scale[] = { 0.114568263292313 };
@@ -2429,8 +2416,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
   static const int16_t buff_info_PReLU_181_out_0_quant_offset[] = { -65 };
   static const float buff_info_Conv2D_183_off_bias_out_252_quant_scale[] = { 0.0676861852407455 };
   static const int16_t buff_info_Conv2D_183_off_bias_out_252_quant_offset[] = { -14 };
-  static const float buff_info_Conv2D_183_off_bias_out_252_cp_in_205_quant_scale[] = { 0.0676861852407455 };
-  static const int16_t buff_info_Conv2D_183_off_bias_out_252_cp_in_205_quant_offset[] = { -14 };
   static const float buff_info_PReLU_192_13_relu_x_quant_scale[] = { 0.115737095475197 };
   static const int16_t buff_info_PReLU_192_13_relu_x_quant_offset[] = { -90 };
   static const float buff_info_PReLU_192_13_clip_x_quant_scale[] = { 0.132146015763283 };
@@ -2439,8 +2424,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
   static const int16_t buff_info_PReLU_192_out_0_quant_offset[] = { -90 };
   static const float buff_info_Conv2D_194_off_bias_out_270_quant_scale[] = { 0.112093061208725 };
   static const int16_t buff_info_Conv2D_194_off_bias_out_270_quant_offset[] = { 12 };
-  static const float buff_info_Conv2D_194_off_bias_out_270_cp_in_206_quant_scale[] = { 0.112093061208725 };
-  static const int16_t buff_info_Conv2D_194_off_bias_out_270_cp_in_206_quant_offset[] = { 12 };
   static const float buff_info_PReLU_203_14_relu_x_quant_scale[] = { 0.144981905817986 };
   static const int16_t buff_info_PReLU_203_14_relu_x_quant_offset[] = { -90 };
   static const float buff_info_PReLU_203_14_clip_x_quant_scale[] = { 0.174552500247955 };
@@ -2458,20 +2441,18 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
   static const float buff_info_Conv2D_210_off_bias_out_288_quant_scale[] = { 0.0971494019031525 };
   static const int16_t buff_info_Conv2D_210_off_bias_out_288_quant_offset[] = { -14 };
   static const uint32_t buff_info__mem_shape_M_1_128_3_3[] = { 1, 8, 3, 3, 16 };
-  static const float buff_info_Conv2D_243_off_bias_out_342_cp_in_207_quant_scale[] = { 0.127717301249504 };
-  static const int16_t buff_info_Conv2D_243_off_bias_out_342_cp_in_207_quant_offset[] = { -25 };
-  static const float buff_info_Conv2D_210_off_bias_out_288_cp_in_208_quant_scale[] = { 0.0971494019031525 };
-  static const int16_t buff_info_Conv2D_210_off_bias_out_288_cp_in_208_quant_offset[] = { -14 };
+  static const float buff_info_PReLU_219_15_relu_x_quant_scale[] = { 0.146402090787888 };
+  static const int16_t buff_info_PReLU_219_15_relu_x_quant_offset[] = { -118 };
+  static const float buff_info_PReLU_219_15_clip_x_quant_scale[] = { 0.178394481539726 };
+  static const int16_t buff_info_PReLU_219_15_clip_x_quant_offset[] = { -76 };
   static const float buff_info_PReLU_252_18_relu_x_quant_scale[] = { 0.1561009734869 };
   static const int16_t buff_info_PReLU_252_18_relu_x_quant_offset[] = { -90 };
   static const float buff_info_PReLU_252_18_clip_x_quant_scale[] = { 0.170429542660713 };
   static const int16_t buff_info_PReLU_252_18_clip_x_quant_offset[] = { -77 };
   static const float buff_info_PReLU_252_out_0_quant_scale[] = { 0.1561009734869 };
   static const int16_t buff_info_PReLU_252_out_0_quant_offset[] = { -90 };
-  static const float buff_info_PReLU_219_15_relu_x_quant_scale[] = { 0.146402090787888 };
-  static const int16_t buff_info_PReLU_219_15_relu_x_quant_offset[] = { -118 };
-  static const float buff_info_PReLU_219_15_clip_x_quant_scale[] = { 0.178394481539726 };
-  static const int16_t buff_info_PReLU_219_15_clip_x_quant_offset[] = { -76 };
+  static const float buff_info_PReLU_219_15_mul_x_quant_scale[] = { 0.0013166822027415 };
+  static const int16_t buff_info_PReLU_219_15_mul_x_quant_offset[] = { 0 };
   static const float buff_info_PReLU_219_out_0_quant_scale[] = { 0.146402090787888 };
   static const int16_t buff_info_PReLU_219_out_0_quant_offset[] = { -118 };
   static const uint32_t buff_info__shape_1_32_3_3[] = { 1, 3, 3, 32 };
@@ -2482,37 +2463,31 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
   static const int16_t buff_info_PReLU_223_16_mul_x_quant_offset[] = { 0 };
   static const float buff_info_Conv2D_254_off_bias_out_360_quant_scale[] = { 0.104827716946602 };
   static const int16_t buff_info_Conv2D_254_off_bias_out_360_quant_offset[] = { -1 };
-  static const uint32_t buff_info__mem_shape_L_1_32_3_3[] = { 1, 3, 3, 32 };
-  static const float buff_info_PReLU_223_out_0_quant_scale[] = { 0.0647355243563652 };
-  static const int16_t buff_info_PReLU_223_out_0_quant_offset[] = { -80 };
-  static const float buff_info_Conv2D_254_off_bias_out_360_cp_in_209_quant_scale[] = { 0.104827716946602 };
-  static const int16_t buff_info_Conv2D_254_off_bias_out_360_cp_in_209_quant_offset[] = { -1 };
-  static const float buff_info_Conv2D_225_off_bias_out_315_quant_scale[] = { 0.0662402585148811 };
-  static const int16_t buff_info_Conv2D_225_off_bias_out_315_quant_offset[] = { -37 };
   static const float buff_info_PReLU_263_19_relu_x_quant_scale[] = { 0.156244456768036 };
   static const int16_t buff_info_PReLU_263_19_relu_x_quant_offset[] = { -103 };
   static const float buff_info_PReLU_263_19_clip_x_quant_scale[] = { 0.181051835417747 };
   static const int16_t buff_info_PReLU_263_19_clip_x_quant_offset[] = { -77 };
-  static const float buff_info_Conv2D_225_off_bias_out_315_cp_in_210_quant_scale[] = { 0.0662402585148811 };
-  static const int16_t buff_info_Conv2D_225_off_bias_out_315_cp_in_210_quant_offset[] = { -37 };
+  static const uint32_t buff_info__mem_shape_L_1_32_3_3[] = { 1, 3, 3, 32 };
+  static const float buff_info_PReLU_223_out_0_quant_scale[] = { 0.0647355243563652 };
+  static const int16_t buff_info_PReLU_223_out_0_quant_offset[] = { -80 };
+  static const float buff_info_PReLU_263_19_mul_x_cp_in_229_quant_scale[] = { 0.156244456768036 };
+  static const int16_t buff_info_PReLU_263_19_mul_x_cp_in_229_quant_offset[] = { -103 };
+  static const float buff_info_Conv2D_225_off_bias_out_315_quant_scale[] = { 0.0662402585148811 };
+  static const int16_t buff_info_Conv2D_225_off_bias_out_315_quant_offset[] = { -37 };
   static const float buff_info_PReLU_263_out_0_quant_scale[] = { 0.156244456768036 };
   static const int16_t buff_info_PReLU_263_out_0_quant_offset[] = { -103 };
-  static const float buff_info_Conv2D_265_off_bias_out_378_quant_scale[] = { 0.117688037455082 };
-  static const int16_t buff_info_Conv2D_265_off_bias_out_378_quant_offset[] = { 1 };
-  static const float buff_info_Add_231_out_0_quant_scale[] = { 0.0824164375662804 };
-  static const int16_t buff_info_Add_231_out_0_quant_offset[] = { -52 };
   static const float buff_info_PReLU_234_17_relu_x_quant_scale[] = { 0.0614285506308079 };
   static const int16_t buff_info_PReLU_234_17_relu_x_quant_offset[] = { -113 };
-  static const float buff_info_Conv2D_265_off_bias_out_378_cp_in_211_quant_scale[] = { 0.117688037455082 };
-  static const int16_t buff_info_Conv2D_265_off_bias_out_378_cp_in_211_quant_offset[] = { 1 };
-  static const float buff_info_PReLU_234_out_0_quant_scale[] = { 0.0614285506308079 };
-  static const int16_t buff_info_PReLU_234_out_0_quant_offset[] = { -113 };
+  static const float buff_info_PReLU_234_17_clip_x_quant_scale[] = { 0.0824164375662804 };
+  static const int16_t buff_info_PReLU_234_17_clip_x_quant_offset[] = { -52 };
+  static const float buff_info_Conv2D_265_off_bias_out_378_quant_scale[] = { 0.117688037455082 };
+  static const int16_t buff_info_Conv2D_265_off_bias_out_378_quant_offset[] = { 1 };
   static const float buff_info_PReLU_274_20_relu_x_quant_scale[] = { 0.159099832177162 };
   static const int16_t buff_info_PReLU_274_20_relu_x_quant_offset[] = { -101 };
   static const float buff_info_PReLU_274_20_clip_x_quant_scale[] = { 0.21229250729084 };
   static const int16_t buff_info_PReLU_274_20_clip_x_quant_offset[] = { -53 };
-  static const uint32_t buff_info__shape_1_1_1_1[] = { 1, 1, 1, 1 };
-  static const uint32_t buff_info__mem_shape_F_1_1_1_1[] = { 1, 1, 1, 1 };
+  static const float buff_info_PReLU_234_out_0_quant_scale[] = { 0.0614285506308079 };
+  static const int16_t buff_info_PReLU_234_out_0_quant_offset[] = { -113 };
   static const float buff_info_PReLU_274_20_mul_x_quant_scale[] = { 0.00143652968108654 };
   static const int16_t buff_info_PReLU_274_20_mul_x_quant_offset[] = { 0 };
   static const float buff_info_PReLU_274_out_0_quant_scale[] = { 0.159099832177162 };
@@ -2525,48 +2500,44 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
   static const int16_t buff_info_PReLU_278_out_0_quant_offset[] = { -77 };
   static const float buff_info_Conv2D_280_off_bias_out_405_quant_scale[] = { 0.0485558919608593 };
   static const int16_t buff_info_Conv2D_280_off_bias_out_405_quant_offset[] = { 15 };
-  static const float buff_info_Conv2D_280_off_bias_out_405_cp_in_212_quant_scale[] = { 0.0485558919608593 };
-  static const int16_t buff_info_Conv2D_280_off_bias_out_405_cp_in_212_quant_offset[] = { 15 };
   static const float buff_info_PReLU_289_22_relu_x_quant_scale[] = { 0.0594035759568214 };
   static const int16_t buff_info_PReLU_289_22_relu_x_quant_offset[] = { -85 };
   static const float buff_info_PReLU_289_22_clip_x_quant_scale[] = { 0.0645495429635048 };
   static const int16_t buff_info_PReLU_289_22_clip_x_quant_offset[] = { -65 };
   static const float buff_info_PReLU_289_out_0_quant_scale[] = { 0.0594035759568214 };
   static const int16_t buff_info_PReLU_289_out_0_quant_offset[] = { -85 };
-  static const float buff_info_PReLU_289_out_0_cp_in_213_quant_scale[] = { 0.0594035759568214 };
-  static const int16_t buff_info_PReLU_289_out_0_cp_in_213_quant_offset[] = { -85 };
   static const uint32_t buff_info__shape_1_1404_1_1[] = { 1, 1, 1, 1404 };
   static const uint32_t buff_info__mem_shape_F_1_1404_1_1[] = { 1, 1404, 1, 1 };
   static const float buff_info_Conv2D_290_off_bias_out_423_quant_scale[] = { 0.95363587141037 };
   static const int16_t buff_info_Conv2D_290_off_bias_out_423_quant_offset[] = { -73 };
   static const uint32_t buff_info__shape_1_468_3_1[] = { 1, 3, 1, 468 };
   static const uint32_t buff_info__mem_shape_F_1_468_3_1[] = { 1, 468, 3, 1 };
-  static const float buff_info_Reshape_294_out_0_inserted_out1204_quant_scale[] = { 0.95363587141037 };
-  static const int16_t buff_info_Reshape_294_out_0_inserted_out1204_quant_offset[] = { -73 };
+  static const float buff_info_Reshape_294_out_0_inserted_out1230_quant_scale[] = { 0.95363587141037 };
+  static const int16_t buff_info_Reshape_294_out_0_inserted_out1230_quant_offset[] = { -73 };
   static const uint32_t buff_info__mem_shape_L_1_468_3_1[] = { 1, 3, 1, 468 };
-  static const float buff_info_Reshape_294_out_0_inserted_out1204_inserted_out1206_quant_scale[] = { 0.95363587141037 };
-  static const int16_t buff_info_Reshape_294_out_0_inserted_out1204_inserted_out1206_quant_offset[] = { -73 };
+  static const float buff_info_Reshape_294_out_0_inserted_out1230_inserted_out1232_quant_scale[] = { 0.95363587141037 };
+  static const int16_t buff_info_Reshape_294_out_0_inserted_out1230_inserted_out1232_quant_offset[] = { -73 };
   static const uint32_t buff_info__shape_1_3_1_468[] = { 1, 1, 468, 3 };
   static const uint32_t buff_info__mem_shape_F_1_3_1_468[] = { 1, 3, 1, 468 };
   static const float buff_info_Transpose_295_out_0_quant_scale[] = { 0.95363587141037 };
   static const int16_t buff_info_Transpose_295_out_0_quant_offset[] = { -73 };
   static const uint32_t buff_info__shape_1_3_468[] = { 1, 3, 468, 1 };
   static const uint32_t buff_info__mem_shape_F_1_3_468[] = { 1, 3, 468 };
-  static const float buff_info_Transpose_295_out_0_cp_in_196_quant_scale[] = { 0.95363587141037 };
-  static const int16_t buff_info_Transpose_295_out_0_cp_in_196_quant_offset[] = { -73 };
+  static const float buff_info_Transpose_295_out_0_cp_in_248_quant_scale[] = { 0.95363587141037 };
+  static const int16_t buff_info_Transpose_295_out_0_cp_in_248_quant_offset[] = { -73 };
   static const float buff_info_Quantize_301_out_0_quant_scale[] = { 0.00496685272082686 };
   static const int16_t buff_info_Quantize_301_out_0_quant_offset[] = { 55 };
   static const uint32_t buff_info__shape_1_3_468_1[] = { 1, 468, 1, 3 };
   static const uint32_t buff_info__mem_shape_F_1_3_468_1[] = { 1, 3, 468, 1 };
-  static const float buff_info_Quantize_301_out_0_inserted_out1215_quant_scale[] = { 0.00496685272082686 };
-  static const int16_t buff_info_Quantize_301_out_0_inserted_out1215_quant_offset[] = { 55 };
+  static const float buff_info_Quantize_301_out_0_inserted_out1241_quant_scale[] = { 0.00496685272082686 };
+  static const int16_t buff_info_Quantize_301_out_0_inserted_out1241_quant_offset[] = { 55 };
   static const uint32_t buff_info__mem_shape_L_1_3_468_1[] = { 1, 468, 1, 3 };
-  static const float buff_info_Quantize_301_out_0_inserted_out1215_inserted_out1217_quant_scale[] = { 0.00496685272082686 };
-  static const int16_t buff_info_Quantize_301_out_0_inserted_out1215_inserted_out1217_quant_offset[] = { 55 };
+  static const float buff_info_Quantize_301_out_0_inserted_out1241_inserted_out1243_quant_scale[] = { 0.00496685272082686 };
+  static const int16_t buff_info_Quantize_301_out_0_inserted_out1241_inserted_out1243_quant_offset[] = { 55 };
   static const uint32_t buff_info__shape_1_468_1_3[] = { 1, 1, 3, 468 };
   static const uint32_t buff_info__mem_shape_F_1_468_1_3[] = { 1, 468, 1, 3 };
-  static const float buff_info_Transpose_302_out_0_cp_in_200_quant_scale[] = { 0.00496685272082686 };
-  static const int16_t buff_info_Transpose_302_out_0_cp_in_200_quant_offset[] = { 55 };
+  static const float buff_info_Transpose_302_out_0_cp_in_252_quant_scale[] = { 0.00496685272082686 };
+  static const int16_t buff_info_Transpose_302_out_0_cp_in_252_quant_offset[] = { 55 };
   static const LL_Buffer_InfoTypeDef buff_info[] = {
     {
       .name = "Transpose_2_out_0",
@@ -2979,9 +2950,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "Transpose_40_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 36864,
-      .offset_limit = 36928,
+      .offset_start = 73728,
+      .offset_end = 110592,
+      .offset_limit = 110656,
       .is_user_allocated = 0,
       .is_param = 0,
       .epoch = 12,
@@ -3001,16 +2972,16 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Transpose_40_out_0_quant_offset,
     },
     {
-      .name = "Transpose_40_out_0_cp_in_201",
+      .name = "Pad_41_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 73728,
-      .offset_end = 110592,
-      .offset_limit = 110656,
+      .offset_start = 0,
+      .offset_end = 73728,
+      .offset_limit = 73792,
       .is_user_allocated = 0,
       .is_param = 0,
       .epoch = 13,
       .batch = 1,
-      .mem_shape = buff_info__mem_shape_F_1_48_16_48,
+      .mem_shape = buff_info__mem_shape_F_1_48_32_48,
       .mem_ndims = 4,
       .chpos = CHPos_First,
       .Qm = 7,
@@ -3019,7 +2990,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .type = DataType_FXP,
       .nbits = 8,
       .ndims = 4,
-      .shape = buff_info__shape_1_48_16_48,
+      .shape = buff_info__shape_1_48_32_48,
     },
     {
       .name = "Conv2D_47_off_bias_out_81",
@@ -3046,27 +3017,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Conv2D_47_off_bias_out_81_quant_offset,
     },
     {
-      .name = "Pad_41_out_0",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 73728,
-      .offset_limit = 73792,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 14,
-      .batch = 1,
-      .mem_shape = buff_info__mem_shape_F_1_48_32_48,
-      .mem_ndims = 4,
-      .chpos = CHPos_First,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_FXP,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_48_32_48,
-    },
-    {
       .name = "Transpose_42_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 73728,
@@ -3074,7 +3024,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 147520,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 15,
+      .epoch = 14,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_32_48_48,
       .mem_ndims = 4,
@@ -3098,7 +3048,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 294976,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 16,
+      .epoch = 15,
       .batch = 32,
       .mem_shape = buff_info__mem_shape_L_1_32_48_48,
       .mem_ndims = 4,
@@ -3122,7 +3072,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 73792,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 17,
+      .epoch = 16,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_48_48,
       .mem_ndims = 5,
@@ -3139,14 +3089,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_PReLU_53_3_relu_x_quant_offset,
     },
     {
-      .name = "PReLU_53_3_mul_x_cp_in_147",
+      .name = "PReLU_53_3_mul_x_cp_in_173",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 73728,
       .offset_end = 147456,
       .offset_limit = 147520,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 17,
+      .epoch = 16,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_48_48,
       .mem_ndims = 5,
@@ -3159,8 +3109,8 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .ndims = 4,
       .shape = buff_info__shape_1_32_48_48,
       .per_channel = 0,
-      .scale = buff_info_PReLU_53_3_mul_x_cp_in_147_quant_scale,
-      .offset = buff_info_PReLU_53_3_mul_x_cp_in_147_quant_offset,
+      .scale = buff_info_PReLU_53_3_mul_x_cp_in_173_quant_scale,
+      .offset = buff_info_PReLU_53_3_mul_x_cp_in_173_quant_offset,
     },
     {
       .name = "PReLU_53_out_0",
@@ -3170,7 +3120,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 221248,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 18,
+      .epoch = 17,
       .batch = 32,
       .mem_shape = buff_info__mem_shape_L_1_32_48_48,
       .mem_ndims = 4,
@@ -3194,7 +3144,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 73792,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 19,
+      .epoch = 18,
       .batch = 32,
       .mem_shape = buff_info__mem_shape_L_1_32_48_48,
       .mem_ndims = 4,
@@ -3218,7 +3168,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 294976,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 20,
+      .epoch = 19,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_48_48,
       .mem_ndims = 5,
@@ -3242,7 +3192,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 147520,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 20,
+      .epoch = 19,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_48_48,
       .mem_ndims = 5,
@@ -3266,7 +3216,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 73792,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 21,
+      .epoch = 20,
       .batch = 32,
       .mem_shape = buff_info__mem_shape_L_1_32_48_48,
       .mem_ndims = 4,
@@ -3290,7 +3240,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 147520,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 22,
+      .epoch = 21,
       .batch = 32,
       .mem_shape = buff_info__mem_shape_L_1_32_48_48,
       .mem_ndims = 4,
@@ -3314,7 +3264,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 294976,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 23,
+      .epoch = 22,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_48_48,
       .mem_ndims = 5,
@@ -3338,7 +3288,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 221248,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 23,
+      .epoch = 22,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_48_48,
       .mem_ndims = 5,
@@ -3362,7 +3312,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 294976,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 24,
+      .epoch = 23,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_48_48,
       .mem_ndims = 5,
@@ -3386,7 +3336,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 442432,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 24,
+      .epoch = 23,
       .batch = 32,
       .mem_shape = buff_info__mem_shape_L_1_32_48_48,
       .mem_ndims = 4,
@@ -3410,7 +3360,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 368704,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 25,
+      .epoch = 24,
       .batch = 32,
       .mem_shape = buff_info__mem_shape_L_1_32_48_48,
       .mem_ndims = 4,
@@ -3434,7 +3384,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 18496,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 25,
+      .epoch = 24,
       .batch = 32,
       .mem_shape = buff_info__mem_shape_L_1_32_24_24,
       .mem_ndims = 4,
@@ -3458,7 +3408,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 424000,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 26,
+      .epoch = 25,
       .batch = 32,
       .mem_shape = buff_info__mem_shape_L_1_32_24_24,
       .mem_ndims = 4,
@@ -3482,7 +3432,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 405568,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 26,
+      .epoch = 25,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_64_24_24,
       .mem_ndims = 5,
@@ -3501,12 +3451,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "Transpose_81_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 423936,
-      .offset_end = 442368,
-      .offset_limit = 442432,
+      .offset_start = 0,
+      .offset_end = 18432,
+      .offset_limit = 18496,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 27,
+      .epoch = 26,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_32_24,
       .mem_ndims = 4,
@@ -3523,27 +3473,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Transpose_81_out_0_quant_offset,
     },
     {
-      .name = "Transpose_81_out_0_cp_in_202",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 18432,
-      .offset_limit = 18496,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 28,
-      .batch = 1,
-      .mem_shape = buff_info__mem_shape_F_1_24_32_24,
-      .mem_ndims = 4,
-      .chpos = CHPos_First,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_FXP,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_24_32_24,
-    },
-    {
       .name = "Pad_82_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 405504,
@@ -3551,7 +3480,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 442432,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 29,
+      .epoch = 27,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_24_64_24,
       .mem_ndims = 4,
@@ -3572,7 +3501,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 36928,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 30,
+      .epoch = 28,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_64_24_24,
       .mem_ndims = 4,
@@ -3596,7 +3525,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 442432,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 31,
+      .epoch = 29,
       .batch = 64,
       .mem_shape = buff_info__mem_shape_L_1_64_24_24,
       .mem_ndims = 4,
@@ -3620,7 +3549,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 36928,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 32,
+      .epoch = 30,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_64_24_24,
       .mem_ndims = 5,
@@ -3637,14 +3566,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_PReLU_98_6_relu_x_quant_offset,
     },
     {
-      .name = "PReLU_98_6_mul_x_cp_in_154",
+      .name = "PReLU_98_6_mul_x_cp_in_180",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 36864,
       .offset_end = 73728,
       .offset_limit = 73792,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 32,
+      .epoch = 30,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_64_24_24,
       .mem_ndims = 5,
@@ -3657,8 +3586,8 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .ndims = 4,
       .shape = buff_info__shape_1_64_24_24,
       .per_channel = 0,
-      .scale = buff_info_PReLU_98_6_mul_x_cp_in_154_quant_scale,
-      .offset = buff_info_PReLU_98_6_mul_x_cp_in_154_quant_offset,
+      .scale = buff_info_PReLU_98_6_mul_x_cp_in_180_quant_scale,
+      .offset = buff_info_PReLU_98_6_mul_x_cp_in_180_quant_offset,
     },
     {
       .name = "PReLU_98_out_0",
@@ -3668,7 +3597,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 110656,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 33,
+      .epoch = 31,
       .batch = 64,
       .mem_shape = buff_info__mem_shape_L_1_64_24_24,
       .mem_ndims = 4,
@@ -3692,7 +3621,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 36928,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 34,
+      .epoch = 32,
       .batch = 64,
       .mem_shape = buff_info__mem_shape_L_1_64_24_24,
       .mem_ndims = 4,
@@ -3716,7 +3645,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 147520,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 35,
+      .epoch = 33,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_64_24_24,
       .mem_ndims = 5,
@@ -3740,7 +3669,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 73792,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 35,
+      .epoch = 33,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_64_24_24,
       .mem_ndims = 5,
@@ -3764,7 +3693,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 36928,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 36,
+      .epoch = 34,
       .batch = 64,
       .mem_shape = buff_info__mem_shape_L_1_64_24_24,
       .mem_ndims = 4,
@@ -3788,7 +3717,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 73792,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 37,
+      .epoch = 35,
       .batch = 64,
       .mem_shape = buff_info__mem_shape_L_1_64_24_24,
       .mem_ndims = 4,
@@ -3812,7 +3741,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 147520,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 38,
+      .epoch = 36,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_64_24_24,
       .mem_ndims = 5,
@@ -3836,7 +3765,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 110656,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 38,
+      .epoch = 36,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_64_24_24,
       .mem_ndims = 5,
@@ -3860,7 +3789,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 147520,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 39,
+      .epoch = 37,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_64_24_24,
       .mem_ndims = 5,
@@ -3884,7 +3813,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 73792,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 39,
+      .epoch = 37,
       .batch = 64,
       .mem_shape = buff_info__mem_shape_L_1_64_24_24,
       .mem_ndims = 4,
@@ -3908,7 +3837,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 36928,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 40,
+      .epoch = 38,
       .batch = 64,
       .mem_shape = buff_info__mem_shape_L_1_64_24_24,
       .mem_ndims = 4,
@@ -3932,7 +3861,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 83008,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 40,
+      .epoch = 38,
       .batch = 64,
       .mem_shape = buff_info__mem_shape_L_1_64_12_12,
       .mem_ndims = 4,
@@ -3956,7 +3885,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 64576,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 41,
+      .epoch = 39,
       .batch = 64,
       .mem_shape = buff_info__mem_shape_L_1_64_12_12,
       .mem_ndims = 4,
@@ -3980,7 +3909,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 55360,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 41,
+      .epoch = 39,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_12_12,
       .mem_ndims = 5,
@@ -3999,12 +3928,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "Transpose_126_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 9216,
-      .offset_limit = 9280,
+      .offset_start = 18432,
+      .offset_end = 27648,
+      .offset_limit = 27712,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 42,
+      .epoch = 40,
       .batch = 12,
       .mem_shape = buff_info__mem_shape_L_1_12_64_12,
       .mem_ndims = 4,
@@ -4021,27 +3950,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Transpose_126_out_0_quant_offset,
     },
     {
-      .name = "Transpose_126_out_0_cp_in_203",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 18432,
-      .offset_end = 27648,
-      .offset_limit = 27712,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 43,
-      .batch = 1,
-      .mem_shape = buff_info__mem_shape_F_1_12_64_12,
-      .mem_ndims = 4,
-      .chpos = CHPos_First,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_FXP,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_12_64_12,
-    },
-    {
       .name = "Pad_127_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
@@ -4049,7 +3957,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 18496,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 44,
+      .epoch = 41,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_12_128_12,
       .mem_ndims = 4,
@@ -4070,7 +3978,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 36928,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 45,
+      .epoch = 42,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_128_12_12,
       .mem_ndims = 4,
@@ -4094,7 +4002,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 73792,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 46,
+      .epoch = 43,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_12_12,
       .mem_ndims = 4,
@@ -4118,7 +4026,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 18496,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 47,
+      .epoch = 44,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_12_12,
       .mem_ndims = 5,
@@ -4135,14 +4043,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_PReLU_143_9_relu_x_quant_offset,
     },
     {
-      .name = "PReLU_143_9_mul_x_cp_in_167",
+      .name = "PReLU_143_9_mul_x_cp_in_193",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 18432,
       .offset_end = 36864,
       .offset_limit = 36928,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 47,
+      .epoch = 44,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_12_12,
       .mem_ndims = 5,
@@ -4155,18 +4063,18 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .ndims = 4,
       .shape = buff_info__shape_1_128_12_12,
       .per_channel = 0,
-      .scale = buff_info_PReLU_143_9_mul_x_cp_in_167_quant_scale,
-      .offset = buff_info_PReLU_143_9_mul_x_cp_in_167_quant_offset,
+      .scale = buff_info_PReLU_143_9_mul_x_cp_in_193_quant_scale,
+      .offset = buff_info_PReLU_143_9_mul_x_cp_in_193_quant_offset,
     },
     {
       .name = "PReLU_143_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 36864,
-      .offset_end = 55296,
-      .offset_limit = 55360,
+      .offset_start = 55296,
+      .offset_end = 73728,
+      .offset_limit = 73792,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 48,
+      .epoch = 45,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_12_12,
       .mem_ndims = 4,
@@ -4185,12 +4093,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "Conv2D_145_off_bias_out_198",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 18432,
-      .offset_limit = 18496,
+      .offset_start = 36864,
+      .offset_end = 55296,
+      .offset_limit = 55360,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 49,
+      .epoch = 46,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_12_12,
       .mem_ndims = 4,
@@ -4207,14 +4115,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Conv2D_145_off_bias_out_198_quant_offset,
     },
     {
-      .name = "Conv2D_148_out_0_cp_in_168_cp_in_169_cp_in_170",
+      .name = "Conv2D_148_out_0_cp_in_194_cp_in_195_cp_in_196",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 73728,
-      .offset_end = 78336,
-      .offset_limit = 78400,
+      .offset_start = 0,
+      .offset_end = 36864,
+      .offset_limit = 36928,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 50,
+      .epoch = 47,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_12_12,
       .mem_ndims = 5,
@@ -4230,12 +4138,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_154_10_relu_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 55296,
-      .offset_end = 73728,
-      .offset_limit = 73792,
+      .offset_start = 92160,
+      .offset_end = 110592,
+      .offset_limit = 110656,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 50,
+      .epoch = 47,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_12_12,
       .mem_ndims = 5,
@@ -4254,12 +4162,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_154_10_clip_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 18432,
-      .offset_end = 36864,
-      .offset_limit = 36928,
+      .offset_start = 73728,
+      .offset_end = 92160,
+      .offset_limit = 92224,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 50,
+      .epoch = 47,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_12_12,
       .mem_ndims = 5,
@@ -4277,6 +4185,123 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     },
     {
       .name = "PReLU_154_out_0",
+      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
+      .offset_start = 55296,
+      .offset_end = 73728,
+      .offset_limit = 73792,
+      .is_user_allocated = 0,
+      .is_param = 0,
+      .epoch = 48,
+      .batch = 128,
+      .mem_shape = buff_info__mem_shape_L_1_128_12_12,
+      .mem_ndims = 4,
+      .chpos = CHPos_Last,
+      .Qm = 7,
+      .Qn = 0,
+      .Qunsigned = 0,
+      .type = DataType_INT8,
+      .nbits = 8,
+      .ndims = 4,
+      .shape = buff_info__shape_1_128_12_12,
+      .per_channel = 0,
+      .scale = buff_info_PReLU_154_out_0_quant_scale,
+      .offset = buff_info_PReLU_154_out_0_quant_offset,
+    },
+    {
+      .name = "Conv2D_156_off_bias_out_216",
+      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
+      .offset_start = 36864,
+      .offset_end = 55296,
+      .offset_limit = 55360,
+      .is_user_allocated = 0,
+      .is_param = 0,
+      .epoch = 49,
+      .batch = 128,
+      .mem_shape = buff_info__mem_shape_L_1_128_12_12,
+      .mem_ndims = 4,
+      .chpos = CHPos_Last,
+      .Qm = 7,
+      .Qn = 0,
+      .Qunsigned = 0,
+      .type = DataType_INT8,
+      .nbits = 8,
+      .ndims = 4,
+      .shape = buff_info__shape_1_128_12_12,
+      .per_channel = 0,
+      .scale = buff_info_Conv2D_156_off_bias_out_216_quant_scale,
+      .offset = buff_info_Conv2D_156_off_bias_out_216_quant_offset,
+    },
+    {
+      .name = "Conv2D_159_out_0_cp_in_198_cp_in_199_cp_in_200",
+      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
+      .offset_start = 0,
+      .offset_end = 36864,
+      .offset_limit = 36928,
+      .is_user_allocated = 0,
+      .is_param = 0,
+      .epoch = 50,
+      .batch = 16,
+      .mem_shape = buff_info__mem_shape_M_1_128_12_12,
+      .mem_ndims = 5,
+      .chpos = CHPos_Mixed,
+      .Qm = 19,
+      .Qn = -4,
+      .Qunsigned = 0,
+      .type = DataType_FXP,
+      .nbits = 16,
+      .ndims = 4,
+      .shape = buff_info__shape_1_128_12_12,
+    },
+    {
+      .name = "PReLU_165_11_relu_x",
+      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
+      .offset_start = 92160,
+      .offset_end = 110592,
+      .offset_limit = 110656,
+      .is_user_allocated = 0,
+      .is_param = 0,
+      .epoch = 50,
+      .batch = 16,
+      .mem_shape = buff_info__mem_shape_M_1_128_12_12,
+      .mem_ndims = 5,
+      .chpos = CHPos_Mixed,
+      .Qm = 7,
+      .Qn = 0,
+      .Qunsigned = 0,
+      .type = DataType_INT8,
+      .nbits = 8,
+      .ndims = 4,
+      .shape = buff_info__shape_1_128_12_12,
+      .per_channel = 0,
+      .scale = buff_info_PReLU_165_11_relu_x_quant_scale,
+      .offset = buff_info_PReLU_165_11_relu_x_quant_offset,
+    },
+    {
+      .name = "PReLU_165_11_clip_x",
+      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
+      .offset_start = 73728,
+      .offset_end = 92160,
+      .offset_limit = 92224,
+      .is_user_allocated = 0,
+      .is_param = 0,
+      .epoch = 50,
+      .batch = 16,
+      .mem_shape = buff_info__mem_shape_M_1_128_12_12,
+      .mem_ndims = 5,
+      .chpos = CHPos_Mixed,
+      .Qm = 7,
+      .Qn = 0,
+      .Qunsigned = 0,
+      .type = DataType_INT8,
+      .nbits = 8,
+      .ndims = 4,
+      .shape = buff_info__shape_1_128_12_12,
+      .per_channel = 0,
+      .scale = buff_info_PReLU_165_11_clip_x_quant_scale,
+      .offset = buff_info_PReLU_165_11_clip_x_quant_offset,
+    },
+    {
+      .name = "PReLU_165_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 36864,
       .offset_end = 55296,
@@ -4296,135 +4321,18 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .ndims = 4,
       .shape = buff_info__shape_1_128_12_12,
       .per_channel = 0,
-      .scale = buff_info_PReLU_154_out_0_quant_scale,
-      .offset = buff_info_PReLU_154_out_0_quant_offset,
-    },
-    {
-      .name = "Conv2D_156_off_bias_out_216",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 18432,
-      .offset_limit = 18496,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 52,
-      .batch = 128,
-      .mem_shape = buff_info__mem_shape_L_1_128_12_12,
-      .mem_ndims = 4,
-      .chpos = CHPos_Last,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_12_12,
-      .per_channel = 0,
-      .scale = buff_info_Conv2D_156_off_bias_out_216_quant_scale,
-      .offset = buff_info_Conv2D_156_off_bias_out_216_quant_offset,
-    },
-    {
-      .name = "Conv2D_159_out_0_cp_in_172_cp_in_173_cp_in_174",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 73728,
-      .offset_end = 78336,
-      .offset_limit = 78400,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 53,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_128_12_12,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 19,
-      .Qn = -4,
-      .Qunsigned = 0,
-      .type = DataType_FXP,
-      .nbits = 16,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_12_12,
-    },
-    {
-      .name = "PReLU_165_11_relu_x",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 55296,
-      .offset_end = 73728,
-      .offset_limit = 73792,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 53,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_128_12_12,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_12_12,
-      .per_channel = 0,
-      .scale = buff_info_PReLU_165_11_relu_x_quant_scale,
-      .offset = buff_info_PReLU_165_11_relu_x_quant_offset,
-    },
-    {
-      .name = "PReLU_165_11_clip_x",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 18432,
-      .offset_end = 36864,
-      .offset_limit = 36928,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 53,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_128_12_12,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_12_12,
-      .per_channel = 0,
-      .scale = buff_info_PReLU_165_11_clip_x_quant_scale,
-      .offset = buff_info_PReLU_165_11_clip_x_quant_offset,
-    },
-    {
-      .name = "PReLU_165_out_0",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 18432,
-      .offset_limit = 18496,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 54,
-      .batch = 128,
-      .mem_shape = buff_info__mem_shape_L_1_128_12_12,
-      .mem_ndims = 4,
-      .chpos = CHPos_Last,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_12_12,
-      .per_channel = 0,
       .scale = buff_info_PReLU_165_out_0_quant_scale,
       .offset = buff_info_PReLU_165_out_0_quant_offset,
     },
     {
       .name = "Quantize_169_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 36864,
-      .offset_end = 55296,
-      .offset_limit = 55360,
+      .offset_start = 55296,
+      .offset_end = 73728,
+      .offset_limit = 73792,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 54,
+      .epoch = 51,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_12_12,
       .mem_ndims = 4,
@@ -4443,12 +4351,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "MaxPool_166_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 23040,
-      .offset_end = 27648,
-      .offset_limit = 27712,
+      .offset_start = 13824,
+      .offset_end = 18432,
+      .offset_limit = 18496,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 55,
+      .epoch = 52,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_6_6,
       .mem_ndims = 4,
@@ -4467,12 +4375,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "Conv2D_172_off_bias_out_234",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 18432,
-      .offset_end = 23040,
-      .offset_limit = 23104,
+      .offset_start = 9216,
+      .offset_end = 13824,
+      .offset_limit = 13888,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 55,
+      .epoch = 52,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_6_6,
       .mem_ndims = 4,
@@ -4489,38 +4397,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Conv2D_172_off_bias_out_234_quant_offset,
     },
     {
-      .name = "Conv2D_172_off_bias_out_234_cp_in_204",
+      .name = "Conv2D_175_out_0_cp_in_202_cp_in_203_cp_in_204",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
-      .offset_end = 4608,
-      .offset_limit = 4672,
+      .offset_end = 9216,
+      .offset_limit = 9280,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 56,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_128_6_6,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_6_6,
-      .per_channel = 0,
-      .scale = buff_info_Conv2D_172_off_bias_out_234_cp_in_204_quant_scale,
-      .offset = buff_info_Conv2D_172_off_bias_out_234_cp_in_204_quant_offset,
-    },
-    {
-      .name = "Conv2D_175_out_0_cp_in_176_cp_in_177_cp_in_178",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 18432,
-      .offset_end = 19584,
-      .offset_limit = 19648,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 57,
+      .epoch = 53,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_6_6,
       .mem_ndims = 5,
@@ -4536,12 +4420,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_181_12_relu_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 9216,
-      .offset_end = 13824,
-      .offset_limit = 13888,
+      .offset_start = 23040,
+      .offset_end = 27648,
+      .offset_limit = 27712,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 57,
+      .epoch = 53,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_6_6,
       .mem_ndims = 5,
@@ -4560,12 +4444,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_181_12_clip_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4608,
-      .offset_end = 9216,
-      .offset_limit = 9280,
+      .offset_start = 18432,
+      .offset_end = 23040,
+      .offset_limit = 23104,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 57,
+      .epoch = 53,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_6_6,
       .mem_ndims = 5,
@@ -4589,7 +4473,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 18496,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 58,
+      .epoch = 54,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_6_6,
       .mem_ndims = 4,
@@ -4608,12 +4492,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "Conv2D_183_off_bias_out_252",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4608,
-      .offset_end = 9216,
-      .offset_limit = 9280,
+      .offset_start = 9216,
+      .offset_end = 13824,
+      .offset_limit = 13888,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 59,
+      .epoch = 55,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_6_6,
       .mem_ndims = 4,
@@ -4630,38 +4514,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Conv2D_183_off_bias_out_252_quant_offset,
     },
     {
-      .name = "Conv2D_183_off_bias_out_252_cp_in_205",
+      .name = "Conv2D_186_out_0_cp_in_206_cp_in_207_cp_in_208",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
-      .offset_end = 4608,
-      .offset_limit = 4672,
+      .offset_end = 9216,
+      .offset_limit = 9280,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 60,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_128_6_6,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_6_6,
-      .per_channel = 0,
-      .scale = buff_info_Conv2D_183_off_bias_out_252_cp_in_205_quant_scale,
-      .offset = buff_info_Conv2D_183_off_bias_out_252_cp_in_205_quant_offset,
-    },
-    {
-      .name = "Conv2D_186_out_0_cp_in_180_cp_in_181_cp_in_182",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 18432,
-      .offset_end = 19584,
-      .offset_limit = 19648,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 61,
+      .epoch = 56,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_6_6,
       .mem_ndims = 5,
@@ -4677,12 +4537,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_192_13_relu_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 9216,
-      .offset_end = 13824,
-      .offset_limit = 13888,
+      .offset_start = 23040,
+      .offset_end = 27648,
+      .offset_limit = 27712,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 61,
+      .epoch = 56,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_6_6,
       .mem_ndims = 5,
@@ -4701,12 +4561,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_192_13_clip_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4608,
-      .offset_end = 9216,
-      .offset_limit = 9280,
+      .offset_start = 18432,
+      .offset_end = 23040,
+      .offset_limit = 23104,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 61,
+      .epoch = 56,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_6_6,
       .mem_ndims = 5,
@@ -4730,7 +4590,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 18496,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 62,
+      .epoch = 57,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_6_6,
       .mem_ndims = 4,
@@ -4749,12 +4609,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "Conv2D_194_off_bias_out_270",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4608,
-      .offset_end = 9216,
-      .offset_limit = 9280,
+      .offset_start = 9216,
+      .offset_end = 13824,
+      .offset_limit = 13888,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 63,
+      .epoch = 58,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_6_6,
       .mem_ndims = 4,
@@ -4771,38 +4631,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Conv2D_194_off_bias_out_270_quant_offset,
     },
     {
-      .name = "Conv2D_194_off_bias_out_270_cp_in_206",
+      .name = "Conv2D_197_out_0_cp_in_210_cp_in_211_cp_in_212",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
-      .offset_end = 4608,
-      .offset_limit = 4672,
+      .offset_end = 9216,
+      .offset_limit = 9280,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 64,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_128_6_6,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_6_6,
-      .per_channel = 0,
-      .scale = buff_info_Conv2D_194_off_bias_out_270_cp_in_206_quant_scale,
-      .offset = buff_info_Conv2D_194_off_bias_out_270_cp_in_206_quant_offset,
-    },
-    {
-      .name = "Conv2D_197_out_0_cp_in_184_cp_in_185_cp_in_186",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 18432,
-      .offset_end = 19584,
-      .offset_limit = 19648,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 65,
+      .epoch = 59,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_6_6,
       .mem_ndims = 5,
@@ -4818,12 +4654,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_203_14_relu_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 9216,
-      .offset_end = 13824,
-      .offset_limit = 13888,
+      .offset_start = 23040,
+      .offset_end = 27648,
+      .offset_limit = 27712,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 65,
+      .epoch = 59,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_6_6,
       .mem_ndims = 5,
@@ -4842,12 +4678,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_203_14_clip_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4608,
-      .offset_end = 9216,
-      .offset_limit = 9280,
+      .offset_start = 18432,
+      .offset_end = 23040,
+      .offset_limit = 23104,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 65,
+      .epoch = 59,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_6_6,
       .mem_ndims = 5,
@@ -4866,12 +4702,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_203_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 4608,
-      .offset_limit = 4672,
+      .offset_start = 9216,
+      .offset_end = 13824,
+      .offset_limit = 13888,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 66,
+      .epoch = 60,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_6_6,
       .mem_ndims = 4,
@@ -4895,7 +4731,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 18496,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 66,
+      .epoch = 60,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_6_6,
       .mem_ndims = 4,
@@ -4914,12 +4750,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "MaxPool_204_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 6912,
-      .offset_end = 8064,
-      .offset_limit = 8128,
+      .offset_start = 5760,
+      .offset_end = 6912,
+      .offset_limit = 6976,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 67,
+      .epoch = 61,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_3_3,
       .mem_ndims = 4,
@@ -4938,12 +4774,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "Conv2D_243_off_bias_out_342",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 5760,
-      .offset_end = 6912,
-      .offset_limit = 6976,
+      .offset_start = 0,
+      .offset_end = 1152,
+      .offset_limit = 1216,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 67,
+      .epoch = 61,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_3_3,
       .mem_ndims = 4,
@@ -4967,7 +4803,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 5824,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 67,
+      .epoch = 61,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_3_3,
       .mem_ndims = 4,
@@ -4984,62 +4820,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Conv2D_210_off_bias_out_288_quant_offset,
     },
     {
-      .name = "Conv2D_243_off_bias_out_342_cp_in_207",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 1152,
-      .offset_limit = 1216,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 68,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_128_3_3,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_3_3,
-      .per_channel = 0,
-      .scale = buff_info_Conv2D_243_off_bias_out_342_cp_in_207_quant_scale,
-      .offset = buff_info_Conv2D_243_off_bias_out_342_cp_in_207_quant_offset,
-    },
-    {
-      .name = "Conv2D_210_off_bias_out_288_cp_in_208",
+      .name = "Conv2D_246_out_0_cp_in_214_cp_in_215_cp_in_216",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 2304,
-      .offset_end = 3456,
-      .offset_limit = 3520,
+      .offset_end = 4608,
+      .offset_limit = 4672,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 68,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_128_3_3,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_3_3,
-      .per_channel = 0,
-      .scale = buff_info_Conv2D_210_off_bias_out_288_cp_in_208_quant_scale,
-      .offset = buff_info_Conv2D_210_off_bias_out_288_cp_in_208_quant_offset,
-    },
-    {
-      .name = "Conv2D_246_out_0",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 8064,
-      .offset_end = 8352,
-      .offset_limit = 8416,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 69,
+      .epoch = 62,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
@@ -5053,62 +4841,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .shape = buff_info__shape_1_128_3_3,
     },
     {
-      .name = "PReLU_252_18_relu_x",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4608,
-      .offset_end = 5760,
-      .offset_limit = 5824,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 69,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_128_3_3,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_3_3,
-      .per_channel = 0,
-      .scale = buff_info_PReLU_252_18_relu_x_quant_scale,
-      .offset = buff_info_PReLU_252_18_relu_x_quant_offset,
-    },
-    {
-      .name = "PReLU_252_18_clip_x",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 3456,
-      .offset_end = 4608,
-      .offset_limit = 4672,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 69,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_128_3_3,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_3_3,
-      .per_channel = 0,
-      .scale = buff_info_PReLU_252_18_clip_x_quant_scale,
-      .offset = buff_info_PReLU_252_18_clip_x_quant_offset,
-    },
-    {
-      .name = "Conv2D_213_out_0",
+      .name = "Conv2D_213_out_0_cp_in_217_cp_in_218_cp_in_219",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
       .offset_end = 2304,
       .offset_limit = 2368,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 70,
+      .epoch = 63,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
@@ -5120,30 +4860,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .nbits = 16,
       .ndims = 4,
       .shape = buff_info__shape_1_128_3_3,
-    },
-    {
-      .name = "PReLU_252_out_0",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 5760,
-      .offset_end = 6912,
-      .offset_limit = 6976,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 70,
-      .batch = 128,
-      .mem_shape = buff_info__mem_shape_L_1_128_3_3,
-      .mem_ndims = 4,
-      .chpos = CHPos_Last,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_3_3,
-      .per_channel = 0,
-      .scale = buff_info_PReLU_252_out_0_quant_scale,
-      .offset = buff_info_PReLU_252_out_0_quant_offset,
     },
     {
       .name = "PReLU_219_15_relu_x",
@@ -5153,7 +4869,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 9280,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 71,
+      .epoch = 63,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
@@ -5172,12 +4888,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_219_15_clip_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4608,
-      .offset_end = 5760,
-      .offset_limit = 5824,
+      .offset_start = 6912,
+      .offset_end = 8064,
+      .offset_limit = 8128,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 71,
+      .epoch = 63,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
@@ -5194,25 +4910,100 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_PReLU_219_15_clip_x_quant_offset,
     },
     {
-      .name = "Conv2D_254_out_0",
+      .name = "PReLU_252_18_relu_x",
+      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
+      .offset_start = 9216,
+      .offset_end = 10368,
+      .offset_limit = 10432,
+      .is_user_allocated = 0,
+      .is_param = 0,
+      .epoch = 64,
+      .batch = 16,
+      .mem_shape = buff_info__mem_shape_M_1_128_3_3,
+      .mem_ndims = 5,
+      .chpos = CHPos_Mixed,
+      .Qm = 7,
+      .Qn = 0,
+      .Qunsigned = 0,
+      .type = DataType_INT8,
+      .nbits = 8,
+      .ndims = 4,
+      .shape = buff_info__shape_1_128_3_3,
+      .per_channel = 0,
+      .scale = buff_info_PReLU_252_18_relu_x_quant_scale,
+      .offset = buff_info_PReLU_252_18_relu_x_quant_offset,
+    },
+    {
+      .name = "PReLU_252_18_clip_x",
+      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
+      .offset_start = 4608,
+      .offset_end = 5760,
+      .offset_limit = 5824,
+      .is_user_allocated = 0,
+      .is_param = 0,
+      .epoch = 64,
+      .batch = 16,
+      .mem_shape = buff_info__mem_shape_M_1_128_3_3,
+      .mem_ndims = 5,
+      .chpos = CHPos_Mixed,
+      .Qm = 7,
+      .Qn = 0,
+      .Qunsigned = 0,
+      .type = DataType_INT8,
+      .nbits = 8,
+      .ndims = 4,
+      .shape = buff_info__shape_1_128_3_3,
+      .per_channel = 0,
+      .scale = buff_info_PReLU_252_18_clip_x_quant_scale,
+      .offset = buff_info_PReLU_252_18_clip_x_quant_offset,
+    },
+    {
+      .name = "PReLU_252_out_0",
+      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
+      .offset_start = 5760,
+      .offset_end = 6912,
+      .offset_limit = 6976,
+      .is_user_allocated = 0,
+      .is_param = 0,
+      .epoch = 65,
+      .batch = 128,
+      .mem_shape = buff_info__mem_shape_L_1_128_3_3,
+      .mem_ndims = 4,
+      .chpos = CHPos_Last,
+      .Qm = 7,
+      .Qn = 0,
+      .Qunsigned = 0,
+      .type = DataType_INT8,
+      .nbits = 8,
+      .ndims = 4,
+      .shape = buff_info__shape_1_128_3_3,
+      .per_channel = 0,
+      .scale = buff_info_PReLU_252_out_0_quant_scale,
+      .offset = buff_info_PReLU_252_out_0_quant_offset,
+    },
+    {
+      .name = "PReLU_219_15_mul_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 2304,
       .offset_end = 4608,
       .offset_limit = 4672,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 71,
-      .batch = 4,
+      .epoch = 65,
+      .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
       .chpos = CHPos_Mixed,
-      .Qm = 18,
-      .Qn = -3,
+      .Qm = 15,
+      .Qn = 0,
       .Qunsigned = 0,
-      .type = DataType_FXP,
+      .type = DataType_INT16,
       .nbits = 16,
       .ndims = 4,
       .shape = buff_info__shape_1_128_3_3,
+      .per_channel = 0,
+      .scale = buff_info_PReLU_219_15_mul_x_quant_scale,
+      .offset = buff_info_PReLU_219_15_mul_x_quant_offset,
     },
     {
       .name = "PReLU_219_out_0",
@@ -5222,7 +5013,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 9280,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 72,
+      .epoch = 66,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
@@ -5239,20 +5030,20 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_PReLU_219_out_0_quant_offset,
     },
     {
-      .name = "Conv2D_254_mul_scale_out_357",
+      .name = "Conv2D_254_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
       .offset_end = 2304,
       .offset_limit = 2368,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 72,
+      .epoch = 66,
       .batch = 4,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
       .chpos = CHPos_Mixed,
-      .Qm = 6,
-      .Qn = 9,
+      .Qm = 18,
+      .Qn = -3,
       .Qunsigned = 0,
       .type = DataType_FXP,
       .nbits = 16,
@@ -5260,14 +5051,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .shape = buff_info__shape_1_128_3_3,
     },
     {
-      .name = "Conv2D_220_out_0",
+      .name = "Conv2D_220_out_0_cp_in_222_cp_in_223_cp_in_224",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 7488,
-      .offset_end = 7776,
-      .offset_limit = 7840,
+      .offset_start = 6912,
+      .offset_end = 7488,
+      .offset_limit = 7552,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 73,
+      .epoch = 67,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_3_3,
       .mem_ndims = 5,
@@ -5283,12 +5074,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_223_16_relu_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 7776,
-      .offset_end = 8064,
-      .offset_limit = 8128,
+      .offset_start = 9792,
+      .offset_end = 10080,
+      .offset_limit = 10144,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 73,
+      .epoch = 67,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_3_3,
       .mem_ndims = 5,
@@ -5307,12 +5098,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_223_16_mul_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 6912,
-      .offset_end = 7488,
-      .offset_limit = 7552,
+      .offset_start = 9216,
+      .offset_end = 9792,
+      .offset_limit = 9856,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 73,
+      .epoch = 67,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_3_3,
       .mem_ndims = 5,
@@ -5331,12 +5122,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "Conv2D_254_off_bias_out_360",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 2304,
-      .offset_end = 3456,
-      .offset_limit = 3520,
+      .offset_start = 4608,
+      .offset_end = 5760,
+      .offset_limit = 5824,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 74,
+      .epoch = 68,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_3_3,
       .mem_ndims = 4,
@@ -5353,86 +5144,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Conv2D_254_off_bias_out_360_quant_offset,
     },
     {
-      .name = "PReLU_223_out_0",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4608,
-      .offset_end = 4896,
-      .offset_limit = 4960,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 74,
-      .batch = 32,
-      .mem_shape = buff_info__mem_shape_L_1_32_3_3,
-      .mem_ndims = 4,
-      .chpos = CHPos_Last,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_32_3_3,
-      .per_channel = 0,
-      .scale = buff_info_PReLU_223_out_0_quant_scale,
-      .offset = buff_info_PReLU_223_out_0_quant_offset,
-    },
-    {
-      .name = "Conv2D_254_off_bias_out_360_cp_in_209",
+      .name = "Conv2D_257_out_0_cp_in_225_cp_in_226_cp_in_227",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
-      .offset_end = 1152,
-      .offset_limit = 1216,
+      .offset_end = 2304,
+      .offset_limit = 2368,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 75,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_128_3_3,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_3_3,
-      .per_channel = 0,
-      .scale = buff_info_Conv2D_254_off_bias_out_360_cp_in_209_quant_scale,
-      .offset = buff_info_Conv2D_254_off_bias_out_360_cp_in_209_quant_offset,
-    },
-    {
-      .name = "Conv2D_225_off_bias_out_315",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4896,
-      .offset_end = 5184,
-      .offset_limit = 5248,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 75,
-      .batch = 32,
-      .mem_shape = buff_info__mem_shape_L_1_32_3_3,
-      .mem_ndims = 4,
-      .chpos = CHPos_Last,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_32_3_3,
-      .per_channel = 0,
-      .scale = buff_info_Conv2D_225_off_bias_out_315_quant_scale,
-      .offset = buff_info_Conv2D_225_off_bias_out_315_quant_offset,
-    },
-    {
-      .name = "Conv2D_257_out_0",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 5184,
-      .offset_end = 5472,
-      .offset_limit = 5536,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 76,
+      .epoch = 69,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
@@ -5453,7 +5172,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 3520,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 76,
+      .epoch = 69,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
@@ -5472,12 +5191,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_263_19_clip_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 1152,
-      .offset_end = 2304,
-      .offset_limit = 2368,
+      .offset_start = 6912,
+      .offset_end = 8064,
+      .offset_limit = 8128,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 76,
+      .epoch = 69,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
@@ -5494,18 +5213,18 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_PReLU_263_19_clip_x_quant_offset,
     },
     {
-      .name = "Conv2D_225_off_bias_out_315_cp_in_210",
+      .name = "PReLU_223_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4320,
-      .offset_end = 4608,
-      .offset_limit = 4672,
+      .offset_start = 6048,
+      .offset_end = 6336,
+      .offset_limit = 6400,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 76,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_32_3_3,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
+      .epoch = 70,
+      .batch = 32,
+      .mem_shape = buff_info__mem_shape_L_1_32_3_3,
+      .mem_ndims = 4,
+      .chpos = CHPos_Last,
       .Qm = 7,
       .Qn = 0,
       .Qunsigned = 0,
@@ -5514,18 +5233,66 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .ndims = 4,
       .shape = buff_info__shape_1_32_3_3,
       .per_channel = 0,
-      .scale = buff_info_Conv2D_225_off_bias_out_315_cp_in_210_quant_scale,
-      .offset = buff_info_Conv2D_225_off_bias_out_315_cp_in_210_quant_offset,
+      .scale = buff_info_PReLU_223_out_0_quant_scale,
+      .offset = buff_info_PReLU_223_out_0_quant_offset,
+    },
+    {
+      .name = "PReLU_263_19_mul_x_cp_in_229",
+      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
+      .offset_start = 3456,
+      .offset_end = 4608,
+      .offset_limit = 4672,
+      .is_user_allocated = 0,
+      .is_param = 0,
+      .epoch = 70,
+      .batch = 16,
+      .mem_shape = buff_info__mem_shape_M_1_128_3_3,
+      .mem_ndims = 5,
+      .chpos = CHPos_Mixed,
+      .Qm = 7,
+      .Qn = 0,
+      .Qunsigned = 0,
+      .type = DataType_INT8,
+      .nbits = 8,
+      .ndims = 4,
+      .shape = buff_info__shape_1_128_3_3,
+      .per_channel = 0,
+      .scale = buff_info_PReLU_263_19_mul_x_cp_in_229_quant_scale,
+      .offset = buff_info_PReLU_263_19_mul_x_cp_in_229_quant_offset,
+    },
+    {
+      .name = "Conv2D_225_off_bias_out_315",
+      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
+      .offset_start = 5760,
+      .offset_end = 6048,
+      .offset_limit = 6112,
+      .is_user_allocated = 0,
+      .is_param = 0,
+      .epoch = 71,
+      .batch = 32,
+      .mem_shape = buff_info__mem_shape_L_1_32_3_3,
+      .mem_ndims = 4,
+      .chpos = CHPos_Last,
+      .Qm = 7,
+      .Qn = 0,
+      .Qunsigned = 0,
+      .type = DataType_INT8,
+      .nbits = 8,
+      .ndims = 4,
+      .shape = buff_info__shape_1_32_3_3,
+      .per_channel = 0,
+      .scale = buff_info_Conv2D_225_off_bias_out_315_quant_scale,
+      .offset = buff_info_Conv2D_225_off_bias_out_315_quant_offset,
     },
     {
       .name = "PReLU_263_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 1152,
-      .offset_limit = 1216,
+      .offset_start = 4608,
+      .offset_end = 5760,
+      .offset_limit = 5824,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 77,
+      .epoch = 71,
       .batch = 128,
       .mem_shape = buff_info__mem_shape_L_1_128_3_3,
       .mem_ndims = 4,
@@ -5542,104 +5309,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_PReLU_263_out_0_quant_offset,
     },
     {
-      .name = "Conv2D_228_out_0",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4032,
-      .offset_end = 4320,
-      .offset_limit = 4384,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 77,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_32_3_3,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 17,
-      .Qn = -2,
-      .Qunsigned = 0,
-      .type = DataType_FXP,
-      .nbits = 16,
-      .ndims = 4,
-      .shape = buff_info__shape_1_32_3_3,
-    },
-    {
-      .name = "Conv2D_228_mul_scale_out_321",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 3456,
-      .offset_end = 4032,
-      .offset_limit = 4096,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 77,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_32_3_3,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 5,
-      .Qn = 10,
-      .Qunsigned = 0,
-      .type = DataType_FXP,
-      .nbits = 16,
-      .ndims = 4,
-      .shape = buff_info__shape_1_32_3_3,
-    },
-    {
-      .name = "Conv2D_265_off_bias_out_378",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 1152,
-      .offset_end = 2304,
-      .offset_limit = 2368,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 78,
-      .batch = 128,
-      .mem_shape = buff_info__mem_shape_L_1_128_3_3,
-      .mem_ndims = 4,
-      .chpos = CHPos_Last,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_128_3_3,
-      .per_channel = 0,
-      .scale = buff_info_Conv2D_265_off_bias_out_378_quant_scale,
-      .offset = buff_info_Conv2D_265_off_bias_out_378_quant_offset,
-    },
-    {
-      .name = "Add_231_out_0",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4320,
-      .offset_end = 4608,
-      .offset_limit = 4672,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 78,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_32_3_3,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_32_3_3,
-      .per_channel = 0,
-      .scale = buff_info_Add_231_out_0_quant_scale,
-      .offset = buff_info_Add_231_out_0_quant_offset,
-    },
-    {
       .name = "PReLU_234_17_relu_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4896,
-      .offset_end = 5184,
-      .offset_limit = 5248,
+      .offset_start = 6912,
+      .offset_end = 7200,
+      .offset_limit = 7264,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 78,
+      .epoch = 72,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_3_3,
       .mem_ndims = 5,
@@ -5656,16 +5333,16 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_PReLU_234_17_relu_x_quant_offset,
     },
     {
-      .name = "Conv2D_265_off_bias_out_378_cp_in_211",
+      .name = "PReLU_234_17_clip_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 2304,
-      .offset_end = 3456,
-      .offset_limit = 3520,
+      .offset_start = 7200,
+      .offset_end = 7488,
+      .offset_limit = 7552,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 79,
+      .epoch = 72,
       .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_128_3_3,
+      .mem_shape = buff_info__mem_shape_M_1_32_3_3,
       .mem_ndims = 5,
       .chpos = CHPos_Mixed,
       .Qm = 7,
@@ -5674,22 +5351,43 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = buff_info__shape_1_128_3_3,
+      .shape = buff_info__shape_1_32_3_3,
       .per_channel = 0,
-      .scale = buff_info_Conv2D_265_off_bias_out_378_cp_in_211_quant_scale,
-      .offset = buff_info_Conv2D_265_off_bias_out_378_cp_in_211_quant_offset,
+      .scale = buff_info_PReLU_234_17_clip_x_quant_scale,
+      .offset = buff_info_PReLU_234_17_clip_x_quant_offset,
     },
     {
-      .name = "PReLU_234_out_0",
+      .name = "Conv2D_265_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 5760,
-      .offset_end = 6048,
-      .offset_limit = 6112,
+      .offset_start = 0,
+      .offset_end = 2304,
+      .offset_limit = 2368,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 79,
-      .batch = 32,
-      .mem_shape = buff_info__mem_shape_L_1_32_3_3,
+      .epoch = 72,
+      .batch = 4,
+      .mem_shape = buff_info__mem_shape_M_1_128_3_3,
+      .mem_ndims = 5,
+      .chpos = CHPos_Mixed,
+      .Qm = 18,
+      .Qn = -3,
+      .Qunsigned = 0,
+      .type = DataType_FXP,
+      .nbits = 16,
+      .ndims = 4,
+      .shape = buff_info__shape_1_128_3_3,
+    },
+    {
+      .name = "Conv2D_265_off_bias_out_378",
+      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
+      .offset_start = 2304,
+      .offset_end = 3456,
+      .offset_limit = 3520,
+      .is_user_allocated = 0,
+      .is_param = 0,
+      .epoch = 73,
+      .batch = 128,
+      .mem_shape = buff_info__mem_shape_L_1_128_3_3,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -5698,20 +5396,20 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = buff_info__shape_1_32_3_3,
+      .shape = buff_info__shape_1_128_3_3,
       .per_channel = 0,
-      .scale = buff_info_PReLU_234_out_0_quant_scale,
-      .offset = buff_info_PReLU_234_out_0_quant_offset,
+      .scale = buff_info_Conv2D_265_off_bias_out_378_quant_scale,
+      .offset = buff_info_Conv2D_265_off_bias_out_378_quant_offset,
     },
     {
-      .name = "Conv2D_268_out_0",
+      .name = "Conv2D_268_out_0_cp_in_231_cp_in_232_cp_in_233",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 6048,
-      .offset_end = 6336,
-      .offset_limit = 6400,
+      .offset_start = 0,
+      .offset_end = 2304,
+      .offset_limit = 2368,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 80,
+      .epoch = 74,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
@@ -5727,12 +5425,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_274_20_relu_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4608,
-      .offset_end = 5760,
-      .offset_limit = 5824,
+      .offset_start = 5760,
+      .offset_end = 6912,
+      .offset_limit = 6976,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 80,
+      .epoch = 74,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
@@ -5756,7 +5454,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 4672,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 80,
+      .epoch = 74,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
@@ -5773,25 +5471,28 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_PReLU_274_20_clip_x_quant_offset,
     },
     {
-      .name = "Conv2D_235_out_0",
+      .name = "PReLU_234_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 6336,
-      .offset_end = 6338,
-      .offset_limit = 6408,
+      .offset_start = 2304,
+      .offset_end = 2592,
+      .offset_limit = 2656,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 80,
-      .batch = 1,
-      .mem_shape = buff_info__mem_shape_F_1_1_1_1,
+      .epoch = 75,
+      .batch = 32,
+      .mem_shape = buff_info__mem_shape_L_1_32_3_3,
       .mem_ndims = 4,
-      .chpos = CHPos_First,
-      .Qm = 20,
-      .Qn = -5,
+      .chpos = CHPos_Last,
+      .Qm = 7,
+      .Qn = 0,
       .Qunsigned = 0,
-      .type = DataType_FXP,
-      .nbits = 16,
+      .type = DataType_INT8,
+      .nbits = 8,
       .ndims = 4,
-      .shape = buff_info__shape_1_1_1_1,
+      .shape = buff_info__shape_1_32_3_3,
+      .per_channel = 0,
+      .scale = buff_info_PReLU_234_out_0_quant_scale,
+      .offset = buff_info_PReLU_234_out_0_quant_offset,
     },
     {
       .name = "PReLU_274_20_mul_x",
@@ -5801,7 +5502,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 2368,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 81,
+      .epoch = 76,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
@@ -5820,12 +5521,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_274_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 4608,
-      .offset_end = 5760,
-      .offset_limit = 5824,
+      .offset_start = 5760,
+      .offset_end = 6912,
+      .offset_limit = 6976,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 82,
+      .epoch = 77,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_128_3_3,
       .mem_ndims = 5,
@@ -5842,14 +5543,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_PReLU_274_out_0_quant_offset,
     },
     {
-      .name = "Conv2D_275_out_0",
+      .name = "Conv2D_275_out_0_cp_in_239_cp_in_240_cp_in_241",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 576,
-      .offset_end = 864,
-      .offset_limit = 928,
+      .offset_start = 0,
+      .offset_end = 576,
+      .offset_limit = 640,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 83,
+      .epoch = 78,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_3_3,
       .mem_ndims = 5,
@@ -5865,12 +5566,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_278_21_relu_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 864,
-      .offset_end = 1152,
-      .offset_limit = 1216,
+      .offset_start = 1152,
+      .offset_end = 1440,
+      .offset_limit = 1504,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 83,
+      .epoch = 78,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_3_3,
       .mem_ndims = 5,
@@ -5889,12 +5590,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_278_21_mul_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 576,
-      .offset_limit = 640,
+      .offset_start = 576,
+      .offset_end = 1152,
+      .offset_limit = 1216,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 83,
+      .epoch = 78,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_3_3,
       .mem_ndims = 5,
@@ -5913,12 +5614,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_278_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 1152,
-      .offset_end = 1440,
-      .offset_limit = 1504,
+      .offset_start = 1440,
+      .offset_end = 1728,
+      .offset_limit = 1792,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 84,
+      .epoch = 79,
       .batch = 32,
       .mem_shape = buff_info__mem_shape_L_1_32_3_3,
       .mem_ndims = 4,
@@ -5942,7 +5643,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 352,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 85,
+      .epoch = 80,
       .batch = 32,
       .mem_shape = buff_info__mem_shape_L_1_32_3_3,
       .mem_ndims = 4,
@@ -5959,59 +5660,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Conv2D_280_off_bias_out_405_quant_offset,
     },
     {
-      .name = "Conv2D_280_off_bias_out_405_cp_in_212",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 288,
-      .offset_end = 576,
-      .offset_limit = 640,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 86,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_32_3_3,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_32_3_3,
-      .per_channel = 0,
-      .scale = buff_info_Conv2D_280_off_bias_out_405_cp_in_212_quant_scale,
-      .offset = buff_info_Conv2D_280_off_bias_out_405_cp_in_212_quant_offset,
-    },
-    {
-      .name = "Conv2D_283_out_0",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 0,
-      .offset_end = 288,
-      .offset_limit = 352,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 87,
-      .batch = 16,
-      .mem_shape = buff_info__mem_shape_M_1_32_3_3,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 18,
-      .Qn = -3,
-      .Qunsigned = 0,
-      .type = DataType_FXP,
-      .nbits = 16,
-      .ndims = 4,
-      .shape = buff_info__shape_1_32_3_3,
-    },
-    {
       .name = "PReLU_289_22_relu_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 864,
-      .offset_end = 1152,
-      .offset_limit = 1216,
+      .offset_start = 576,
+      .offset_end = 864,
+      .offset_limit = 928,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 87,
+      .epoch = 81,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_3_3,
       .mem_ndims = 5,
@@ -6030,12 +5686,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_289_22_clip_x",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 576,
-      .offset_end = 864,
-      .offset_limit = 928,
+      .offset_start = 288,
+      .offset_end = 576,
+      .offset_limit = 640,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 87,
+      .epoch = 81,
       .batch = 16,
       .mem_shape = buff_info__mem_shape_M_1_32_3_3,
       .mem_ndims = 5,
@@ -6054,12 +5710,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
     {
       .name = "PReLU_289_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 288,
-      .offset_end = 576,
-      .offset_limit = 640,
+      .offset_start = 1408,
+      .offset_end = 1696,
+      .offset_limit = 1760,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 88,
+      .epoch = 82,
       .batch = 32,
       .mem_shape = buff_info__mem_shape_L_1_32_3_3,
       .mem_ndims = 4,
@@ -6076,30 +5732,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_PReLU_289_out_0_quant_offset,
     },
     {
-      .name = "PReLU_289_out_0_cp_in_213",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 1408,
-      .offset_end = 1696,
-      .offset_limit = 1760,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 89,
-      .batch = 8,
-      .mem_shape = buff_info__mem_shape_M_1_32_3_3,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_INT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_32_3_3,
-      .per_channel = 0,
-      .scale = buff_info_PReLU_289_out_0_cp_in_213_quant_scale,
-      .offset = buff_info_PReLU_289_out_0_cp_in_213_quant_offset,
-    },
-    {
       .name = "Conv2D_290_off_bias_out_423",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
@@ -6107,7 +5739,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 1472,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 90,
+      .epoch = 83,
       .batch = 1404,
       .mem_shape = buff_info__mem_shape_F_1_1404_1_1,
       .mem_ndims = 4,
@@ -6124,14 +5756,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Conv2D_290_off_bias_out_423_quant_offset,
     },
     {
-      .name = "Reshape_294_out_0_inserted_out1204",
+      .name = "Reshape_294_out_0_inserted_out1230",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
       .offset_end = 1404,
       .offset_limit = 1472,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 90,
+      .epoch = 83,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_468_3_1,
       .mem_ndims = 4,
@@ -6144,18 +5776,18 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .ndims = 4,
       .shape = buff_info__shape_1_468_3_1,
       .per_channel = 0,
-      .scale = buff_info_Reshape_294_out_0_inserted_out1204_quant_scale,
-      .offset = buff_info_Reshape_294_out_0_inserted_out1204_quant_offset,
+      .scale = buff_info_Reshape_294_out_0_inserted_out1230_quant_scale,
+      .offset = buff_info_Reshape_294_out_0_inserted_out1230_quant_offset,
     },
     {
-      .name = "Reshape_294_out_0_inserted_out1204_inserted_out1206",
+      .name = "Reshape_294_out_0_inserted_out1230_inserted_out1232",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 1408,
       .offset_end = 2812,
       .offset_limit = 2880,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 91,
+      .epoch = 84,
       .batch = 468,
       .mem_shape = buff_info__mem_shape_L_1_468_3_1,
       .mem_ndims = 4,
@@ -6168,8 +5800,8 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .ndims = 4,
       .shape = buff_info__shape_1_468_3_1,
       .per_channel = 0,
-      .scale = buff_info_Reshape_294_out_0_inserted_out1204_inserted_out1206_quant_scale,
-      .offset = buff_info_Reshape_294_out_0_inserted_out1204_inserted_out1206_quant_offset,
+      .scale = buff_info_Reshape_294_out_0_inserted_out1230_inserted_out1232_quant_scale,
+      .offset = buff_info_Reshape_294_out_0_inserted_out1230_inserted_out1232_quant_offset,
     },
     {
       .name = "Transpose_295_out_0",
@@ -6179,7 +5811,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 2880,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 91,
+      .epoch = 84,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_3_1_468,
       .mem_ndims = 4,
@@ -6196,14 +5828,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Transpose_295_out_0_quant_offset,
     },
     {
-      .name = "Transpose_295_out_0_cp_in_196",
+      .name = "Transpose_295_out_0_cp_in_248",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 1408,
       .offset_end = 2812,
       .offset_limit = 2880,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 91,
+      .epoch = 84,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_3_468,
       .mem_ndims = 3,
@@ -6216,8 +5848,8 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .ndims = 4,
       .shape = buff_info__shape_1_3_468,
       .per_channel = 0,
-      .scale = buff_info_Transpose_295_out_0_cp_in_196_quant_scale,
-      .offset = buff_info_Transpose_295_out_0_cp_in_196_quant_offset,
+      .scale = buff_info_Transpose_295_out_0_cp_in_248_quant_scale,
+      .offset = buff_info_Transpose_295_out_0_cp_in_248_quant_offset,
     },
     {
       .name = "Quantize_301_out_0",
@@ -6227,7 +5859,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset_limit = 1472,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 92,
+      .epoch = 85,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_3_468,
       .mem_ndims = 3,
@@ -6244,14 +5876,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .offset = buff_info_Quantize_301_out_0_quant_offset,
     },
     {
-      .name = "Quantize_301_out_0_inserted_out1215",
+      .name = "Quantize_301_out_0_inserted_out1241",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
       .offset_end = 1404,
       .offset_limit = 1472,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 92,
+      .epoch = 85,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_3_468_1,
       .mem_ndims = 4,
@@ -6264,18 +5896,18 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .ndims = 4,
       .shape = buff_info__shape_1_3_468_1,
       .per_channel = 0,
-      .scale = buff_info_Quantize_301_out_0_inserted_out1215_quant_scale,
-      .offset = buff_info_Quantize_301_out_0_inserted_out1215_quant_offset,
+      .scale = buff_info_Quantize_301_out_0_inserted_out1241_quant_scale,
+      .offset = buff_info_Quantize_301_out_0_inserted_out1241_quant_offset,
     },
     {
-      .name = "Quantize_301_out_0_inserted_out1215_inserted_out1217",
+      .name = "Quantize_301_out_0_inserted_out1241_inserted_out1243",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 1408,
       .offset_end = 2812,
       .offset_limit = 2880,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 93,
+      .epoch = 86,
       .batch = 3,
       .mem_shape = buff_info__mem_shape_L_1_3_468_1,
       .mem_ndims = 4,
@@ -6288,18 +5920,18 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .ndims = 4,
       .shape = buff_info__shape_1_3_468_1,
       .per_channel = 0,
-      .scale = buff_info_Quantize_301_out_0_inserted_out1215_inserted_out1217_quant_scale,
-      .offset = buff_info_Quantize_301_out_0_inserted_out1215_inserted_out1217_quant_offset,
+      .scale = buff_info_Quantize_301_out_0_inserted_out1241_inserted_out1243_quant_scale,
+      .offset = buff_info_Quantize_301_out_0_inserted_out1241_inserted_out1243_quant_offset,
     },
     {
-      .name = "Transpose_302_out_0_cp_in_200",
+      .name = "Transpose_302_out_0_cp_in_252",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 1408,
       .offset_end = 2812,
       .offset_limit = 2880,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 93,
+      .epoch = 86,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_468_1_3,
       .mem_ndims = 4,
@@ -6312,8 +5944,8 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default(void)
       .ndims = 4,
       .shape = buff_info__shape_1_468_1_3,
       .per_channel = 0,
-      .scale = buff_info_Transpose_302_out_0_cp_in_200_quant_scale,
-      .offset = buff_info_Transpose_302_out_0_cp_in_200_quant_offset,
+      .scale = buff_info_Transpose_302_out_0_cp_in_252_quant_scale,
+      .offset = buff_info_Transpose_302_out_0_cp_in_252_quant_offset,
     },
     {
       .name = NULL,
