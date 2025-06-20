@@ -22,6 +22,7 @@
 #include "ll_aton_NN_interface.h"
 //#include "network.h"
 #include <assert.h>
+#include <string.h>
 
 #if POSTPROCESS_TYPE == POSTPROCESS_OD_YOLO_V5_UU
 static od_pp_outBuffer_t out_detections[AI_OBJDETECT_YOLOV5_PP_TOTAL_BOXES];
@@ -192,6 +193,7 @@ int32_t app_postprocess_init(void *params_postprocess)
   int32_t error = AI_OD_POSTPROCESS_ERROR_NO;
   mp_face_pp_static_param_t *params = (mp_face_pp_static_param_t *) params_postprocess;
   params->conf_threshold = MP_FACE_PP_CONF_THRESHOLD;
+  memset(mp_face_landmarks, 0, sizeof(mp_face_landmarks));
 #else
   #error "PostProcessing type not supported"
 #endif

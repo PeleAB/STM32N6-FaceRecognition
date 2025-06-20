@@ -4,6 +4,9 @@
 #include "app_postprocess.h"
 #include "pc_stream.h"
 #include "stm32n6570_discovery_errno.h"
+#if POSTPROCESS_TYPE == POSTPROCESS_MP_FACE_U8
+extern float mp_face_landmarks[468 * 2];
+#endif
 #ifdef ENABLE_LCD_DISPLAY
 #include "stm32n6570_discovery_lcd.h"
 #include "stm32_lcd_ex.h"
