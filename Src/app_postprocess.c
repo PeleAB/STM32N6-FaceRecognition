@@ -50,6 +50,7 @@ int8_t _out_buf_mask_s8[AI_YOLOV8_SEG_PP_MASK_NB * AI_YOLOV8_SEG_PP_TOTAL_BOXES]
 static uint8_t out_sseg_map[AI_SSEG_DEEPLABV3_PP_WIDTH * AI_SSEG_DEEPLABV3_PP_HEIGHT];
 #elif POSTPROCESS_TYPE == POSTPROCESS_MP_FACE_U8
 static od_pp_outBuffer_t out_detections[1];
+float mp_face_landmarks[468 * 2];
 #endif
 
 int32_t app_postprocess_init(void *params_postprocess)
@@ -339,6 +340,8 @@ int32_t app_postprocess_run(void *pInput[], int nb_input, void *pOutput, void *p
     for (int i = 0; i < 468; i++) {
       float x = (landmarks[i*3 + 0] - l_off) * l_scale;
       float y = (landmarks[i*3 + 1] - l_off) * l_scale;
+      mp_face_landmarks[i*2] = x;
+      mp_face_landmarks[i*2 + 1] = y;
       if (x < x_min) x_min = x;
       if (y < y_min) y_min = y;
       if (x > x_max) x_max = x;
@@ -353,6 +356,9 @@ int32_t app_postprocess_run(void *pInput[], int nb_input, void *pOutput, void *p
     pObjDetOutput->nb_detect = 1;
   } else {
     pObjDetOutput->nb_detect = 0;
+    for (int i = 0; i < 468 * 2; i++) {
+      mp_face_landmarks[i] = 0.0f;
+    }
   }
 #else
   #error "PostProcessing type not supported"

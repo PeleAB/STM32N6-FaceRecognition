@@ -1,6 +1,7 @@
 #include "display_utils.h"
 #include "img_buffer.h"
 #include "app_config.h"
+#include "app_postprocess.h"
 #include "pc_stream.h"
 #include "stm32n6570_discovery_errno.h"
 #ifdef ENABLE_LCD_DISPLAY
@@ -74,6 +75,19 @@ static void DrawBoundingBoxes(const od_pp_outBuffer_t *rois, uint32_t nb_rois)
     UTIL_LCDEx_PrintfAt(-x0-width, y0, RIGHT_MODE, "%.0f%%", rois[i].conf*100.0f);
   }
 }
+
+#if POSTPROCESS_TYPE == POSTPROCESS_MP_FACE_U8
+static void DrawFaceLandmarks(const float *landmarks, uint32_t nb)
+{
+  for (uint32_t i = 0; i < nb; i++) {
+    uint32_t x = (uint32_t)(landmarks[i*2] * ((float)lcd_bg_area.XSize)) + lcd_bg_area.X0;
+    uint32_t y = (uint32_t)(landmarks[i*2 + 1] * ((float)lcd_bg_area.YSize)) + lcd_bg_area.Y0;
+    x = x < lcd_bg_area.X0 + lcd_bg_area.XSize ? x : lcd_bg_area.X0 + lcd_bg_area.XSize - 1;
+    y = y < lcd_bg_area.Y0 + lcd_bg_area.YSize ? y : lcd_bg_area.Y0 + lcd_bg_area.YSize - 1;
+    UTIL_LCD_SetPixel(x, y, UTIL_LCD_COLOR_RED);
+  }
+}
+#endif
 #endif /* ENABLE_LCD_DISPLAY */
 
 #ifdef ENABLE_PC_STREAM
@@ -107,6 +121,11 @@ void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference_ms, ui
   assert(ret == HAL_OK);
 
   DrawBoundingBoxes(p_postprocess->pOutBuff, p_postprocess->nb_detect);
+#if POSTPROCESS_TYPE == POSTPROCESS_MP_FACE_U8
+  if (p_postprocess->nb_detect > 0) {
+    DrawFaceLandmarks(mp_face_landmarks, 468);
+  }
+#endif
 #endif
 #ifdef ENABLE_PC_STREAM
   StreamOutput(p_postprocess);

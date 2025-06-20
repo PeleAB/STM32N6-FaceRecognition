@@ -64,6 +64,10 @@ typedef struct {
 int32_t app_postprocess_init(void *params_postprocess);
 int32_t app_postprocess_run(void *pInput[], int nb_input, void *pOutput, void *pInput_param);
 
+#if POSTPROCESS_TYPE == POSTPROCESS_MP_FACE_U8
+extern float mp_face_landmarks[468 * 2];
+#endif
+
 #ifdef __cplusplus
 }
 #endif
