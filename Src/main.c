@@ -52,6 +52,8 @@ yolov8_pp_static_param_t pp_params;
 st_yolox_pp_static_param_t pp_params;
 #elif POSTPROCESS_TYPE == POSTPROCESS_OD_ST_SSD_UF
 ssd_st_pp_static_param_t pp_params;
+#elif POSTPROCESS_TYPE == POSTPROCESS_MP_FACE_U8
+mp_face_pp_static_param_t pp_params;
 #else
     #error "PostProcessing type not supported"
 #endif

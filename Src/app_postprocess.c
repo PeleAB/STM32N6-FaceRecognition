@@ -46,6 +46,8 @@ float32_t _out_buf_mask[AI_YOLOV8_SEG_PP_MASK_NB];
 int8_t _out_buf_mask_s8[AI_YOLOV8_SEG_PP_MASK_NB * AI_YOLOV8_SEG_PP_TOTAL_BOXES];
 #elif POSTPROCESS_TYPE == POSTPROCESS_SSEG_DEEPLAB_V3_UF
 static uint8_t out_sseg_map[AI_SSEG_DEEPLABV3_PP_WIDTH * AI_SSEG_DEEPLABV3_PP_HEIGHT];
+#elif POSTPROCESS_TYPE == POSTPROCESS_MP_FACE_U8
+static od_pp_outBuffer_t out_detections[1];
 #endif
 
 int32_t app_postprocess_init(void *params_postprocess)
@@ -183,6 +185,10 @@ int32_t app_postprocess_init(void *params_postprocess)
   params->height = AI_SSEG_DEEPLABV3_PP_HEIGHT;
   params->type = AI_SSEG_DATA_UINT8;
   error = sseg_deeplabv3_pp_reset(params);
+#elif POSTPROCESS_TYPE == POSTPROCESS_MP_FACE_U8
+  int32_t error = AI_OD_POSTPROCESS_ERROR_NO;
+  mp_face_pp_static_param_t *params = (mp_face_pp_static_param_t *) params_postprocess;
+  params->conf_threshold = MP_FACE_PP_CONF_THRESHOLD;
 #else
   #error "PostProcessing type not supported"
 #endif
@@ -310,6 +316,34 @@ int32_t app_postprocess_run(void *pInput[], int nb_input, void *pOutput, void *p
   };
   error = sseg_deeplabv3_pp_process(&pp_input, (sseg_pp_out_t *) pOutput,
                                     (sseg_deeplabv3_pp_static_param_t *) pInput_param);
+#elif POSTPROCESS_TYPE == POSTPROCESS_MP_FACE_U8
+  assert(nb_input == 2);
+  int32_t error = AI_OD_POSTPROCESS_ERROR_NO;
+  od_pp_out_t *pObjDetOutput = (od_pp_out_t *) pOutput;
+  pObjDetOutput->pOutBuff = out_detections;
+  uint8_t *presence = (uint8_t *) pInput[0];
+  uint8_t *landmarks = (uint8_t *) pInput[1];
+  float conf = presence[0] / 255.0f;
+  if (conf >= ((mp_face_pp_static_param_t *)pInput_param)->conf_threshold) {
+    float x_min = 1.0f, y_min = 1.0f, x_max = 0.f, y_max = 0.f;
+    for (int i = 0; i < 468; i++) {
+      float x = landmarks[i*3 + 0] / 255.0f;
+      float y = landmarks[i*3 + 1] / 255.0f;
+      if (x < x_min) x_min = x;
+      if (y < y_min) y_min = y;
+      if (x > x_max) x_max = x;
+      if (y > y_max) y_max = y;
+    }
+    out_detections[0].x_center = (x_min + x_max) / 2.0f;
+    out_detections[0].y_center = (y_min + y_max) / 2.0f;
+    out_detections[0].width = x_max - x_min;
+    out_detections[0].height = y_max - y_min;
+    out_detections[0].conf = conf;
+    out_detections[0].class_index = 0;
+    pObjDetOutput->nb_detect = 1;
+  } else {
+    pObjDetOutput->nb_detect = 0;
+  }
 #else
   #error "PostProcessing type not supported"
 #endif

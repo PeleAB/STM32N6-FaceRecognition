@@ -45,19 +45,19 @@
 #define LCD_FG_FRAMEBUFFER_SIZE  (LCD_FG_WIDTH * LCD_FG_HEIGHT * 2)
 
 /* Model Related Info */
-#define POSTPROCESS_TYPE POSTPROCESS_OD_YOLO_V2_UF
+#define POSTPROCESS_TYPE POSTPROCESS_MP_FACE_U8
 
-#define NN_WIDTH 224
-#define NN_HEIGHT 224
+#define NN_WIDTH 192
+#define NN_HEIGHT 192
 #define NN_BPP 3
 
 #define COLOR_BGR (0)
 #define COLOR_RGB (1)
 #define COLOR_MODE COLOR_RGB
 
-#define NB_CLASSES 2
+#define NB_CLASSES 1
 #define CLASSES_TABLE const char* classes_table[NB_CLASSES] = {\
-"person",   "not_person"}
+"face"}
 
 /* Application input source configuration */
 #define INPUT_SRC_CAMERA 0
@@ -88,8 +88,11 @@ static const float32_t AI_OBJDETECT_YOLOV2_PP_ANCHORS[2*AI_OBJDETECT_YOLOV2_PP_N
 #define AI_OBJDETECT_YOLOV2_PP_IOU_THRESHOLD     (0.3f)
 #define AI_OBJDETECT_YOLOV2_PP_MAX_BOXES_LIMIT   (10)
 
+/* MediaPipe face detection */
+#define MP_FACE_PP_CONF_THRESHOLD (0.5f)
+
 /* Display */
-#define WELCOME_MSG_1         "quantized_tiny_yolo_v2_224_.tflite"
+#define WELCOME_MSG_1         "mediapipe_face_detection_192.tflite"
 #define WELCOME_MSG_2         "Model Running in STM32 MCU internal memory"
 
 #endif
