@@ -19,6 +19,8 @@
 
 #include "app_postprocess.h"
 #include "app_config.h"
+#include "ll_aton_NN_interface.h"
+#include "network.h"
 #include <assert.h>
 
 #if POSTPROCESS_TYPE == POSTPROCESS_OD_YOLO_V5_UU
@@ -321,15 +323,22 @@ int32_t app_postprocess_run(void *pInput[], int nb_input, void *pOutput, void *p
   int32_t error = AI_OD_POSTPROCESS_ERROR_NO;
   od_pp_out_t *pObjDetOutput = (od_pp_out_t *) pOutput;
   pObjDetOutput->pOutBuff = out_detections;
+
+  const LL_Buffer_InfoTypeDef *out_info = LL_ATON_Output_Buffers_Info_Default();
+  float p_scale = (out_info[0].scale) ? out_info[0].scale[0] : (1.0f / 255.0f);
+  int16_t p_off = (out_info[0].offset) ? out_info[0].offset[0] : 0;
+  float l_scale = (out_info[1].scale) ? out_info[1].scale[0] : (1.0f / 255.0f);
+  int16_t l_off = (out_info[1].offset) ? out_info[1].offset[0] : 0;
+
   uint8_t *presence = (uint8_t *) pInput[0];
   uint8_t *landmarks = (nb_input == 2) ? (uint8_t *) pInput[1]
                                        : ((uint8_t *) pInput[0]) + 1;
-  float conf = presence[0] / 255.0f;
+  float conf = (presence[0] - p_off) * p_scale;
   if (conf >= ((mp_face_pp_static_param_t *)pInput_param)->conf_threshold) {
     float x_min = 1.0f, y_min = 1.0f, x_max = 0.f, y_max = 0.f;
     for (int i = 0; i < 468; i++) {
-      float x = landmarks[i*3 + 0] / 255.0f;
-      float y = landmarks[i*3 + 1] / 255.0f;
+      float x = (landmarks[i*3 + 0] - l_off) * l_scale;
+      float y = (landmarks[i*3 + 1] - l_off) * l_scale;
       if (x < x_min) x_min = x;
       if (y < y_min) y_min = y;
       if (x > x_max) x_max = x;
