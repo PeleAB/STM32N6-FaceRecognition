@@ -67,6 +67,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/display_utils.c</locationURI>
 		</link>
 		<link>
+			<name>Application/img_buffer.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/img_buffer.c</locationURI>
+		</link>
+		<link>
 			<name>Application/main.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/main.c</locationURI>

@@ -15,8 +15,9 @@ typedef struct
 
 extern Rectangle_TypeDef lcd_bg_area;
 extern Rectangle_TypeDef lcd_fg_area;
-extern uint8_t lcd_bg_buffer[];
+#ifdef ENABLE_LCD_DISPLAY
 extern uint8_t lcd_fg_buffer[2][LCD_FG_WIDTH * LCD_FG_HEIGHT * 2];
+#endif
 
 void LCD_init(void);
 void Display_WelcomeScreen(void);

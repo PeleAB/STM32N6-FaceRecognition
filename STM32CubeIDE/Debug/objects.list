@@ -3,6 +3,7 @@
 "./Application/app_postprocess.o"
 "./Application/crop_img.o"
 "./Application/display_utils.o"
+"./Application/img_buffer.o"
 "./Application/main.o"
 "./Application/mcu_cache.o"
 "./Application/network.o"

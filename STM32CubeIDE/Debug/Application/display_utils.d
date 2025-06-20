@@ -59,6 +59,8 @@ Application/display_utils.o: \
  ../../Inc/app_config.h ../../STM32Cube_FW_N6/Utilities/lcd/stm32_lcd.h \
  ../../STM32Cube_FW_N6/Utilities/lcd/../Fonts/fonts.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/Components/Common/lcd.h \
+ ../../Inc/img_buffer.h ../../Inc/app_config.h ../../Inc/pc_stream.h \
+ ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.h \
  ../../Inc/stm32n6570_discovery_conf.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
@@ -102,7 +104,7 @@ Application/display_utils.o: \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cacheaxi.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/rk050hr18/rk050hr18.h \
- ../../Inc/stm32_lcd_ex.h ../../Inc/app_config.h ../../Inc/pc_stream.h
+ ../../Inc/stm32_lcd_ex.h
 ../../Inc/display_utils.h:
 ../../Inc/app_postprocess.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov2_pp_if.h:
@@ -164,6 +166,10 @@ Application/display_utils.o: \
 ../../STM32Cube_FW_N6/Utilities/lcd/stm32_lcd.h:
 ../../STM32Cube_FW_N6/Utilities/lcd/../Fonts/fonts.h:
 ../../STM32Cube_FW_N6/Drivers/BSP/Components/Common/lcd.h:
+../../Inc/img_buffer.h:
+../../Inc/app_config.h:
+../../Inc/pc_stream.h:
+../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h:
 ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.h:
 ../../Inc/stm32n6570_discovery_conf.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
@@ -208,5 +214,3 @@ Application/display_utils.o: \
 ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h:
 ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/rk050hr18/rk050hr18.h:
 ../../Inc/stm32_lcd_ex.h:
-../../Inc/app_config.h:
-../../Inc/pc_stream.h:

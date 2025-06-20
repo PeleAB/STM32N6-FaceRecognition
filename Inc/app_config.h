@@ -22,6 +22,9 @@
 #include "arm_math.h"
 
 #define USE_DCACHE
+/* Enable or disable LCD and PC streaming features */
+#define ENABLE_LCD_DISPLAY
+#define ENABLE_PC_STREAM
 
 /*Defines: CMW_MIRRORFLIP_NONE; CMW_MIRRORFLIP_FLIP; CMW_MIRRORFLIP_MIRROR; CMW_MIRRORFLIP_FLIP_MIRROR;*/
 #define CAMERA_FLIP CMW_MIRRORFLIP_NONE
