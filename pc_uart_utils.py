@@ -114,7 +114,7 @@ def display_loop(q, stop_event):
     cv2.destroyAllWindows()
 
 
-def send_image(ser, img_path, size, display=False, rx=False):
+def send_image(ser, img_path, size, display=False, rx=False, preview=False):
     """Send an image file to the board.
 
     Returns the echoed frame and detections from the MCU. If *display* is True,
@@ -126,6 +126,9 @@ def send_image(ser, img_path, size, display=False, rx=False):
         return None, []
 
     img = cv2.resize(img, size)
+    if preview:
+        cv2.imshow("nn_in", img)
+        cv2.waitKey(1)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     ser.write(img.tobytes())
 

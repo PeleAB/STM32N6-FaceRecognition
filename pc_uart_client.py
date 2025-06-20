@@ -56,11 +56,11 @@ class App(QtWidgets.QMainWindow):
         layout.addWidget(self.baud_edit, 1, 1)
 
         layout.addWidget(QtWidgets.QLabel("Width"), 2, 0)
-        self.width_edit = QtWidgets.QLineEdit("224")
+        self.width_edit = QtWidgets.QLineEdit("192")
         layout.addWidget(self.width_edit, 2, 1)
 
         layout.addWidget(QtWidgets.QLabel("Height"), 3, 0)
-        self.height_edit = QtWidgets.QLineEdit("224")
+        self.height_edit = QtWidgets.QLineEdit("192")
         layout.addWidget(self.height_edit, 3, 1)
 
         self.connect_btn = QtWidgets.QPushButton("Connect")
@@ -148,7 +148,8 @@ class App(QtWidgets.QMainWindow):
                 img,
                 (int(self.width_edit.text()), int(self.height_edit.text())),
                 display=False,
-                rx=False
+                rx=False,
+                preview=True,
             )
 
         if was_streaming:

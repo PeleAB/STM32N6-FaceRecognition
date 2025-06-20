@@ -317,12 +317,13 @@ int32_t app_postprocess_run(void *pInput[], int nb_input, void *pOutput, void *p
   error = sseg_deeplabv3_pp_process(&pp_input, (sseg_pp_out_t *) pOutput,
                                     (sseg_deeplabv3_pp_static_param_t *) pInput_param);
 #elif POSTPROCESS_TYPE == POSTPROCESS_MP_FACE_U8
-  assert(nb_input == 2);
+  assert(nb_input == 2 || nb_input == 1);
   int32_t error = AI_OD_POSTPROCESS_ERROR_NO;
   od_pp_out_t *pObjDetOutput = (od_pp_out_t *) pOutput;
   pObjDetOutput->pOutBuff = out_detections;
   uint8_t *presence = (uint8_t *) pInput[0];
-  uint8_t *landmarks = (uint8_t *) pInput[1];
+  uint8_t *landmarks = (nb_input == 2) ? (uint8_t *) pInput[1]
+                                       : ((uint8_t *) pInput[0]) + 1;
   float conf = presence[0] / 255.0f;
   if (conf >= ((mp_face_pp_static_param_t *)pInput_param)->conf_threshold) {
     float x_min = 1.0f, y_min = 1.0f, x_max = 0.f, y_max = 0.f;
