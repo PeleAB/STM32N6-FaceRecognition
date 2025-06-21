@@ -147,6 +147,7 @@ int32_t app_postprocess_init(void *params_postprocess)
   params->nb_total_boxes = AI_PD_MODEL_PP_TOTAL_DETECTIONS;
   params->max_boxes_limit = AI_PD_MODEL_PP_MAX_BOXES_LIMIT;
   params->pAnchors = g_Anchors;
+  pd_anchor_init();
   for (int i = 0; i < AI_PD_MODEL_PP_MAX_BOXES_LIMIT; i++) {
     out_detections[i].pKps = &out_keyPoints[i][0];
   }
