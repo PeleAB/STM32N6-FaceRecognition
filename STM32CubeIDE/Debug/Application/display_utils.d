@@ -59,7 +59,8 @@ Application/display_utils.o: \
  ../../Inc/app_config.h ../../STM32Cube_FW_N6/Utilities/lcd/stm32_lcd.h \
  ../../STM32Cube_FW_N6/Utilities/lcd/../Fonts/fonts.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/Components/Common/lcd.h \
- ../../Inc/img_buffer.h ../../Inc/app_config.h ../../Inc/pc_stream.h \
+ ../../Inc/img_buffer.h ../../Inc/app_config.h \
+ ../../Inc/app_postprocess.h ../../Inc/pc_stream.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.h \
  ../../Inc/stm32n6570_discovery_conf.h \
@@ -168,6 +169,7 @@ Application/display_utils.o: \
 ../../STM32Cube_FW_N6/Drivers/BSP/Components/Common/lcd.h:
 ../../Inc/img_buffer.h:
 ../../Inc/app_config.h:
+../../Inc/app_postprocess.h:
 ../../Inc/pc_stream.h:
 ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h:
 ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.h:

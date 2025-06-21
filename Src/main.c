@@ -54,6 +54,8 @@ st_yolox_pp_static_param_t pp_params;
 ssd_st_pp_static_param_t pp_params;
 #elif POSTPROCESS_TYPE == POSTPROCESS_MP_FACE_U8
 mp_face_pp_static_param_t pp_params;
+#elif POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
+pd_model_pp_static_param_t pp_params;
 #else
     #error "PostProcessing type not supported"
 #endif
@@ -61,7 +63,11 @@ mp_face_pp_static_param_t pp_params;
 volatile int32_t cameraFrameReceived;
 uint8_t *nn_in;
 void* pp_input;
+#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
+pd_postprocess_out_t pp_output;
+#else
 od_pp_out_t pp_output;
+#endif
 
 #define ALIGN_TO_16(value) (((value) + 15) & ~15)
 
@@ -231,7 +237,11 @@ int main(void)
     Display_NetworkOutput(&pp_output, ts[1] - ts[0], ts[2]);
 #else
 #ifdef ENABLE_PC_STREAM
+#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
+    Display_NetworkOutput(&pp_output, ts[1] - ts[0], ts[2]);
+#else
     PC_STREAM_SendDetections(&pp_output, 0);
+#endif
 #endif
 #endif
 

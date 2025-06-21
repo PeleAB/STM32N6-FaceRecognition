@@ -35,8 +35,7 @@ static mpe_pp_outBuffer_t out_detections[AI_MPE_YOLOV8_PP_TOTAL_BOXES];
 static mpe_pp_keyPoints_t out_keyPoints[AI_MPE_YOLOV8_PP_TOTAL_BOXES * AI_POSE_PP_POSE_KEYPOINTS_NB];
 #elif POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
 /* Must be in app code */
-#include "pd_anchors.c"
-/* post process algo will not write more than AI_PD_MODEL_PP_MAX_BOXES_LIMIT */
+#include "pd_anchors.h"
 static pd_pp_box_t out_detections[AI_PD_MODEL_PP_MAX_BOXES_LIMIT];
 static pd_pp_point_t out_keyPoints[AI_PD_MODEL_PP_MAX_BOXES_LIMIT][AI_PD_MODEL_PP_NB_KEYPOINTS];
 #elif POSTPROCESS_TYPE == POSTPROCESS_SPE_MOVENET_UF
@@ -147,6 +146,7 @@ int32_t app_postprocess_init(void *params_postprocess)
   params->nb_total_boxes = AI_PD_MODEL_PP_TOTAL_DETECTIONS;
   params->max_boxes_limit = AI_PD_MODEL_PP_MAX_BOXES_LIMIT;
   params->pAnchors = g_Anchors;
+  pd_anchor_init();
   for (int i = 0; i < AI_PD_MODEL_PP_MAX_BOXES_LIMIT; i++) {
     out_detections[i].pKps = &out_keyPoints[i][0];
   }

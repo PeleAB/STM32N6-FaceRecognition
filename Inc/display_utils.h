@@ -21,6 +21,10 @@ extern uint8_t lcd_fg_buffer[2][LCD_FG_WIDTH * LCD_FG_HEIGHT * 2];
 
 void LCD_init(void);
 void Display_WelcomeScreen(void);
+#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
+void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ms);
+#else
 void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ms);
+#endif
 
 #endif /* DISPLAY_UTILS_H */
