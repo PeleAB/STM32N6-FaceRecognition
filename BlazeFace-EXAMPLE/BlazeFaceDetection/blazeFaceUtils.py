@@ -124,4 +124,7 @@ def gen_anchors(options):
 					new_anchor = Anchor(x_center, y_center, h, w)
 					anchors.append(new_anchor)
 		layer_id = last_same_stride_layer
+
+	# for i, a in enumerate(anchors):
+	# 	print(f"#{i:4d}  x_ctr={a.x_center:.6f},  y_ctr={a.y_center:.6f},  h={a.h:.6f},  w={a.w:.6f}")
 	return anchors

@@ -3,7 +3,7 @@ from BlazeFaceDetection.blazeFaceDetector import blazeFaceDetector
 
 scoreThreshold = 0.7
 iouThreshold = 0.3
-modelType = "back"
+modelType = "front"
 
 imagePath = "img/image.jpg"
 

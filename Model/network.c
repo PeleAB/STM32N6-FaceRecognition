@@ -23,8 +23,8 @@
  * GIT_DESCRIPTION "atonn-v1.1.0-31-g27f5d5bcb"
  *
  * Command Line options:
- * --onnx-input = "C:/Users/pele/.stm32cubemx/network_output/face_detection_front_128_full_integer_quant_OE_3_2_0.onnx"
- * --out-dir-prefix = "C:/Users/pele/AppData/Local/Temp/mxAI_workspace6448182187275003058646495892930342/neural_art__network/"
+ * --onnx-input = "C:/Users/pele/.stm32cubemx/network_output/face_detection_front_128_integer_quant_OE_3_2_0.onnx"
+ * --out-dir-prefix = "C:/Users/pele/AppData/Local/Temp/mxAI_workspace6548701074716001333482270737230406/neural_art__network/"
  * --all-buffers-info = true
  * --mvei = true
  * --load-mdesc-file = "C:/ST/STEdgeAI/2.1/Utilities/configs/stm32n6"
@@ -32,7 +32,7 @@
  * --cache-maintenance = true
  * --enable-virtual-mem-pools = true
  * --native-float = true
- * --json-quant-file = "C:/Users/pele/.stm32cubemx/network_output/face_detection_front_128_full_integer_quant_OE_3_2_0_Q.json"
+ * --json-quant-file = "C:/Users/pele/.stm32cubemx/network_output/face_detection_front_128_integer_quant_OE_3_2_0_Q.json"
  * --optimization = 3
  * --Os = true
  * --Omax-ca-pipe = 4

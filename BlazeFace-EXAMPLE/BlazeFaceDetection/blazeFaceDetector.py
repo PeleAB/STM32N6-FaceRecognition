@@ -26,7 +26,7 @@ class blazeFaceDetector():
 
 	def initializeModel(self, type):
 		if type == "front":
-			self.interpreter = tf.lite.Interpreter(model_path="models/face_detection_front.tflite")
+			self.interpreter = tf.lite.Interpreter(model_path="models/face_detection_front_128_integer_quant.tflite")
 		elif type =="back":
 			self.interpreter = tf.lite.Interpreter(model_path="models/face_detection_back.tflite")
 		self.interpreter.allocate_tensors()
@@ -43,6 +43,8 @@ class blazeFaceDetector():
 		# Perform inference on the image
 		output0, output1 = self.inference(input_tensor)
 
+		print(output0.shape)
+		print(output1.shape)
 		# Filter scores based on the detection scores
 		scores, goodDetectionsIndices = self.filterDetections(output1)
 
@@ -145,7 +147,7 @@ class blazeFaceDetector():
 		# Adjust matrix dimenstions
 		reshape_img = img_input.reshape(1,self.inputHeight,self.inputWidth,self.channels)
 		tensor = tf.convert_to_tensor(reshape_img, dtype=tf.float32)
-
+		print(tensor)
 		return tensor
 
 	def inference(self, input_tensor):
@@ -153,10 +155,10 @@ class blazeFaceDetector():
 		self.interpreter.invoke()
 
 		# Matrix of 896 x 16 with information about the detected faces
-		output0 = np.squeeze(self.interpreter.get_tensor(self.output_details[0]['index']))
+		output1 = np.squeeze(self.interpreter.get_tensor(self.output_details[0]['index']))
 
 		# Matrix with the raw detection scores
-		output1 = np.squeeze(self.interpreter.get_tensor(self.output_details[1]['index']))
+		output0 = np.squeeze(self.interpreter.get_tensor(self.output_details[1]['index']))
 
 		return output0, output1
 
@@ -166,6 +168,12 @@ class blazeFaceDetector():
 
 		keypoints = np.zeros((numGoodDetections, KEY_POINT_SIZE, 2))
 		boxes = np.zeros((numGoodDetections, 4))
+		print(goodDetectionsIndices)
+		print(output0.shape)
+
+		anchor =  self.anchors[71]
+		print(anchor.x_center)
+		print(anchor.y_center)
 		for idx, detectionIdx in enumerate(goodDetectionsIndices):
 			anchor = self.anchors[detectionIdx]
 

@@ -281,8 +281,10 @@ int32_t app_postprocess_run(void *pInput[], int nb_input, void *pOutput, void *p
   assert(nb_input == 2);
   pd_postprocess_out_t *pPdOutput = (pd_postprocess_out_t *) pOutput;
   pd_model_pp_in_t pp_input = {
-    .pProbs = (float32_t *) pInput[0],
-    .pBoxes = (float32_t *) pInput[1],
+	.pProbs = (float32_t *) pInput[0],
+	.pBoxes = (float32_t *) pInput[1],
+
+
   };
   int32_t error;
   pPdOutput->pOutData = out_detections;

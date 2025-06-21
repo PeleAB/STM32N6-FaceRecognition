@@ -24,7 +24,7 @@ void img_crop(uint8_t *src_image, uint8_t *dst_img, const uint32_t src_stride,
               const uint16_t dst_width, const uint16_t dst_height,
               const uint16_t bpp);
 
-void img_rgb_to_chw_float(uint8_t *src_image, float32_t *dst_img,
+void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
                           const uint32_t src_stride, const uint16_t width,
                           const uint16_t height);
 

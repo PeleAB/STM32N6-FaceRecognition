@@ -213,7 +213,7 @@ int main(void)
     }
 #endif
 
-    img_rgb_to_chw_float(nn_rgb, (float32_t *)nn_in, NN_WIDTH * NN_BPP,
+    img_rgb_to_hwc_float(nn_rgb, (float32_t *)nn_in, NN_WIDTH * NN_BPP,
                         NN_WIDTH, NN_HEIGHT);
     SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
 #if INPUT_SRC_MODE != INPUT_SRC_CAMERA
