@@ -158,6 +158,9 @@ static int pd_pp_nms(pd_postprocess_out_t *pOutput,
     pd_boxes[hand_nb++] = pd_boxes[i];
   }
 
+  /* update the output count to reflect the filtered detections */
+  pOutput->box_nb = hand_nb;
+
   return hand_nb;
 }
 int32_t pd_model_pp_reset(pd_model_pp_static_param_t *pInput_static_param)
