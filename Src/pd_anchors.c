@@ -1,5 +1,4 @@
-#include "blazeface_anchors.h"
-#include "pd_pp_output_if.h"
+#include "pd_anchors.h"
 
 pd_pp_point_t g_Anchors[BLAZEFACE_NUM_ANCHORS];
 

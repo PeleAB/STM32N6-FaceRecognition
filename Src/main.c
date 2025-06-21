@@ -237,7 +237,11 @@ int main(void)
     Display_NetworkOutput(&pp_output, ts[1] - ts[0], ts[2]);
 #else
 #ifdef ENABLE_PC_STREAM
+#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
+    Display_NetworkOutput(&pp_output, ts[1] - ts[0], ts[2]);
+#else
     PC_STREAM_SendDetections(&pp_output, 0);
+#endif
 #endif
 #endif
 

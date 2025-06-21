@@ -10,7 +10,6 @@ extern float mp_face_landmarks[468 * 2];
 #include "pd_model_pp_if.h"
 #include "pd_pp_output_if.h"
 #endif
-#endif
 #ifdef ENABLE_LCD_DISPLAY
 #include "stm32n6570_discovery_lcd.h"
 #include "stm32_lcd_ex.h"
@@ -178,10 +177,16 @@ void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference_ms, ui
 #endif
 #endif
 #ifdef ENABLE_PC_STREAM
+#if POSTPROCESS_TYPE != POSTPROCESS_MPE_PD_UF
   StreamOutput(p_postprocess);
 #endif
+#endif
 #ifdef ENABLE_LCD_DISPLAY
+  #if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
+  PrintInfo(p_postprocess->box_nb, inference_ms, boottime_ts);
+#else
   PrintInfo(p_postprocess->nb_detect, inference_ms, boottime_ts);
+#endif
   ret = HAL_LTDC_ReloadLayer(&hlcd_ltdc, LTDC_RELOAD_VERTICAL_BLANKING, LTDC_LAYER_2);
   assert(ret == HAL_OK);
   lcd_fg_buffer_rd_idx = 1 - lcd_fg_buffer_rd_idx;
