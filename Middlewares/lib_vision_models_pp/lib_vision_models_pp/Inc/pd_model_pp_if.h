@@ -25,6 +25,13 @@
 
 #include "pd_pp_output_if.h"
 
+typedef struct {
+  float32_t x;
+  float32_t y;
+  float32_t w;
+  float32_t h;
+} pd_anchor_t;
+
 /* I/O structures for model PD type */
 typedef struct pd_model_pp_in
 {
@@ -40,7 +47,7 @@ typedef struct pd_model_static_param {
   float32_t iou_threshold;
   uint32_t nb_total_boxes;
   uint32_t max_boxes_limit;
-  pd_pp_point_t *pAnchors;
+  pd_anchor_t *pAnchors;
 } pd_model_pp_static_param_t;
 
 
