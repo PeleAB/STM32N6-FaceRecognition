@@ -106,17 +106,19 @@ static int32_t pd_pp_decode(pd_model_pp_in_t *pInput,
       const float ax = pAnchors[i].x;
       const float ay = pAnchors[i].y;
 
-      /* The network outputs absolute offsets in pixels. Convert them back to
-       * normalized coordinates in the [0,1] range using the anchor center. */
-      pBox->x_center = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_XCENTER] + (ax * width)) / width;
-      pBox->y_center = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_YCENTER] + (ay * height)) / height;
-      pBox->width  = pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_WIDTHREL]  / width;
-      pBox->height = pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_HEIGHTREL] / height;
+      /* Model outputs are laid out in channel-first order: all x values for all
+       * anchors come first, followed by y, width and height. Convert the
+       * absolute pixel offsets to normalized coordinates using the matching
+       * anchor center. */
+      pBox->x_center = (pRawBoxes[AI_PD_MODEL_PP_XCENTER * pInput_static_param->nb_total_boxes + i] + (ax * width)) / width;
+      pBox->y_center = (pRawBoxes[AI_PD_MODEL_PP_YCENTER * pInput_static_param->nb_total_boxes + i] + (ay * height)) / height;
+      pBox->width  = pRawBoxes[AI_PD_MODEL_PP_WIDTHREL * pInput_static_param->nb_total_boxes + i]  / width;
+      pBox->height = pRawBoxes[AI_PD_MODEL_PP_HEIGHTREL * pInput_static_param->nb_total_boxes + i] / height;
 
       /* decode keypoints */
       for (uint32_t j = 0; j < pInput_static_param->nb_keypoints; j++) {
-        pBox->pKps[j].x = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_KEYPOINTS + (2 * j) + 0] + (ax * width)) / width;
-        pBox->pKps[j].y = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_KEYPOINTS + (2 * j) + 1] + (ay * height)) / height;
+        pBox->pKps[j].x = (pRawBoxes[(AI_PD_MODEL_PP_KEYPOINTS + (2 * j) + 0) * pInput_static_param->nb_total_boxes + i] + (ax * width)) / width;
+        pBox->pKps[j].y = (pRawBoxes[(AI_PD_MODEL_PP_KEYPOINTS + (2 * j) + 1) * pInput_static_param->nb_total_boxes + i] + (ay * height)) / height;
       }
 
       box_nb++;
