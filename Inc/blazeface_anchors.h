@@ -1,4 +1,5 @@
 // Auto-generated BlazeFace anchors
+// Generated using scripts/generate_blazeface_anchors.py
 #ifndef BLAZEFACE_ANCHORS_H
 #define BLAZEFACE_ANCHORS_H
 
