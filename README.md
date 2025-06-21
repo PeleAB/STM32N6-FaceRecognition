@@ -247,5 +247,7 @@ The repository also contains a `BlazeFace-EXAMPLE` folder with Python scripts
 illustrating the correct post-processing for face detection. These scripts
 decode the network outputs, apply non-maximum suppression and draw bounding
 boxes together with face landmarks. Run `imageFaceDetection.py` to test the
-inference on an example image.
+inference on an example image. The embedded code now uses a confidence
+threshold of **0.7**, matching the Python example and filtering out low
+confidence predictions.
 
