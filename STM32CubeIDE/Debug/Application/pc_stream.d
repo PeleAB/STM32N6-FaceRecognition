@@ -1,7 +1,7 @@
 Application/pc_stream.o: \
  C:/Users/pele/Documents/GitHub/ObjectDet/Src/pc_stream.c \
  ../../Inc/pc_stream.h \
- ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_pp_output_if.h \
+ ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/pd_pp_output_if.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h \
@@ -77,7 +77,7 @@ Application/pc_stream.o: \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
  ../../Inc/app_config.h ../../Inc/stb_image_write.h
 ../../Inc/pc_stream.h:
-../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_pp_output_if.h:
+../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/pd_pp_output_if.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h:

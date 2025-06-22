@@ -22,9 +22,7 @@
 #include "arm_math.h"
 
 #define USE_DCACHE
-/* Enable or disable LCD and PC streaming features */
-#define ENABLE_LCD_DISPLAY
-#define ENABLE_PC_STREAM
+
 
 /*Defines: CMW_MIRRORFLIP_NONE; CMW_MIRRORFLIP_FLIP; CMW_MIRRORFLIP_MIRROR; CMW_MIRRORFLIP_FLIP_MIRROR;*/
 #define CAMERA_FLIP CMW_MIRRORFLIP_NONE
@@ -58,7 +56,9 @@
 #define NB_CLASSES 1
 #define CLASSES_TABLE const char* classes_table[NB_CLASSES] = {\
 "face"}
-
+/* Enable or disable LCD and PC streaming features */
+#define ENABLE_LCD_DISPLAY
+#define ENABLE_PC_STREAM
 /* Application input source configuration */
 #define INPUT_SRC_CAMERA 0
 #define INPUT_SRC_PC     1

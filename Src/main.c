@@ -245,7 +245,7 @@ int main(void)
                         NN_WIDTH, NN_HEIGHT);
     SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
 
-    App_PreInference(nn_rgb);
+    //App_PreInference(nn_rgb);
 
     ts[0] = HAL_GetTick();
     /* run ATON inference */
