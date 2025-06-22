@@ -28,4 +28,10 @@ void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
                           const uint32_t src_stride, const uint16_t width,
                           const uint16_t height);
 
+void img_crop_resize(uint8_t *src_image, uint8_t *dst_img,
+                     const uint16_t src_width, const uint16_t src_height,
+                     const uint16_t dst_width, const uint16_t dst_height,
+                     const uint16_t bpp, int x0, int y0,
+                     int crop_width, int crop_height);
+
 #endif

@@ -43,6 +43,32 @@ void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
 
   for (int i = 0; i< width*width*3; i++)
   {
-	dst_img[i] = ((float32_t) src_image[i]) * scale - 1.f;
+        dst_img[i] = ((float32_t) src_image[i]) * scale - 1.f;
+  }
+}
+
+void img_crop_resize(uint8_t *src_image, uint8_t *dst_img,
+                     const uint16_t src_width, const uint16_t src_height,
+                     const uint16_t dst_width, const uint16_t dst_height,
+                     const uint16_t bpp, int x0, int y0,
+                     int crop_width, int crop_height)
+{
+  for (int y = 0; y < dst_height; y++)
+  {
+    int src_y = y0 + (y * crop_height) / dst_height;
+    if (src_y < 0) src_y = 0;
+    if (src_y >= src_height) src_y = src_height - 1;
+    for (int x = 0; x < dst_width; x++)
+    {
+      int src_x = x0 + (x * crop_width) / dst_width;
+      if (src_x < 0) src_x = 0;
+      if (src_x >= src_width) src_x = src_width - 1;
+      const uint8_t *pIn = src_image + (src_y * src_width + src_x) * bpp;
+      uint8_t *pOut = dst_img + (y * dst_width + x) * bpp;
+      for (int c = 0; c < bpp; c++)
+      {
+        pOut[c] = pIn[c];
+      }
+    }
   }
 }

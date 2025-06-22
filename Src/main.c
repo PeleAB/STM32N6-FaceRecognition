@@ -40,15 +40,25 @@
 
 #define MAX_NUMBER_OUTPUT 5
 
+#define FR_WIDTH 112
+#define FR_HEIGHT 112
+
+
 
 pd_model_pp_static_param_t pp_params;
 
 volatile int32_t cameraFrameReceived;
 uint8_t *nn_in;
+uint8_t *fr_nn_in;
+float32_t *fr_nn_out;
 __attribute__((aligned (32)))
 uint8_t nn_rgb[NN_WIDTH * NN_HEIGHT * NN_BPP];
+__attribute__((aligned (32)))
+uint8_t fr_rgb[FR_WIDTH * FR_HEIGHT * NN_BPP];
 void* pp_input;
 pd_postprocess_out_t pp_output;
+
+uint32_t fr_in_len;
 
 #define ALIGN_TO_16(value) (((value) + 15) & ~15)
 
@@ -224,6 +234,13 @@ int main(void)
   uint32_t nn_in_len = LL_Buffer_len(&nn_in_info[0]);
   uint32_t pitch_nn = 0;
 
+  LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_recognition);
+  const LL_Buffer_InfoTypeDef *fr_in_info = LL_ATON_Input_Buffers_Info_face_recognition();
+  const LL_Buffer_InfoTypeDef *fr_out_info = LL_ATON_Output_Buffers_Info_face_recognition();
+  fr_nn_in = (uint8_t *) LL_Buffer_addr_start(&fr_in_info[0]);
+  fr_nn_out = (float32_t *) LL_Buffer_addr_start(&fr_out_info[0]);
+  fr_in_len = LL_Buffer_len(&fr_in_info[0]);
+
   UNUSED(nn_in_len);
 
   /*** Post Processing Init ***************************************************/
@@ -252,6 +269,21 @@ int main(void)
     LL_ATON_RT_Main(&NN_Instance_face_detection);
 
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
+    if (pp_output.box_nb > 0)
+    {
+      pd_pp_box_t *box = (pd_pp_box_t *)pp_output.pOutData;
+      int x0 = (int)((box[0].x_center - box[0].width / 2.f) * NN_WIDTH);
+      int y0 = (int)((box[0].y_center - box[0].height / 2.f) * NN_HEIGHT);
+      int w  = (int)(box[0].width * NN_WIDTH);
+      int h  = (int)(box[0].height * NN_HEIGHT);
+      img_crop_resize(nn_rgb, fr_rgb, NN_WIDTH, NN_HEIGHT,
+                      FR_WIDTH, FR_HEIGHT, NN_BPP,
+                      x0, y0, w, h);
+      img_rgb_to_hwc_float(fr_rgb, (float32_t *)fr_nn_in,
+                           FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
+      SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
+      LL_ATON_RT_Main(&NN_Instance_face_recognition);
+    }
     ts[1] = HAL_GetTick();
     if (ts[2] == 0)
     {
