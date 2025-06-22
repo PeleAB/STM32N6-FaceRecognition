@@ -20,6 +20,9 @@ def read_frame(ser):
         if bpp == 2:
             frame = np.frombuffer(raw, dtype=np.uint16).reshape((h, w))
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR5652BGR)
+        elif bpp == 3:
+            frame = np.frombuffer(raw, dtype=np.uint8).reshape((h, w, 3))
+            frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         else:
             frame = np.frombuffer(raw, dtype=np.uint8).reshape((h, w))
             frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
