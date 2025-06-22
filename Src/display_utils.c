@@ -177,7 +177,10 @@ void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference_ms, ui
 #endif
 #endif
 #ifdef ENABLE_PC_STREAM
-#if POSTPROCESS_TYPE != POSTPROCESS_MPE_PD_UF
+#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
+  SCB_InvalidateDCache_by_Addr(img_buffer, sizeof(img_buffer));
+  PC_STREAM_SendFrame(img_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2);
+#else
   StreamOutput(p_postprocess);
 #endif
 #endif

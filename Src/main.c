@@ -160,16 +160,13 @@ static void App_Output(od_pp_out_t *res, uint32_t inf_ms,
                        uint32_t boot_ms)
 #endif
 {
-#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
-  Display_NetworkOutput(res, inf_ms, boot_ms);
-#else
 #ifdef ENABLE_PC_STREAM
-#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
+  Display_NetworkOutput(res, inf_ms, boot_ms);
+#elif defined(ENABLE_LCD_DISPLAY)
   Display_NetworkOutput(res, inf_ms, boot_ms);
 #else
-  PC_STREAM_SendDetections(res, 0);
-#endif
-#endif
+  (void)res;
+  (void)inf_ms;
 #endif
 }
 
