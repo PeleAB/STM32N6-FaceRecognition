@@ -295,7 +295,7 @@ int main(void)
       img_crop_resize(nn_rgb, fr_rgb, NN_WIDTH, NN_HEIGHT,
                       FR_WIDTH, FR_HEIGHT, NN_BPP,
                       x0, y0, w, h);
-      img_rgb_to_hwc_float(fr_rgb, (float32_t *)fr_nn_in,
+      img_rgb_to_chw_float(fr_rgb, (float32_t *)fr_nn_in,
                            FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
       SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
       RunNetworkSync(&NN_Instance_face_recognition);
