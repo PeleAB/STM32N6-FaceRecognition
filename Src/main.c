@@ -82,6 +82,98 @@ __attribute__ ((aligned (32)))
 uint8_t dcmipp_out_nn[DCMIPP_OUT_NN_BUFF_LEN];
 
 
+/* Utility functions handling the various I/O configurations */
+static void App_InputInit(uint32_t *pitch_nn);
+static int  App_GetFrame(uint8_t *dest, uint32_t pitch_nn);
+static void App_PreInference(const uint8_t *frame);
+#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
+static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
+                       uint32_t boot_ms);
+#else
+static void App_Output(od_pp_out_t *res, uint32_t inf_ms,
+                       uint32_t boot_ms);
+#endif
+
+/*-------------------------------------------------------------------------*/
+static void App_InputInit(uint32_t *pitch_nn)
+{
+#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
+  CAM_Init(&lcd_bg_area.XSize, &lcd_bg_area.YSize, pitch_nn);
+#endif
+#ifdef ENABLE_LCD_DISPLAY
+  LCD_init();
+#else
+  (void)pitch_nn;
+#endif
+#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
+  CAM_DisplayPipe_Start(img_buffer, CMW_MODE_CONTINUOUS);
+#endif
+}
+
+static int App_GetFrame(uint8_t *dest, uint32_t pitch_nn)
+{
+#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
+  CAM_IspUpdate();
+  if (pitch_nn != (NN_WIDTH * NN_BPP))
+  {
+    CAM_NNPipe_Start(dcmipp_out_nn, CMW_MODE_SNAPSHOT);
+  }
+  else
+  {
+    CAM_NNPipe_Start(dest, CMW_MODE_SNAPSHOT);
+  }
+
+  while (cameraFrameReceived == 0) {}
+  cameraFrameReceived = 0;
+
+  if (pitch_nn != (NN_WIDTH * NN_BPP))
+  {
+    SCB_InvalidateDCache_by_Addr(dcmipp_out_nn, sizeof(dcmipp_out_nn));
+    img_crop(dcmipp_out_nn, dest, pitch_nn, NN_WIDTH, NN_HEIGHT, NN_BPP);
+  }
+  else
+  {
+    SCB_InvalidateDCache_by_Addr(dest, NN_WIDTH * NN_HEIGHT * NN_BPP);
+  }
+  return 0;
+#else
+  return PC_STREAM_ReceiveImage(dest, NN_WIDTH * NN_HEIGHT * NN_BPP);
+#endif
+}
+
+static void App_PreInference(const uint8_t *frame)
+{
+#if INPUT_SRC_MODE != INPUT_SRC_CAMERA
+#ifdef ENABLE_PC_STREAM
+  PC_STREAM_SendFrame(frame, NN_WIDTH, NN_HEIGHT, NN_BPP);
+#endif
+#else
+  (void)frame;
+#endif
+}
+
+#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
+static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
+                       uint32_t boot_ms)
+#else
+static void App_Output(od_pp_out_t *res, uint32_t inf_ms,
+                       uint32_t boot_ms)
+#endif
+{
+#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
+  Display_NetworkOutput(res, inf_ms, boot_ms);
+#else
+#ifdef ENABLE_PC_STREAM
+#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
+  Display_NetworkOutput(res, inf_ms, boot_ms);
+#else
+  PC_STREAM_SendDetections(res, 0);
+#endif
+#endif
+#endif
+}
+
+
 
 /**
   * @brief  Main program
@@ -167,89 +259,37 @@ int main(void)
   /*** Post Processing Init ***************************************************/
   app_postprocess_init(&pp_params);
 
-  /*** Input source initialization *********************************************/
-#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
-  CAM_Init(&lcd_bg_area.XSize, &lcd_bg_area.YSize, &pitch_nn);
-  LCD_init();
-  /* Start LCD Display camera pipe stream */
-  CAM_DisplayPipe_Start(img_buffer, CMW_MODE_CONTINUOUS);
-#else
-  LCD_init();
-#endif
+  /* Initialize camera/LCD/PC stream depending on configuration */
+  App_InputInit(&pitch_nn);
+
   uint32_t ts[3] = { 0 };
   /*** App Loop ***************************************************************/
   while (1)
   {
-#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
-    CAM_IspUpdate();
-
-    if (pitch_nn != (NN_WIDTH * NN_BPP))
-    {
-      /* Start NN camera single capture Snapshot */
-      CAM_NNPipe_Start(dcmipp_out_nn, CMW_MODE_SNAPSHOT);
-    }
-    else
-    {
-      /* Start NN camera single capture Snapshot */
-      CAM_NNPipe_Start(nn_rgb, CMW_MODE_SNAPSHOT);
-    }
-
-    while (cameraFrameReceived == 0) {};
-    cameraFrameReceived = 0;
-
-    if (pitch_nn != (NN_WIDTH * NN_BPP))
-    {
-      SCB_InvalidateDCache_by_Addr(dcmipp_out_nn, sizeof(dcmipp_out_nn));
-      img_crop(dcmipp_out_nn, nn_rgb, pitch_nn, NN_WIDTH, NN_HEIGHT, NN_BPP);
-    }
-    else
-    {
-      SCB_InvalidateDCache_by_Addr(nn_rgb, sizeof(nn_rgb));
-    }
-#else
-    /* Receive frame from PC */
-    if (PC_STREAM_ReceiveImage(nn_rgb, NN_WIDTH * NN_HEIGHT * NN_BPP) != 0)
+    if (App_GetFrame(nn_rgb, pitch_nn) != 0)
     {
       continue;
     }
-#endif
 
-//    memcpy(nn_rgb, DUMMY_IMG_RGB, NN_WIDTH * NN_HEIGHT * NN_BPP);
     img_rgb_to_hwc_float(nn_rgb, (float32_t *)nn_in, NN_WIDTH * NN_BPP,
                         NN_WIDTH, NN_HEIGHT);
-//    memcpy(nn_in, DUMMY_IMG, nn_in_len);
     SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
-#if INPUT_SRC_MODE != INPUT_SRC_CAMERA
-#ifdef ENABLE_PC_STREAM
-    PC_STREAM_SendFrame(nn_rgb, NN_WIDTH, NN_HEIGHT, NN_BPP);
-#endif
-#endif
+
+    App_PreInference(nn_rgb);
 
     ts[0] = HAL_GetTick();
     /* run ATON inference */
     LL_ATON_RT_Main(&NN_Instance_Default);
 
-
-
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
     ts[1] = HAL_GetTick();
-    if(ts[2]==0)
+    if (ts[2] == 0)
     {
-    	ts[2] = HAL_GetTick();
+      ts[2] = HAL_GetTick();
     }
     assert(ret == 0);
 
-#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
-    Display_NetworkOutput(&pp_output, ts[1] - ts[0], ts[2]);
-#else
-#ifdef ENABLE_PC_STREAM
-#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
-    Display_NetworkOutput(&pp_output, ts[1] - ts[0], ts[2]);
-#else
-    PC_STREAM_SendDetections(&pp_output, 0);
-#endif
-#endif
-#endif
+    App_Output(&pp_output, ts[1] - ts[0], ts[2]);
 
     /* Discard nn_out region (used by pp_input and pp_outputs variables) to avoid Dcache evictions during nn inference */
     for (int i = 0; i < number_output; i++)
