@@ -9,20 +9,20 @@
       <change beforePath="$PROJECT_DIR$/Binary/STM32N6_GettingStarted_ObjectDetection_signed.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Binary/STM32N6_GettingStarted_ObjectDetection_signed.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Binary/STM32N6_GettingStarted_ObjectDetection_signed.hex" beforeDir="false" afterPath="$PROJECT_DIR$/Binary/STM32N6_GettingStarted_ObjectDetection_signed.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BlazeFace-EXAMPLE/BlazeFaceDetection/blazeFaceDetector.py" beforeDir="false" afterPath="$PROJECT_DIR$/BlazeFace-EXAMPLE/BlazeFaceDetection/blazeFaceDetector.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlazeFace-EXAMPLE/BlazeFaceDetection/blazeFaceUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/BlazeFace-EXAMPLE/BlazeFaceDetection/blazeFaceUtils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BlazeFace-EXAMPLE/imageFaceDetection.py" beforeDir="false" afterPath="$PROJECT_DIR$/BlazeFace-EXAMPLE/imageFaceDetection.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Inc/blazeface_anchors.h" beforeDir="false" afterPath="$PROJECT_DIR$/Inc/blazeface_anchors.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/face_detection_front_128_integer_quant_OE_3_2_0_Q.json" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_detection_front_128_integer_quant_OE_3_2_0_Q.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/network.c" beforeDir="false" afterPath="$PROJECT_DIR$/Model/network.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/network.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/network.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/network_analyze_report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Model/network_analyze_report.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/network_c_info.json" beforeDir="false" afterPath="$PROJECT_DIR$/Model/network_c_info.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/network_ecblobs.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/network_ecblobs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/main.d" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/main.d" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/app_postprocess.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/app_postprocess.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Src/crop_img.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/crop_img.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/generate_blazeface_anchors.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/generate_blazeface_anchors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +68,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Python.imageFaceDetection">
+  <component name="RunManager" selected="Python.pc_uart_client">
     <configuration name="build_unified_face_rec" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ObjectDet" />
       <option name="ENV_FILES" value="" />
@@ -186,10 +186,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.pc_uart_client" />
         <item itemvalue="Python.imageFaceDetection" />
         <item itemvalue="Python.generate_blazeface_anchors" />
         <item itemvalue="Python.build_unified_face_rec" />
-        <item itemvalue="Python.pc_uart_client" />
         <item itemvalue="Python.compare_detections" />
       </list>
     </recent_temporary>
@@ -272,7 +272,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/BlazeFace-EXAMPLE/BlazeFaceDetection/blazeFaceDetector.py</url>
-          <line>150</line>
+          <line>161</line>
           <option name="timeStamp" value="49" />
         </line-breakpoint>
       </breakpoints>
@@ -289,7 +289,7 @@
     <SUITE FILE_PATH="coverage/ObjectDet$pc_stream_receiver.coverage" NAME="pc_stream_receiver Coverage Results" MODIFIED="1749316009010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_stream_receiver.coverage" NAME="pc_stream_receiver Coverage Results" MODIFIED="1750193783390" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$compare_detections.coverage" NAME="compare_detections Coverage Results" MODIFIED="1750412757553" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/pc_send_photos_py$imageFaceDetection.coverage" NAME="imageFaceDetection Coverage Results" MODIFIED="1750534161596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/BlazeFace-EXAMPLE" />
+    <SUITE FILE_PATH="coverage/pc_send_photos_py$imageFaceDetection.coverage" NAME="imageFaceDetection Coverage Results" MODIFIED="1750537599535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/BlazeFace-EXAMPLE" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_send_photos.coverage" NAME="pc_send_photos Coverage Results" MODIFIED="1749918113217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$genLogo.coverage" NAME="genLogo Coverage Results" MODIFIED="1750200716157" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$build_unified_face_rec.coverage" NAME="build_unified_face_rec Coverage Results" MODIFIED="1750449981027" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

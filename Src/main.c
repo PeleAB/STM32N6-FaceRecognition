@@ -35,6 +35,7 @@
 #include "display_utils.h"
 #include "img_buffer.h"
 #include "system_utils.h"
+#include "blazeface_anchors.h"
 
 
 #define MAX_NUMBER_OUTPUT 5
@@ -213,8 +214,10 @@ int main(void)
     }
 #endif
 
+//    memcpy(nn_rgb, DUMMY_IMG_RGB, NN_WIDTH * NN_HEIGHT * NN_BPP);
     img_rgb_to_hwc_float(nn_rgb, (float32_t *)nn_in, NN_WIDTH * NN_BPP,
                         NN_WIDTH, NN_HEIGHT);
+//    memcpy(nn_in, DUMMY_IMG, nn_in_len);
     SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
 #if INPUT_SRC_MODE != INPUT_SRC_CAMERA
 #ifdef ENABLE_PC_STREAM

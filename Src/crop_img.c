@@ -41,18 +41,8 @@ void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
   const float32_t scale = 1.f / 128.f;
 
 
-  for (int y = height - 1; y >= 0; y--)
+  for (int i = 0; i< width*width*3; i++)
   {
-    uint8_t *src = src_image + y * src_stride;
-    for (int x = width - 1; x >= 0; x--)
-    {
-      uint8_t r = src[3 * x + 0];
-      uint8_t g = src[3 * x + 1];
-      uint8_t b = src[3 * x + 2];
-      dst_img[3 * x + 0] = ((float32_t) r) * scale - 1.f;
-      dst_img[3 * x + 0] = ((float32_t) g) * scale - 1.f;
-      dst_img[3 * x + 0] = ((float32_t) b) * scale - 1.f;
-
-    }
+	dst_img[i] = ((float32_t) src_image[i]) * scale - 1.f;
   }
 }

@@ -134,18 +134,29 @@ class blazeFaceDetector():
 
 	def prepareInputForInference(self, image):
 		img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
 		self.img_height, self.img_width, self.img_channels = img.shape
 
 		# Input values should be from -1 to 1 with a size of 128 x 128 pixels for the fornt model
 		# and 256 x 256 pixels for the back model
-		img = img / 255.0
+		#img = img / 255.0
 		img_resized = tf.image.resize(img, [self.inputHeight,self.inputWidth], 
 									method='bicubic', preserve_aspect_ratio=False)
 		img_input = img_resized.numpy()
-		img_input = (img_input - 0.5) / 0.5
+		# img_input = (img_input - 0.5) / 0.5
+
+		flattened = img_input.flatten()
+		flattened = np.clip(flattened, 0, 255)
+		np.savetxt("output_int.txt", flattened, fmt="%d,")
 
 		# Adjust matrix dimenstions
 		reshape_img = img_input.reshape(1,self.inputHeight,self.inputWidth,self.channels)
+
+		flattened = reshape_img.reshape(1, -1)
+
+		# Save with 4 decimal precision
+		np.savetxt("output.txt", flattened, fmt="%f,")
+
 		tensor = tf.convert_to_tensor(reshape_img, dtype=tf.float32)
 		print(tensor)
 		return tensor
