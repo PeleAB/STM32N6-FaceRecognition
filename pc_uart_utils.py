@@ -78,9 +78,9 @@ def read_detections(ser):
     for _ in range(count):
         line = ser.readline().decode(errors="ignore").strip()
         tokens = line.split()
-        if len(tokens) != 6:
+        if len(tokens) < 6:
             continue
-        c, xc, yc, w, h, conf = tokens
+        c, xc, yc, w, h, conf = tokens[:6]
         dets.append(
             (
                 int(c),
