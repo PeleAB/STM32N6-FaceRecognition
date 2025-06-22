@@ -6,13 +6,32 @@ import cv2
 import time
 
 
+def _search_header(ser, prefixes):
+    """Read lines until one starting with any of ``prefixes`` is found."""
+    if isinstance(prefixes, str):
+        prefixes = (prefixes,)
+
+    while True:
+        line = ser.readline().decode(errors="ignore")
+        if not line:
+            return None
+        for p in prefixes:
+            if line.startswith(p):
+                return line.strip()
+
+
 def read_frame(ser):
     """Read a frame from the serial port.
 
-    Returns a tuple (image, width, height) or (None, None, None) if no frame is
-    available."""
-    line = ser.readline().decode(errors='ignore').strip()
-    if line.startswith('FRAME'):
+    Returns ``(image, width, height)`` or ``(None, None, None)`` if no frame is
+    available. The function searches the stream for a ``FRAME`` or ``JPG``
+    header rather than assuming the port is aligned on line boundaries."""
+
+    line = _search_header(ser, ("FRAME", "JPG"))
+    if line is None:
+        return None, None, None
+
+    if line.startswith("FRAME"):
         _, w, h, bpp = line.split()
         w, h, bpp = int(w), int(h), int(bpp)
         size = w * h * bpp
@@ -20,31 +39,48 @@ def read_frame(ser):
         if bpp == 2:
             frame = np.frombuffer(raw, dtype=np.uint16).reshape((h, w))
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR5652BGR)
+        elif bpp == 3:
+            frame = np.frombuffer(raw, dtype=np.uint8).reshape((h, w, 3))
+            frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         else:
             frame = np.frombuffer(raw, dtype=np.uint8).reshape((h, w))
             frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
         return frame, w, h
-    if line.startswith('JPG'):
+
+    if line.startswith("JPG"):
         _, w, h, size = line.split()
         w, h, size = int(w), int(h), int(size)
         raw = ser.read(size)
         img = np.frombuffer(raw, dtype=np.uint8)
         frame = cv2.imdecode(img, cv2.IMREAD_COLOR)
         return frame, w, h
+
     return None, None, None
 
 
 def read_detections(ser):
-    """Read detection results for the current frame."""
-    line = ser.readline().decode(errors='ignore').strip()
-    if not line.startswith('DETS'):
-        return []
+    """Read detection results for the current frame.
+
+    Returns ``(frame_id, detections)``. The function searches for the ``DETS``
+    header to avoid losing synchronization with the stream."""
+
+    line = _search_header(ser, "DETS")
+    if line is None:
+        return None, []
+
     parts = line.split()
+    if len(parts) < 3:
+        return None, []
+
+    frame_id = int(parts[1])
     count = int(parts[2])
     dets = []
     for _ in range(count):
-        line = ser.readline().decode(errors='ignore').strip()
-        c, xc, yc, w, h, conf = line.split()
+        line = ser.readline().decode(errors="ignore").strip()
+        tokens = line.split()
+        if len(tokens) < 6:
+            continue
+        c, xc, yc, w, h, conf = tokens[:6]
         dets.append(
             (
                 int(c),
@@ -55,8 +91,9 @@ def read_detections(ser):
                 float(conf),
             )
         )
+
     ser.readline()  # END marker
-    return dets
+    return frame_id, dets
 
 
 def draw_detections(img, dets, color=(0, 255, 0)):
@@ -135,7 +172,7 @@ def send_image(ser, img_path, size, display=False, rx=False, preview=False):
     if rx:
         time.sleep(0.5)
         echo, w, h = read_frame(ser)
-        dets = read_detections(ser)
+        _, dets = read_detections(ser)
 
         if echo is not None:
             echo = draw_detections(echo, dets)
