@@ -26,7 +26,7 @@ class StreamThread(QtCore.QThread):
             frame, _, _ = utils.read_frame(self.ser)
             if frame is None:
                 continue
-            dets = utils.read_detections(self.ser)
+            _, dets = utils.read_detections(self.ser)
             frame = utils.draw_detections(frame, dets)
             self.frame_received.emit(frame)
 

@@ -38,16 +38,29 @@ def read_frame(ser):
 
 
 def read_detections(ser):
-    """Read detection results for the current frame."""
-    line = ser.readline().decode(errors='ignore').strip()
-    if not line.startswith('DETS'):
-        return []
+    """Read detection results for the current frame.
+
+    Returns a tuple ``(frame_id, detections)``. ``frame_id`` may be ``None`` if
+    the stream does not start with a ``DETS`` header.
+    """
+
+    line = ser.readline().decode(errors="ignore").strip()
+    if not line.startswith("DETS"):
+        return None, []
+
     parts = line.split()
+    if len(parts) < 3:
+        return None, []
+
+    frame_id = int(parts[1])
     count = int(parts[2])
     dets = []
     for _ in range(count):
-        line = ser.readline().decode(errors='ignore').strip()
-        c, xc, yc, w, h, conf = line.split()
+        line = ser.readline().decode(errors="ignore").strip()
+        tokens = line.split()
+        if len(tokens) != 6:
+            continue
+        c, xc, yc, w, h, conf = tokens
         dets.append(
             (
                 int(c),
@@ -58,8 +71,9 @@ def read_detections(ser):
                 float(conf),
             )
         )
+
     ser.readline()  # END marker
-    return dets
+    return frame_id, dets
 
 
 def draw_detections(img, dets, color=(0, 255, 0)):
@@ -138,7 +152,7 @@ def send_image(ser, img_path, size, display=False, rx=False, preview=False):
     if rx:
         time.sleep(0.5)
         echo, w, h = read_frame(ser)
-        dets = read_detections(ser)
+        _, dets = read_detections(ser)
 
         if echo is not None:
             echo = draw_detections(echo, dets)
