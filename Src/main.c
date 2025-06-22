@@ -77,6 +77,8 @@ static void App_PreInference(const uint8_t *frame);
 static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
                        uint32_t boot_ms);
 
+static void RunNetworkSync(NN_Instance_TypeDef *inst);
+
 /*-------------------------------------------------------------------------*/
 static void App_InputInit(uint32_t *pitch_nn)
 {
@@ -153,6 +155,20 @@ static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
 #endif
 }
 
+static void RunNetworkSync(NN_Instance_TypeDef *inst)
+{
+  LL_ATON_RT_Init_Network(inst);
+  LL_ATON_RT_RetValues_t st;
+  do
+  {
+    st = LL_ATON_RT_RunEpochBlock(inst);
+    if (st == LL_ATON_RT_WFE)
+    {
+      LL_ATON_OSAL_WFE();
+    }
+  } while (st != LL_ATON_RT_DONE);
+}
+
 
 
 /**
@@ -206,6 +222,8 @@ int main(void)
 
   IAC_Config();
   set_clk_sleep_mode();
+
+  LL_ATON_RT_RuntimeInit();
 
   /*** NN Init ****************************************************************/
   LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_detection);
@@ -262,11 +280,9 @@ int main(void)
                         NN_WIDTH, NN_HEIGHT);
     SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
 
-    //App_PreInference(nn_rgb);
-
     ts[0] = HAL_GetTick();
-    /* run ATON inference */
-    LL_ATON_RT_Main(&NN_Instance_face_detection);
+    RunNetworkSync(&NN_Instance_face_detection);
+    LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
 
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
     if (pp_output.box_nb > 0)
@@ -282,7 +298,8 @@ int main(void)
       img_rgb_to_hwc_float(fr_rgb, (float32_t *)fr_nn_in,
                            FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
       SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
-      LL_ATON_RT_Main(&NN_Instance_face_recognition);
+      RunNetworkSync(&NN_Instance_face_recognition);
+      LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
     }
     ts[1] = HAL_GetTick();
     if (ts[2] == 0)
