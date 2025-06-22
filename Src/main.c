@@ -41,36 +41,14 @@
 #define MAX_NUMBER_OUTPUT 5
 
 
-#if POSTPROCESS_TYPE == POSTPROCESS_OD_YOLO_V2_UF
-yolov2_pp_static_param_t pp_params;
-#elif POSTPROCESS_TYPE == POSTPROCESS_OD_YOLO_V5_UU
-yolov5_pp_static_param_t pp_params;
-#elif POSTPROCESS_TYPE == POSTPROCESS_OD_YOLO_V8_UF
-yolov8_pp_static_param_t pp_params;
-#elif POSTPROCESS_TYPE == POSTPROCESS_OD_YOLO_V8_UI
-yolov8_pp_static_param_t pp_params;
-#elif POSTPROCESS_TYPE == POSTPROCESS_OD_ST_YOLOX_UF
-st_yolox_pp_static_param_t pp_params;
-#elif POSTPROCESS_TYPE == POSTPROCESS_OD_ST_SSD_UF
-ssd_st_pp_static_param_t pp_params;
-#elif POSTPROCESS_TYPE == POSTPROCESS_MP_FACE_U8
-mp_face_pp_static_param_t pp_params;
-#elif POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
 pd_model_pp_static_param_t pp_params;
-#else
-    #error "PostProcessing type not supported"
-#endif
 
 volatile int32_t cameraFrameReceived;
 uint8_t *nn_in;
 __attribute__((aligned (32)))
 uint8_t nn_rgb[NN_WIDTH * NN_HEIGHT * NN_BPP];
 void* pp_input;
-#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
 pd_postprocess_out_t pp_output;
-#else
-od_pp_out_t pp_output;
-#endif
 
 #define ALIGN_TO_16(value) (((value) + 15) & ~15)
 
@@ -86,13 +64,8 @@ uint8_t dcmipp_out_nn[DCMIPP_OUT_NN_BUFF_LEN];
 static void App_InputInit(uint32_t *pitch_nn);
 static int  App_GetFrame(uint8_t *dest, uint32_t pitch_nn);
 static void App_PreInference(const uint8_t *frame);
-#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
 static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
                        uint32_t boot_ms);
-#else
-static void App_Output(od_pp_out_t *res, uint32_t inf_ms,
-                       uint32_t boot_ms);
-#endif
 
 /*-------------------------------------------------------------------------*/
 static void App_InputInit(uint32_t *pitch_nn)
@@ -152,13 +125,9 @@ static void App_PreInference(const uint8_t *frame)
 #endif
 }
 
-#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
 static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
                        uint32_t boot_ms)
-#else
-static void App_Output(od_pp_out_t *res, uint32_t inf_ms,
-                       uint32_t boot_ms)
-#endif
+
 {
 #ifdef ENABLE_PC_STREAM
   Display_NetworkOutput(res, inf_ms, boot_ms);

@@ -124,7 +124,6 @@ void PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height, 
     }
 }
 
-#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
 void PC_STREAM_SendDetections(const pd_postprocess_out_t *detections, uint32_t frame_id)
 {
     char line[128];
@@ -158,31 +157,7 @@ void PC_STREAM_SendDetections(const pd_postprocess_out_t *detections, uint32_t f
     static const char end_marker[] = "END\n";
     HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)end_marker, sizeof(end_marker) - 1, HAL_MAX_DELAY);
 }
-#else
-void PC_STREAM_SendDetections(const od_pp_out_t *detections, uint32_t frame_id)
-{
-    char line[64];
-    int ll = snprintf(line, sizeof(line), "DETS %lu %d\n", (unsigned long)frame_id,
-                      (int)detections->nb_detect);
-    if (ll > 0)
-    {
-        HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)line, (uint16_t)ll, HAL_MAX_DELAY);
-    }
-    for(int i=0; i<detections->nb_detect; i++)
-    {
-        const od_pp_outBuffer_t *r = &detections->pOutBuff[i];
-        ll = snprintf(line, sizeof(line), "%d %.3f %.3f %.3f %.3f %.2f\n", (int)r->class_index,
-                      (double)r->x_center, (double)r->y_center, (double)r->width,
-                      (double)r->height, (double)r->conf);
-        if (ll > 0)
-        {
-            HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)line, (uint16_t)ll, HAL_MAX_DELAY);
-        }
-    }
-    static const char end_marker[] = "END\n";
-    HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)end_marker, sizeof(end_marker) - 1, HAL_MAX_DELAY);
-}
-#endif
+
 
 int PC_STREAM_ReceiveImage(uint8_t *buffer, uint32_t length)
 {
