@@ -132,6 +132,15 @@ static void DrawFaceLandmarks(const float *landmarks, uint32_t nb)
 #endif /* ENABLE_LCD_DISPLAY */
 
 #ifdef ENABLE_PC_STREAM
+#if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
+static void StreamOutputPd(const pd_postprocess_out_t *p_postprocess)
+{
+  static uint32_t stream_frame_id = 0;
+  SCB_InvalidateDCache_by_Addr(img_buffer, sizeof(img_buffer));
+  PC_STREAM_SendFrame(img_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2);
+  PC_STREAM_SendDetections(p_postprocess, stream_frame_id++);
+}
+#else
 static void StreamOutput(const od_pp_out_t *p_postprocess)
 {
   static uint32_t stream_frame_id = 0;
@@ -139,6 +148,7 @@ static void StreamOutput(const od_pp_out_t *p_postprocess)
   PC_STREAM_SendFrame(img_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2);
   PC_STREAM_SendDetections(p_postprocess, stream_frame_id++);
 }
+#endif
 #endif /* ENABLE_PC_STREAM */
 
 #ifdef ENABLE_LCD_DISPLAY
@@ -178,8 +188,7 @@ void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference_ms, ui
 #endif
 #ifdef ENABLE_PC_STREAM
 #if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
-  SCB_InvalidateDCache_by_Addr(img_buffer, sizeof(img_buffer));
-  PC_STREAM_SendFrame(img_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2);
+  StreamOutputPd(p_postprocess);
 #else
   StreamOutput(p_postprocess);
 #endif
