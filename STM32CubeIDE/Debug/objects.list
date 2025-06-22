@@ -4,6 +4,7 @@
 "./Application/crop_img.o"
 "./Application/display_utils.o"
 "./Application/face_detection.o"
+"./Application/face_recognition.o"
 "./Application/img_buffer.o"
 "./Application/main.o"
 "./Application/mcu_cache.o"

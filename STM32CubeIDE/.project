@@ -72,6 +72,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Model/face_detection.c</locationURI>
 		</link>
 		<link>
+			<name>Application/face_recognition.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Model/face_recognition.c</locationURI>
+		</link>
+		<link>
 			<name>Application/img_buffer.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/img_buffer.c</locationURI>

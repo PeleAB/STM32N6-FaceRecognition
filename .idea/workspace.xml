@@ -5,18 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c982fc48-7cf4-41a9-90d7-0061582bf1c4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/jjj.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Inc/app_config.h" beforeDir="false" afterPath="$PROJECT_DIR$/Inc/app_config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/pc_stream.d" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/pc_stream.d" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/BlazeFaceDetection/blazeFaceDetector.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_tools/BlazeFaceDetection/blazeFaceDetector.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/pc_uart_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_tools/pc_uart_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trump.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/python_tools/trump.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trump2.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/python_tools/trump2.jpeg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,29 +32,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.build_unified_face_rec.executor": "Run",
-    "Python.compare_detections (1).executor": "Run",
-    "Python.compare_detections.executor": "Debug",
-    "Python.genLogo.executor": "Run",
-    "Python.generate_blazeface_anchors.executor": "Run",
-    "Python.imageFaceDetection.executor": "Run",
-    "Python.pc_stream_receiver.executor": "Run",
-    "Python.pc_uart_client (1).executor": "Run",
-    "Python.pc_uart_client.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "codex/modify-compare__detections.py-for-embedded-c-software",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.build_unified_face_rec.executor&quot;: &quot;Run&quot;,
+    &quot;Python.compare_detections (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.compare_detections.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.genLogo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.generate_blazeface_anchors.executor&quot;: &quot;Run&quot;,
+    &quot;Python.imageFaceDetection.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pc_stream_receiver.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pc_uart_client (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.pc_uart_client.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;codex/modify-compare__detections.py-for-embedded-c-software&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Python.pc_uart_client (1)">
+}</component>
+  <component name="RunManager" selected="Python.jjj">
     <configuration name="compare_detections (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ObjectDet" />
       <option name="ENV_FILES" value="" />
@@ -88,29 +78,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="generate_blazeface_anchors" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="ObjectDet" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/generate_blazeface_anchors.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="imageFaceDetection" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ObjectDet" />
       <option name="ENV_FILES" value="" />
@@ -126,6 +93,29 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/BlazeFace-EXAMPLE/imageFaceDetection.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="jjj" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ObjectDet" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/jjj.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -182,11 +172,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.jjj" />
         <item itemvalue="Python.pc_uart_client (1)" />
         <item itemvalue="Python.compare_detections (1)" />
         <item itemvalue="Python.pc_uart_client" />
         <item itemvalue="Python.imageFaceDetection" />
-        <item itemvalue="Python.generate_blazeface_anchors" />
       </list>
     </recent_temporary>
   </component>
@@ -206,6 +196,7 @@
       <option name="presentableId" value="Default" />
       <updated>1749498066618</updated>
       <workItem from="1749498067646" duration="1558000" />
+      <workItem from="1750600426470" duration="666000" />
     </task>
     <servers />
   </component>
