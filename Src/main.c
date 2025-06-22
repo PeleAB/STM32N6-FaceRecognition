@@ -72,6 +72,10 @@ static void App_InputInit(uint32_t *pitch_nn)
 {
 #if INPUT_SRC_MODE == INPUT_SRC_CAMERA
   CAM_Init(&lcd_bg_area.XSize, &lcd_bg_area.YSize, pitch_nn);
+#else
+  lcd_bg_area.XSize = NN_WIDTH;
+  lcd_bg_area.YSize = NN_HEIGHT;
+  (void)pitch_nn;
 #endif
 #ifdef ENABLE_LCD_DISPLAY
   LCD_init();
