@@ -1,4 +1,5 @@
 import time
+from pathlib import Path
 import cv2
 import numpy as np
 import tensorflow as tf
@@ -25,10 +26,14 @@ class blazeFaceDetector():
 		self.generateAnchors(type)
 
 	def initializeModel(self, type):
+		base = Path(__file__).resolve().parent.parent / "models"
 		if type == "front":
-			self.interpreter = tf.lite.Interpreter(model_path="models/face_detection_front_128_integer_quant.tflite")
-		elif type =="back":
-			self.interpreter = tf.lite.Interpreter(model_path="models/face_detection_back.tflite")
+			model_path = base / "face_detection_front_128_integer_quant.tflite"
+		elif type == "back":
+			model_path = base / "face_detection_back.tflite"
+		else:
+			raise ValueError(f"Unknown model type: {type}")
+		self.interpreter = tf.lite.Interpreter(model_path=str(model_path))
 		self.interpreter.allocate_tensors()
 
 		# Get model info

@@ -11,8 +11,8 @@ import serial
 
 import pc_uart_utils as utils
 
-# allow importing the BlazeFace example package
-sys.path.insert(0, str(Path(__file__).resolve().parent / "BlazeFace-EXAMPLE"))
+# add this script's directory to the path so the local package is found
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from BlazeFaceDetection.blazeFaceDetector import blazeFaceDetector
 
 

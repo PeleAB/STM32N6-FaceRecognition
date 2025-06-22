@@ -2,6 +2,8 @@
 *.o
 *.su
 *.mk
+__pycache__/
+*.pyc
 *.cyclo
 *.su
 *.su
