@@ -6,13 +6,33 @@ import cv2
 import time
 
 
+def _search_header(ser, prefixes):
+    """Read lines until one starting with any of *prefixes* is found."""
+    if isinstance(prefixes, str):
+        prefixes = (prefixes,)
+
+    while True:
+        line = ser.readline().decode(errors="ignore")
+        if not line:
+            return None
+        for p in prefixes:
+            idx = line.find(p)
+            if idx != -1:
+                return line[idx:].strip()
+
+
 def read_frame(ser):
     """Read a frame from the serial port.
 
-    Returns a tuple (image, width, height) or (None, None, None) if no frame is
-    available."""
-    line = ser.readline().decode(errors='ignore').strip()
-    if line.startswith('FRAME'):
+    Returns ``(image, width, height)`` or ``(None, None, None)`` if no frame is
+    available. The function searches the stream for a ``FRAME`` or ``JPG``
+    header rather than assuming the port is aligned on line boundaries."""
+
+    line = _search_header(ser, ("FRAME", "JPG"))
+    if line is None:
+        return None, None, None
+
+    if line.startswith("FRAME"):
         _, w, h, bpp = line.split()
         w, h, bpp = int(w), int(h), int(bpp)
         size = w * h * bpp
@@ -27,25 +47,26 @@ def read_frame(ser):
             frame = np.frombuffer(raw, dtype=np.uint8).reshape((h, w))
             frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
         return frame, w, h
-    if line.startswith('JPG'):
+
+    if line.startswith("JPG"):
         _, w, h, size = line.split()
         w, h, size = int(w), int(h), int(size)
         raw = ser.read(size)
         img = np.frombuffer(raw, dtype=np.uint8)
         frame = cv2.imdecode(img, cv2.IMREAD_COLOR)
         return frame, w, h
+
     return None, None, None
 
 
 def read_detections(ser):
     """Read detection results for the current frame.
 
-    Returns a tuple ``(frame_id, detections)``. ``frame_id`` may be ``None`` if
-    the stream does not start with a ``DETS`` header.
-    """
+    Returns ``(frame_id, detections)``. The function searches for the ``DETS``
+    header to avoid losing synchronization with the stream."""
 
-    line = ser.readline().decode(errors="ignore").strip()
-    if not line.startswith("DETS"):
+    line = _search_header(ser, "DETS")
+    if line is None:
         return None, []
 
     parts = line.split()
