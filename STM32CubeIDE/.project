@@ -67,6 +67,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/display_utils.c</locationURI>
 		</link>
 		<link>
+			<name>Application/face_detection.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Model/face_detection.c</locationURI>
+		</link>
+		<link>
 			<name>Application/img_buffer.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/img_buffer.c</locationURI>
@@ -80,11 +85,6 @@
 			<name>Application/mcu_cache.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.c</locationURI>
-		</link>
-		<link>
-			<name>Application/network.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Model/network.c</locationURI>
 		</link>
 		<link>
 			<name>Application/npu_cache.c</name>

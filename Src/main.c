@@ -198,9 +198,9 @@ int main(void)
   set_clk_sleep_mode();
 
   /*** NN Init ****************************************************************/
-  LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(Default);
-  const LL_Buffer_InfoTypeDef *nn_in_info = LL_ATON_Input_Buffers_Info_Default();
-  const LL_Buffer_InfoTypeDef *nn_out_info = LL_ATON_Output_Buffers_Info_Default();
+  LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_detection);
+  const LL_Buffer_InfoTypeDef *nn_in_info = LL_ATON_Input_Buffers_Info_face_detection();
+  const LL_Buffer_InfoTypeDef *nn_out_info = LL_ATON_Output_Buffers_Info_face_detection();
 
   nn_in = (uint8_t *) LL_Buffer_addr_start(&nn_in_info[0]);
   float32_t *nn_out[MAX_NUMBER_OUTPUT];
@@ -249,7 +249,7 @@ int main(void)
 
     ts[0] = HAL_GetTick();
     /* run ATON inference */
-    LL_ATON_RT_Main(&NN_Instance_Default);
+    LL_ATON_RT_Main(&NN_Instance_face_detection);
 
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
     ts[1] = HAL_GetTick();
