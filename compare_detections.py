@@ -1,25 +1,19 @@
 #!/usr/bin/env python3
-"""Compare YOLOv2 detections between PC and MCU."""
+"""Compare BlazeFace detections between PC and MCU."""
 
 import argparse
+from pathlib import Path
+import sys
+
 import cv2
 import numpy as np
 import serial
-import tensorflow as tf
-TF_ENABLE_ONEDNN_OPTS=0
+
 import pc_uart_utils as utils
 
-ANCHORS = np.array([
-    0.9883, 3.3606,
-    2.1194, 5.3759,
-    3.0520, 9.1336,
-    5.5517, 9.3066,
-    9.7260, 11.1422,
-], dtype=np.float32)
-GRID = 7
-CONF_THRESHOLD = 0.6
-IOU_THRESHOLD = 0.3
-MAX_DET = 10
+# allow importing the BlazeFace example package
+sys.path.insert(0, str(Path(__file__).resolve().parent / "BlazeFace-EXAMPLE"))
+from BlazeFaceDetection.blazeFaceDetector import blazeFaceDetector
 
 
 def det_box(det: tuple) -> np.ndarray:
@@ -29,15 +23,6 @@ def det_box(det: tuple) -> np.ndarray:
 
 
 # ------------------------------------------------------------
-def sigmoid(x: np.ndarray) -> np.ndarray:
-    return 1.0 / (1.0 + np.exp(-x))
-
-
-def softmax(x: np.ndarray) -> np.ndarray:
-    e = np.exp(x - np.max(x))
-    return e / np.sum(e)
-
-
 def iou(box_a: np.ndarray, box_b: np.ndarray) -> float:
     xa0, ya0, xa1, ya1 = box_a
     xb0, yb0, xb1, yb1 = box_b
@@ -51,57 +36,18 @@ def iou(box_a: np.ndarray, box_b: np.ndarray) -> float:
 
 
 # ------------------------------------------------------------
-def decode_yolov2(output: np.ndarray) -> list[tuple]:
-    """Decode raw model output to bounding boxes."""
-    output = output.reshape(GRID, GRID, 5, 6)
+def run_model(detector: blazeFaceDetector, img: np.ndarray) -> list[tuple]:
+    """Run BlazeFace on *img* and return detections as tuples."""
+    results = detector.detectFaces(img)
     dets = []
-    for row in range(GRID):
-        for col in range(GRID):
-            for a in range(5):
-                xc, yc, w, h, obj, cls = output[row, col, a]
-                obj = sigmoid(obj)
-                cls = softmax(np.array([cls]))[0]
-                score = obj * cls
-                if score < CONF_THRESHOLD:
-                    continue
-                xc = (col + sigmoid(xc)) / GRID
-                yc = (row + sigmoid(yc)) / GRID
-                w = ANCHORS[2 * a] * np.exp(w) / GRID
-                h = ANCHORS[2 * a + 1] * np.exp(h) / GRID
-                dets.append((0, xc, yc, w, h, score))
-    # NMS
-    dets = sorted(dets, key=lambda d: d[5], reverse=True)
-    final = []
-    boxes = []
-    for det in dets:
-        if len(final) >= MAX_DET:
-            break
-        _, xc, yc, w, h, score = det
-        x0 = xc - w / 2
-        y0 = yc - h / 2
-        x1 = xc + w / 2
-        y1 = yc + h / 2
-        current = np.array([x0, y0, x1, y1])
-        if any(iou(current, b) > IOU_THRESHOLD for b in boxes):
-            continue
-        final.append(det)
-        boxes.append(current)
-    return final
-
-
-# ------------------------------------------------------------
-def run_model(
-    interpreter: tf.lite.Interpreter, img: np.ndarray
-) -> list[tuple]:
-    img = cv2.resize(img, (224, 224))
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    input_details = interpreter.get_input_details()[0]
-    tensor = np.expand_dims(img, 0).astype(np.uint8)
-    interpreter.set_tensor(input_details["index"], tensor)
-    interpreter.invoke()
-    output_idx = interpreter.get_output_details()[0]["index"]
-    output = interpreter.get_tensor(output_idx)
-    return decode_yolov2(output[0])
+    for box, score in zip(results.boxes, results.scores):
+        x0, y0, x1, y1 = box
+        xc = (x0 + x1) / 2
+        yc = (y0 + y1) / 2
+        w = x1 - x0
+        h = y1 - y0
+        dets.append((0, float(xc), float(yc), float(w), float(h), float(score)))
+    return dets
 
 
 # ------------------------------------------------------------
@@ -109,25 +55,34 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--image", default='trump2.jpeg', help="Image file to send")
     parser.add_argument("--port", default='COM3', help="Serial port, e.g. COM3 or /dev/ttyUSB0")
-    parser.add_argument(
-        "--model",
-        default="Model/quantized_tiny_yolo_v2_224_.tflite",
-    )
     parser.add_argument("--baud", type=int, default=921600 * 8)
+    parser.add_argument(
+        "--model-type",
+        choices=["front", "back"],
+        default="front",
+        help="BlazeFace model type",
+    )
+    parser.add_argument("--score-threshold", type=float, default=0.7)
+    parser.add_argument("--iou-threshold", type=float, default=0.3)
     args = parser.parse_args()
 
-    interpreter = tf.lite.Interpreter(model_path=args.model)
-    interpreter.allocate_tensors()
+    detector = blazeFaceDetector(
+        args.model_type, args.score_threshold, args.iou_threshold
+    )
 
     img = cv2.imread(args.image)
     if img is None:
         raise FileNotFoundError(args.image)
-    img = cv2.resize(img, (224, 224))
-    pc_dets = run_model(interpreter, img)
+
+    pc_dets = run_model(detector, img)
 
     with serial.Serial(args.port, args.baud, timeout=1) as ser:
         _frame, mcu_dets = utils.send_image(
-            ser, args.image, (224, 224), display=False, rx=True
+            ser,
+            args.image,
+            (detector.inputWidth, detector.inputHeight),
+            display=False,
+            rx=True,
         )
     # compute IoU sorted left to right
     pc_boxes = [det_box(d) for d in pc_dets]
