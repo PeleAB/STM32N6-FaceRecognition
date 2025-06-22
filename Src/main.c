@@ -36,6 +36,8 @@
 #include "img_buffer.h"
 #include "system_utils.h"
 #include "blazeface_anchors.h"
+#include "face_utils.h"
+#include "target_embedding.h"
 
 
 #define MAX_NUMBER_OUTPUT 5
@@ -290,17 +292,24 @@ int main(void)
     if (pp_output.box_nb > 0)
     {
       pd_pp_box_t *box = (pd_pp_box_t *)pp_output.pOutData;
-      int x0 = (int)((box[0].x_center - box[0].width / 2.f) * NN_WIDTH);
-      int y0 = (int)((box[0].y_center - box[0].height / 2.f) * NN_HEIGHT);
-      int w  = (int)(box[0].width * NN_WIDTH);
-      int h  = (int)(box[0].height * NN_HEIGHT);
-      img_crop_resize(nn_rgb, fr_rgb, NN_WIDTH, NN_HEIGHT,
-                      FR_WIDTH, FR_HEIGHT, NN_BPP,
-                      x0, y0, w, h);
+      float cx = box[0].x_center * NN_WIDTH;
+      float cy = box[0].y_center * NN_HEIGHT;
+      float w  = box[0].width  * NN_WIDTH;
+      float h  = box[0].height * NN_HEIGHT;
+      float lx = box[0].pKps[0].x * NN_WIDTH;
+      float ly = box[0].pKps[0].y * NN_HEIGHT;
+      float rx = box[0].pKps[1].x * NN_WIDTH;
+      float ry = box[0].pKps[1].y * NN_HEIGHT;
+      img_crop_align(nn_rgb, fr_rgb, NN_WIDTH, NN_HEIGHT,
+                     FR_WIDTH, FR_HEIGHT, NN_BPP,
+                     cx, cy, w, h, lx, ly, rx, ry);
       img_rgb_to_hwc_float(fr_rgb, (float32_t *)fr_nn_in,
                            FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
       SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
       RunNetworkSync(&NN_Instance_face_recognition);
+      float similarity = embedding_cosine_similarity(fr_nn_out, target_embedding,
+                                                     EMBEDDING_SIZE);
+      Display_Similarity(similarity);
 //      LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
     }
     ts[1] = HAL_GetTick();

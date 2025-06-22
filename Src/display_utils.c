@@ -180,6 +180,13 @@ void Display_WelcomeScreen(void)
     UTIL_LCD_SetBackColor(0);
   }
 }
+
+void Display_Similarity(float similarity)
+{
+  UTIL_LCD_SetBackColor(0x40000000);
+  UTIL_LCDEx_PrintfAt(0, LINE(3), CENTER_MODE, "Similarity: %.2f", similarity);
+  UTIL_LCD_SetBackColor(0);
+}
 #else
 void LCD_init(void)
 {
@@ -187,5 +194,10 @@ void LCD_init(void)
 
 void Display_WelcomeScreen(void)
 {
+}
+
+void Display_Similarity(float similarity)
+{
+  (void)similarity;
 }
 #endif /* ENABLE_LCD_DISPLAY */

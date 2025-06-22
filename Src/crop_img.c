@@ -17,6 +17,7 @@
  */
 #include "crop_img.h"
 #include <assert.h>
+#include <math.h>
 
 void img_crop(uint8_t *src_image, uint8_t *dst_img, const uint32_t src_stride,
               const uint16_t dst_width, const uint16_t height,
@@ -85,6 +86,38 @@ void img_crop_resize(uint8_t *src_image, uint8_t *dst_img,
       const uint8_t *pIn = src_image + (src_y * src_width + src_x) * bpp;
       uint8_t *pOut = dst_img + (y * dst_width + x) * bpp;
       for (int c = 0; c < bpp; c++)
+      {
+        pOut[c] = pIn[c];
+      }
+    }
+  }
+}
+
+void img_crop_align(uint8_t *src_image, uint8_t *dst_img,
+                    const uint16_t src_width, const uint16_t src_height,
+                    const uint16_t dst_width, const uint16_t dst_height,
+                    const uint16_t bpp, float x_center, float y_center,
+                    float width, float height, float left_eye_x,
+                    float left_eye_y, float right_eye_x, float right_eye_y)
+{
+  float angle = -atan2f(right_eye_y - left_eye_y, right_eye_x - left_eye_x);
+  float cos_a = cosf(angle);
+  float sin_a = sinf(angle);
+  for (uint16_t y = 0; y < dst_height; y++)
+  {
+    float ny = ((float)y + 0.5f) / dst_height - 0.5f;
+    for (uint16_t x = 0; x < dst_width; x++)
+    {
+      float nx = ((float)x + 0.5f) / dst_width - 0.5f;
+      float src_x = x_center + (nx * width) * cos_a + (ny * height) * sin_a;
+      float src_y = y_center + (ny * height) * cos_a - (nx * width) * sin_a;
+      if (src_x < 0) src_x = 0;
+      if (src_x >= src_width) src_x = src_width - 1;
+      if (src_y < 0) src_y = 0;
+      if (src_y >= src_height) src_y = src_height - 1;
+      const uint8_t *pIn = src_image + ((uint32_t)src_y * src_width + (uint32_t)src_x) * bpp;
+      uint8_t *pOut = dst_img + ((uint32_t)y * dst_width + (uint32_t)x) * bpp;
+      for (uint16_t c = 0; c < bpp; c++)
       {
         pOut[c] = pIn[c];
       }

@@ -38,4 +38,11 @@ void img_crop_resize(uint8_t *src_image, uint8_t *dst_img,
                      const uint16_t bpp, int x0, int y0,
                      int crop_width, int crop_height);
 
+void img_crop_align(uint8_t *src_image, uint8_t *dst_img,
+                    const uint16_t src_width, const uint16_t src_height,
+                    const uint16_t dst_width, const uint16_t dst_height,
+                    const uint16_t bpp, float x_center, float y_center,
+                    float width, float height, float left_eye_x,
+                    float left_eye_y, float right_eye_x, float right_eye_y);
+
 #endif
