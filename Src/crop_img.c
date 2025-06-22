@@ -33,3 +33,16 @@ void img_crop(uint8_t *src_image, uint8_t *dst_img, const uint32_t src_stride,
     pOut += dst_line_size;
   }
 }
+
+void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
+                          const uint32_t src_stride, const uint16_t width,
+                          const uint16_t height)
+{
+  const float32_t scale = 1.f / 128.f;
+
+
+  for (int i = 0; i< width*width*3; i++)
+  {
+	dst_img[i] = ((float32_t) src_image[i]) * scale - 1.f;
+  }
+}

@@ -1,8 +1,8 @@
 ST Edge AI Core v2.1.0-20194 329b0e98d
-Created date          : 2025-06-21 18:55:47
-Parameters            : analyze --target stm32n6 --name network -m C:/Users/pele/Downloads/face_detection_front_128_full_integer_quant.tflite --st-neural-art n6-extflash@C:/ST/STEdgeAI/2.1/scripts/N6_scripts/user_neuralart.json --workspace C:/Users/pele/AppData/Local/Temp/mxAI_workspace6448182187275003058646495892930342 --output C:/Users/pele/.stm32cubemx/network_output
+Created date          : 2025-06-21 23:07:02
+Parameters            : analyze --target stm32n6 --name network -m C:/Users/pele/Documents/GitHub/ObjectDet/BlazeFace-EXAMPLE/models/face_detection_front_128_integer_quant.tflite --st-neural-art n6-extflash@C:/ST/STEdgeAI/2.1/scripts/N6_scripts/user_neuralart.json --workspace C:/Users/pele/AppData/Local/Temp/mxAI_workspace6598849009931008213909709231914136 --output C:/Users/pele/.stm32cubemx/network_output
 
-Model name - face_detection_front_128_full_integer_quant
+Model name - face_detection_front_128_integer_quant
 ------ ------------------------------- ----------------------- ------------- ----------- --------------- 
 m_id   layer (original)                oshape                  param/size           macc    connected to 
 ------ ------------------------------- ----------------------- ------------- ----------- --------------- 
@@ -207,7 +207,7 @@ model: macc=32,109,452 weights=107,954 activations=-- io=--
 Compilation details
 ------------------------------------------------------------------------------------
 Compiler version: 1.1.0-31
-Compiler arguments:  -i C:\Users\pele\.stm32cubemx\network_output\face_detection_front_128_full_integer_quant_OE_3_2_0.onnx --json-quant-file C:\Users\pele\.stm32cubemx\network_output\face_detection_front_128_full_integer_quant_OE_3_2_0_Q.json -g network.c --load-mdesc C:\ST\STEdgeAI\2.1\Utilities\configs\stm32n6.mdesc --load-mpool C:\ST\STEdgeAI\2.1\scripts\N6_scripts\my_mpools\stm32n6__extFlash.mpool --save-mpool-file C:\Users\pele\AppData\Local\Temp\mxAI_workspace6448182187275003058646495892930342\neural_art__network\stm32n6__extFlash.mpool --out-dir-prefix C:\Users\pele\AppData\Local\Temp\mxAI_workspace6448182187275003058646495892930342\neural_art__network/ --Os --optimization 3 --enable-epoch-controller --all-buffers-info --mvei --cache-maintenance --Oauto-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --output-info-file c_info.json
+Compiler arguments:  -i C:\Users\pele\.stm32cubemx\network_output\face_detection_front_128_integer_quant_OE_3_2_0.onnx --json-quant-file C:\Users\pele\.stm32cubemx\network_output\face_detection_front_128_integer_quant_OE_3_2_0_Q.json -g network.c --load-mdesc C:\ST\STEdgeAI\2.1\Utilities\configs\stm32n6.mdesc --load-mpool C:\ST\STEdgeAI\2.1\scripts\N6_scripts\my_mpools\stm32n6__extFlash.mpool --save-mpool-file C:\Users\pele\AppData\Local\Temp\mxAI_workspace6598849009931008213909709231914136\neural_art__network\stm32n6__extFlash.mpool --out-dir-prefix C:\Users\pele\AppData\Local\Temp\mxAI_workspace6598849009931008213909709231914136\neural_art__network/ --Os --enable-epoch-controller --all-buffers-info --mvei --cache-maintenance --Oauto-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --output-info-file c_info.json
 ====================================================================================
 
 Memory usage information  (input/output buffers are included in activations)
@@ -246,8 +246,8 @@ epoch 5       EC
 epoch 6       EC    
 epoch 7      -SW-   (     Transpose      )
 epoch 8       EC    
-epoch 9       EC    
-epoch 10     -SW-   (     Transpose      )
+epoch 9      -SW-   (     Transpose      )
+epoch 10      EC    
 epoch 11      EC    
 epoch 12      EC    
 epoch 13     -SW-   (     Transpose      )
@@ -318,19 +318,19 @@ epoch 75      EC
  ------------------------------- -------- --------- ------ --------- 
  module                              text    rodata   data       bss 
  ------------------------------- -------- --------- ------ --------- 
- network.o                          1,838   131,100      0         0 
+ network.o                          1,838   130,695      0         0 
  NetworkRuntime1010_CM55_GCC.a      3,068         0      0         0 
  ll_aton_reloc_network.o                0         0      0         0 
  lib (toolchain)*                     902       624      0         0 
- ll atonn runtime                   9,610    14,092    192     1,621 
+ ll atonn runtime                   9,610    14,063    192     1,621 
  ------------------------------- -------- --------- ------ --------- 
- RT total**                        15,418   145,816    192     1,621 
+ RT total**                        15,418   145,382    192     1,621 
  ------------------------------- -------- --------- ------ --------- 
  weights                                0   154,545      0         0 
  activations                            0         0      0   589,824 
  io                                     0         0      0         0 
  ------------------------------- -------- --------- ------ --------- 
- TOTAL                             15,418   300,361    192   591,445 
+ TOTAL                             15,418   299,927    192   591,445 
  ------------------------------- -------- --------- ------ --------- 
  *  toolchain objects (libm/libgcc*)
  ** RT AI runtime objects (kernels+infrastructure)
@@ -339,9 +339,9 @@ epoch 75      EC
   --------------------------------------------------
                FLASH (ro)      %*   RAM (rw)      % 
   --------------------------------------------------
-  RT total        161,426   51.1%      1,813   0.3% 
+  RT total        160,992   51.0%      1,813   0.3% 
   --------------------------------------------------
-  TOTAL           315,971            591,637        
+  TOTAL           315,537            591,637        
   --------------------------------------------------
   *  rt/total
 

@@ -35,6 +35,7 @@
 #include "display_utils.h"
 #include "img_buffer.h"
 #include "system_utils.h"
+#include "blazeface_anchors.h"
 
 
 #define MAX_NUMBER_OUTPUT 5
@@ -62,6 +63,8 @@ pd_model_pp_static_param_t pp_params;
 
 volatile int32_t cameraFrameReceived;
 uint8_t *nn_in;
+__attribute__((aligned (32)))
+uint8_t nn_rgb[NN_WIDTH * NN_HEIGHT * NN_BPP];
 void* pp_input;
 #if POSTPROCESS_TYPE == POSTPROCESS_MPE_PD_UF
 pd_postprocess_out_t pp_output;
@@ -71,16 +74,12 @@ od_pp_out_t pp_output;
 
 #define ALIGN_TO_16(value) (((value) + 15) & ~15)
 
-/* for models not multiple of 16; needs a working buffer */
-#if (NN_WIDTH * NN_BPP) != ALIGN_TO_16(NN_WIDTH * NN_BPP)
+/* Working buffer for camera capture when pitch differs */
 #define DCMIPP_OUT_NN_LEN (ALIGN_TO_16(NN_WIDTH * NN_BPP) * NN_HEIGHT)
 #define DCMIPP_OUT_NN_BUFF_LEN (DCMIPP_OUT_NN_LEN + 32 - DCMIPP_OUT_NN_LEN%32)
 
 __attribute__ ((aligned (32)))
 uint8_t dcmipp_out_nn[DCMIPP_OUT_NN_BUFF_LEN];
-#else
-uint8_t *dcmipp_out_nn;
-#endif
 
 
 
@@ -192,30 +191,37 @@ int main(void)
     else
     {
       /* Start NN camera single capture Snapshot */
-      CAM_NNPipe_Start(nn_in, CMW_MODE_SNAPSHOT);
+      CAM_NNPipe_Start(nn_rgb, CMW_MODE_SNAPSHOT);
     }
 
     while (cameraFrameReceived == 0) {};
     cameraFrameReceived = 0;
 
-
-
     if (pitch_nn != (NN_WIDTH * NN_BPP))
     {
       SCB_InvalidateDCache_by_Addr(dcmipp_out_nn, sizeof(dcmipp_out_nn));
-      img_crop(dcmipp_out_nn, nn_in, pitch_nn, NN_WIDTH, NN_HEIGHT, NN_BPP);
-      SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
+      img_crop(dcmipp_out_nn, nn_rgb, pitch_nn, NN_WIDTH, NN_HEIGHT, NN_BPP);
+    }
+    else
+    {
+      SCB_InvalidateDCache_by_Addr(nn_rgb, sizeof(nn_rgb));
     }
 #else
-    uint32_t ts[2] = { 0 };
     /* Receive frame from PC */
-    if (PC_STREAM_ReceiveImage(nn_in, nn_in_len) != 0)
+    if (PC_STREAM_ReceiveImage(nn_rgb, NN_WIDTH * NN_HEIGHT * NN_BPP) != 0)
     {
       continue;
     }
+#endif
+
+//    memcpy(nn_rgb, DUMMY_IMG_RGB, NN_WIDTH * NN_HEIGHT * NN_BPP);
+    img_rgb_to_hwc_float(nn_rgb, (float32_t *)nn_in, NN_WIDTH * NN_BPP,
+                        NN_WIDTH, NN_HEIGHT);
+//    memcpy(nn_in, DUMMY_IMG, nn_in_len);
     SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
+#if INPUT_SRC_MODE != INPUT_SRC_CAMERA
 #ifdef ENABLE_PC_STREAM
-    PC_STREAM_SendFrame(nn_in, NN_WIDTH, NN_HEIGHT, NN_BPP);
+    PC_STREAM_SendFrame(nn_rgb, NN_WIDTH, NN_HEIGHT, NN_BPP);
 #endif
 #endif
 

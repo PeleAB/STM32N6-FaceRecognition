@@ -105,18 +105,18 @@ static int32_t pd_pp_decode(pd_model_pp_in_t *pInput,
     if (pBox->prob >= pInput_static_param->conf_threshold) {
       const float ax = pAnchors[i].x;
       const float ay = pAnchors[i].y;
-      const float aw = pAnchors[i].w;
-      const float ah = pAnchors[i].h;
 
-      pBox->x_center = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_XCENTER] / width)  * aw + ax;
-      pBox->y_center = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_YCENTER] / height) * ah + ay;
-      pBox->width  = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_WIDTHREL]  / width)  * aw;
-      pBox->height = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_HEIGHTREL] / height) * ah;
+      /* The network outputs absolute offsets in pixels. Convert them back to
+       * normalized coordinates in the [0,1] range using the anchor center. */
+      pBox->x_center = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_XCENTER] + (ax * width)) / width;
+      pBox->y_center = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_YCENTER] + (ay * height)) / height;
+      pBox->width  = pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_WIDTHREL]  / width;
+      pBox->height = pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_HEIGHTREL] / height;
 
       /* decode keypoints */
       for (uint32_t j = 0; j < pInput_static_param->nb_keypoints; j++) {
-        pBox->pKps[j].x = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_KEYPOINTS + (2 * j) + 0] / width)  * aw + ax;
-        pBox->pKps[j].y = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_KEYPOINTS + (2 * j) + 1] / height) * ah + ay;
+        pBox->pKps[j].x = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_KEYPOINTS + (2 * j) + 0] + (ax * width)) / width;
+        pBox->pKps[j].y = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_KEYPOINTS + (2 * j) + 1] + (ay * height)) / height;
       }
 
       box_nb++;
@@ -157,6 +157,9 @@ static int pd_pp_nms(pd_postprocess_out_t *pOutput,
 
     pd_boxes[hand_nb++] = pd_boxes[i];
   }
+
+  /* update the output count to reflect the filtered detections */
+  pOutput->box_nb = hand_nb;
 
   return hand_nb;
 }
