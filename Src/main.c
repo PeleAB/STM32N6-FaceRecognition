@@ -51,8 +51,10 @@ volatile int32_t cameraFrameReceived;
 uint8_t *nn_in;
 uint8_t *fr_nn_in;
 float32_t *fr_nn_out;
+__attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
 uint8_t nn_rgb[NN_WIDTH * NN_HEIGHT * NN_BPP];
+__attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
 uint8_t fr_rgb[FR_WIDTH * FR_HEIGHT * NN_BPP];
 void* pp_input;
@@ -282,7 +284,7 @@ int main(void)
 
     ts[0] = HAL_GetTick();
     RunNetworkSync(&NN_Instance_face_detection);
-    LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
+//    LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
 
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
     if (pp_output.box_nb > 0)
@@ -295,11 +297,11 @@ int main(void)
       img_crop_resize(nn_rgb, fr_rgb, NN_WIDTH, NN_HEIGHT,
                       FR_WIDTH, FR_HEIGHT, NN_BPP,
                       x0, y0, w, h);
-      img_rgb_to_chw_float(fr_rgb, (float32_t *)fr_nn_in,
+      img_rgb_to_hwc_float(fr_rgb, (float32_t *)fr_nn_in,
                            FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
       SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
       RunNetworkSync(&NN_Instance_face_recognition);
-      LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
+//      LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
     }
     ts[1] = HAL_GetTick();
     if (ts[2] == 0)
