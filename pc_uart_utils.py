@@ -7,7 +7,7 @@ import time
 
 
 def _search_header(ser, prefixes):
-    """Read lines until one starting with any of *prefixes* is found."""
+    """Read lines until one starting with any of ``prefixes`` is found."""
     if isinstance(prefixes, str):
         prefixes = (prefixes,)
 
@@ -16,9 +16,8 @@ def _search_header(ser, prefixes):
         if not line:
             return None
         for p in prefixes:
-            idx = line.find(p)
-            if idx != -1:
-                return line[idx:].strip()
+            if line.startswith(p):
+                return line.strip()
 
 
 def read_frame(ser):

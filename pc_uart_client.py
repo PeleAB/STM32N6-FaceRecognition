@@ -22,6 +22,7 @@ class StreamThread(QtCore.QThread):
         self._running = True
 
     def run(self) -> None:
+        self.ser.reset_input_buffer()
         while self._running:
             frame, _, _ = utils.read_frame(self.ser)
             if frame is None:
