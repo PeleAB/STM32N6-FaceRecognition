@@ -1,8 +1,8 @@
 ST Edge AI Core v2.1.0-20194 329b0e98d
-Created date          : 2025-06-22 23:18:18
-Parameters            : analyze --target stm32n6 --name face_recognition -m C:/Users/pele/Downloads/model_integer_quant.tflite --st-neural-art n6-allmems-O3@C:/ST/STEdgeAI/2.1/scripts/N6_scripts/user_neuralart.json --workspace C:/Users/pele/AppData/Local/Temp/mxAI_workspace7469310917980007708273242964610569 --output C:/Users/pele/.stm32cubemx/network_output
+Created date          : 2025-06-23 15:39:52
+Parameters            : analyze --target stm32n6 --name face_recognition -m C:/Users/pele/Documents/GitHub/ObjectDet/python_tools/models/face_recognition_integer_quant.tflite --st-neural-art n6-nointmem@C:/ST/STEdgeAI/2.1/scripts/N6_scripts/user_neuralart.json --workspace C:/Users/pele/AppData/Local/Temp/mxAI_workspace8058607619209007446825896794344088 --output C:/Users/pele/.stm32cubemx/network_output
 
-Model name - model_integer_quant
+Model name - face_recognition_integer_quant
 ------ ----------------------------------- ------------------------ --------------------- ------------ -------------------------------- 
 m_id   layer (original)                    oshape                   param/size                    macc                     connected to 
 ------ ----------------------------------- ------------------------ --------------------- ------------ -------------------------------- 
@@ -182,33 +182,29 @@ model: macc=584,511,552 weights=9,664,898 activations=-- io=--
 Compilation details
 ------------------------------------------------------------------------------------
 Compiler version: 1.1.0-31
-Compiler arguments:  -i C:\Users\pele\.stm32cubemx\network_output\model_integer_quant_OE_3_2_0.onnx --json-quant-file C:\Users\pele\.stm32cubemx\network_output\model_integer_quant_OE_3_2_0_Q.json -g face_recognition.c --load-mdesc C:\ST\STEdgeAI\2.1\Utilities\configs\stm32n6.mdesc --load-mpool C:\ST\STEdgeAI\2.1\scripts\N6_scripts\my_mpools\stm32n6_n6-allmems-O3.mpool --save-mpool-file C:\Users\pele\AppData\Local\Temp\mxAI_workspace7469310917980007708273242964610569\neural_art__face_recognition\stm32n6_n6-allmems-O3.mpool --out-dir-prefix C:\Users\pele\AppData\Local\Temp\mxAI_workspace7469310917980007708273242964610569\neural_art__face_recognition/ --Os --optimization 3 --enable-epoch-controller --all-buffers-info --mvei --cache-maintenance --Oauto-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --output-info-file c_info.json --network-name face_recognition
+Compiler arguments:  -i C:\Users\pele\.stm32cubemx\network_output\face_recognition_integer_quant_OE_3_2_0.onnx --json-quant-file C:\Users\pele\.stm32cubemx\network_output\face_recognition_integer_quant_OE_3_2_0_Q.json -g face_recognition.c --load-mdesc C:\ST\STEdgeAI\2.1\Utilities\configs\stm32n6.mdesc --load-mpool C:\ST\STEdgeAI\2.1\scripts\N6_scripts\my_mpools\stm32n6__nointmem.mpool --save-mpool-file C:\Users\pele\AppData\Local\Temp\mxAI_workspace8058607619209007446825896794344088\neural_art__face_recognition\stm32n6__nointmem.mpool --out-dir-prefix C:\Users\pele\AppData\Local\Temp\mxAI_workspace8058607619209007446825896794344088\neural_art__face_recognition/ --Os --optimization 3 --enable-epoch-controller --all-buffers-info --mvei --cache-maintenance --Oauto-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --output-info-file c_info.json --network-name face_recognition
 ====================================================================================
 
 Memory usage information  (input/output buffers are included in activations)
 ------------------------------------------------------------------------------------
 	flexMEM    [0x34000000 - 0x34000000]:          0  B /          0  B  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
 	cpuRAM1    [0x34064000 - 0x34064000]:          0  B /          0  B  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
-	cpuRAM2    [0x34100000 - 0x34200000]:    784.000 kB /      1.000 MB  ( 76.56 % used) -- weights:          0  B (  0.00 % used)  activations:    784.000 kB ( 76.56 % used)
-	npuRAM3    [0x34200000 - 0x34270000]:    196.000 kB /    448.000 kB  ( 43.75 % used) -- weights:          0  B (  0.00 % used)  activations:    196.000 kB ( 43.75 % used)
-	npuRAM4    [0x34270000 - 0x342E0000]:    392.000 kB /    448.000 kB  ( 87.50 % used) -- weights:          0  B (  0.00 % used)  activations:    392.000 kB ( 87.50 % used)
-	npuRAM5    [0x342E0000 - 0x34350000]:    428.750 kB /    448.000 kB  ( 95.70 % used) -- weights:          0  B (  0.00 % used)  activations:    428.750 kB ( 95.70 % used)
-	npuRAM6    [0x34350000 - 0x343C0000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
-	octoFlash  [0x72000000 - 0x79000000]:      9.574 MB /    112.000 MB  (  8.55 % used) -- weights:      9.574 MB (  8.55 % used)  activations:          0  B (  0.00 % used)
-	hyperRAM   [0x90000000 - 0x92000000]:      2.297 MB /     32.000 MB  (  7.18 % used) -- weights:          0  B (  0.00 % used)  activations:      2.297 MB (  7.18 % used)
+	cpuRAM2    [0x34100000 - 0x34100000]:          0  B /          0  B  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+	npuRAM3    [0x34200000 - 0x34200000]:          0  B /          0  B  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+	npuRAM4    [0x34270000 - 0x34270000]:          0  B /          0  B  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+	npuRAM5    [0x342E0000 - 0x342E0000]:          0  B /          0  B  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+	npuRAM6    [0x34350000 - 0x34350000]:          0  B /          0  B  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+	octoFlash  [0x71000000 - 0x78000000]:      9.574 MB /    112.000 MB  (  8.55 % used) -- weights:      9.574 MB (  8.55 % used)  activations:          0  B (  0.00 % used)
+	hyperRAM   [0x90000000 - 0x92000000]:      3.062 MB /     32.000 MB  (  9.57 % used) -- weights:          0  B (  0.00 % used)  activations:      3.062 MB (  9.57 % used)
 ---
-Total:                                            13.630 MB                                  -- weights:      9.574 MB                  activations:      4.055 MB                   
+Total:                                            12.637 MB                                  -- weights:      9.574 MB                  activations:      3.062 MB                   
 ====================================================================================
 
 
 Used memory ranges
 ------------------------------------------------------------------------------------
-	cpuRAM2    [0x34100000 - 0x34200000]: 0x34100000-0x341C4000
-	npuRAM3    [0x34200000 - 0x34270000]: 0x34200000-0x34231000
-	npuRAM4    [0x34270000 - 0x342E0000]: 0x34270000-0x342D2000
-	npuRAM5    [0x342E0000 - 0x34350000]: 0x342E0000-0x3434B300
-	octoFlash  [0x72000000 - 0x79000000]: 0x72000000-0x72993100
-	hyperRAM   [0x90000000 - 0x92000000]: 0x90000000-0x9024C000
+	octoFlash  [0x71000000 - 0x78000000]: 0x71000000-0x71993100
+	hyperRAM   [0x90000000 - 0x92000000]: 0x90000000-0x90310000
 ====================================================================================
 
 Epochs details
@@ -299,18 +295,18 @@ epoch 78     -SW-   (  DequantizeLinear  )
  ------------------------------- -------- ------------ ------ ----------- 
  module                              text       rodata   data         bss 
  ------------------------------- -------- ------------ ------ ----------- 
- face_recognition.o                   598      423,913      0           0 
+ face_recognition.o                   666      424,689      0           0 
  NetworkRuntime1010_CM55_GCC.a     81,760           16     32           0 
  lib (toolchain)*                   1,006          624      0           0 
  ll atonn runtime                   4,900        2,226      0          13 
  ------------------------------- -------- ------------ ------ ----------- 
- RT total**                        88,264      426,779     32          13 
+ RT total**                        88,332      427,555     32          13 
  ------------------------------- -------- ------------ ------ ----------- 
  weights                                0   10,039,537      0           0 
- activations                            0            0      0   4,252,416 
+ activations                            0            0      0   3,211,264 
  io                                     0            0      0           0 
  ------------------------------- -------- ------------ ------ ----------- 
- TOTAL                             88,264   10,466,316     32   4,252,429 
+ TOTAL                             88,332   10,467,092     32   3,211,277 
  ------------------------------- -------- ------------ ------ ----------- 
  *  toolchain objects (libm/libgcc*)
  ** RT AI runtime objects (kernels+infrastructure)
@@ -319,9 +315,9 @@ epoch 78     -SW-   (  DequantizeLinear  )
   --------------------------------------------------
                FLASH (ro)     %*    RAM (rw)      % 
   --------------------------------------------------
-  RT total        515,075   4.9%          45   0.0% 
+  RT total        515,919   4.9%          45   0.0% 
   --------------------------------------------------
-  TOTAL        10,554,612          4,252,461        
+  TOTAL        10,555,456          3,211,309        
   --------------------------------------------------
   *  rt/total
 

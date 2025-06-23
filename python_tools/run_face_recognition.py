@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-"""Run face detection and recognition on an image.
-
-This script loads a photo, detects the most confident face using
-BlazeFace, aligns the face using the eye landmarks, runs a TensorFlow
-Lite face recognition model and prints the resulting embedding vector.
-"""
-
 import argparse
 from pathlib import Path
 import sys
@@ -52,10 +44,10 @@ def crop_align(image: np.ndarray, box: np.ndarray, left_eye: np.ndarray,
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--image", required=True, help="Input image path")
+    parser.add_argument("--image", help="Input image path", default='trump2.jpeg')
     parser.add_argument(
         "--rec-model",
-        default="face_recognition.tflite",
+        default="models/face_recognition_integer_quant.tflite",
         help="TFLite face recognition model path",
     )
     parser.add_argument(
@@ -120,7 +112,7 @@ def main() -> None:
         cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.float32) / 128.0
     ) - 1.0
     face = face[None, ...]
-    rec.set_tensor(input_info["index"], face)
+    rec.set_tensor(input_info["index"], face*0.0)
     rec.invoke()
     embedding = rec.get_tensor(output_info["index"]).flatten()
 

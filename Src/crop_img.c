@@ -48,22 +48,16 @@ void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
   }
 }
 
-void img_rgb_to_chw_float(uint8_t *src_image, float32_t *dst_img,
+void img_rgb_to_hwc_float2(uint8_t *src_image, float32_t *dst_img,
                           const uint32_t src_stride, const uint16_t width,
                           const uint16_t height)
 {
   const float32_t scale = 1.f / 128.f;
-  for (uint16_t y = 0; y < height; y++)
+
+
+  for (int i = 0; i< width*width*3; i++)
   {
-    const uint8_t *line = src_image + y * src_stride;
-    for (uint16_t x = 0; x < width; x++)
-    {
-      uint32_t idx = y * width + x;
-      dst_img[idx] = ((float32_t)line[0]) * scale - 1.f;                     /* R */
-      dst_img[width * height + idx] = ((float32_t)line[1]) * scale - 1.f;     /* G */
-      dst_img[2 * width * height + idx] = ((float32_t)line[2]) * scale - 1.f; /* B */
-      line += 3;
-    }
+        dst_img[i] = 0.0f;
   }
 }
 
