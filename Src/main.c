@@ -282,8 +282,8 @@ int main(void)
       continue;
     }
 
-    img_rgb_to_hwc_float(nn_rgb, (float32_t *)nn_in, NN_WIDTH * NN_BPP,
-                        NN_WIDTH, NN_HEIGHT);
+    img_rgb_to_chw_float(nn_rgb, (float32_t *)nn_in, NN_WIDTH * NN_BPP,
+                         NN_WIDTH, NN_HEIGHT);
     SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
 
     ts[0] = HAL_GetTick();
@@ -306,7 +306,7 @@ int main(void)
                                lcd_bg_area.XSize, lcd_bg_area.YSize,
                                FR_WIDTH, FR_HEIGHT,
                                cx, cy, w, h, lx, ly, rx, ry);
-      img_rgb_to_hwc_float(fr_rgb, (float32_t *)fr_nn_in,
+      img_rgb_to_chw_float(fr_rgb, (float32_t *)fr_nn_in,
                            FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
       SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
       RunNetworkSync(&NN_Instance_face_recognition);
