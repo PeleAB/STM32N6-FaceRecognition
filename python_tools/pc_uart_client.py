@@ -15,6 +15,7 @@ class StreamThread(QtCore.QThread):
     """Background thread reading frames from the MCU."""
 
     frame_received = QtCore.pyqtSignal(np.ndarray)
+    aligned_received = QtCore.pyqtSignal(np.ndarray)
 
     def __init__(self, ser: serial.Serial):
         super().__init__()
@@ -24,8 +25,11 @@ class StreamThread(QtCore.QThread):
     def run(self) -> None:
         self.ser.reset_input_buffer()
         while self._running:
-            frame, _, _ = utils.read_frame(self.ser)
+            tag, frame, _, _ = utils.read_frame(self.ser)
             if frame is None:
+                continue
+            if tag == "ALN":
+                self.aligned_received.emit(frame)
                 continue
             _, dets = utils.read_detections(self.ser)
             frame = utils.draw_detections(frame, dets)
@@ -83,6 +87,11 @@ class App(QtWidgets.QMainWindow):
         self.image_label.setAlignment(QtCore.Qt.AlignCenter)
         layout.addWidget(self.image_label, 6, 0, 1, 2)
 
+        self.aligned_label = QtWidgets.QLabel()
+        self.aligned_label.setFixedSize(224, 224)
+        self.aligned_label.setAlignment(QtCore.Qt.AlignCenter)
+        layout.addWidget(self.aligned_label, 7, 0, 1, 2)
+
         self.ser: serial.Serial | None = None
         self.stream_thread: StreamThread | None = None
 
@@ -108,6 +117,7 @@ class App(QtWidgets.QMainWindow):
             return
         self.stream_thread = StreamThread(self.ser)
         self.stream_thread.frame_received.connect(self.update_frame)
+        self.stream_thread.aligned_received.connect(self.update_aligned)
         self.stream_thread.start()
 
     # ------------------------------------------------------------------
@@ -167,6 +177,18 @@ class App(QtWidgets.QMainWindow):
             self.image_label.size(), QtCore.Qt.AspectRatioMode.KeepAspectRatio
         )
         self.image_label.setPixmap(pix)
+
+    # ------------------------------------------------------------------
+    def update_aligned(self, frame: np.ndarray) -> None:
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        h, w, _ = rgb.shape
+        qimg = QtGui.QImage(
+            rgb.data, w, h, 3 * w, QtGui.QImage.Format.Format_RGB888
+        )
+        pix = QtGui.QPixmap.fromImage(qimg).scaled(
+            self.aligned_label.size(), QtCore.Qt.AspectRatioMode.KeepAspectRatio
+        )
+        self.aligned_label.setPixmap(pix)
 
     # ------------------------------------------------------------------
     def closeEvent(self, event: QtGui.QCloseEvent) -> None:  # pragma: no cover

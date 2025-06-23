@@ -63,7 +63,8 @@ static uint8_t rgb888_to_gray(uint8_t r, uint8_t g, uint8_t b)
     return (uint8_t)((r * 30 + g * 59 + b * 11) / 100);
 }
 
-void PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height, uint32_t bpp)
+static void send_frame_tag(const uint8_t *frame, uint32_t width, uint32_t height,
+                           uint32_t bpp, const char *tag)
 {
 
     uint32_t sw = width / STREAM_SCALE;
@@ -101,7 +102,7 @@ void PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height, 
 
     // Send a simple header first
     char header[32];
-    int hl = snprintf(header, sizeof(header), "JPG %u %u %u\n",
+    int hl = snprintf(header, sizeof(header), "%s %u %u %u\n", tag,
                       (unsigned)sw, (unsigned)sh, (unsigned)w.size);
     if (hl > 0)
     {
@@ -122,6 +123,18 @@ void PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height, 
         ptr         += this_chunk;
         bytes_left  -= this_chunk;
     }
+}
+
+void PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height,
+                         uint32_t bpp)
+{
+    send_frame_tag(frame, width, height, bpp, "JPG");
+}
+
+void PC_STREAM_SendFrameEx(const uint8_t *frame, uint32_t width, uint32_t height,
+                           uint32_t bpp, const char *tag)
+{
+    send_frame_tag(frame, width, height, bpp, tag);
 }
 
 void PC_STREAM_SendDetections(const pd_postprocess_out_t *detections, uint32_t frame_id)

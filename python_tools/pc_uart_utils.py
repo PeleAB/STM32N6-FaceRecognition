@@ -35,22 +35,20 @@ def _search_header(ser, prefixes):
 def read_frame(ser):
     """Read a frame from the serial port.
 
-    Returns ``(image, width, height)`` or ``(None, None, None)`` if no frame is
-    available. The function searches the stream for a ``FRAME`` or ``JPG``
-    header rather than assuming the port is aligned on line boundaries."""
+    Returns ``(tag, image, width, height)`` or ``(None, None, None, None)`` if no frame is
+    available. The function searches the stream for ``JPG`` or ``ALN`` headers."""
 
-    line = _search_header(ser, ("JPG"))
+    line = _search_header(ser, ("JPG", "ALN"))
     if line is None:
-        return None, None, None
+        return None, None, None, None
 
-
-    _, w, h, size = line.split()
+    tag, w, h, size = line.split()
     w, h, size = int(w), int(h), int(size)
     raw = ser.read(size)
     img = np.frombuffer(raw, dtype=np.uint8)
     frame = cv2.imdecode(img, cv2.IMREAD_COLOR)
 
-    return frame, w, h
+    return tag, frame, w, h
 
 
 
@@ -167,7 +165,7 @@ def send_image(ser, img_path, size, display=False, rx=False, preview=False):
 
     if rx:
         time.sleep(0.5)
-        echo, w, h = read_frame(ser)
+        tag, echo, w, h = read_frame(ser)
         print('rxed frame')
         _, dets = read_detections(ser)
         print('rxed dets')

@@ -323,6 +323,12 @@ int main(void)
     assert(ret == 0);
 
     App_Output(&pp_output, ts[1] - ts[0], ts[2]);
+#ifdef ENABLE_PC_STREAM
+    if (pp_output.box_nb > 0)
+    {
+      PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
+    }
+#endif
 
     /* Discard nn_out region (used by pp_input and pp_outputs variables) to avoid Dcache evictions during nn inference */
     for (int i = 0; i < number_output; i++)
