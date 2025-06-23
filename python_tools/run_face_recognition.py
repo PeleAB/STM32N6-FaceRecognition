@@ -64,6 +64,11 @@ def main() -> None:
         default="front",
         help="BlazeFace model type",
     )
+    parser.add_argument(
+        "--visualize",
+        action="store_true",
+        help="Show the detected face and the aligned crop",
+    )
     args = parser.parse_args()
 
     detector = blazeFaceDetector(args.det_model_type)
@@ -82,6 +87,30 @@ def main() -> None:
     right_eye = results.keypoints[0, 1]
     aligned = crop_align(img, box, left_eye, right_eye, (112, 112))
 
+    shown = False
+    if args.visualize:
+        disp = img.copy()
+        h, w, _ = disp.shape
+        x0 = int(box[0] * w)
+        y0 = int(box[1] * h)
+        x1 = int(box[2] * w)
+        y1 = int(box[3] * h)
+        cv2.rectangle(disp, (x0, y0), (x1, y1), (0, 255, 0), 2)
+        lx = int(left_eye[0] * w)
+        ly = int(left_eye[1] * h)
+        rx = int(right_eye[0] * w)
+        ry = int(right_eye[1] * h)
+        cv2.circle(disp, (lx, ly), 2, (0, 0, 255), -1)
+        cv2.circle(disp, (rx, ry), 2, (0, 0, 255), -1)
+        try:
+            cv2.imshow("Detected face", disp)
+            cv2.imshow("Aligned face", aligned)
+            shown = True
+        except cv2.error:
+            cv2.imwrite("detected_face.jpg", disp)
+            cv2.imwrite("aligned_face.jpg", aligned)
+            print("Saved detected_face.jpg and aligned_face.jpg")
+
     rec = tf.lite.Interpreter(model_path=str(Path(args.rec_model)))
     rec.allocate_tensors()
     input_info = rec.get_input_details()[0]
@@ -95,6 +124,11 @@ def main() -> None:
 
     print("Embedding vector:")
     print(" ".join(f"{x:.6f}" for x in embedding))
+
+    if args.visualize and shown:
+        print("Close the image windows to exit")
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
