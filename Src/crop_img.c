@@ -41,23 +41,31 @@ void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
 {
   const float32_t scale = 1.f / 128.f;
 
-
-  for (int i = 0; i< width*width*3; i++)
+  for (uint16_t y = 0; y < height; y++)
   {
-        dst_img[i] = ((float32_t) src_image[i]) * scale - 1.f;
+    uint8_t *row = src_image + y * src_stride;
+    for (uint16_t x = 0; x < width; x++)
+    {
+      uint8_t *px = row + x * 3;
+      for (uint8_t c = 0; c < 3; c++)
+      {
+        dst_img[(y * width + x) * 3 + c] = ((float32_t)px[c]) * scale - 1.f;
+      }
+    }
   }
 }
 
 void img_rgb_to_hwc_float2(uint8_t *src_image, float32_t *dst_img,
-                          const uint32_t src_stride, const uint16_t width,
-                          const uint16_t height)
+                           const uint32_t src_stride, const uint16_t width,
+                           const uint16_t height)
 {
-  const float32_t scale = 1.f / 128.f;
+  (void)src_image;
+  (void)src_stride;
+  const float32_t zero = 0.f;
 
-
-  for (int i = 0; i< width*width*3; i++)
+  for (uint32_t i = 0; i < (uint32_t)width * (uint32_t)height * 3u; i++)
   {
-        dst_img[i] = 0.0f;
+    dst_img[i] = zero;
   }
 }
 
