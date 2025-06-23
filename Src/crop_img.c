@@ -49,7 +49,7 @@ void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
       uint8_t *px = row + x * 3;
       for (uint8_t c = 0; c < 3; c++)
       {
-        dst_img[(y * width + x) * 3 + c] = ((float32_t)px[c]) * scale - 1.f;
+        dst_img[c * width * height + (y * width + x)] = ((float32_t)px[c]) * scale - 1.f;
       }
     }
   }
