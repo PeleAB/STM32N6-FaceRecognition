@@ -45,7 +45,8 @@ void img_crop_align(uint8_t *src_image, uint8_t *dst_img,
                     float width, float height, float left_eye_x,
                     float left_eye_y, float right_eye_x, float right_eye_y);
 
-void img_crop_align565_to_888(uint8_t *src_image, uint8_t *dst_img,
+void img_crop_align565_to_888(uint8_t *src_image, uint16_t src_stride,
+                              uint8_t *dst_img,
                               const uint16_t src_width, const uint16_t src_height,
                               const uint16_t dst_width, const uint16_t dst_height,
                               float x_center, float y_center,

@@ -119,7 +119,8 @@ void img_crop_align(uint8_t *src_image, uint8_t *dst_img,
   }
 }
 
-void img_crop_align565_to_888(uint8_t *src_image, uint8_t *dst_img,
+void img_crop_align565_to_888(uint8_t *src_image, uint16_t src_stride,
+                              uint8_t *dst_img,
                               const uint16_t src_width, const uint16_t src_height,
                               const uint16_t dst_width, const uint16_t dst_height,
                               float x_center, float y_center,
@@ -143,7 +144,7 @@ void img_crop_align565_to_888(uint8_t *src_image, uint8_t *dst_img,
       if (src_y < 0) src_y = 0;
       if (src_y >= src_height) src_y = src_height - 1;
       const uint16_t *pIn = (const uint16_t *)src_image +
-                            ((uint32_t)src_y * src_width + (uint32_t)src_x);
+                            ((uint32_t)src_y * src_stride + (uint32_t)src_x);
       uint8_t *pOut = dst_img + ((uint32_t)y * dst_width + (uint32_t)x) * 3;
       uint16_t px = *pIn;
       pOut[0] = (uint8_t)(((px >> 11) & 0x1F) << 3);
