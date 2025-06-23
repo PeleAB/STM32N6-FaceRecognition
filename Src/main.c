@@ -294,17 +294,20 @@ int main(void)
     if (pp_output.box_nb > 0)
     {
       pd_pp_box_t *box = (pd_pp_box_t *)pp_output.pOutData;
-      float cx = box[0].x_center * NN_WIDTH;
-      float cy = box[0].y_center * NN_HEIGHT;
-      float w  = box[0].width  * NN_WIDTH;
-      float h  = box[0].height * NN_HEIGHT;
-      float lx = box[0].pKps[0].x * NN_WIDTH;
-      float ly = box[0].pKps[0].y * NN_HEIGHT;
-      float rx = box[0].pKps[1].x * NN_WIDTH;
-      float ry = box[0].pKps[1].y * NN_HEIGHT;
-      img_crop_align(nn_rgb, fr_rgb, NN_WIDTH, NN_HEIGHT,
-                     FR_WIDTH, FR_HEIGHT, NN_BPP,
-                     cx, cy, w, h, lx, ly, rx, ry);
+      float cx = box[0].x_center * lcd_bg_area.XSize;
+      float cy = box[0].y_center * lcd_bg_area.YSize;
+      float w  = box[0].width  * lcd_bg_area.XSize;
+      float h  = box[0].height * lcd_bg_area.YSize;
+      float lx = box[0].pKps[0].x * lcd_bg_area.XSize;
+      float ly = box[0].pKps[0].y * lcd_bg_area.YSize;
+      float rx = box[0].pKps[1].x * lcd_bg_area.XSize;
+      float ry = box[0].pKps[1].y * lcd_bg_area.YSize;
+      uint8_t *src_ptr = img_buffer +
+                        (lcd_bg_area.Y0 * LCD_FG_WIDTH + lcd_bg_area.X0) * CAPTURE_BPP;
+      img_crop_align565_to_888(src_ptr, fr_rgb,
+                               lcd_bg_area.XSize, lcd_bg_area.YSize,
+                               FR_WIDTH, FR_HEIGHT,
+                               cx, cy, w, h, lx, ly, rx, ry);
       img_rgb_to_hwc_float(fr_rgb, (float32_t *)fr_nn_in,
                            FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
       SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
