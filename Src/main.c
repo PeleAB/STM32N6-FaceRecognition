@@ -63,6 +63,7 @@ void* pp_input;
 pd_postprocess_out_t pp_output;
 
 uint32_t fr_in_len;
+uint32_t fr_out_len;
 
 #define ALIGN_TO_16(value) (((value) + 15) & ~15)
 
@@ -262,6 +263,7 @@ int main(void)
   fr_nn_in = (uint8_t *) LL_Buffer_addr_start(&fr_in_info[0]);
   fr_nn_out = (float32_t *) LL_Buffer_addr_start(&fr_out_info[0]);
   fr_in_len = LL_Buffer_len(&fr_in_info[0]);
+  fr_out_len = LL_Buffer_len(&fr_out_info[0]);
 
   UNUSED(nn_in_len);
 
@@ -307,6 +309,7 @@ int main(void)
                            FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
       SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
       RunNetworkSync(&NN_Instance_face_recognition);
+      SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
       float similarity = embedding_cosine_similarity(fr_nn_out, target_embedding,
                                                      EMBEDDING_SIZE);
       Display_Similarity(similarity);
