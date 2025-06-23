@@ -302,9 +302,7 @@ int main(void)
       float ly = box[0].pKps[0].y * lcd_bg_area.YSize;
       float rx = box[0].pKps[1].x * lcd_bg_area.XSize;
       float ry = box[0].pKps[1].y * lcd_bg_area.YSize;
-      uint8_t *src_ptr = img_buffer +
-                        (lcd_bg_area.Y0 * LCD_FG_WIDTH + lcd_bg_area.X0) * CAPTURE_BPP;
-      img_crop_align565_to_888(src_ptr, LCD_FG_WIDTH, fr_rgb,
+      img_crop_align565_to_888(img_buffer, lcd_bg_area.XSize, fr_rgb,
                                lcd_bg_area.XSize, lcd_bg_area.YSize,
                                FR_WIDTH, FR_HEIGHT,
                                cx, cy, w, h, lx, ly, rx, ry);
