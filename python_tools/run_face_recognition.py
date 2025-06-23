@@ -69,7 +69,15 @@ def main() -> None:
     if img is None:
         raise FileNotFoundError(args.image)
 
-    results = detector.detectFaces(img)
+    # Crop the image to a centered square just like the LCD background area
+    h0, w0, _ = img.shape
+    crop_size = min(h0, w0)
+    off_x = (w0 - crop_size) // 2
+    off_y = (h0 - crop_size) // 2
+    img_sq = img[off_y:off_y + crop_size, off_x:off_x + crop_size]
+
+    # BlazeFace detector expects the original frame size before resizing to 128x128
+    results = detector.detectFaces(img_sq)
     if results.boxes.shape[0] == 0:
         print("No face detected")
         return
@@ -77,7 +85,8 @@ def main() -> None:
     box = results.boxes[0]
     left_eye = results.keypoints[0, 0]
     right_eye = results.keypoints[0, 1]
-    aligned = crop_align(img, box, left_eye, right_eye, (112, 112))
+    # Crop the aligned face from the full resolution frame (112x112)
+    aligned = crop_align(img_sq, box, left_eye, right_eye, (112, 112))
 
     shown = False
     if args.visualize:
@@ -112,12 +121,26 @@ def main() -> None:
         cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.float32) / 128.0
     ) - 1.0
     face = face[None, ...]
-    rec.set_tensor(input_info["index"], face*0.0)
+    rec.set_tensor(input_info["index"], face)
     rec.invoke()
     embedding = rec.get_tensor(output_info["index"]).flatten()
 
     print("Embedding vector:")
     print(" ".join(f"{x:.6f}" for x in embedding))
+
+    # Update the target embedding array used by the firmware
+    emb_line = (
+        "float target_embedding[EMBEDDING_SIZE] = {" +
+        ", ".join(f"{x:.6f}" for x in embedding) + "};\n"
+    )
+    c_path = Path(__file__).resolve().parents[1] / "Src" / "target_embedding.c"
+    lines = c_path.read_text().splitlines(keepends=True)
+    for i, line in enumerate(lines):
+        if line.strip().startswith("float target_embedding"):
+            lines[i] = emb_line
+            break
+    c_path.write_text("".join(lines))
+    print("Updated", c_path)
 
     if args.visualize and shown:
         print("Close the image windows to exit")
