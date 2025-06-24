@@ -12,7 +12,7 @@ from BlazeFaceDetection.blazeFaceDetector import blazeFaceDetector
 
 
 def crop_align(image: np.ndarray, box: np.ndarray, left_eye: np.ndarray,
-               right_eye: np.ndarray, size=(96, 112)) -> np.ndarray:
+               right_eye: np.ndarray, size=(112, 112)) -> np.ndarray:
     """Crop and align face using eye landmarks."""
     h, w, _ = image.shape
     x_center = (box[0] + box[2]) / 2 * w
@@ -85,8 +85,8 @@ def main() -> None:
     box = results.boxes[0]
     left_eye = results.keypoints[0, 0]
     right_eye = results.keypoints[0, 1]
-    # Crop the aligned face from the full resolution frame (96x112)
-    aligned = crop_align(img_sq, box, left_eye, right_eye, (96, 112))
+    # Crop the aligned face from the full resolution frame (112x112)
+    aligned = crop_align(img_sq, box, left_eye, right_eye, (112, 112))
 
     shown = False
     if args.visualize:
@@ -117,13 +117,13 @@ def main() -> None:
     input_info = rec.get_input_details()[0]
     output_info = rec.get_output_details()[0]
 
-    face = cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.int16)
-    face = face - 128
-    face = np.transpose(face.astype(np.int8), (2, 0, 1))
+    face = cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.float32)
+    face = face / 128.0 - 1.0
+    face = np.transpose(face, (2, 0, 1))
     face = face[None, ...]
     rec.set_tensor(input_info["index"], face)
     rec.invoke()
-    embedding = rec.get_tensor(output_info["index"]).astype(np.float32).flatten() / 128.0
+    embedding = rec.get_tensor(output_info["index"]).flatten()
 
     print("Embedding vector:")
     print(" ".join(f"{x:.6f}" for x in embedding))
