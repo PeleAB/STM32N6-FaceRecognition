@@ -288,7 +288,7 @@ int main(void)
 
     ts[0] = HAL_GetTick();
     RunNetworkSync(&NN_Instance_face_detection);
-//    LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
+    LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
 
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
     if (pp_output.box_nb > 0)
@@ -314,7 +314,7 @@ int main(void)
       float similarity = embedding_cosine_similarity(fr_nn_out, target_embedding,
                                                      EMBEDDING_SIZE);
       Display_Similarity(similarity);
-//      LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
+      LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
     }
     ts[1] = HAL_GetTick();
     if (ts[2] == 0)

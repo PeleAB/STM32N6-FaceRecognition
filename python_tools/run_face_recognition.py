@@ -4,7 +4,7 @@ import sys
 
 import cv2
 import numpy as np
-import tensorflow as tf
+import onnxruntime as ort
 
 # allow importing BlazeFace modules from this directory
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -44,11 +44,11 @@ def crop_align(image: np.ndarray, box: np.ndarray, left_eye: np.ndarray,
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--image", help="Input image path", default='trump2.jpeg')
+    parser.add_argument("--image", help="Input image path", default="trump2.jpg")
     parser.add_argument(
         "--rec-model",
-        default="models/face_recognition_integer_quant.tflite",
-        help="TFLite face recognition model path",
+        default="models/mobilefacenet__PerChannel_quant.onnx",
+        help="ONNX face recognition model path",
     )
     parser.add_argument(
         "--det-model-type",
@@ -63,20 +63,21 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    # load BlazeFace detector
     detector = blazeFaceDetector(args.det_model_type)
 
     img = cv2.imread(args.image)
     if img is None:
-        raise FileNotFoundError(args.image)
+        raise FileNotFoundError(f"Could not open {args.image}")
 
-    # Crop the image to a centered square just like the LCD background area
+    # center‐crop to square
     h0, w0, _ = img.shape
     crop_size = min(h0, w0)
     off_x = (w0 - crop_size) // 2
     off_y = (h0 - crop_size) // 2
-    img_sq = img[off_y:off_y + crop_size, off_x:off_x + crop_size]
+    img_sq = img[off_y : off_y + crop_size, off_x : off_x + crop_size]
 
-    # BlazeFace detector expects the original frame size before resizing to 128x128
+    # detect and align
     results = detector.detectFaces(img_sq)
     if results.boxes.shape[0] == 0:
         print("No face detected")
@@ -85,22 +86,17 @@ def main() -> None:
     box = results.boxes[0]
     left_eye = results.keypoints[0, 0]
     right_eye = results.keypoints[0, 1]
-    # Crop the aligned face from the full resolution frame (96x112)
-    aligned = crop_align(img_sq, box, left_eye, right_eye, (96, 112))
+    aligned = crop_align(img_sq, box, left_eye, right_eye, size=(96, 112))
 
     shown = False
     if args.visualize:
         disp = img.copy()
         h, w, _ = disp.shape
-        x0 = int(box[0] * w)
-        y0 = int(box[1] * h)
-        x1 = int(box[2] * w)
-        y1 = int(box[3] * h)
+        x0, y0 = int(box[0] * w), int(box[1] * h)
+        x1, y1 = int(box[2] * w), int(box[3] * h)
         cv2.rectangle(disp, (x0, y0), (x1, y1), (0, 255, 0), 2)
-        lx = int(left_eye[0] * w)
-        ly = int(left_eye[1] * h)
-        rx = int(right_eye[0] * w)
-        ry = int(right_eye[1] * h)
+        lx, ly = int(left_eye[0] * w), int(left_eye[1] * h)
+        rx, ry = int(right_eye[0] * w), int(right_eye[1] * h)
         cv2.circle(disp, (lx, ly), 2, (0, 0, 255), -1)
         cv2.circle(disp, (rx, ry), 2, (0, 0, 255), -1)
         try:
@@ -112,26 +108,32 @@ def main() -> None:
             cv2.imwrite("aligned_face.jpg", aligned)
             print("Saved detected_face.jpg and aligned_face.jpg")
 
-    rec = tf.lite.Interpreter(model_path=str(Path(args.rec_model)))
-    rec.allocate_tensors()
-    input_info = rec.get_input_details()[0]
-    output_info = rec.get_output_details()[0]
+    # --- ONNX Runtime inference ---
+    sess = ort.InferenceSession(str(Path(args.rec_model)))
+    input_name = sess.get_inputs()[0].name
+    output_name = sess.get_outputs()[0].name
 
+    # preprocess: BGR→RGB, zero‐center around 0, CHW, batch
     face = cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.int16)
     face = face - 128
-    face = np.transpose(face.astype(np.int8), (2, 0, 1))
-    face = face[None, ...]
-    rec.set_tensor(input_info["index"], face)
-    rec.invoke()
-    embedding = rec.get_tensor(output_info["index"]).astype(np.float32).flatten() / 128.0
+    face = np.transpose(face.astype(np.float32), (2, 0, 1))[None, ...]
 
+    # run inference
+    onnx_out = sess.run([output_name], {input_name: face})[0]
+    embedding = onnx_out.astype(np.float32).flatten() / 128.0
+
+    norm = np.linalg.norm(embedding)
+    if norm > 0:
+        embedding /= norm
+    # print embedding
     print("Embedding vector:")
     print(" ".join(f"{x:.6f}" for x in embedding))
 
-    # Update the target embedding array used by the firmware
+    # patch into your C source
     emb_line = (
-        "float target_embedding[EMBEDDING_SIZE] = {" +
-        ", ".join(f"{x:.6f}" for x in embedding) + "};\n"
+        "float target_embedding[EMBEDDING_SIZE] = {"
+        + ", ".join(f"{x:.6f}" for x in embedding)
+        + "};\n"
     )
     c_path = Path(__file__).resolve().parents[1] / "Src" / "target_embedding.c"
     lines = c_path.read_text().splitlines(keepends=True)

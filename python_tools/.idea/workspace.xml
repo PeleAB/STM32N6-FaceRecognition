@@ -5,23 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="13fa5230-12b5-418b-b117-dfbfb113ec77" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../Binary/STM32N6_GettingStarted_ObjectDetection_signed.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Binary/STM32N6_GettingStarted_ObjectDetection_signed.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Binary/STM32N6_GettingStarted_ObjectDetection_signed.hex" beforeDir="false" afterPath="$PROJECT_DIR$/../Binary/STM32N6_GettingStarted_ObjectDetection_signed.hex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Binary/rec_network_data.hex" beforeDir="false" afterPath="$PROJECT_DIR$/../Binary/rec_network_data.hex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Model/face_recognition.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Model/face_recognition.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Model/face_recognition.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Model/face_recognition.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Model/face_recognition_analyze_report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Model/face_recognition_analyze_report.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Model/face_recognition_atonbuf.xSPI2.raw" beforeDir="false" afterPath="$PROJECT_DIR$/../Model/face_recognition_atonbuf.xSPI2.raw" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Model/face_recognition_c_info.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Model/face_recognition_c_info.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Model/face_recognition_ecblobs.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Model/face_recognition_ecblobs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Model/face_recognition_sface_2021dec_int8_OE_3_2_0_Q.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Model/face_recognition_sface_2021dec_int8_OE_3_2_0_Q.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Src/main.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Src/target_embedding.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Src/target_embedding.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run_face_recognition.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_face_recognition.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -238,10 +224,10 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/python_tools$pc_uart_client.coverage" NAME="pc_uart_client Coverage Results" MODIFIED="1750700408857" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python_tools$pc_uart_client.coverage" NAME="pc_uart_client Coverage Results" MODIFIED="1750789558546" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python_tools$compare_detections.coverage" NAME="compare_detections Coverage Results" MODIFIED="1750683271425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python_tools$test_rgb_to_hwc_float.coverage" NAME="test_rgb_to_hwc_float Coverage Results" MODIFIED="1750695877211" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/python_tools$run_face_recognition.coverage" NAME="run_face_recognition Coverage Results" MODIFIED="1750699965077" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python_tools$run_face_recognition.coverage" NAME="run_face_recognition Coverage Results" MODIFIED="1750791084252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python_tools$pc_uart_utils.coverage" NAME="pc_uart_utils Coverage Results" MODIFIED="1750685032141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
