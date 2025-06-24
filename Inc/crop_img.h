@@ -24,15 +24,9 @@ void img_crop(uint8_t *src_image, uint8_t *dst_img, const uint32_t src_stride,
               const uint16_t dst_width, const uint16_t dst_height,
               const uint16_t bpp);
 
-/* Convert RGB888 image to float HWC tensor normalized to [-1, 1].
- * dst_img must be sized width * height * 3. */
-void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
-                          const uint32_t src_stride, const uint16_t width,
-                          const uint16_t height);
-
 /* Convert RGB888 image to float CHW tensor normalized to [-1, 1].
  * dst_img must be sized 3 * width * height. */
-void img_rgb_to_chw_float(uint8_t *src_image, float32_t *dst_img,
+void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
                           const uint32_t src_stride, const uint16_t width,
                           const uint16_t height);
 

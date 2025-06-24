@@ -3,7 +3,7 @@ import cv2
 from pathlib import Path
 
 
-def img_rgb_to_chw_float_py(src: np.ndarray) -> np.ndarray:
+def img_rgb_to_hwc_float_py(src: np.ndarray) -> np.ndarray:
     scale = 1.0 / 128.0
     height, width, _ = src.shape
     dst = np.empty((3, height, width), dtype=np.float32)
@@ -22,7 +22,7 @@ def main():
     img = cv2.resize(img, (112, 112))
     ref = (img.astype(np.float32) / 128.0) - 1.0
     ref = ref.transpose(2, 0, 1)
-    test = img_rgb_to_chw_float_py(img)
+    test = img_rgb_to_hwc_float_py(img)
     diff = np.abs(ref - test).max()
     print(f'Max diff: {diff}')
 
