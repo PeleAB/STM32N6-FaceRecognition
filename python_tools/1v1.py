@@ -56,7 +56,7 @@ def get_embedding(detector, session, input_name, nchw, img_path, visualize=False
     # align
     box = results.boxes[0]
     left_eye, right_eye = results.keypoints[0, 0], results.keypoints[0, 1]
-    aligned = crop_align(img, box, left_eye, right_eye, (96, 112))
+    aligned = crop_align(img, box, left_eye, right_eye, (112, 112))
 
     # visualize
     if visualize:
@@ -74,7 +74,7 @@ def get_embedding(detector, session, input_name, nchw, img_path, visualize=False
         cv2.waitKey()
 
     # preprocess for ONNX
-    face = (aligned.astype(np.float32) - 127.5) / 128.0
+    face =aligned.astype(np.float32)
 
     face = face[None, ...]
 
@@ -102,7 +102,7 @@ def main():
     p.add_argument("--image2", default="multrump.jpg", help="Second input image path")
     p.add_argument(
         "--rec-model",
-        default="models/mobilefacenet_fp32.onnx",
+        default="models/face_recognition_sface_2021dec_int8.onnx",
         help="ONNX face recognition model path",
     )
     p.add_argument(
