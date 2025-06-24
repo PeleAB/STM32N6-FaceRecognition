@@ -32,6 +32,10 @@ void img_rgb_to_hwc_float2(uint8_t *src_image, float32_t *dst_img,
                           const uint32_t src_stride, const uint16_t width,
                           const uint16_t height);
 
+void img_rgb_to_chw_s8(uint8_t *src_image, int8_t *dst_img,
+                       const uint32_t src_stride, const uint16_t width,
+                       const uint16_t height);
+
 void img_crop_resize(uint8_t *src_image, uint8_t *dst_img,
                      const uint16_t src_width, const uint16_t src_height,
                      const uint16_t dst_width, const uint16_t dst_height,

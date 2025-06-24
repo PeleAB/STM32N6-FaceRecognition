@@ -62,8 +62,8 @@ uint8_t fr_rgb[FR_WIDTH * FR_HEIGHT * NN_BPP];
 void* pp_input;
 pd_postprocess_out_t pp_output;
 
-int8_t  fr_in_len;
-int8_t  fr_out_len;
+uint32_t fr_in_len;
+uint32_t fr_out_len;
 
 #define ALIGN_TO_16(value) (((value) + 15) & ~15)
 
@@ -306,8 +306,8 @@ int main(void)
                                lcd_bg_area.XSize, lcd_bg_area.YSize,
                                FR_WIDTH, FR_HEIGHT,
                                cx, cy, w, h, lx, ly, rx, ry);
-      img_rgb_to_hwc_float(fr_rgb, (float32_t *)fr_nn_in,
-                           FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
+      img_rgb_to_chw_s8(fr_rgb, fr_nn_in,
+                        FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
       SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
       RunNetworkSync(&NN_Instance_face_recognition);
       SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
