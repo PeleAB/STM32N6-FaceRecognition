@@ -10,7 +10,7 @@ def img_rgb_to_chw_float_py(src: np.ndarray) -> np.ndarray:
     for y in range(height):
         for x in range(width):
             for c in range(3):
-                dst[c, y, x] = src[y, x, c] * scale - 1.0
+                dst[c, y, x] = (src[y, x, c] - 127.5) * scale
     return dst
 
 
@@ -19,8 +19,8 @@ def main():
     img = cv2.imread(str(img_path))
     if img is None:
         raise FileNotFoundError(img_path)
-    img = cv2.resize(img, (112, 112))
-    ref = (img.astype(np.float32) / 128.0) - 1.0
+    img = cv2.resize(img, (96, 112))
+    ref = (img.astype(np.float32) - 127.5) / 128.0
     ref = ref.transpose(2, 0, 1)
     test = img_rgb_to_chw_float_py(img)
     diff = np.abs(ref - test).max()

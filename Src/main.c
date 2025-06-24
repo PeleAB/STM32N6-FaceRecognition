@@ -38,6 +38,7 @@
 #include "blazeface_anchors.h"
 #include "face_utils.h"
 #include "target_embedding.h"
+#include "arm_math.h"
 
 
 #define MAX_NUMBER_OUTPUT 5
@@ -50,9 +51,9 @@
 pd_model_pp_static_param_t pp_params;
 
 volatile int32_t cameraFrameReceived;
-uint8_t *nn_in;
-int8_t  *fr_nn_in;
-int8_t  *fr_nn_out;
+uint8_t  *nn_in;
+float32_t *fr_nn_in;
+float32_t *fr_nn_out;
 __attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
 uint8_t nn_rgb[NN_WIDTH * NN_HEIGHT * NN_BPP];
@@ -260,8 +261,8 @@ int main(void)
   LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_recognition);
   const LL_Buffer_InfoTypeDef *fr_in_info = LL_ATON_Input_Buffers_Info_face_recognition();
   const LL_Buffer_InfoTypeDef *fr_out_info = LL_ATON_Output_Buffers_Info_face_recognition();
-  fr_nn_in = (int8_t *) LL_Buffer_addr_start(&fr_in_info[0]);
-  fr_nn_out = (int8_t *) LL_Buffer_addr_start(&fr_out_info[0]);
+  fr_nn_in = (float32_t *) LL_Buffer_addr_start(&fr_in_info[0]);
+  fr_nn_out = (float32_t *) LL_Buffer_addr_start(&fr_out_info[0]);
   fr_in_len = LL_Buffer_len(&fr_in_info[0]);
   fr_out_len = LL_Buffer_len(&fr_out_info[0]);
 
@@ -308,17 +309,12 @@ int main(void)
                                  lcd_bg_area.XSize, lcd_bg_area.YSize,
                                  FR_WIDTH, FR_HEIGHT,
                                  cx, cy, w, h, lx, ly, rx, ry);
-        img_rgb_to_chw_s8(fr_rgb, fr_nn_in,
-                          FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
+        img_rgb_to_chw_float(fr_rgb, fr_nn_in,
+                            FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
         SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
         RunNetworkSync(&NN_Instance_face_recognition);
         SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
-        float32_t tmp[EMBEDDING_SIZE];
-        for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
-        {
-          tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;
-        }
-        float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
+        float similarity = embedding_cosine_similarity(fr_nn_out, target_embedding, EMBEDDING_SIZE);
         box[b].prob = similarity;
         if (b == 0)
         {

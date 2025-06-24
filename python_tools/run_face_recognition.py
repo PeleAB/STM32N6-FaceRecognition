@@ -47,7 +47,7 @@ def main() -> None:
     parser.add_argument("--image", help="Input image path", default="trump.jpg")
     parser.add_argument(
         "--rec-model",
-        default="models/mobilefacenet__PerChannel_quant.onnx",
+        default="models/mobilefacenet_fp32.onnx",
         help="ONNX face recognition model path",
     )
     parser.add_argument(
@@ -114,13 +114,13 @@ def main() -> None:
     output_name = sess.get_outputs()[0].name
 
     # preprocess: BGR→RGB, zero‐center around 0, CHW, batch
-    face = cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.int16)
-    face = face - 128
-    face = np.transpose(face.astype(np.float32), (2, 0, 1))[None, ...]
+    face = cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.float32)
+    face = (face - 127.5) / 128.0
+    face = np.transpose(face, (2, 0, 1))[None, ...]
 
     # run inference
     onnx_out = sess.run([output_name], {input_name: face})[0]
-    embedding = onnx_out.astype(np.float32).flatten() / 128.0
+    embedding = onnx_out.astype(np.float32).flatten()
 
     norm = np.linalg.norm(embedding)
     if norm > 0:
