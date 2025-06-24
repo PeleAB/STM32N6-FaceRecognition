@@ -294,31 +294,38 @@ int main(void)
     if (pp_output.box_nb > 0)
     {
       pd_pp_box_t *box = (pd_pp_box_t *)pp_output.pOutData;
-      float cx = box[0].x_center * lcd_bg_area.XSize;
-      float cy = box[0].y_center * lcd_bg_area.YSize;
-      float w  = box[0].width  * lcd_bg_area.XSize;
-      float h  = box[0].height * lcd_bg_area.YSize;
-      float lx = box[0].pKps[0].x * lcd_bg_area.XSize;
-      float ly = box[0].pKps[0].y * lcd_bg_area.YSize;
-      float rx = box[0].pKps[1].x * lcd_bg_area.XSize;
-      float ry = box[0].pKps[1].y * lcd_bg_area.YSize;
-      img_crop_align565_to_888(img_buffer, lcd_bg_area.XSize, fr_rgb,
-                               lcd_bg_area.XSize, lcd_bg_area.YSize,
-                               FR_WIDTH, FR_HEIGHT,
-                               cx, cy, w, h, lx, ly, rx, ry);
-      img_rgb_to_chw_s8(fr_rgb, fr_nn_in,
-                        FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
-      SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
-      RunNetworkSync(&NN_Instance_face_recognition);
-      SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
-      float32_t tmp[EMBEDDING_SIZE];
-      for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
+      for (uint32_t b = 0; b < pp_output.box_nb; b++)
       {
-        tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;
+        float cx = box[b].x_center * lcd_bg_area.XSize;
+        float cy = box[b].y_center * lcd_bg_area.YSize;
+        float w  = box[b].width  * lcd_bg_area.XSize;
+        float h  = box[b].height * lcd_bg_area.YSize;
+        float lx = box[b].pKps[0].x * lcd_bg_area.XSize;
+        float ly = box[b].pKps[0].y * lcd_bg_area.YSize;
+        float rx = box[b].pKps[1].x * lcd_bg_area.XSize;
+        float ry = box[b].pKps[1].y * lcd_bg_area.YSize;
+        img_crop_align565_to_888(img_buffer, lcd_bg_area.XSize, fr_rgb,
+                                 lcd_bg_area.XSize, lcd_bg_area.YSize,
+                                 FR_WIDTH, FR_HEIGHT,
+                                 cx, cy, w, h, lx, ly, rx, ry);
+        img_rgb_to_chw_s8(fr_rgb, fr_nn_in,
+                          FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
+        SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
+        RunNetworkSync(&NN_Instance_face_recognition);
+        SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
+        float32_t tmp[EMBEDDING_SIZE];
+        for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
+        {
+          tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;
+        }
+        float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
+        box[b].prob = similarity;
+        if (b == 0)
+        {
+          Display_Similarity(similarity);
+        }
+        LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
       }
-      float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
-      Display_Similarity(similarity);
-      LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
     }
     ts[1] = HAL_GetTick();
     if (ts[2] == 0)

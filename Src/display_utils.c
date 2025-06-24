@@ -71,7 +71,7 @@ static void DrawPDBoundingBoxes(const pd_pp_box_t *boxes, uint32_t nb)
     width  = ((x0 + width)  < lcd_bg_area.X0 + lcd_bg_area.XSize) ? width  : (lcd_bg_area.X0 + lcd_bg_area.XSize - x0 - 1);
     height = ((y0 + height) < lcd_bg_area.Y0 + lcd_bg_area.YSize) ? height : (lcd_bg_area.Y0 + lcd_bg_area.YSize - y0 - 1);
     UTIL_LCD_DrawRect(x0, y0, width, height, colors[0]);
-    UTIL_LCDEx_PrintfAt(-x0 - width, y0, RIGHT_MODE, "%.1f%%", g_similarity_percent);
+    UTIL_LCDEx_PrintfAt(-x0 - width, y0, RIGHT_MODE, "%.1f%%", boxes[i].prob * 100.f);
   }
 }
 
