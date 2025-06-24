@@ -44,7 +44,7 @@ def crop_align(image: np.ndarray, box: np.ndarray, left_eye: np.ndarray,
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--image", help="Input image path", default="trump2.jpg")
+    parser.add_argument("--image", help="Input image path", default="trump.jpg")
     parser.add_argument(
         "--rec-model",
         default="models/mobilefacenet__PerChannel_quant.onnx",

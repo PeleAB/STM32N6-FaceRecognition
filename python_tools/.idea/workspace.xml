@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="13fa5230-12b5-418b-b117-dfbfb113ec77" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../Src/target_embedding.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Src/target_embedding.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Src/main.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run_face_recognition.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_face_recognition.py" afterDir="false" />
     </list>
@@ -52,7 +56,7 @@
       <recent name="C:\Users\pele\Documents\GitHub\ObjectDet\python_tools\models" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.pc_uart_client">
+  <component name="RunManager" selected="Python.run_face_recognition">
     <configuration name="compare_detections" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="python_tools" />
       <option name="ENV_FILES" value="" />
@@ -179,8 +183,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.pc_uart_client" />
         <item itemvalue="Python.run_face_recognition" />
+        <item itemvalue="Python.pc_uart_client" />
         <item itemvalue="Python.test_rgb_to_hwc_float" />
         <item itemvalue="Python.pc_uart_utils" />
         <item itemvalue="Python.compare_detections" />
@@ -224,10 +228,10 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/python_tools$pc_uart_client.coverage" NAME="pc_uart_client Coverage Results" MODIFIED="1750789558546" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python_tools$pc_uart_client.coverage" NAME="pc_uart_client Coverage Results" MODIFIED="1750791242574" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python_tools$compare_detections.coverage" NAME="compare_detections Coverage Results" MODIFIED="1750683271425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python_tools$test_rgb_to_hwc_float.coverage" NAME="test_rgb_to_hwc_float Coverage Results" MODIFIED="1750695877211" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/python_tools$run_face_recognition.coverage" NAME="run_face_recognition Coverage Results" MODIFIED="1750791084252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/python_tools$run_face_recognition.coverage" NAME="run_face_recognition Coverage Results" MODIFIED="1750791138060" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/python_tools$pc_uart_utils.coverage" NAME="pc_uart_utils Coverage Results" MODIFIED="1750685032141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

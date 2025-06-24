@@ -42,7 +42,7 @@
 
 #define MAX_NUMBER_OUTPUT 5
 
-#define FR_WIDTH 112
+#define FR_WIDTH 96
 #define FR_HEIGHT 112
 
 
@@ -51,8 +51,8 @@ pd_model_pp_static_param_t pp_params;
 
 volatile int32_t cameraFrameReceived;
 uint8_t *nn_in;
-uint8_t *fr_nn_in;
-float32_t *fr_nn_out;
+int8_t  *fr_nn_in;
+int8_t  *fr_nn_out;
 __attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
 uint8_t nn_rgb[NN_WIDTH * NN_HEIGHT * NN_BPP];
@@ -62,8 +62,8 @@ uint8_t fr_rgb[FR_WIDTH * FR_HEIGHT * NN_BPP];
 void* pp_input;
 pd_postprocess_out_t pp_output;
 
-uint32_t fr_in_len;
-uint32_t fr_out_len;
+int8_t  fr_in_len;
+int8_t  fr_out_len;
 
 #define ALIGN_TO_16(value) (((value) + 15) & ~15)
 
@@ -260,8 +260,8 @@ int main(void)
   LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_recognition);
   const LL_Buffer_InfoTypeDef *fr_in_info = LL_ATON_Input_Buffers_Info_face_recognition();
   const LL_Buffer_InfoTypeDef *fr_out_info = LL_ATON_Output_Buffers_Info_face_recognition();
-  fr_nn_in = (uint8_t *) LL_Buffer_addr_start(&fr_in_info[0]);
-  fr_nn_out = (float32_t *) LL_Buffer_addr_start(&fr_out_info[0]);
+  fr_nn_in = (int8_t *) LL_Buffer_addr_start(&fr_in_info[0]);
+  fr_nn_out = (int8_t *) LL_Buffer_addr_start(&fr_out_info[0]);
   fr_in_len = LL_Buffer_len(&fr_in_info[0]);
   fr_out_len = LL_Buffer_len(&fr_out_info[0]);
 
@@ -311,8 +311,12 @@ int main(void)
       SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
       RunNetworkSync(&NN_Instance_face_recognition);
       SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
-      float similarity = embedding_cosine_similarity(fr_nn_out, target_embedding,
-                                                     EMBEDDING_SIZE);
+      float32_t tmp[EMBEDDING_SIZE];
+      for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
+      {
+        tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;
+      }
+      float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
       Display_Similarity(similarity);
       LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
     }
