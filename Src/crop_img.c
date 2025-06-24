@@ -75,6 +75,24 @@ void img_rgb_to_chw_float(uint8_t *src_image, float32_t *dst_img,
   }
 }
 
+void img_rgb_to_chw_s8(uint8_t *src_image, int8_t *dst_img,
+                       const uint32_t src_stride, const uint16_t width,
+                       const uint16_t height)
+{
+  for (uint16_t y = 0; y < height; y++)
+  {
+    uint8_t *row = src_image + y * src_stride;
+    for (uint16_t x = 0; x < width; x++)
+    {
+      uint8_t *px = row + x * 3;
+      for (uint8_t c = 0; c < 3; c++)
+      {
+        dst_img[c * width * height + (y * width + x)] = (int8_t)px[c] - 128;
+      }
+    }
+  }
+}
+
 void img_rgb_to_hwc_float2(uint8_t *src_image, float32_t *dst_img,
                            const uint32_t src_stride, const uint16_t width,
                            const uint16_t height)
