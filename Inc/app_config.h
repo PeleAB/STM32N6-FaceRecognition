@@ -34,9 +34,9 @@
 
 #define CAPTURE_FORMAT DCMIPP_PIXEL_PACKER_FORMAT_RGB565_1
 #define CAPTURE_BPP 2
-/* Increase camera capture resolution to improve face crops */
-#define CAMERA_WIDTH  1280
-#define CAMERA_HEIGHT 720
+/* Leave the driver use the default resolution */
+#define CAMERA_WIDTH 0
+#define CAMERA_HEIGHT 0
 
 #define LCD_FG_WIDTH             800
 #define LCD_FG_HEIGHT            480
