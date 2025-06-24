@@ -117,9 +117,9 @@ def main() -> None:
     input_info = rec.get_input_details()[0]
     output_info = rec.get_output_details()[0]
 
-    face = cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.float32)
-    face = face / 128.0 - 1.0
-    face = np.transpose(face, (2, 0, 1))
+    face = (
+        cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.float32) / 128.0
+    ) - 1.0
     face = face[None, ...]
     rec.set_tensor(input_info["index"], face)
     rec.invoke()
