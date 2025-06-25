@@ -195,7 +195,8 @@ def display_loop(q, stop_event):
     cv2.destroyAllWindows()
 
 
-def send_image(ser, img_path, size, display=False, rx=False, preview=False):
+def send_image(ser, img_path, size, display=False, rx=False, preview=False,
+               timeout=5.0):
     """Send an image file to the board.
 
     Returns the echoed frame and detections from the MCU. If *display* is True,
@@ -214,11 +215,14 @@ def send_image(ser, img_path, size, display=False, rx=False, preview=False):
     ser.write(img.tobytes())
 
     if rx:
+        old_timeout = ser.timeout
+        ser.timeout = timeout
         time.sleep(0.5)
         tag, echo, w, h = read_frame(ser)
         print('rxed frame')
         _, dets = read_detections(ser)
         print('rxed dets')
+        ser.timeout = old_timeout
         if echo is not None:
             echo = draw_detections(echo, dets)
             if display:

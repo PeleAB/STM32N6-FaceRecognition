@@ -120,6 +120,12 @@ def main() -> None:
         default="models/mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1_OE_3_2_0.onnx",
         help="ONNX face recognition model path",
     )
+    parser.add_argument(
+        "--timeout",
+        type=float,
+        default=5.0,
+        help="Seconds to wait for MCU response",
+    )
     args = parser.parse_args()
 
     detector = blazeFaceDetector(
@@ -142,6 +148,7 @@ def main() -> None:
             (detector.inputWidth, detector.inputHeight),
             display=False,
             rx=True,
+            timeout=args.timeout,
         )
         aligned_frames = utils.read_aligned_frames(ser, len(mcu_dets))
         mcu_embs = utils.read_embeddings(ser, len(mcu_dets))
