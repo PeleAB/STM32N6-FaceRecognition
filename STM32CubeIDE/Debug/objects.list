@@ -3,6 +3,7 @@
 "./Application/app_postprocess.o"
 "./Application/crop_img.o"
 "./Application/display_utils.o"
+"./Application/dummy_fr_input.o"
 "./Application/face_detection.o"
 "./Application/face_recognition.o"
 "./Application/face_utils.o"

@@ -61,6 +61,22 @@ void img_rgb_to_hwc_float2(uint8_t *src_image, float32_t *dst_img,
   }
 }
 
+void img_rgb_to_chw_s8(uint8_t *src_image, int8_t *dst_img,
+                       const uint32_t src_stride, const uint16_t width,
+                       const uint16_t height)
+{
+  for (uint16_t y = 0; y < height; y++)
+  {
+    for (uint16_t x = 0; x < width; x++)
+    {
+      const uint8_t *pIn = src_image + y * src_stride + x * 3;
+      dst_img[y * width + x] = (int8_t)((int)pIn[0] - 128);
+      dst_img[height * width + y * width + x] = (int8_t)((int)pIn[1] - 128);
+      dst_img[2 * height * width + y * width + x] = (int8_t)((int)pIn[2] - 128);
+    }
+  }
+}
+
 void img_crop_resize(uint8_t *src_image, uint8_t *dst_img,
                      const uint16_t src_width, const uint16_t src_height,
                      const uint16_t dst_width, const uint16_t dst_height,
@@ -97,12 +113,16 @@ void img_crop_align(uint8_t *src_image, uint8_t *dst_img,
   float angle = -atan2f(right_eye_y - left_eye_y, right_eye_x - left_eye_x);
   float cos_a = cosf(angle);
   float sin_a = sinf(angle);
+  float dst_full = (dst_width > dst_height) ? (float)dst_width : (float)dst_height;
+  float offset_x = (dst_full - (float)dst_width) * 0.5f;
+  float offset_y = (dst_full - (float)dst_height) * 0.5f;
+
   for (uint16_t y = 0; y < dst_height; y++)
   {
-    float ny = ((float)y + 0.5f) / dst_height - 0.5f;
+    float ny = ((float)y + offset_y + 0.5f) / dst_full - 0.5f;
     for (uint16_t x = 0; x < dst_width; x++)
     {
-      float nx = ((float)x + 0.5f) / dst_width - 0.5f;
+      float nx = ((float)x + offset_x + 0.5f) / dst_full - 0.5f;
       float src_x = x_center + (nx * width) * cos_a + (ny * height) * sin_a;
       float src_y = y_center + (ny * height) * cos_a - (nx * width) * sin_a;
       if (src_x < 0) src_x = 0;
@@ -115,6 +135,45 @@ void img_crop_align(uint8_t *src_image, uint8_t *dst_img,
       {
         pOut[c] = pIn[c];
       }
+    }
+  }
+}
+
+void img_crop_align565_to_888(uint8_t *src_image, uint16_t src_stride,
+                              uint8_t *dst_img,
+                              const uint16_t src_width, const uint16_t src_height,
+                              const uint16_t dst_width, const uint16_t dst_height,
+                              float x_center, float y_center,
+                              float width, float height, float left_eye_x,
+                              float left_eye_y, float right_eye_x, float right_eye_y)
+{
+  float angle = -atan2f(right_eye_y - left_eye_y, right_eye_x - left_eye_x);
+  float cos_a = cosf(angle);
+  float sin_a = sinf(angle);
+
+  float dst_full = (dst_width > dst_height) ? (float)dst_width : (float)dst_height;
+  float offset_x = (dst_full - (float)dst_width) * 0.5f;
+  float offset_y = (dst_full - (float)dst_height) * 0.5f;
+
+  for (uint16_t y = 0; y < dst_height; y++)
+  {
+    float ny = ((float)y + offset_y + 0.5f) / dst_full - 0.5f;
+    for (uint16_t x = 0; x < dst_width; x++)
+    {
+      float nx = ((float)x + offset_x + 0.5f) / dst_full - 0.5f;
+      float src_x = x_center + (nx * width) * cos_a + (ny * height) * sin_a;
+      float src_y = y_center + (ny * height) * cos_a - (nx * width) * sin_a;
+      if (src_x < 0) src_x = 0;
+      if (src_x >= src_width) src_x = src_width - 1;
+      if (src_y < 0) src_y = 0;
+      if (src_y >= src_height) src_y = src_height - 1;
+      const uint16_t *pIn = (const uint16_t *)src_image +
+                            ((uint32_t)src_y * src_stride + (uint32_t)src_x);
+      uint8_t *pOut = dst_img + ((uint32_t)y * dst_width + (uint32_t)x) * 3;
+      uint16_t px = *pIn;
+      pOut[0] = (uint8_t)(((px >> 11) & 0x1F) << 3);
+      pOut[1] = (uint8_t)(((px >> 5) & 0x3F) << 2);
+      pOut[2] = (uint8_t)((px & 0x1F) << 3);
     }
   }
 }

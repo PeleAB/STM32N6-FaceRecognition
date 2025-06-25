@@ -32,6 +32,10 @@ void img_rgb_to_hwc_float2(uint8_t *src_image, float32_t *dst_img,
                           const uint32_t src_stride, const uint16_t width,
                           const uint16_t height);
 
+void img_rgb_to_chw_s8(uint8_t *src_image, int8_t *dst_img,
+                       const uint32_t src_stride, const uint16_t width,
+                       const uint16_t height);
+
 void img_crop_resize(uint8_t *src_image, uint8_t *dst_img,
                      const uint16_t src_width, const uint16_t src_height,
                      const uint16_t dst_width, const uint16_t dst_height,
@@ -44,5 +48,13 @@ void img_crop_align(uint8_t *src_image, uint8_t *dst_img,
                     const uint16_t bpp, float x_center, float y_center,
                     float width, float height, float left_eye_x,
                     float left_eye_y, float right_eye_x, float right_eye_y);
+
+void img_crop_align565_to_888(uint8_t *src_image, uint16_t src_stride,
+                              uint8_t *dst_img,
+                              const uint16_t src_width, const uint16_t src_height,
+                              const uint16_t dst_width, const uint16_t dst_height,
+                              float x_center, float y_center,
+                              float width, float height, float left_eye_x,
+                              float left_eye_y, float right_eye_x, float right_eye_y);
 
 #endif
