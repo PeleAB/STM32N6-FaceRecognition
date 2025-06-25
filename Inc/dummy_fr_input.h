@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define DUMMY_FR_INPUT_SIZE (96 * 112 * 3)
+#define DUMMY_FR_INPUT_SIZE (112 * 96 * 3)
 extern int8_t dummy_fr_input[DUMMY_FR_INPUT_SIZE];
 
 #endif /* DUMMY_FR_INPUT_H */

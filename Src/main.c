@@ -44,8 +44,8 @@
 
 #define MAX_NUMBER_OUTPUT 5
 
-#define FR_WIDTH 96
-#define FR_HEIGHT 112
+#define FR_WIDTH 112
+#define FR_HEIGHT 96
 
 
 
