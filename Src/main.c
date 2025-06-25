@@ -66,8 +66,6 @@ pd_postprocess_out_t pp_output;
 
 uint32_t fr_in_len;
 uint32_t fr_out_len;
-float embeddings[MAX_NUMBER_OUTPUT][EMBEDDING_SIZE];
-uint32_t embedding_count;
 
 #define ALIGN_TO_16(value) (((value) + 15) & ~15)
 
@@ -313,7 +311,6 @@ int main(void)
     LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
 
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
-    embedding_count = 0;
     if (pp_output.box_nb > 0)
     {
       pd_pp_box_t *box = (pd_pp_box_t *)pp_output.pOutData;
@@ -338,12 +335,10 @@ int main(void)
         SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
         float32_t tmp[EMBEDDING_SIZE];
 
-
         for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
         {
           float val = ((float32_t)fr_nn_out[i]) / 128.f;
           tmp[i] = val;
-          embeddings[b][i] = val;
         }
         float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
         box[b].prob = similarity;
@@ -351,8 +346,11 @@ int main(void)
         {
           Display_Similarity(similarity);
         }
+#ifdef ENABLE_PC_STREAM
+        PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
+        PC_STREAM_SendEmbedding(tmp, EMBEDDING_SIZE);
+#endif
         LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
-        embedding_count++;
       }
     }
     ts[1] = HAL_GetTick();
@@ -363,16 +361,6 @@ int main(void)
     assert(ret == 0);
 
     App_Output(&pp_output, ts[1] - ts[0], ts[2]);
-#ifdef ENABLE_PC_STREAM
-    for (uint32_t b = 0; b < embedding_count; b++)
-    {
-      PC_STREAM_SendEmbedding(embeddings[b], EMBEDDING_SIZE);
-    }
-    if (pp_output.box_nb > 0)
-    {
-      PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
-    }
-#endif
 
     /* Discard nn_out region (used by pp_input and pp_outputs variables) to avoid Dcache evictions during nn inference */
     for (int i = 0; i < number_output; i++)

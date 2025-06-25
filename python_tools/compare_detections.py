@@ -143,7 +143,8 @@ def main() -> None:
             display=False,
             rx=True,
         )
-        mcu_emb = utils.read_embedding(ser)
+        aligned_frames = utils.read_aligned_frames(ser, len(mcu_dets))
+        mcu_embs = utils.read_embeddings(ser, len(mcu_dets))
     # compute IoU sorted left to right
     pc_boxes = [det_box(d) for d in pc_dets]
     mcu_boxes = [det_box(d) for d in mcu_dets]
@@ -154,25 +155,37 @@ def main() -> None:
         score = iou(pc_sorted[i], mcu_sorted[i])
         print(f"IoU box {i}: {score:.2f}")
 
-    if mcu_dets and mcu_emb:
-        det = mcu_dets[0]
+    for idx, (det, frame, emb) in enumerate(zip(mcu_dets, aligned_frames, mcu_embs)):
         _, xc, yc, w, h, _conf, kps = det
         box = np.array([xc - w / 2, yc - h / 2, xc + w / 2, yc + h / 2], dtype=np.float32)
         kps = np.array(kps, dtype=np.float32).reshape(-1, 2)
         box = inflate_box(box)
-        aligned = crop_align(img, box, kps[0], kps[1], size=(96, 112))
-        face_rgb = cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.int16)
+        aligned_pc = crop_align(img, box, kps[0], kps[1], size=(96, 112))
+
+        # embedding from PC using MCU aligned frame
+        face_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB).astype(np.int16)
         face_rgb -= 128
         face = np.transpose(face_rgb.astype(np.int8), (2, 0, 1))[None, ...]
-        pc_out = session.run(None, {input_name: face})[0]
+        mcu_pc_out = session.run(None, {input_name: face})[0]
+        mcu_pc_emb = mcu_pc_out.astype(np.float32).flatten() / 128.0
+
+        # embedding from PC using PC aligned crop
+        face_rgb2 = cv2.cvtColor(aligned_pc, cv2.COLOR_BGR2RGB).astype(np.int16)
+        face_rgb2 -= 128
+        face2 = np.transpose(face_rgb2.astype(np.int8), (2, 0, 1))[None, ...]
+        pc_out = session.run(None, {input_name: face2})[0]
         pc_emb = pc_out.astype(np.float32).flatten() / 128.0
-        if np.linalg.norm(pc_emb) > 0:
-            pc_emb /= np.linalg.norm(pc_emb)
-        mcu_emb = np.array(mcu_emb, dtype=np.float32)
-        if np.linalg.norm(mcu_emb) > 0:
-            mcu_emb /= np.linalg.norm(mcu_emb)
-        cos = float(np.dot(pc_emb, mcu_emb))
-        print(f"Embedding cosine similarity: {cos:.4f}")
+
+        mcu_emb = np.array(emb, dtype=np.float32)
+
+        for v in (mcu_pc_emb, pc_emb, mcu_emb):
+            if np.linalg.norm(v) > 0:
+                v /= np.linalg.norm(v)
+
+        cos_mcu_pc = float(np.dot(mcu_pc_emb, mcu_emb))
+        cos_pc = float(np.dot(pc_emb, mcu_emb))
+        print(f"Embedding {idx} MCU frame vs MCU: {cos_mcu_pc:.4f}")
+        print(f"Embedding {idx} PC crop vs MCU: {cos_pc:.4f}")
 
     # show both detections
     overlay = img.copy()

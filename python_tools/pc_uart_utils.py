@@ -115,6 +115,28 @@ def read_embedding(ser):
     return values
 
 
+def read_embeddings(ser, count):
+    """Read *count* embeddings in a row."""
+    embs = []
+    for _ in range(count):
+        emb = read_embedding(ser)
+        if not emb:
+            break
+        embs.append(emb)
+    return embs
+
+
+def read_aligned_frames(ser, count):
+    """Read *count* aligned frames from the MCU."""
+    frames = []
+    for _ in range(count):
+        tag, frame, _, _ = read_frame(ser)
+        if tag != "ALN":
+            break
+        frames.append(frame)
+    return frames
+
+
 def draw_detections(img, dets, color=(0, 255, 0)):
     """Draw detection boxes on an image.
 
