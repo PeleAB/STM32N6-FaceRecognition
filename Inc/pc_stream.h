@@ -13,6 +13,12 @@ void PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height, 
 void PC_STREAM_SendDetections(const pd_postprocess_out_t *detections,
                               uint32_t frame_id);
 
+void PC_STREAM_SendEmbedding(const float *embedding, uint32_t length);
+
+void PC_STREAM_SendFrameEx(const uint8_t *frame, uint32_t width,
+                           uint32_t height, uint32_t bpp,
+                           const char *tag);
+
 int  PC_STREAM_ReceiveImage(uint8_t *buffer, uint32_t length);
 
 #ifdef __cplusplus

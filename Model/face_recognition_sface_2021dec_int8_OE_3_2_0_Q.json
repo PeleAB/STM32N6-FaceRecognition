@@ -9,13 +9,13 @@
                 }
             ],
             "name": "network",
-            "generated_time": "2025-06-22T21:41:16+0300"
+            "generated_time": "2025-06-22T21:04:04+0300"
         },
         "tools": [
             {
                 "name": "ST.EdgeAI.Core",
                 "version": "2.1.0-20194 329b0e98d",
-                "arguments": "analyze --target stm32n6 --name face_recognition -m C:/Users/pele/Downloads/face_recognition_sface_2021dec_int8.onnx --st-neural-art n6-allmems-O3@C:/ST/STEdgeAI/2.1/scripts/N6_scripts/user_neuralart.json --workspace C:/Users/pele/AppData/Local/Temp/mxAI_workspace7410137677544001800480376610302033 --output C:/Users/pele/.stm32cubemx/network_output",
+                "arguments": "analyze --target stm32n6 --name face_recognition -m C:/Users/pele/Downloads/face_recognition_sface_2021dec_int8.onnx --st-neural-art n6-allmems-O3@C:/ST/STEdgeAI/2.1/scripts/N6_scripts/user_neuralart.json --workspace C:/Users/pele/AppData/Local/Temp/mxAI_workspace73892079042850012821108393847232816 --output C:/Users/pele/.stm32cubemx/face_recognition_output",
                 "environment": [
                     "STATS_TYPE=X-CUBE-AI"
                 ],
@@ -34,7 +34,7 @@
             }
         ],
         "test_name": "",
-        "network_signature": "0xf8d0c810d8257452"
+        "network_signature": "0x1e0406388f838be4"
     },
     "model_info": {
         "original_inputs": [
