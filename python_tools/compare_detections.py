@@ -18,7 +18,7 @@ from BlazeFaceDetection.blazeFaceDetector import blazeFaceDetector
 
 
 def crop_align(image: np.ndarray, box: np.ndarray, left_eye: np.ndarray,
-               right_eye: np.ndarray, size=(112, 96)) -> np.ndarray:
+               right_eye: np.ndarray, size=(96, 112)) -> np.ndarray:
     """Crop and align face using eye landmarks."""
     h, w, _ = image.shape
     x_center = (box[0] + box[2]) / 2 * w
@@ -169,7 +169,7 @@ def main() -> None:
         box = np.array([xc - w / 2, yc - h / 2, xc + w / 2, yc + h / 2], dtype=np.float32)
         kps = np.array(kps, dtype=np.float32).reshape(-1, 2)
         box = inflate_box(box)
-        aligned_pc = crop_align(img_nn, box, kps[0], kps[1], size=(112, 96))
+        aligned_pc = crop_align(img_nn, box, kps[0], kps[1], size=(96, 112))
 
         # embedding from PC using MCU aligned frame
         face_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB).astype(np.int16)
