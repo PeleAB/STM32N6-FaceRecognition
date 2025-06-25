@@ -142,7 +142,7 @@ def main() -> None:
     pc_dets = run_model(detector, img)
 
     with serial.Serial(args.port, args.baud, timeout=1) as ser:
-        _frame, mcu_dets = utils.send_image(
+        _frame, mcu_dets, aligned_frames, mcu_embs = utils.send_image(
             ser,
             args.image,
             (detector.inputWidth, detector.inputHeight),
@@ -150,8 +150,6 @@ def main() -> None:
             rx=True,
             timeout=args.timeout,
         )
-        aligned_frames = utils.read_aligned_frames(ser, len(mcu_dets))
-        mcu_embs = utils.read_embeddings(ser, len(mcu_dets))
     # compute IoU sorted left to right
     pc_boxes = [det_box(d) for d in pc_dets]
     mcu_boxes = [det_box(d) for d in mcu_dets]

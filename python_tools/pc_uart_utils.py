@@ -199,13 +199,14 @@ def send_image(ser, img_path, size, display=False, rx=False, preview=False,
                timeout=5.0):
     """Send an image file to the board.
 
-    Returns the echoed frame and detections from the MCU. If *display* is True,
-    the received frame with detection boxes is shown using OpenCV."""
+    Returns ``(frame, detections, aligned_frames, embeddings)`` when ``rx`` is
+    ``True``. If *display* is True, the echoed frame with detection boxes is
+    shown using OpenCV."""
 
     img = cv2.imread(img_path)
     if img is None:
         print(f"Failed to read {img_path}")
-        return None, []
+        return None, [], [], []
 
     img = cv2.resize(img, size)
     if preview:
@@ -218,17 +219,34 @@ def send_image(ser, img_path, size, display=False, rx=False, preview=False,
         old_timeout = ser.timeout
         ser.timeout = timeout
         time.sleep(0.5)
-        tag, echo, w, h = read_frame(ser)
-        print('rxed frame')
+
+        aligned = []
+        embeddings = []
+        echo = None
+
+        while True:
+            tag, frame, w, h = read_frame(ser)
+            if tag is None:
+                break
+            if tag == "ALN":
+                aligned.append(frame)
+                emb = read_embedding(ser)
+                embeddings.append(emb)
+            else:
+                echo = frame
+                print('rxed frame')
+                break
+
         _, dets = read_detections(ser)
         print('rxed dets')
         ser.timeout = old_timeout
+
         if echo is not None:
-            echo = draw_detections(echo, dets)
+            drawn = draw_detections(echo.copy(), dets)
             if display:
-                cv2.imshow("send_result", echo)
+                cv2.imshow("send_result", drawn)
                 cv2.waitKey(1)
         else:
             print("No echo frame received")
 
-        return echo, dets
+        return echo, dets, aligned, embeddings
