@@ -66,39 +66,46 @@ static uint8_t rgb888_to_gray(uint8_t r, uint8_t g, uint8_t b)
 static void send_frame_tag(const uint8_t *frame, uint32_t width, uint32_t height,
                            uint32_t bpp, const char *tag)
 {
+    bool full_color = (strcmp(tag, "ALN") == 0);
 
-    uint32_t sw = width / STREAM_SCALE;
-    uint32_t sh = height / STREAM_SCALE;
+    uint32_t sw = full_color ? width : width / STREAM_SCALE;
+    uint32_t sh = full_color ? height : height / STREAM_SCALE;
     if (sw > STREAM_MAX_WIDTH)  sw = STREAM_MAX_WIDTH;
     if (sh > STREAM_MAX_HEIGHT) sh = STREAM_MAX_HEIGHT;
 
-    // Convert input to grayscale and store in stream_buffer
-    for (uint32_t y = 0; y < sh; y++)
+    mem_writer_t w = { jpeg_buf, 0, sizeof(jpeg_buf) };
+
+    if (full_color)
     {
-        const uint8_t *line = frame + (y * STREAM_SCALE) * width * bpp;
-        for (uint32_t x = 0; x < sw; x++)
+        stbi_write_jpg_to_func(mem_write, &w, sw, sh, bpp, frame, 80);
+    }
+    else
+    {
+        // Convert input to grayscale and store in stream_buffer
+        for (uint32_t y = 0; y < sh; y++)
         {
-            if (bpp == 2)
+            const uint8_t *line = frame + (y * STREAM_SCALE) * width * bpp;
+            for (uint32_t x = 0; x < sw; x++)
             {
-                const uint16_t *line16 = (const uint16_t *)line;
-                uint16_t px = line16[x * STREAM_SCALE];
-                stream_buffer[y * sw + x] = rgb565_to_gray(px);
-            }
-            else if (bpp == 3)
-            {
-                const uint8_t *px = line + x * STREAM_SCALE * 3;
-                stream_buffer[y * sw + x] = rgb888_to_gray(px[0], px[1], px[2]);
-            }
-            else
-            {
-                stream_buffer[y * sw + x] = line[x * STREAM_SCALE];
+                if (bpp == 2)
+                {
+                    const uint16_t *line16 = (const uint16_t *)line;
+                    uint16_t px = line16[x * STREAM_SCALE];
+                    stream_buffer[y * sw + x] = rgb565_to_gray(px);
+                }
+                else if (bpp == 3)
+                {
+                    const uint8_t *px = line + x * STREAM_SCALE * 3;
+                    stream_buffer[y * sw + x] = rgb888_to_gray(px[0], px[1], px[2]);
+                }
+                else
+                {
+                    stream_buffer[y * sw + x] = line[x * STREAM_SCALE];
+                }
             }
         }
+        stbi_write_jpg_to_func(mem_write, &w, sw, sh, 1, stream_buffer, 80);
     }
-
-    // Encode to JPEG into jpeg_buf
-    mem_writer_t w = { jpeg_buf, 0, sizeof(jpeg_buf) };
-    stbi_write_jpg_to_func(mem_write, &w, sw, sh, 1, stream_buffer, 80);
 
     // Send a simple header first
     char header[32];
