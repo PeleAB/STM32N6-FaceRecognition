@@ -67,6 +67,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/display_utils.c</locationURI>
 		</link>
 		<link>
+			<name>Application/dummy_fr_input.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/dummy_fr_input.c</locationURI>
+		</link>
+		<link>
 			<name>Application/face_detection.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Model/face_detection.c</locationURI>
@@ -75,6 +80,11 @@
 			<name>Application/face_recognition.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Model/face_recognition.c</locationURI>
+		</link>
+		<link>
+			<name>Application/face_utils.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/face_utils.c</locationURI>
 		</link>
 		<link>
 			<name>Application/img_buffer.c</name>
@@ -125,6 +135,11 @@
 			<name>Application/system_utils.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/system_utils.c</locationURI>
+		</link>
+		<link>
+			<name>Application/target_embedding.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/target_embedding.c</locationURI>
 		</link>
 		<link>
 			<name>lib_vision_models_pp/od_pp_ssd_st.c</name>

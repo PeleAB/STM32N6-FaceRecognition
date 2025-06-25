@@ -24,8 +24,8 @@ rem Model conversion settings
 set "MODEL_PATH=..\..\Model"
 set "MODEL_DETECTION_RAW=face_detection_atonbuf.xSPI2.raw"
 set "MODEL_RECOGNITION_RAW=face_recognition_atonbuf.xSPI2.raw"
-set "MODEL_DETECTION_ADDRESS_OFFSET=0x71000000"
-set "MODEL_RECOGNITION_ADDRESS_OFFSET=0x72000000"
+set "MODEL_DETECTION_ADDRESS_OFFSET=0x72000000"
+set "MODEL_RECOGNITION_ADDRESS_OFFSET=0x71000000"
 set "MODEL_DETECTION_HEX=det_network_data.hex"
 set "MODEL_RECOGNITION_HEX=rec_network_data.hex"
 

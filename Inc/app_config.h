@@ -58,7 +58,7 @@
 "face"}
 /* Enable or disable LCD and PC streaming features */
 #define ENABLE_LCD_DISPLAY
-#define ENABLE_PC_STREAM
+//#define ENABLE_PC_STREAM
 /* Application input source configuration */
 #define INPUT_SRC_CAMERA 0
 #define INPUT_SRC_PC     1

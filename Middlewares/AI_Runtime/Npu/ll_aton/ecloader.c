@@ -20,7 +20,6 @@
 #include <stdio.h>
 #endif
 
-#include <inttypes.h>
 #include <string.h>
 
 #include "ecloader.h"
@@ -199,8 +198,8 @@ bool ec_copy_program(const uint8_t *file_ptr, ECInstr *program, unsigned int *pr
     if (*program_size < (size + 2))
     {
       LL_ATON_PRINTF(
-          "Error: Memory allocated for the Epoch Controller program is not sufficient (at least space for %" PRIu32
-          " 32-bit words must be allocated)\n",
+          "Error: Memory allocated for the Epoch Controller program is not sufficient (at least space for %u "
+          "32-bit words must be allocated)\n",
           size + 2);
 
       return false;
@@ -301,7 +300,8 @@ bool ec_copy_reloc_table(const uint8_t *file_ptr, ECFileEntry *reloc_table, unsi
     {
       LL_ATON_PRINTF(
           "Error: Memory allocated for the relocation table of the Epoch Controller program is not sufficient (at "
-          "least space for %" PRIu32 " 32-bit words must be allocated)\n",
+          "least space for %u "
+          "32-bit words must be allocated)\n",
           size);
 
       return false;
