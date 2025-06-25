@@ -22,9 +22,12 @@ set "ADDRESS_OFFSET=0x70100000"
 
 rem Model conversion settings
 set "MODEL_PATH=..\..\Model"
-set "MODEL_RAW=network_atonbuf.xSPI2.raw"
-set "MODEL_ADDRESS_OFFSET=0x71000000"
-set "MODEL_HEX=network_data.hex"
+set "MODEL_DETECTION_RAW=face_detection_atonbuf.xSPI2.raw"
+set "MODEL_RECOGNITION_RAW=face_recognition_atonbuf.xSPI2.raw"
+set "MODEL_DETECTION_ADDRESS_OFFSET=0x72000000"
+set "MODEL_RECOGNITION_ADDRESS_OFFSET=0x71000000"
+set "MODEL_DETECTION_HEX=det_network_data.hex"
+set "MODEL_RECOGNITION_HEX=rec_network_data.hex"
 
 set "SIGN_TOOL=STM32_SigningTool_CLI"
 set "OBJCPY=arm-none-eabi-objcopy"
@@ -61,14 +64,22 @@ if errorlevel 1 (
 )
 
 rem === Step 4: Convert Model RAW to Intel HEX ===
-echo [4/4] Converting model RAW "%MODEL_PATH%\binary\%MODEL_RAW%" --> "%OUTPUT_DIR%\%MODEL_HEX%" with offset %MODEL_ADDRESS_OFFSET%...
-"%OBJCPY%" -I binary -O ihex --change-addresses=%MODEL_ADDRESS_OFFSET% "%MODEL_PATH%\%MODEL_RAW%" "%OUTPUT_DIR%\%MODEL_HEX%"
+echo [4/4] Converting model RAW "%MODEL_PATH%\binary\%MODEL_DETECTION_RAW%" --> "%OUTPUT_DIR%\%MODEL_DETECTION_HEX%" with offset %MODEL_DETECTION_ADDRESS_OFFSET%...
+"%OBJCPY%" -I binary -O ihex --change-addresses=%MODEL_DETECTION_ADDRESS_OFFSET% "%MODEL_PATH%\%MODEL_DETECTION_RAW%" "%OUTPUT_DIR%\%MODEL_DETECTION_HEX%"
 if errorlevel 1 (
     echo ERROR: Model conversion failed. Check MODEL_PATH and raw filename.
     popd
     exit /b 1
 )
 
+rem === Step 4: Convert Model RAW to Intel HEX ===
+echo [4/4] Converting model RAW "%MODEL_PATH%\binary\%MODEL_RECOGNITION_RAW%" --> "%OUTPUT_DIR%\%MODEL_RECOGNITION_HEX%" with offset %MODEL_RECOGNITION_ADDRESS_OFFSET%...
+"%OBJCPY%" -I binary -O ihex --change-addresses=%MODEL_RECOGNITION_ADDRESS_OFFSET% "%MODEL_PATH%\%MODEL_RECOGNITION_RAW%" "%OUTPUT_DIR%\%MODEL_RECOGNITION_HEX%"
+if errorlevel 1 (
+    echo ERROR: Model conversion failed. Check MODEL_PATH and raw filename.
+    popd
+    exit /b 1
+)
 rem === Done ===
 echo.
 echo SUCCESS: Outputs available in "%OUTPUT_DIR%".

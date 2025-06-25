@@ -22,9 +22,7 @@
 #include "arm_math.h"
 
 #define USE_DCACHE
-/* Enable or disable LCD and PC streaming features */
-#define ENABLE_LCD_DISPLAY
-#define ENABLE_PC_STREAM
+
 
 /*Defines: CMW_MIRRORFLIP_NONE; CMW_MIRRORFLIP_FLIP; CMW_MIRRORFLIP_MIRROR; CMW_MIRRORFLIP_FLIP_MIRROR;*/
 #define CAMERA_FLIP CMW_MIRRORFLIP_NONE
@@ -45,20 +43,22 @@
 #define LCD_FG_FRAMEBUFFER_SIZE  (LCD_FG_WIDTH * LCD_FG_HEIGHT * 2)
 
 /* Model Related Info */
-#define POSTPROCESS_TYPE POSTPROCESS_OD_YOLO_V2_UF
+#define POSTPROCESS_TYPE POSTPROCESS_MPE_PD_UF
 
-#define NN_WIDTH 224
-#define NN_HEIGHT 224
+#define NN_WIDTH 128
+#define NN_HEIGHT 128
 #define NN_BPP 3
 
 #define COLOR_BGR (0)
 #define COLOR_RGB (1)
 #define COLOR_MODE COLOR_RGB
 
-#define NB_CLASSES 2
+#define NB_CLASSES 1
 #define CLASSES_TABLE const char* classes_table[NB_CLASSES] = {\
-"person",   "not_person"}
-
+"face"}
+/* Enable or disable LCD and PC streaming features */
+#define ENABLE_LCD_DISPLAY
+//#define ENABLE_PC_STREAM
 /* Application input source configuration */
 #define INPUT_SRC_CAMERA 0
 #define INPUT_SRC_PC     1
@@ -88,8 +88,21 @@ static const float32_t AI_OBJDETECT_YOLOV2_PP_ANCHORS[2*AI_OBJDETECT_YOLOV2_PP_N
 #define AI_OBJDETECT_YOLOV2_PP_IOU_THRESHOLD     (0.3f)
 #define AI_OBJDETECT_YOLOV2_PP_MAX_BOXES_LIMIT   (10)
 
+
+/* BlazeFace/Palm detection parameters */
+#define AI_PD_MODEL_PP_WIDTH              (NN_WIDTH)
+#define AI_PD_MODEL_PP_HEIGHT             (NN_HEIGHT)
+#define AI_PD_MODEL_PP_NB_KEYPOINTS       (6)
+#define AI_PD_MODEL_PP_TOTAL_DETECTIONS   (896)
+#define AI_PD_MODEL_PP_CONF_THRESHOLD     (0.7f)
+#define AI_PD_MODEL_PP_IOU_THRESHOLD      (0.3f)
+#define AI_PD_MODEL_PP_MAX_BOXES_LIMIT    (10)
+
+/* MediaPipe face detection */
+#define MP_FACE_PP_CONF_THRESHOLD (0.5f)
+
 /* Display */
-#define WELCOME_MSG_1         "quantized_tiny_yolo_v2_224_.tflite"
+#define WELCOME_MSG_1         "blazeface_128_float.tflite"
 #define WELCOME_MSG_2         "Model Running in STM32 MCU internal memory"
 
 #endif

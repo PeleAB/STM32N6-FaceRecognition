@@ -538,7 +538,7 @@ static int _ai_reloc_prepare_mpools(const uintptr_t file_ptr, struct id_mpool_ma
         {
           return AI_RELOC_RT_ERR_PARAM_ADDR;
         }
-        if (((id_map->addr_1 == 0) || (id_map->sz_1 < sz)))
+        if (((id_map->addr_1 == 0) || (id_map->sz_1 <= sz)))
         {
           return AI_RELOC_RT_ERR_PARAM_ADDR;
         }
@@ -813,7 +813,7 @@ static int _ai_rel_check_handler(uintptr_t hdl)
  * -----------------------------------------------------------------------------
  */
 
-ll_aton_reloc_mem_pool_desc *ll_aton_reloc_get_mem_pool_desc(const uintptr_t file_ptr, int index)
+ll_aton_reloc_mem_pool_desc *ai_rel_network_get_mem_pool_desc(const uintptr_t file_ptr, int index)
 {
   const struct ai_reloc_bin_hdr *bin = (struct ai_reloc_bin_hdr *)file_ptr;
 
@@ -854,7 +854,6 @@ int ll_aton_reloc_get_info(const uintptr_t file_ptr, ll_aton_reloc_info *rt)
 
   rt->c_name = (const char *)AI_RELOC_GET_ADDR(bin, AI_RELOC_GET_OFFSET((int)rt_ctx->c_name));
   rt->variant = (uint32_t)bin->hdr.flags;
-  rt->params_off = (uint32_t)AI_RELOC_GET_OFFSET(bin->sect.params_offset);
   rt->params_sz = (uint32_t)rt_ctx->params_sz;
   rt->acts_sz = (uint32_t)rt_ctx->acts_sz;
   rt->ext_ram_sz = (uint32_t)AI_RELOC_ROUND_UP(rt_ctx->ext_ram_sz);
@@ -898,12 +897,11 @@ void ll_aton_reloc_log_info(const uintptr_t file_ptr)
   AI_RELOC_LOG("\r\nBinary model image (@0x%08x)\r\n", (int)bin);
   AI_RELOC_LOG("----------------------------------------------------------------\n");
   AI_RELOC_LOG("  c-name        : \"%s\"\r\n", rt_info.c_name);
-  AI_RELOC_LOG("  act sz        : %d\r\n", (int)rt_info.acts_sz);
-  AI_RELOC_LOG("  params sz     : %d\r\n", (int)rt_info.params_sz);
-  AI_RELOC_LOG("  params off    : %d\r\n", (int)rt_info.params_off);
-  AI_RELOC_LOG("  ext ram sz    : %d\r\n", (int)rt_info.ext_ram_sz);
-  AI_RELOC_LOG("  exec ram xip  : %d for XIP mode\r\n", (int)rt_info.rt_ram_xip);
-  AI_RELOC_LOG("  exec ram copy : %d for COPY mode\r\n", (int)rt_info.rt_ram_copy);
+  AI_RELOC_LOG("  activations   : %d\r\n", (int)rt_info.acts_sz);
+  AI_RELOC_LOG("  weights       : %d\r\n", (int)rt_info.params_sz);
+  AI_RELOC_LOG("  ext ram       : %d\r\n", (int)rt_info.ext_ram_sz);
+  AI_RELOC_LOG("  exec ram      : %d for XIP mode\r\n", (int)rt_info.rt_ram_xip);
+  AI_RELOC_LOG("  exec ram      : %d for COPY mode\r\n", (int)rt_info.rt_ram_copy);
   AI_RELOC_LOG("  rt_desc       : \"%s\"\r\n", rt_info.rt_version_desc);
   AI_RELOC_LOG("  rt_version    : %d.%d.%d-%d\r\n", (int)(rt_info.rt_version >> 24 & 0xFF),
                (int)(rt_info.rt_version >> 16 & 0xFF), (int)(rt_info.rt_version >> 8 & 0xFF),
@@ -915,7 +913,7 @@ void ll_aton_reloc_log_info(const uintptr_t file_ptr)
   ll_aton_reloc_mem_pool_desc *mem_c_desc;
   int index = 0;
 
-  while ((mem_c_desc = ll_aton_reloc_get_mem_pool_desc((uintptr_t)bin, index)))
+  while ((mem_c_desc = ai_rel_network_get_mem_pool_desc((uintptr_t)bin, index)))
   {
     AI_RELOC_LOG(" %d: flags=%x foff=%d dst=%x s=%d %s\n", index, mem_c_desc->flags, mem_c_desc->foff, mem_c_desc->dst,
                  mem_c_desc->size, (char *)AI_RELOC_GET_ADDR(bin, (uint32_t)mem_c_desc->name));

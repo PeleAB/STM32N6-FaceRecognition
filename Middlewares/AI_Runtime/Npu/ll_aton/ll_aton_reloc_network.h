@@ -214,7 +214,6 @@ extern "C"
                               the used ARM Embedded compiler,
                               Cortex-Mx (CPUID) and if the FPU is requested */
     uint32_t code_sz;            /* size of the code (header + txt + rodata + data + got + rel sections) */
-    uint32_t params_off;         /* offset (in bytes) of the weights */
     uint32_t params_sz;          /* size (in bytes) of the weights */
     uint32_t acts_sz;            /* minimum requested RAM size (in bytes) for the activations buffer */
     uint32_t ext_ram_sz;         /* requested external ram size for the activations (and params) */

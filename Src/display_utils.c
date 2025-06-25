@@ -1,8 +1,11 @@
 #include "display_utils.h"
 #include "img_buffer.h"
 #include "app_config.h"
+#include "app_postprocess.h"
 #include "pc_stream.h"
 #include "stm32n6570_discovery_errno.h"
+#include "pd_model_pp_if.h"
+#include "pd_pp_output_if.h"
 #ifdef ENABLE_LCD_DISPLAY
 #include "stm32n6570_discovery_lcd.h"
 #include "stm32_lcd_ex.h"
@@ -11,8 +14,6 @@
 
 #ifdef ENABLE_LCD_DISPLAY
 #define NUMBER_COLORS 10
-
-CLASSES_TABLE;
 
 static const uint32_t colors[NUMBER_COLORS] = {
     UTIL_LCD_COLOR_GREEN,
@@ -52,32 +53,45 @@ __attribute__ ((aligned (32)))
 uint8_t lcd_fg_buffer[2][LCD_FG_WIDTH * LCD_FG_HEIGHT * 2];
 static int lcd_fg_buffer_rd_idx;
 static BSP_LCD_LayerConfig_t LayerConfig = {0};
+static float g_similarity_percent = 0.f;
 
-static void DrawBoundingBoxes(const od_pp_outBuffer_t *rois, uint32_t nb_rois)
+static void DrawPDBoundingBoxes(const pd_pp_box_t *boxes, uint32_t nb)
 {
   UTIL_LCD_FillRect(lcd_fg_area.X0, lcd_fg_area.Y0, lcd_fg_area.XSize,
                     lcd_fg_area.YSize, 0x00000000);
-  for (uint32_t i = 0; i < nb_rois; i++)
-  {
-    uint32_t x0 = (uint32_t)((rois[i].x_center - rois[i].width / 2) *
+  for (uint32_t i = 0; i < nb; i++) {
+    uint32_t x0 = (uint32_t)((boxes[i].x_center - boxes[i].width / 2) *
                               ((float)lcd_bg_area.XSize)) + lcd_bg_area.X0;
-    uint32_t y0 = (uint32_t)((rois[i].y_center - rois[i].height / 2) *
+    uint32_t y0 = (uint32_t)((boxes[i].y_center - boxes[i].height / 2) *
                               ((float)lcd_bg_area.YSize));
-    uint32_t width  = (uint32_t)(rois[i].width  * ((float)lcd_bg_area.XSize));
-    uint32_t height = (uint32_t)(rois[i].height * ((float)lcd_bg_area.YSize));
+    uint32_t width  = (uint32_t)(boxes[i].width  * ((float)lcd_bg_area.XSize));
+    uint32_t height = (uint32_t)(boxes[i].height * ((float)lcd_bg_area.YSize));
     x0 = x0 < lcd_bg_area.X0 + lcd_bg_area.XSize ? x0 : lcd_bg_area.X0 + lcd_bg_area.XSize - 1;
     y0 = y0 < lcd_bg_area.Y0 + lcd_bg_area.YSize ? y0 : lcd_bg_area.Y0 + lcd_bg_area.YSize - 1;
     width  = ((x0 + width)  < lcd_bg_area.X0 + lcd_bg_area.XSize) ? width  : (lcd_bg_area.X0 + lcd_bg_area.XSize - x0 - 1);
     height = ((y0 + height) < lcd_bg_area.Y0 + lcd_bg_area.YSize) ? height : (lcd_bg_area.Y0 + lcd_bg_area.YSize - y0 - 1);
-    UTIL_LCD_DrawRect(x0, y0, width, height, colors[rois[i].class_index % NUMBER_COLORS]);
-    UTIL_LCDEx_PrintfAt(x0, y0, LEFT_MODE, classes_table[rois[i].class_index]);
-    UTIL_LCDEx_PrintfAt(-x0-width, y0, RIGHT_MODE, "%.0f%%", rois[i].conf*100.0f);
+    UTIL_LCD_DrawRect(x0, y0, width, height, colors[0]);
+    UTIL_LCDEx_PrintfAt(-x0 - width, y0, RIGHT_MODE, "%.1f%%", boxes[i].prob * 100.f);
   }
 }
+
+static void DrawPdLandmarks(const pd_pp_box_t *boxes, uint32_t nb, uint32_t nb_kp)
+{
+  for (uint32_t i = 0; i < nb; i++) {
+    for (uint32_t j = 0; j < nb_kp; j++) {
+      uint32_t x = (uint32_t)(boxes[i].pKps[j].x * ((float)lcd_bg_area.XSize)) + lcd_bg_area.X0;
+      uint32_t y = (uint32_t)(boxes[i].pKps[j].y * ((float)lcd_bg_area.YSize));
+      x = x < lcd_bg_area.X0 + lcd_bg_area.XSize ? x : lcd_bg_area.X0 + lcd_bg_area.XSize - 1;
+      y = y < lcd_bg_area.Y0 + lcd_bg_area.YSize ? y : lcd_bg_area.Y0 + lcd_bg_area.YSize - 1;
+      UTIL_LCD_SetPixel(x, y, UTIL_LCD_COLOR_RED);
+    }
+  }
+}
+
 #endif /* ENABLE_LCD_DISPLAY */
 
 #ifdef ENABLE_PC_STREAM
-static void StreamOutput(const od_pp_out_t *p_postprocess)
+static void StreamOutputPd(const pd_postprocess_out_t *p_postprocess)
 {
   static uint32_t stream_frame_id = 0;
   SCB_InvalidateDCache_by_Addr(img_buffer, sizeof(img_buffer));
@@ -98,21 +112,21 @@ static void PrintInfo(uint32_t nb_rois, uint32_t inference_ms, uint32_t boottime
 }
 #endif /* ENABLE_LCD_DISPLAY */
 
-void Display_NetworkOutput(od_pp_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ts)
+void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ts)
 {
 #ifdef ENABLE_LCD_DISPLAY
   int ret = HAL_LTDC_SetAddress_NoReload(&hlcd_ltdc,
                                          (uint32_t)lcd_fg_buffer[lcd_fg_buffer_rd_idx],
                                          LTDC_LAYER_2);
   assert(ret == HAL_OK);
-
-  DrawBoundingBoxes(p_postprocess->pOutBuff, p_postprocess->nb_detect);
+  DrawPDBoundingBoxes(p_postprocess->pOutData, p_postprocess->box_nb);
+  DrawPdLandmarks(p_postprocess->pOutData, p_postprocess->box_nb, AI_PD_MODEL_PP_NB_KEYPOINTS);
 #endif
 #ifdef ENABLE_PC_STREAM
-  StreamOutput(p_postprocess);
+  StreamOutputPd(p_postprocess);
 #endif
 #ifdef ENABLE_LCD_DISPLAY
-  PrintInfo(p_postprocess->nb_detect, inference_ms, boottime_ts);
+  PrintInfo(p_postprocess->box_nb, inference_ms, boottime_ts);
   ret = HAL_LTDC_ReloadLayer(&hlcd_ltdc, LTDC_RELOAD_VERTICAL_BLANKING, LTDC_LAYER_2);
   assert(ret == HAL_OK);
   lcd_fg_buffer_rd_idx = 1 - lcd_fg_buffer_rd_idx;
@@ -167,6 +181,14 @@ void Display_WelcomeScreen(void)
     UTIL_LCD_SetBackColor(0);
   }
 }
+
+void Display_Similarity(float similarity)
+{
+  g_similarity_percent = similarity * 100.f;
+  UTIL_LCD_SetBackColor(0x40000000);
+  UTIL_LCDEx_PrintfAt(0, LINE(3), CENTER_MODE, "Similarity: %.2f%%", g_similarity_percent);
+  UTIL_LCD_SetBackColor(0);
+}
 #else
 void LCD_init(void)
 {
@@ -174,5 +196,10 @@ void LCD_init(void)
 
 void Display_WelcomeScreen(void)
 {
+}
+
+void Display_Similarity(float similarity)
+{
+  g_similarity_percent = similarity * 100.f;
 }
 #endif /* ENABLE_LCD_DISPLAY */

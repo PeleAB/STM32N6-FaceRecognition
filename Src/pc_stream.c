@@ -63,45 +63,53 @@ static uint8_t rgb888_to_gray(uint8_t r, uint8_t g, uint8_t b)
     return (uint8_t)((r * 30 + g * 59 + b * 11) / 100);
 }
 
-void PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height, uint32_t bpp)
+static void send_frame_tag(const uint8_t *frame, uint32_t width, uint32_t height,
+                           uint32_t bpp, const char *tag)
 {
+    bool full_color = (strcmp(tag, "ALN") == 0);
 
-    uint32_t sw = width / STREAM_SCALE;
-    uint32_t sh = height / STREAM_SCALE;
+    uint32_t sw = full_color ? width : width / STREAM_SCALE;
+    uint32_t sh = full_color ? height : height / STREAM_SCALE;
     if (sw > STREAM_MAX_WIDTH)  sw = STREAM_MAX_WIDTH;
     if (sh > STREAM_MAX_HEIGHT) sh = STREAM_MAX_HEIGHT;
 
-    // Convert input to grayscale and store in stream_buffer
-    for (uint32_t y = 0; y < sh; y++)
+    mem_writer_t w = { jpeg_buf, 0, sizeof(jpeg_buf) };
+
+    if (full_color)
     {
-        const uint8_t *line = frame + (y * STREAM_SCALE) * width * bpp;
-        for (uint32_t x = 0; x < sw; x++)
+        stbi_write_jpg_to_func(mem_write, &w, sw, sh, bpp, frame, 80);
+    }
+    else
+    {
+        // Convert input to grayscale and store in stream_buffer
+        for (uint32_t y = 0; y < sh; y++)
         {
-            if (bpp == 2)
+            const uint8_t *line = frame + (y * STREAM_SCALE) * width * bpp;
+            for (uint32_t x = 0; x < sw; x++)
             {
-                const uint16_t *line16 = (const uint16_t *)line;
-                uint16_t px = line16[x * STREAM_SCALE];
-                stream_buffer[y * sw + x] = rgb565_to_gray(px);
-            }
-            else if (bpp == 3)
-            {
-                const uint8_t *px = line + x * STREAM_SCALE * 3;
-                stream_buffer[y * sw + x] = rgb888_to_gray(px[0], px[1], px[2]);
-            }
-            else
-            {
-                stream_buffer[y * sw + x] = line[x * STREAM_SCALE];
+                if (bpp == 2)
+                {
+                    const uint16_t *line16 = (const uint16_t *)line;
+                    uint16_t px = line16[x * STREAM_SCALE];
+                    stream_buffer[y * sw + x] = rgb565_to_gray(px);
+                }
+                else if (bpp == 3)
+                {
+                    const uint8_t *px = line + x * STREAM_SCALE * 3;
+                    stream_buffer[y * sw + x] = rgb888_to_gray(px[0], px[1], px[2]);
+                }
+                else
+                {
+                    stream_buffer[y * sw + x] = line[x * STREAM_SCALE];
+                }
             }
         }
+        stbi_write_jpg_to_func(mem_write, &w, sw, sh, 1, stream_buffer, 80);
     }
-
-    // Encode to JPEG into jpeg_buf
-    mem_writer_t w = { jpeg_buf, 0, sizeof(jpeg_buf) };
-    stbi_write_jpg_to_func(mem_write, &w, sw, sh, 1, stream_buffer, 80);
 
     // Send a simple header first
     char header[32];
-    int hl = snprintf(header, sizeof(header), "JPG %u %u %u\n",
+    int hl = snprintf(header, sizeof(header), "%s %u %u %u\n", tag,
                       (unsigned)sw, (unsigned)sh, (unsigned)w.size);
     if (hl > 0)
     {
@@ -124,28 +132,69 @@ void PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height, 
     }
 }
 
-void PC_STREAM_SendDetections(const od_pp_out_t *detections, uint32_t frame_id)
+void PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height,
+                         uint32_t bpp)
 {
-    char line[64];
-    int ll = snprintf(line, sizeof(line), "DETS %lu %d\n", (unsigned long)frame_id, (int)detections->nb_detect);
+    send_frame_tag(frame, width, height, bpp, "JPG");
+}
+
+void PC_STREAM_SendFrameEx(const uint8_t *frame, uint32_t width, uint32_t height,
+                           uint32_t bpp, const char *tag)
+{
+    send_frame_tag(frame, width, height, bpp, tag);
+}
+
+void PC_STREAM_SendDetections(const pd_postprocess_out_t *detections, uint32_t frame_id)
+{
+    char line[128];
+    int ll = snprintf(line, sizeof(line), "DETS %lu %lu\n", (unsigned long)frame_id,
+                      (unsigned long)detections->box_nb);
     if (ll > 0)
     {
         HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)line, (uint16_t)ll, HAL_MAX_DELAY);
     }
-    for(int i=0; i<detections->nb_detect; i++)
+    for (uint32_t i = 0; i < detections->box_nb; i++)
     {
-        const od_pp_outBuffer_t *r = &detections->pOutBuff[i];
-        ll = snprintf(line, sizeof(line), "%d %.3f %.3f %.3f %.3f %.2f\n", (int)r->class_index,
-                      (double)r->x_center, (double)r->y_center, (double)r->width,
-                      (double)r->height, (double)r->conf);
-        if (ll > 0)
+        const pd_pp_box_t *b = &detections->pOutData[i];
+        ll = snprintf(line, sizeof(line), "0 %.3f %.3f %.3f %.3f %.2f",
+                      (double)b->x_center, (double)b->y_center,
+                      (double)b->width, (double)b->height,
+                      (double)b->prob);
+        for (uint32_t k = 0; k < AI_PD_MODEL_PP_NB_KEYPOINTS; k++)
         {
-            HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)line, (uint16_t)ll, HAL_MAX_DELAY);
+            int n = snprintf(line + ll, sizeof(line) - ll, " %.3f %.3f",
+                             (double)b->pKps[k].x, (double)b->pKps[k].y);
+            if (n > 0)
+                ll += n;
         }
+        if (ll < (int)sizeof(line) - 1)
+        {
+            line[ll++] = '\n';
+            line[ll] = '\0';
+        }
+        HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)line, (uint16_t)ll, HAL_MAX_DELAY);
     }
     static const char end_marker[] = "END\n";
     HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)end_marker, sizeof(end_marker) - 1, HAL_MAX_DELAY);
 }
+
+void PC_STREAM_SendEmbedding(const float *embedding, uint32_t length)
+{
+    char line[16];
+    int ll = snprintf(line, sizeof(line), "EMB %lu\n", (unsigned long)length);
+    if (ll > 0)
+    {
+        HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)line, (uint16_t)ll, HAL_MAX_DELAY);
+    }
+    for (uint32_t i = 0; i < length; i++)
+    {
+        ll = snprintf(line, sizeof(line), "%.3f%c", (double)embedding[i], (i == length - 1) ? '\n' : ' ');
+        HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)line, (uint16_t)ll, HAL_MAX_DELAY);
+    }
+    static const char end_marker[] = "END\n";
+    HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)end_marker, sizeof(end_marker) - 1, HAL_MAX_DELAY);
+}
+
 
 int PC_STREAM_ReceiveImage(uint8_t *buffer, uint32_t length)
 {

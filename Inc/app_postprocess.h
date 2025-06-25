@@ -54,10 +54,16 @@ extern "C"
 #define POSTPROCESS_SPE_MOVENET_UF      (22) /* Movenet postprocessing; Input model: uint8; output: float32        */
 #define POSTPROCESS_ISEG_YOLO_V8_UI     (30) /* Yolov8 Seg postprocessing; Input model: uint8; output: int8        */
 #define POSTPROCESS_SSEG_DEEPLAB_V3_UF  (40) /* Deeplabv3 Seg postprocessing; Input model: uint8; output: float32  */
+#define POSTPROCESS_MP_FACE_U8          (50) /* MediaPipe face detection postprocessing; Input model: uint8; output: uint8 */
+
+typedef struct {
+  float conf_threshold;
+} mp_face_pp_static_param_t;
 
 /* Exported functions ------------------------------------------------------- */
 int32_t app_postprocess_init(void *params_postprocess);
 int32_t app_postprocess_run(void *pInput[], int nb_input, void *pOutput, void *pInput_param);
+
 
 #ifdef __cplusplus
 }

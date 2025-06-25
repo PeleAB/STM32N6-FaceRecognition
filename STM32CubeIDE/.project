@@ -67,6 +67,26 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/display_utils.c</locationURI>
 		</link>
 		<link>
+			<name>Application/dummy_fr_input.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/dummy_fr_input.c</locationURI>
+		</link>
+		<link>
+			<name>Application/face_detection.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Model/face_detection.c</locationURI>
+		</link>
+		<link>
+			<name>Application/face_recognition.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Model/face_recognition.c</locationURI>
+		</link>
+		<link>
+			<name>Application/face_utils.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/face_utils.c</locationURI>
+		</link>
+		<link>
 			<name>Application/img_buffer.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/img_buffer.c</locationURI>
@@ -82,11 +102,6 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.c</locationURI>
 		</link>
 		<link>
-			<name>Application/network.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Model/network.c</locationURI>
-		</link>
-		<link>
 			<name>Application/npu_cache.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/npu_cache.c</locationURI>
@@ -95,6 +110,11 @@
 			<name>Application/pc_stream.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/pc_stream.c</locationURI>
+		</link>
+		<link>
+			<name>Application/pd_anchors.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/pd_anchors.c</locationURI>
 		</link>
 		<link>
 			<name>Application/stm32_lcd_ex.c</name>
@@ -115,6 +135,11 @@
 			<name>Application/system_utils.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/system_utils.c</locationURI>
+		</link>
+		<link>
+			<name>Application/target_embedding.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/target_embedding.c</locationURI>
 		</link>
 		<link>
 			<name>lib_vision_models_pp/od_pp_ssd_st.c</name>
@@ -140,6 +165,11 @@
 			<name>lib_vision_models_pp/od_pp_yolov8.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_yolov8.c</locationURI>
+		</link>
+		<link>
+			<name>lib_vision_models_pp/pd_pp_model.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/pd_pp_model.c</locationURI>
 		</link>
 		<link>
 			<name>lib_vision_models_pp/vision_models_pp.c</name>
