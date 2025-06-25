@@ -315,8 +315,8 @@ int main(void)
       {
         float cx = box[b].x_center * lcd_bg_area.XSize;
         float cy = box[b].y_center * lcd_bg_area.YSize;
-        float w  = box[b].width  * lcd_bg_area.XSize;
-        float h  = box[b].height * lcd_bg_area.YSize;
+        float w  = box[b].width  * lcd_bg_area.XSize * 1.2f;
+        float h  = box[b].height * lcd_bg_area.YSize * 1.2f;
         float lx = box[b].pKps[0].x * lcd_bg_area.XSize;
         float ly = box[b].pKps[0].y * lcd_bg_area.YSize;
         float rx = box[b].pKps[1].x * lcd_bg_area.XSize;

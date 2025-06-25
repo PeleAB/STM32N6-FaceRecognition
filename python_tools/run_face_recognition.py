@@ -42,6 +42,19 @@ def crop_align(image: np.ndarray, box: np.ndarray, left_eye: np.ndarray,
     return out
 
 
+def inflate_box(box: np.ndarray, factor: float = 1.2) -> np.ndarray:
+    """Return *box* scaled by *factor* around its center."""
+    cx = (box[0] + box[2]) / 2
+    cy = (box[1] + box[3]) / 2
+    w = (box[2] - box[0]) * factor
+    h = (box[3] - box[1]) * factor
+    half = np.array([w / 2, h / 2], dtype=box.dtype)
+    new_box = np.array([cx - half[0], cy - half[1], cx + half[0], cy + half[1]],
+                       dtype=box.dtype)
+    new_box = np.clip(new_box, 0.0, 1.0)
+    return new_box
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--image", help="Input image path", default="trump.jpg")
@@ -83,7 +96,7 @@ def main() -> None:
         print("No face detected")
         return
 
-    box = results.boxes[0]
+    box = inflate_box(results.boxes[0])
     left_eye = results.keypoints[0, 0]
     right_eye = results.keypoints[0, 1]
     aligned = crop_align(img_sq, box, left_eye, right_eye, size=(96, 112))
