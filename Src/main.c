@@ -40,12 +40,14 @@
 #include "face_utils.h"
 #include "target_embedding.h"
 #include "dummy_fr_input.h"
+#include "tracking.h"
 
 
 #define MAX_NUMBER_OUTPUT 5
 
 #define FR_WIDTH 96
 #define FR_HEIGHT 112
+#define SIMILARITY_THRESHOLD 0.8f
 
 
 
@@ -66,6 +68,7 @@ pd_postprocess_out_t pp_output;
 
 uint32_t fr_in_len;
 uint32_t fr_out_len;
+tracker_t g_tracker;
 
 #define ALIGN_TO_16(value) (((value) + 15) & ~15)
 
@@ -231,6 +234,7 @@ int main(void)
   set_clk_sleep_mode();
 
   LL_ATON_RT_RuntimeInit();
+  tracker_init(&g_tracker);
 
   /*** NN Init ****************************************************************/
   LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_detection);
@@ -360,6 +364,7 @@ int main(void)
         LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
       }
     }
+    tracker_process(&g_tracker, &pp_output, SIMILARITY_THRESHOLD);
     ts[1] = HAL_GetTick();
     if (ts[2] == 0)
     {
