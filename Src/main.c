@@ -235,6 +235,10 @@ int main(void)
 
   LL_ATON_RT_RuntimeInit();
   tracker_init(&g_tracker);
+  BSP_LED_Init(LED1);
+  BSP_LED_Init(LED2);
+  BSP_LED_Off(LED1);
+  BSP_LED_Off(LED2);
 
   /*** NN Init ****************************************************************/
   LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_detection);
@@ -365,6 +369,16 @@ int main(void)
       }
     }
     tracker_process(&g_tracker, &pp_output, SIMILARITY_THRESHOLD);
+    if (g_tracker.state == TRACK_STATE_TRACKING)
+    {
+      BSP_LED_On(LED2);
+      BSP_LED_Off(LED1);
+    }
+    else
+    {
+      BSP_LED_On(LED1);
+      BSP_LED_Off(LED2);
+    }
     ts[1] = HAL_GetTick();
     if (ts[2] == 0)
     {
