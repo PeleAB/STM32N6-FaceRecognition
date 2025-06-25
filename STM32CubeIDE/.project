@@ -142,6 +142,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/target_embedding.c</locationURI>
 		</link>
 		<link>
+			<name>Application/tracking.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/tracking.c</locationURI>
+		</link>
+		<link>
 			<name>lib_vision_models_pp/od_pp_ssd_st.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_ssd_st.c</locationURI>

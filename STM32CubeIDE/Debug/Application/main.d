@@ -132,7 +132,8 @@ Application/main.o: C:/Users/pele/Documents/GitHub/ObjectDet/Src/main.c \
  ../../Inc/app_postprocess.h ../../Inc/app_config.h \
  ../../Inc/img_buffer.h ../../Inc/system_utils.h \
  ../../Inc/blazeface_anchors.h ../../Inc/face_utils.h \
- ../../Inc/target_embedding.h ../../Inc/dummy_fr_input.h
+ ../../Inc/target_embedding.h ../../Inc/dummy_fr_input.h \
+ ../../Inc/tracking.h
 ../../Middlewares/Camera_Middleware/cmw_camera.h:
 ../../Middlewares/Camera_Middleware/cmw_errno.h:
 ../../Inc/cmw_camera_conf.h:
@@ -276,3 +277,4 @@ Application/main.o: C:/Users/pele/Documents/GitHub/ObjectDet/Src/main.c \
 ../../Inc/face_utils.h:
 ../../Inc/target_embedding.h:
 ../../Inc/dummy_fr_input.h:
+../../Inc/tracking.h:
