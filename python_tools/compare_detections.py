@@ -139,7 +139,11 @@ def main() -> None:
     if img is None:
         raise FileNotFoundError(args.image)
 
-    pc_dets = run_model(detector, img)
+    # resize exactly like the MCU input so alignment uses the same
+    # coordinate space for cropping
+    img_nn = cv2.resize(img, (detector.inputWidth, detector.inputHeight))
+
+    pc_dets = run_model(detector, img_nn)
 
     with serial.Serial(args.port, args.baud, timeout=1) as ser:
         _frame, mcu_dets, aligned_frames, mcu_embs = utils.send_image(
@@ -165,7 +169,7 @@ def main() -> None:
         box = np.array([xc - w / 2, yc - h / 2, xc + w / 2, yc + h / 2], dtype=np.float32)
         kps = np.array(kps, dtype=np.float32).reshape(-1, 2)
         box = inflate_box(box)
-        aligned_pc = crop_align(img, box, kps[0], kps[1], size=(96, 112))
+        aligned_pc = crop_align(img_nn, box, kps[0], kps[1], size=(96, 112))
 
         # embedding from PC using MCU aligned frame
         face_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB).astype(np.int16)
@@ -193,7 +197,7 @@ def main() -> None:
         print(f"Embedding {idx} PC crop vs MCU: {cos_pc:.4f}")
 
     # show both detections
-    overlay = img.copy()
+    overlay = img_nn.copy()
     utils.draw_detections(overlay, pc_dets, color=(0, 0, 255))
     utils.draw_detections(overlay, mcu_dets, color=(0, 255, 0))
     cv2.imshow("Detections", overlay)
