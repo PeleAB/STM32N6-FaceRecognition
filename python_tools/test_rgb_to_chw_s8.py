@@ -19,7 +19,7 @@ def main():
     img = cv2.imread(str(img_path))
     if img is None:
         raise FileNotFoundError(img_path)
-    img = cv2.resize(img, (96, 112))
+    img = cv2.resize(img, (112, 96))
     ref = img.astype(np.int16) - 128
     ref = ref.astype(np.int8).transpose(2, 0, 1)
     test = img_rgb_to_chw_s8_py(img)
