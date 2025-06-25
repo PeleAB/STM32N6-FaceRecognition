@@ -28,6 +28,7 @@
 #include "app_cam.h"
 #include "main.h"
 #include <stdio.h>
+#include <string.h>
 #include "stm32n6xx_hal_rif.h"
 #include "pc_stream.h"
 #include "app_config.h"
@@ -38,6 +39,7 @@
 #include "blazeface_anchors.h"
 #include "face_utils.h"
 #include "target_embedding.h"
+#include "dummy_fr_input.h"
 
 
 #define MAX_NUMBER_OUTPUT 5
@@ -50,8 +52,8 @@
 pd_model_pp_static_param_t pp_params;
 
 volatile int32_t cameraFrameReceived;
-uint8_t *nn_in;
-int8_t  *fr_nn_in;
+int8_t   *fr_nn_in;
+int8_t   *fr_nn_out;
 int8_t  *fr_nn_out;
 __attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
@@ -267,6 +269,21 @@ int main(void)
 
   UNUSED(nn_in_len);
 
+  /* Test recognition with a fixed input to compare embeddings */
+  memcpy(fr_nn_in, dummy_fr_input, DUMMY_FR_INPUT_SIZE);
+  SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
+  RunNetworkSync(&NN_Instance_face_recognition);
+  SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
+  float32_t verify_tmp[EMBEDDING_SIZE];
+  for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
+  {
+    verify_tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;
+  }
+  float verify_similarity =
+    embedding_cosine_similarity(verify_tmp, target_embedding, EMBEDDING_SIZE);
+  Display_Similarity(verify_similarity);
+  LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
+
   /*** Post Processing Init ***************************************************/
   app_postprocess_init(&pp_params);
 
@@ -314,6 +331,11 @@ int main(void)
         RunNetworkSync(&NN_Instance_face_recognition);
         SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
         float32_t tmp[EMBEDDING_SIZE];
+        for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
+        {
+          tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;
+        }
+        float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
         for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
         {
           tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;

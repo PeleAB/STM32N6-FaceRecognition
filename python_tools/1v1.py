@@ -56,10 +56,10 @@ def get_embedding(detector, session, input_name, nchw, img_path, visualize=False
     # align
     box = results.boxes[0]
     left_eye, right_eye = results.keypoints[0, 0], results.keypoints[0, 1]
-    aligned = crop_align(img, box, left_eye, right_eye, (112, 112))
-
-    # visualize
-    if visualize:
+    face = aligned.astype(np.int16) - 128
+    face = face.astype(np.float32)
+    emb = outputs[0].astype(np.float32).flatten() / 128.0
+        default="models/mobilefacenet__PerChannel_quant.onnx",
         h, w, _ = img.shape
         x0, y0 = int(box[0] * w), int(box[1] * h)
         x1, y1 = int(box[2] * w), int(box[3] * h)

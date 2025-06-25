@@ -114,9 +114,9 @@ def main() -> None:
     output_name = sess.get_outputs()[0].name
 
     # preprocess: BGR→RGB, zero‐center around 0, CHW, batch
-    face = cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.int16)
-    face = face - 128
-    face = np.transpose(face.astype(np.float32), (2, 0, 1))[None, ...]
+    face_rgb = cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.int16)
+    face_rgb -= 128
+    face = np.transpose(face_rgb.astype(np.float32), (2, 0, 1))[None, ...]
 
     # run inference
     onnx_out = sess.run([output_name], {input_name: face})[0]
@@ -143,6 +143,21 @@ def main() -> None:
             break
     c_path.write_text("".join(lines))
     print("Updated", c_path)
+
+    # also patch dummy recognition input buffer
+    buf_line = (
+        "int8_t dummy_fr_input[DUMMY_FR_INPUT_SIZE] = {"
+        + ", ".join(str(int(x)) for x in face_rgb.flatten())
+        + "};\n"
+    )
+    buf_path = Path(__file__).resolve().parents[1] / "Src" / "dummy_fr_input.c"
+    lines = buf_path.read_text().splitlines(keepends=True)
+    for i, line in enumerate(lines):
+        if line.strip().startswith("int8_t dummy_fr_input"):
+            lines[i] = buf_line
+            break
+    buf_path.write_text("".join(lines))
+    print("Updated", buf_path)
 
     if args.visualize and shown:
         print("Close the image windows to exit")
