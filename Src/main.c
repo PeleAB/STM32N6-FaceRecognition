@@ -28,6 +28,7 @@
 #include "app_cam.h"
 #include "main.h"
 #include <stdio.h>
+#include <string.h>
 #include "stm32n6xx_hal_rif.h"
 #include "pc_stream.h"
 #include "app_config.h"
@@ -38,6 +39,7 @@
 #include "blazeface_anchors.h"
 #include "face_utils.h"
 #include "target_embedding.h"
+#include "dummy_fr_input.h"
 
 
 #define MAX_NUMBER_OUTPUT 5
@@ -62,8 +64,8 @@ uint8_t fr_rgb[FR_WIDTH * FR_HEIGHT * NN_BPP];
 void* pp_input;
 pd_postprocess_out_t pp_output;
 
-int8_t  fr_in_len;
-int8_t  fr_out_len;
+uint32_t fr_in_len;
+uint32_t fr_out_len;
 
 #define ALIGN_TO_16(value) (((value) + 15) & ~15)
 
@@ -267,6 +269,24 @@ int main(void)
 
   UNUSED(nn_in_len);
 
+  /* Test recognition with a fixed input to compare embeddings */
+  memcpy(fr_nn_in, dummy_fr_input, DUMMY_FR_INPUT_SIZE);
+  SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
+  RunNetworkSync(&NN_Instance_face_recognition);
+  SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
+  float32_t verify_tmp[EMBEDDING_SIZE];
+  for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
+  {
+    verify_tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;
+  }
+  float verify_similarity =
+    embedding_cosine_similarity(verify_tmp, target_embedding, EMBEDDING_SIZE);
+  Display_Similarity(verify_similarity);
+#ifdef ENABLE_PC_STREAM
+  PC_STREAM_SendEmbedding(verify_tmp, EMBEDDING_SIZE);
+#endif
+  LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
+
   /*** Post Processing Init ***************************************************/
   app_postprocess_init(&pp_params);
 
@@ -294,31 +314,51 @@ int main(void)
     if (pp_output.box_nb > 0)
     {
       pd_pp_box_t *box = (pd_pp_box_t *)pp_output.pOutData;
-      float cx = box[0].x_center * lcd_bg_area.XSize;
-      float cy = box[0].y_center * lcd_bg_area.YSize;
-      float w  = box[0].width  * lcd_bg_area.XSize;
-      float h  = box[0].height * lcd_bg_area.YSize;
-      float lx = box[0].pKps[0].x * lcd_bg_area.XSize;
-      float ly = box[0].pKps[0].y * lcd_bg_area.YSize;
-      float rx = box[0].pKps[1].x * lcd_bg_area.XSize;
-      float ry = box[0].pKps[1].y * lcd_bg_area.YSize;
-      img_crop_align565_to_888(img_buffer, lcd_bg_area.XSize, fr_rgb,
-                               lcd_bg_area.XSize, lcd_bg_area.YSize,
-                               FR_WIDTH, FR_HEIGHT,
-                               cx, cy, w, h, lx, ly, rx, ry);
-      img_rgb_to_hwc_float(fr_rgb, (float32_t *)fr_nn_in,
-                           FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
-      SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
-      RunNetworkSync(&NN_Instance_face_recognition);
-      SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
-      float32_t tmp[EMBEDDING_SIZE];
-      for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
+      for (uint32_t b = 0; b < pp_output.box_nb; b++)
       {
-        tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;
+        float cx = box[b].x_center * lcd_bg_area.XSize;
+        float cy = box[b].y_center * lcd_bg_area.YSize;
+        float w  = box[b].width  * lcd_bg_area.XSize * 1.2f;
+        float h  = box[b].height * lcd_bg_area.YSize * 1.2f;
+        float lx = box[b].pKps[0].x * lcd_bg_area.XSize;
+        float ly = box[b].pKps[0].y * lcd_bg_area.YSize;
+        float rx = box[b].pKps[1].x * lcd_bg_area.XSize;
+        float ry = box[b].pKps[1].y * lcd_bg_area.YSize;
+#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
+        img_crop_align565_to_888(img_buffer, lcd_bg_area.XSize, fr_rgb,
+                                 lcd_bg_area.XSize, lcd_bg_area.YSize,
+                                 FR_WIDTH, FR_HEIGHT,
+                                 cx, cy, w, h, lx, ly, rx, ry);
+#else
+        img_crop_align(nn_rgb, fr_rgb,
+                       NN_WIDTH, NN_HEIGHT,
+                       FR_WIDTH, FR_HEIGHT, NN_BPP,
+                       cx, cy, w, h, lx, ly, rx, ry);
+#endif
+        img_rgb_to_chw_s8(fr_rgb, fr_nn_in,
+                          FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
+        SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
+        RunNetworkSync(&NN_Instance_face_recognition);
+        SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
+        float32_t tmp[EMBEDDING_SIZE];
+
+        for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
+        {
+          float val = ((float32_t)fr_nn_out[i]) / 128.f;
+          tmp[i] = val;
+        }
+        float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
+        box[b].prob = similarity;
+        if (b == 0)
+        {
+          Display_Similarity(similarity);
+        }
+#ifdef ENABLE_PC_STREAM
+        PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
+        PC_STREAM_SendEmbedding(tmp, EMBEDDING_SIZE);
+#endif
+        LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
       }
-      float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
-      Display_Similarity(similarity);
-      LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
     }
     ts[1] = HAL_GetTick();
     if (ts[2] == 0)
@@ -328,12 +368,6 @@ int main(void)
     assert(ret == 0);
 
     App_Output(&pp_output, ts[1] - ts[0], ts[2]);
-#ifdef ENABLE_PC_STREAM
-    if (pp_output.box_nb > 0)
-    {
-      PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
-    }
-#endif
 
     /* Discard nn_out region (used by pp_input and pp_outputs variables) to avoid Dcache evictions during nn inference */
     for (int i = 0; i < number_output; i++)

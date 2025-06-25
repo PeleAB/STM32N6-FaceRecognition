@@ -56,10 +56,10 @@ def get_embedding(detector, session, input_name, nchw, img_path, visualize=False
     # align
     box = results.boxes[0]
     left_eye, right_eye = results.keypoints[0, 0], results.keypoints[0, 1]
-    aligned = crop_align(img, box, left_eye, right_eye, (112, 112))
-
-    # visualize
-    if visualize:
+    face = aligned.astype(np.int16) - 128
+    face = face.astype(np.float32)
+    emb = outputs[0].astype(np.float32).flatten() / 128.0
+        default="models/mobilefacenet__PerChannel_quant.onnx",
         h, w, _ = img.shape
         x0, y0 = int(box[0] * w), int(box[1] * h)
         x1, y1 = int(box[2] * w), int(box[3] * h)
@@ -102,7 +102,7 @@ def main():
     p.add_argument("--image2", default="multrump.jpg", help="Second input image path")
     p.add_argument(
         "--rec-model",
-        default="models/face_recognition_sface_2021dec_int8.onnx",
+        default="models/mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1_OE_3_2_0.onnx",
         help="ONNX face recognition model path",
     )
     p.add_argument(

@@ -67,6 +67,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/display_utils.c</locationURI>
 		</link>
 		<link>
+			<name>Application/dummy_fr_input.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/dummy_fr_input.c</locationURI>
+		</link>
+		<link>
 			<name>Application/face_detection.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Model/face_detection.c</locationURI>

@@ -2,6 +2,8 @@
 """PyQt5 GUI to send images and display the UART detection stream."""
 
 import sys
+import re
+from pathlib import Path
 
 import serial
 import cv2
@@ -11,16 +13,32 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import pc_uart_utils as utils
 
 
+def load_target_embedding() -> np.ndarray | None:
+    """Parse the target embedding array from the firmware source."""
+    path = Path(__file__).resolve().parents[1] / "Src" / "target_embedding.c"
+    if not path.exists():
+        return None
+    text = path.read_text()
+    m = re.search(r"\{([^}]+)\}", text)
+    if not m:
+        return None
+    try:
+        numbers = [float(v) for v in m.group(1).split(',') if v.strip()]
+    except ValueError:
+        return None
+    return np.array(numbers, dtype=np.float32)
+
 class StreamThread(QtCore.QThread):
     """Background thread reading frames from the MCU."""
 
     frame_received = QtCore.pyqtSignal(np.ndarray)
     aligned_received = QtCore.pyqtSignal(np.ndarray)
 
-    def __init__(self, ser: serial.Serial):
+    def __init__(self, ser: serial.Serial, target_emb: np.ndarray | None = None):
         super().__init__()
         self.ser = ser
         self._running = True
+        self.target_emb = target_emb
 
     def run(self) -> None:
         self.ser.reset_input_buffer()
@@ -29,6 +47,13 @@ class StreamThread(QtCore.QThread):
             if frame is None:
                 continue
             if tag == "ALN":
+                emb = utils.read_embedding(self.ser)
+                if emb and self.target_emb is not None and len(emb) == len(self.target_emb):
+                    e = np.array(emb, dtype=np.float32)
+                    a = e / (np.linalg.norm(e) + 1e-6)
+                    b = self.target_emb / (np.linalg.norm(self.target_emb) + 1e-6)
+                    sim = float(np.dot(a, b))
+                    print(f"Similarity: {sim:.4f}")
                 self.aligned_received.emit(frame)
                 continue
             _, dets = utils.read_detections(self.ser)
@@ -115,7 +140,8 @@ class App(QtWidgets.QMainWindow):
     def start_stream(self) -> None:
         if not self.ser:
             return
-        self.stream_thread = StreamThread(self.ser)
+        target = load_target_embedding()
+        self.stream_thread = StreamThread(self.ser, target)
         self.stream_thread.frame_received.connect(self.update_frame)
         self.stream_thread.aligned_received.connect(self.update_aligned)
         self.stream_thread.start()

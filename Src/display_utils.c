@@ -53,6 +53,7 @@ __attribute__ ((aligned (32)))
 uint8_t lcd_fg_buffer[2][LCD_FG_WIDTH * LCD_FG_HEIGHT * 2];
 static int lcd_fg_buffer_rd_idx;
 static BSP_LCD_LayerConfig_t LayerConfig = {0};
+static float g_similarity_percent = 0.f;
 
 static void DrawPDBoundingBoxes(const pd_pp_box_t *boxes, uint32_t nb)
 {
@@ -70,7 +71,7 @@ static void DrawPDBoundingBoxes(const pd_pp_box_t *boxes, uint32_t nb)
     width  = ((x0 + width)  < lcd_bg_area.X0 + lcd_bg_area.XSize) ? width  : (lcd_bg_area.X0 + lcd_bg_area.XSize - x0 - 1);
     height = ((y0 + height) < lcd_bg_area.Y0 + lcd_bg_area.YSize) ? height : (lcd_bg_area.Y0 + lcd_bg_area.YSize - y0 - 1);
     UTIL_LCD_DrawRect(x0, y0, width, height, colors[0]);
-    UTIL_LCDEx_PrintfAt(-x0-width, y0, RIGHT_MODE, "%.0f%%", boxes[i].prob*100.0f);
+    UTIL_LCDEx_PrintfAt(-x0 - width, y0, RIGHT_MODE, "%.1f%%", boxes[i].prob * 100.f);
   }
 }
 
@@ -183,8 +184,9 @@ void Display_WelcomeScreen(void)
 
 void Display_Similarity(float similarity)
 {
+  g_similarity_percent = similarity * 100.f;
   UTIL_LCD_SetBackColor(0x40000000);
-  UTIL_LCDEx_PrintfAt(0, LINE(3), CENTER_MODE, "Similarity: %.2f", similarity);
+  UTIL_LCDEx_PrintfAt(0, LINE(3), CENTER_MODE, "Similarity: %.2f%%", g_similarity_percent);
   UTIL_LCD_SetBackColor(0);
 }
 #else
@@ -198,6 +200,6 @@ void Display_WelcomeScreen(void)
 
 void Display_Similarity(float similarity)
 {
-  (void)similarity;
+  g_similarity_percent = similarity * 100.f;
 }
 #endif /* ENABLE_LCD_DISPLAY */
