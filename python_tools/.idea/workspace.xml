@@ -6,14 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="13fa5230-12b5-418b-b117-dfbfb113ec77" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../Inc/app_config.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Inc/app_config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Inc/display_utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/../Inc/display_utils.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/.project" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/.project" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/Application/display_utils.d" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/Application/display_utils.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/Application/main.d" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/Application/main.d" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Src/dummy_fr_input.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Src/dummy_fr_input.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Src/target_embedding.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Src/target_embedding.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../STM32CubeIDE/Debug/objects.list" beforeDir="false" afterPath="$PROJECT_DIR$/../STM32CubeIDE/Debug/objects.list" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Src/display_utils.c" beforeDir="false" afterPath="$PROJECT_DIR$/../Src/display_utils.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_face_recognition.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_face_recognition.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +45,7 @@
     "Python.test_rgb_to_hwc_float.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "codex/inflate-detection-box-by-20%",
+    "git-widget-placeholder": "codex/add-tracking-based-on-cosine-similarity",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/pele/Documents/GitHub/ObjectDet/python_tools",
     "node.js.detected.package.eslint": "true",

@@ -201,13 +201,7 @@ void Display_WelcomeScreen(void)
   }
 }
 
-void Display_Similarity(float similarity)
-{
-  g_similarity_percent = similarity * 100.f;
-  UTIL_LCD_SetBackColor(0x40000000);
-  UTIL_LCDEx_PrintfAt(0, LINE(3), CENTER_MODE, "Similarity: %.2f%%", g_similarity_percent);
-  UTIL_LCD_SetBackColor(0);
-}
+
 #else
 void LCD_init(void)
 {

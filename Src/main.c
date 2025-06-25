@@ -47,7 +47,7 @@
 
 #define FR_WIDTH 96
 #define FR_HEIGHT 112
-#define SIMILARITY_THRESHOLD 0.7f
+#define SIMILARITY_THRESHOLD 0.55f
 
 
 
@@ -278,7 +278,7 @@ int main(void)
   UNUSED(nn_in_len);
 
   /* Test recognition with a fixed input to compare embeddings */
-  memcpy(fr_nn_in, dummy_fr_input, DUMMY_FR_INPUT_SIZE);
+/*  memcpy(fr_nn_in, dummy_fr_input, DUMMY_FR_INPUT_SIZE);
   SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
   RunNetworkSync(&NN_Instance_face_recognition);
   SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
@@ -293,7 +293,7 @@ int main(void)
 #ifdef ENABLE_PC_STREAM
   PC_STREAM_SendEmbedding(verify_tmp, EMBEDDING_SIZE);
 #endif
-  LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
+  LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);*/
 
   /*** Post Processing Init ***************************************************/
   app_postprocess_init(&pp_params);
@@ -357,10 +357,7 @@ int main(void)
         }
         float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
         box[b].prob = similarity;
-        if (b == 0)
-        {
-          Display_Similarity(similarity);
-        }
+
 #ifdef ENABLE_PC_STREAM
         PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
         PC_STREAM_SendEmbedding(tmp, EMBEDDING_SIZE);
