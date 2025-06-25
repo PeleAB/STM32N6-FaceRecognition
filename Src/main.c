@@ -47,7 +47,7 @@
 
 #define FR_WIDTH 96
 #define FR_HEIGHT 112
-#define SIMILARITY_THRESHOLD 0.8f
+#define SIMILARITY_THRESHOLD 0.7f
 
 
 

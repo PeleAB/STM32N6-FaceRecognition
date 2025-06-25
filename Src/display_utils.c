@@ -11,6 +11,7 @@
 #include "stm32_lcd_ex.h"
 #endif
 #include "stm32n6570_discovery_conf.h"
+#include "tracking.h"
 
 #ifdef ENABLE_LCD_DISPLAY
 #define NUMBER_COLORS 10
@@ -54,8 +55,12 @@ uint8_t lcd_fg_buffer[2][LCD_FG_WIDTH * LCD_FG_HEIGHT * 2];
 static int lcd_fg_buffer_rd_idx;
 static BSP_LCD_LayerConfig_t LayerConfig = {0};
 static float g_similarity_percent = 0.f;
+extern tracker_t g_tracker;
 
-static void DrawPDBoundingBoxes(const pd_pp_box_t *boxes, uint32_t nb)
+#define SIMILARITY_COLOR_THRESHOLD 0.7f
+
+static void DrawPDBoundingBoxes(const pd_pp_box_t *boxes, uint32_t nb,
+                                const tracker_t *tracker)
 {
   UTIL_LCD_FillRect(lcd_fg_area.X0, lcd_fg_area.Y0, lcd_fg_area.XSize,
                     lcd_fg_area.YSize, 0x00000000);
@@ -70,8 +75,22 @@ static void DrawPDBoundingBoxes(const pd_pp_box_t *boxes, uint32_t nb)
     y0 = y0 < lcd_bg_area.Y0 + lcd_bg_area.YSize ? y0 : lcd_bg_area.Y0 + lcd_bg_area.YSize - 1;
     width  = ((x0 + width)  < lcd_bg_area.X0 + lcd_bg_area.XSize) ? width  : (lcd_bg_area.X0 + lcd_bg_area.XSize - x0 - 1);
     height = ((y0 + height) < lcd_bg_area.Y0 + lcd_bg_area.YSize) ? height : (lcd_bg_area.Y0 + lcd_bg_area.YSize - y0 - 1);
-    UTIL_LCD_DrawRect(x0, y0, width, height, colors[0]);
+    uint32_t color_idx = boxes[i].prob >= SIMILARITY_COLOR_THRESHOLD ? 1 : 0;
+    UTIL_LCD_DrawRect(x0, y0, width, height, colors[color_idx]);
     UTIL_LCDEx_PrintfAt(-x0 - width, y0, RIGHT_MODE, "%.1f%%", boxes[i].prob * 100.f);
+  }
+  if (tracker && tracker->state == TRACK_STATE_TRACKING)
+  {
+    const pd_pp_box_t *b = &tracker->box;
+    uint32_t x0 = (uint32_t)((b->x_center - b->width / 2) * ((float)lcd_bg_area.XSize)) + lcd_bg_area.X0;
+    uint32_t y0 = (uint32_t)((b->y_center - b->height / 2) * ((float)lcd_bg_area.YSize));
+    uint32_t width  = (uint32_t)(b->width  * ((float)lcd_bg_area.XSize));
+    uint32_t height = (uint32_t)(b->height * ((float)lcd_bg_area.YSize));
+    x0 = x0 < lcd_bg_area.X0 + lcd_bg_area.XSize ? x0 : lcd_bg_area.X0 + lcd_bg_area.XSize - 1;
+    y0 = y0 < lcd_bg_area.Y0 + lcd_bg_area.YSize ? y0 : lcd_bg_area.Y0 + lcd_bg_area.YSize - 1;
+    width  = ((x0 + width)  < lcd_bg_area.X0 + lcd_bg_area.XSize) ? width  : (lcd_bg_area.X0 + lcd_bg_area.XSize - x0 - 1);
+    height = ((y0 + height) < lcd_bg_area.Y0 + lcd_bg_area.YSize) ? height : (lcd_bg_area.Y0 + lcd_bg_area.YSize - y0 - 1);
+    UTIL_LCD_DrawRect(x0, y0, width, height, colors[8]);
   }
 }
 
@@ -119,7 +138,7 @@ void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t inferen
                                          (uint32_t)lcd_fg_buffer[lcd_fg_buffer_rd_idx],
                                          LTDC_LAYER_2);
   assert(ret == HAL_OK);
-  DrawPDBoundingBoxes(p_postprocess->pOutData, p_postprocess->box_nb);
+  DrawPDBoundingBoxes(p_postprocess->pOutData, p_postprocess->box_nb, &g_tracker);
   DrawPdLandmarks(p_postprocess->pOutData, p_postprocess->box_nb, AI_PD_MODEL_PP_NB_KEYPOINTS);
 #endif
 #ifdef ENABLE_PC_STREAM
