@@ -122,7 +122,10 @@ def draw_detections(img, dets, color=(0, 255, 0)):
     """
     h, w, _ = img.shape
     for d in dets:
-        _, xc, yc, ww, hh, conf = d
+        if len(d) < 6:
+            continue
+        # support optional keypoints at index 6
+        _, xc, yc, ww, hh, conf = d[:6]
         x0 = int((xc - ww / 2) * w)
         y0 = int((yc - hh / 2) * h)
         x1 = int((xc + ww / 2) * w)
