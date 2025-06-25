@@ -1,8 +1,8 @@
 ST Edge AI Core v2.1.0-20194 329b0e98d
-Created date          : 2025-06-24 20:52:10
-Parameters            : analyze --target stm32n6 --name face_recognition -m C:/Users/pele/Documents/GitHub/ObjectDet/python_tools/models/mobilefacenet__PerChannel_quant.onnx --st-neural-art n6-allmems-O3@C:/ST/STEdgeAI/2.1/scripts/N6_scripts/user_neuralart.json --workspace C:/Users/pele/AppData/Local/Temp/mxAI_workspace923982861879001810839575721346617 --output C:/Users/pele/.stm32cubemx/face_recognition_output
+Created date          : 2025-06-25 11:42:28
+Parameters            : analyze --target stm32n6 --name face_recognition -m C:/Users/pele/Documents/GitHub/ObjectDet/python_tools/models/mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1.onnx --st-neural-art n6-allmems-O3@C:/ST/STEdgeAI/2.1/scripts/N6_scripts/user_neuralart.json --workspace C:/Users/pele/AppData/Local/Temp/mxAI_workspace1457888264155006527283243604762751 --output C:/Users/pele/.stm32cubemx/face_recognition_output
 
-Model name - mobilefacenet__PerChannel_quant
+Model name - mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1
 ------ --------------------------------------------------- ----------------------- ---------------- ------------ -------------------------------- 
 m_id   layer (original)                                    oshape                  param/size               macc                     connected to 
 ------ --------------------------------------------------- ----------------------- ---------------- ------------ -------------------------------- 
@@ -609,7 +609,7 @@ model: macc=216,290,368 weights=3,959,040 activations=-- io=--
 Compilation details
 ------------------------------------------------------------------------------------
 Compiler version: 1.1.0-31
-Compiler arguments:  -i C:\Users\pele\.stm32cubemx\face_recognition_output\mobilefacenet__PerChannel_quant_OE_3_2_0.onnx --json-quant-file C:\Users\pele\.stm32cubemx\face_recognition_output\mobilefacenet__PerChannel_quant_OE_3_2_0_Q.json -g face_recognition.c --load-mdesc C:\ST\STEdgeAI\2.1\Utilities\configs\stm32n6.mdesc --load-mpool C:\ST\STEdgeAI\2.1\scripts\N6_scripts\my_mpools\stm32n6_n6-allmems-O3.mpool --save-mpool-file C:\Users\pele\AppData\Local\Temp\mxAI_workspace923982861879001810839575721346617\neural_art__face_recognition\stm32n6_n6-allmems-O3.mpool --out-dir-prefix C:\Users\pele\AppData\Local\Temp\mxAI_workspace923982861879001810839575721346617\neural_art__face_recognition/ --Os --optimization 3 --enable-epoch-controller --all-buffers-info --mvei --cache-maintenance --Oauto-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --output-info-file c_info.json --network-name face_recognition
+Compiler arguments:  -i C:\Users\pele\.stm32cubemx\face_recognition_output\mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1_OE_3_2_0.onnx --json-quant-file C:\Users\pele\.stm32cubemx\face_recognition_output\mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1_OE_3_2_0_Q.json -g face_recognition.c --load-mdesc C:\ST\STEdgeAI\2.1\Utilities\configs\stm32n6.mdesc --load-mpool C:\ST\STEdgeAI\2.1\scripts\N6_scripts\my_mpools\stm32n6_n6-allmems-O3.mpool --save-mpool-file C:\Users\pele\AppData\Local\Temp\mxAI_workspace1457888264155006527283243604762751\neural_art__face_recognition\stm32n6_n6-allmems-O3.mpool --out-dir-prefix C:\Users\pele\AppData\Local\Temp\mxAI_workspace1457888264155006527283243604762751\neural_art__face_recognition/ --Os --optimization 3 --enable-epoch-controller --all-buffers-info --mvei --cache-maintenance --Oauto-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --output-info-file c_info.json --network-name face_recognition
 ====================================================================================
 
 Memory usage information  (input/output buffers are included in activations)
@@ -632,7 +632,7 @@ Used memory ranges
 ------------------------------------------------------------------------------------
 	npuRAM4    [0x34270000 - 0x342E0000]: 0x34270000-0x342C4000
 	npuRAM5    [0x342E0000 - 0x34350000]: 0x342E0000-0x34334000
-	octoFlash  [0x71000000 - 0x78000000]: 0x71000000-0x7112B730
+	octoFlash  [0x71000000 - 0x78000000]: 0x71000000-0x7112B720
 ====================================================================================
 
 Epochs details
@@ -733,18 +733,18 @@ epoch 88      EC
  ------------------------------- -------- ----------- ------ --------- 
  module                              text      rodata   data       bss 
  ------------------------------- -------- ----------- ------ --------- 
- face_recognition.o                 6,224     340,782      0         0 
+ face_recognition.o                 6,192     340,660      0         0 
  NetworkRuntime1010_CM55_GCC.a      2,492           0      0         0 
  lib (toolchain)*                       0           0      0         0 
  ll atonn runtime                   3,896       2,226      0        13 
  ------------------------------- -------- ----------- ------ --------- 
- RT total**                        12,612     343,008      0        13 
+ RT total**                        12,580     342,886      0        13 
  ------------------------------- -------- ----------- ------ --------- 
- weights                                0   1,226,529      0         0 
+ weights                                0   1,226,513      0         0 
  activations                            0           0      0   688,128 
  io                                     0           0      0         0 
  ------------------------------- -------- ----------- ------ --------- 
- TOTAL                             12,612   1,569,537      0   688,141 
+ TOTAL                             12,580   1,569,399      0   688,141 
  ------------------------------- -------- ----------- ------ --------- 
  *  toolchain objects (libm/libgcc*)
  ** RT AI runtime objects (kernels+infrastructure)
@@ -753,9 +753,9 @@ epoch 88      EC
   --------------------------------------------------
                FLASH (ro)      %*   RAM (rw)      % 
   --------------------------------------------------
-  RT total        355,620   22.5%         13   0.0% 
+  RT total        355,466   22.5%         13   0.0% 
   --------------------------------------------------
-  TOTAL         1,582,149            688,141        
+  TOTAL         1,581,979            688,141        
   --------------------------------------------------
   *  rt/total
 

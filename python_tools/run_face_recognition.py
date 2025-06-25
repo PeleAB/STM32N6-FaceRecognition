@@ -47,7 +47,7 @@ def main() -> None:
     parser.add_argument("--image", help="Input image path", default="trump.jpg")
     parser.add_argument(
         "--rec-model",
-        default="models/mobilefacenet__PerChannel_quant.onnx",
+        default="models/mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1_OE_3_2_0.onnx",
         help="ONNX face recognition model path",
     )
     parser.add_argument(
@@ -116,11 +116,17 @@ def main() -> None:
     # preprocess: BGR→RGB, zero‐center around 0, CHW, batch
     face_rgb = cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.int16)
     face_rgb -= 128
-    face = np.transpose(face_rgb.astype(np.float32), (2, 0, 1))[None, ...]
+    face = np.transpose(face_rgb.astype(np.int8), (2, 0, 1))[None, ...]
 
     # run inference
+
+    print(face.shape)
+    print(face.flatten())
+
     onnx_out = sess.run([output_name], {input_name: face})[0]
-    embedding = onnx_out.astype(np.float32).flatten() / 128.0
+
+    print(onnx_out)
+    embedding = onnx_out.astype(np.int8).flatten() / 128.0
 
     norm = np.linalg.norm(embedding)
     if norm > 0:
@@ -147,7 +153,7 @@ def main() -> None:
     # also patch dummy recognition input buffer
     buf_line = (
         "int8_t dummy_fr_input[DUMMY_FR_INPUT_SIZE] = {"
-        + ", ".join(str(int(x)) for x in face_rgb.flatten())
+        + ", ".join(str(int(x)) for x in face.flatten())
         + "};\n"
     )
     buf_path = Path(__file__).resolve().parents[1] / "Src" / "dummy_fr_input.c"

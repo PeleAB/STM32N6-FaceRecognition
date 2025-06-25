@@ -102,7 +102,7 @@ def main():
     p.add_argument("--image2", default="multrump.jpg", help="Second input image path")
     p.add_argument(
         "--rec-model",
-        default="models/face_recognition_sface_2021dec_int8.onnx",
+        default="models/mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1_OE_3_2_0.onnx",
         help="ONNX face recognition model path",
     )
     p.add_argument(

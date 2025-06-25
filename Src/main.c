@@ -52,8 +52,8 @@
 pd_model_pp_static_param_t pp_params;
 
 volatile int32_t cameraFrameReceived;
-int8_t   *fr_nn_in;
-int8_t   *fr_nn_out;
+uint8_t *nn_in;
+int8_t  *fr_nn_in;
 int8_t  *fr_nn_out;
 __attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
@@ -331,11 +331,8 @@ int main(void)
         RunNetworkSync(&NN_Instance_face_recognition);
         SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
         float32_t tmp[EMBEDDING_SIZE];
-        for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
-        {
-          tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;
-        }
-        float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
+
+
         for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
         {
           tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;
