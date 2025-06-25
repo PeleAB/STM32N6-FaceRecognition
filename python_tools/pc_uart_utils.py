@@ -74,7 +74,8 @@ def read_detections(ser):
         tokens = line.split()
         if len(tokens) < 6:
             continue
-        c, xc, yc, w, h, conf = tokens[:6]
+        c, xc, yc, w, h, conf, *kp = tokens
+        keypoints = [float(v) for v in kp]
         dets.append(
             (
                 int(c),
@@ -83,11 +84,35 @@ def read_detections(ser):
                 float(w),
                 float(h),
                 float(conf),
+                keypoints,
             )
         )
 
     ser.readline()  # END marker
     return frame_id, dets
+
+
+def read_embedding(ser):
+    """Read an embedding array sent by the MCU."""
+    line = _search_header(ser, "EMB")
+    if line is None:
+        return []
+    parts = line.split()
+    if len(parts) < 2:
+        return []
+    count = int(parts[1])
+    values = []
+    if count > 0:
+        data_line = ser.readline().decode(errors="ignore").strip()
+        for tok in data_line.split():
+            if len(values) >= count:
+                break
+            try:
+                values.append(float(tok))
+            except ValueError:
+                pass
+    ser.readline()  # END marker
+    return values
 
 
 def draw_detections(img, dets, color=(0, 255, 0)):

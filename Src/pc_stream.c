@@ -171,6 +171,23 @@ void PC_STREAM_SendDetections(const pd_postprocess_out_t *detections, uint32_t f
     HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)end_marker, sizeof(end_marker) - 1, HAL_MAX_DELAY);
 }
 
+void PC_STREAM_SendEmbedding(const float *embedding, uint32_t length)
+{
+    char line[16];
+    int ll = snprintf(line, sizeof(line), "EMB %lu\n", (unsigned long)length);
+    if (ll > 0)
+    {
+        HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)line, (uint16_t)ll, HAL_MAX_DELAY);
+    }
+    for (uint32_t i = 0; i < length; i++)
+    {
+        ll = snprintf(line, sizeof(line), "%.3f%c", (double)embedding[i], (i == length - 1) ? '\n' : ' ');
+        HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)line, (uint16_t)ll, HAL_MAX_DELAY);
+    }
+    static const char end_marker[] = "END\n";
+    HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t *)end_marker, sizeof(end_marker) - 1, HAL_MAX_DELAY);
+}
+
 
 int PC_STREAM_ReceiveImage(uint8_t *buffer, uint32_t length)
 {
