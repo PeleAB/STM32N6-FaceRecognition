@@ -13,7 +13,7 @@ from BlazeFaceDetection.blazeFaceDetector import blazeFaceDetector
 
 def crop_align(image: np.ndarray, box: np.ndarray, left_eye: np.ndarray,
                right_eye: np.ndarray, size=(96, 112)) -> np.ndarray:
-    """Crop and align face using eye landmarks."""
+    """Crop and align face using eye landmarks without squashing."""
     h, w, _ = image.shape
     x_center = (box[0] + box[2]) / 2 * w
     y_center = (box[1] + box[3]) / 2 * h
@@ -29,11 +29,15 @@ def crop_align(image: np.ndarray, box: np.ndarray, left_eye: np.ndarray,
     sin_a = np.sin(angle)
 
     dst_w, dst_h = size
+    dst_full = max(dst_w, dst_h)
+    off_x = (dst_full - dst_w) / 2.0
+    off_y = (dst_full - dst_h) / 2.0
+
     out = np.zeros((dst_h, dst_w, 3), dtype=image.dtype)
     for y in range(dst_h):
-        ny = (y + 0.5) / dst_h - 0.5
+        ny = ((y + off_y) + 0.5) / dst_full - 0.5
         for x in range(dst_w):
-            nx = (x + 0.5) / dst_w - 0.5
+            nx = ((x + off_x) + 0.5) / dst_full - 0.5
             src_x = x_center + (nx * width) * cos_a + (ny * height) * sin_a
             src_y = y_center + (ny * height) * cos_a - (nx * width) * sin_a
             src_x = np.clip(src_x, 0, w - 1)
