@@ -62,8 +62,14 @@ def inflate_box(box: np.ndarray, factor: float = 1.2) -> np.ndarray:
 
 
 def det_box(det: tuple) -> np.ndarray:
-    """Convert (class, xc, yc, w, h, conf) to [x0, y0, x1, y1]."""
-    _, xc, yc, w, h, _ = det
+    """Return [x0, y0, x1, y1] for a detection tuple.
+
+    Extra fields such as keypoints are ignored. Only the first six values
+    are used so tuples with additional information won't raise an error.
+    """
+    if len(det) < 6:
+        return np.zeros(4, dtype=np.float32)
+    _, xc, yc, w, h, _ = det[:6]
     return np.array([xc - w / 2, yc - h / 2, xc + w / 2, yc + h / 2])
 
 
