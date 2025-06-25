@@ -74,7 +74,8 @@ def read_detections(ser):
         tokens = line.split()
         if len(tokens) < 6:
             continue
-        c, xc, yc, w, h, conf = tokens[:6]
+        c, xc, yc, w, h, conf, *kp = tokens
+        keypoints = [float(v) for v in kp]
         dets.append(
             (
                 int(c),
@@ -83,11 +84,57 @@ def read_detections(ser):
                 float(w),
                 float(h),
                 float(conf),
+                keypoints,
             )
         )
 
     ser.readline()  # END marker
     return frame_id, dets
+
+
+def read_embedding(ser):
+    """Read an embedding array sent by the MCU."""
+    line = _search_header(ser, "EMB")
+    if line is None:
+        return []
+    parts = line.split()
+    if len(parts) < 2:
+        return []
+    count = int(parts[1])
+    values = []
+    if count > 0:
+        data_line = ser.readline().decode(errors="ignore").strip()
+        for tok in data_line.split():
+            if len(values) >= count:
+                break
+            try:
+                values.append(float(tok))
+            except ValueError:
+                pass
+    ser.readline()  # END marker
+    return values
+
+
+def read_embeddings(ser, count):
+    """Read *count* embeddings in a row."""
+    embs = []
+    for _ in range(count):
+        emb = read_embedding(ser)
+        if not emb:
+            break
+        embs.append(emb)
+    return embs
+
+
+def read_aligned_frames(ser, count):
+    """Read *count* aligned frames from the MCU."""
+    frames = []
+    for _ in range(count):
+        tag, frame, _, _ = read_frame(ser)
+        if tag != "ALN":
+            break
+        frames.append(frame)
+    return frames
 
 
 def draw_detections(img, dets, color=(0, 255, 0)):
@@ -97,7 +144,10 @@ def draw_detections(img, dets, color=(0, 255, 0)):
     """
     h, w, _ = img.shape
     for d in dets:
-        _, xc, yc, ww, hh, conf = d
+        if len(d) < 6:
+            continue
+        # support optional keypoints at index 6
+        _, xc, yc, ww, hh, conf = d[:6]
         x0 = int((xc - ww / 2) * w)
         y0 = int((yc - hh / 2) * h)
         x1 = int((xc + ww / 2) * w)
@@ -145,16 +195,18 @@ def display_loop(q, stop_event):
     cv2.destroyAllWindows()
 
 
-def send_image(ser, img_path, size, display=False, rx=False, preview=False):
+def send_image(ser, img_path, size, display=False, rx=False, preview=False,
+               timeout=5.0):
     """Send an image file to the board.
 
-    Returns the echoed frame and detections from the MCU. If *display* is True,
-    the received frame with detection boxes is shown using OpenCV."""
+    Returns ``(frame, detections, aligned_frames, embeddings)`` when ``rx`` is
+    ``True``. If *display* is True, the echoed frame with detection boxes is
+    shown using OpenCV."""
 
     img = cv2.imread(img_path)
     if img is None:
         print(f"Failed to read {img_path}")
-        return None, []
+        return None, [], [], []
 
     img = cv2.resize(img, size)
     if preview:
@@ -164,17 +216,37 @@ def send_image(ser, img_path, size, display=False, rx=False, preview=False):
     ser.write(img.tobytes())
 
     if rx:
+        old_timeout = ser.timeout
+        ser.timeout = timeout
         time.sleep(0.5)
-        tag, echo, w, h = read_frame(ser)
-        print('rxed frame')
+
+        aligned = []
+        embeddings = []
+        echo = None
+
+        while True:
+            tag, frame, w, h = read_frame(ser)
+            if tag is None:
+                break
+            if tag == "ALN":
+                aligned.append(frame)
+                emb = read_embedding(ser)
+                embeddings.append(emb)
+            else:
+                echo = frame
+                print('rxed frame')
+                break
+
         _, dets = read_detections(ser)
         print('rxed dets')
+        ser.timeout = old_timeout
+
         if echo is not None:
-            echo = draw_detections(echo, dets)
+            drawn = draw_detections(echo.copy(), dets)
             if display:
-                cv2.imshow("send_result", echo)
+                cv2.imshow("send_result", drawn)
                 cv2.waitKey(1)
         else:
             print("No echo frame received")
 
-        return echo, dets
+        return echo, dets, aligned, embeddings

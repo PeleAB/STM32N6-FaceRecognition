@@ -282,6 +282,9 @@ int main(void)
   float verify_similarity =
     embedding_cosine_similarity(verify_tmp, target_embedding, EMBEDDING_SIZE);
   Display_Similarity(verify_similarity);
+#ifdef ENABLE_PC_STREAM
+  PC_STREAM_SendEmbedding(verify_tmp, EMBEDDING_SIZE);
+#endif
   LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
 
   /*** Post Processing Init ***************************************************/
@@ -315,16 +318,23 @@ int main(void)
       {
         float cx = box[b].x_center * lcd_bg_area.XSize;
         float cy = box[b].y_center * lcd_bg_area.YSize;
-        float w  = box[b].width  * lcd_bg_area.XSize;
-        float h  = box[b].height * lcd_bg_area.YSize;
+        float w  = box[b].width  * lcd_bg_area.XSize * 1.2f;
+        float h  = box[b].height * lcd_bg_area.YSize * 1.2f;
         float lx = box[b].pKps[0].x * lcd_bg_area.XSize;
         float ly = box[b].pKps[0].y * lcd_bg_area.YSize;
         float rx = box[b].pKps[1].x * lcd_bg_area.XSize;
         float ry = box[b].pKps[1].y * lcd_bg_area.YSize;
+#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
         img_crop_align565_to_888(img_buffer, lcd_bg_area.XSize, fr_rgb,
                                  lcd_bg_area.XSize, lcd_bg_area.YSize,
                                  FR_WIDTH, FR_HEIGHT,
                                  cx, cy, w, h, lx, ly, rx, ry);
+#else
+        img_crop_align(nn_rgb, fr_rgb,
+                       NN_WIDTH, NN_HEIGHT,
+                       FR_WIDTH, FR_HEIGHT, NN_BPP,
+                       cx, cy, w, h, lx, ly, rx, ry);
+#endif
         img_rgb_to_chw_s8(fr_rgb, fr_nn_in,
                           FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
         SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
@@ -332,10 +342,10 @@ int main(void)
         SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
         float32_t tmp[EMBEDDING_SIZE];
 
-
         for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
         {
-          tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;
+          float val = ((float32_t)fr_nn_out[i]) / 128.f;
+          tmp[i] = val;
         }
         float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
         box[b].prob = similarity;
@@ -343,6 +353,10 @@ int main(void)
         {
           Display_Similarity(similarity);
         }
+#ifdef ENABLE_PC_STREAM
+        PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
+        PC_STREAM_SendEmbedding(tmp, EMBEDDING_SIZE);
+#endif
         LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
       }
     }
@@ -354,12 +368,6 @@ int main(void)
     assert(ret == 0);
 
     App_Output(&pp_output, ts[1] - ts[0], ts[2]);
-#ifdef ENABLE_PC_STREAM
-    if (pp_output.box_nb > 0)
-    {
-      PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
-    }
-#endif
 
     /* Discard nn_out region (used by pp_input and pp_outputs variables) to avoid Dcache evictions during nn inference */
     for (int i = 0; i < number_output; i++)

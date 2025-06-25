@@ -113,12 +113,16 @@ void img_crop_align(uint8_t *src_image, uint8_t *dst_img,
   float angle = -atan2f(right_eye_y - left_eye_y, right_eye_x - left_eye_x);
   float cos_a = cosf(angle);
   float sin_a = sinf(angle);
+  float dst_full = (dst_width > dst_height) ? (float)dst_width : (float)dst_height;
+  float offset_x = (dst_full - (float)dst_width) * 0.5f;
+  float offset_y = (dst_full - (float)dst_height) * 0.5f;
+
   for (uint16_t y = 0; y < dst_height; y++)
   {
-    float ny = ((float)y + 0.5f) / dst_height - 0.5f;
+    float ny = ((float)y + offset_y + 0.5f) / dst_full - 0.5f;
     for (uint16_t x = 0; x < dst_width; x++)
     {
-      float nx = ((float)x + 0.5f) / dst_width - 0.5f;
+      float nx = ((float)x + offset_x + 0.5f) / dst_full - 0.5f;
       float src_x = x_center + (nx * width) * cos_a + (ny * height) * sin_a;
       float src_y = y_center + (ny * height) * cos_a - (nx * width) * sin_a;
       if (src_x < 0) src_x = 0;
@@ -147,12 +151,16 @@ void img_crop_align565_to_888(uint8_t *src_image, uint16_t src_stride,
   float cos_a = cosf(angle);
   float sin_a = sinf(angle);
 
+  float dst_full = (dst_width > dst_height) ? (float)dst_width : (float)dst_height;
+  float offset_x = (dst_full - (float)dst_width) * 0.5f;
+  float offset_y = (dst_full - (float)dst_height) * 0.5f;
+
   for (uint16_t y = 0; y < dst_height; y++)
   {
-    float ny = ((float)y + 0.5f) / dst_height - 0.5f;
+    float ny = ((float)y + offset_y + 0.5f) / dst_full - 0.5f;
     for (uint16_t x = 0; x < dst_width; x++)
     {
-      float nx = ((float)x + 0.5f) / dst_width - 0.5f;
+      float nx = ((float)x + offset_x + 0.5f) / dst_full - 0.5f;
       float src_x = x_center + (nx * width) * cos_a + (ny * height) * sin_a;
       float src_y = y_center + (ny * height) * cos_a - (nx * width) * sin_a;
       if (src_x < 0) src_x = 0;
