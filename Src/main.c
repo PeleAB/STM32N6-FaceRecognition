@@ -324,10 +324,17 @@ int main(void)
         float ly = box[b].pKps[0].y * lcd_bg_area.YSize;
         float rx = box[b].pKps[1].x * lcd_bg_area.XSize;
         float ry = box[b].pKps[1].y * lcd_bg_area.YSize;
+#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
         img_crop_align565_to_888(img_buffer, lcd_bg_area.XSize, fr_rgb,
                                  lcd_bg_area.XSize, lcd_bg_area.YSize,
                                  FR_WIDTH, FR_HEIGHT,
                                  cx, cy, w, h, lx, ly, rx, ry);
+#else
+        img_crop_align(nn_rgb, fr_rgb,
+                       NN_WIDTH, NN_HEIGHT,
+                       FR_WIDTH, FR_HEIGHT, NN_BPP,
+                       cx, cy, w, h, lx, ly, rx, ry);
+#endif
         img_rgb_to_chw_s8(fr_rgb, fr_nn_in,
                           FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
         SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
