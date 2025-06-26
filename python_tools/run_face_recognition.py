@@ -61,7 +61,7 @@ def inflate_box(box: np.ndarray, factor: float = 1.2) -> np.ndarray:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--image", help="Input image path", default="trump3.jpg")
+    parser.add_argument("--image", help="Input image path", default="pele.jpg")
     parser.add_argument(
         "--rec-model",
         default="models/mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1_OE_3_2_0.onnx",
