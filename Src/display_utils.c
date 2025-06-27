@@ -54,7 +54,6 @@ __attribute__ ((aligned (32)))
 uint8_t lcd_fg_buffer[2][LCD_FG_WIDTH * LCD_FG_HEIGHT * 2];
 static int lcd_fg_buffer_rd_idx;
 static BSP_LCD_LayerConfig_t LayerConfig = {0};
-static float g_similarity_percent = 0.f;
 extern tracker_t g_tracker;
 
 #define SIMILARITY_COLOR_THRESHOLD 0.7f
@@ -211,8 +210,5 @@ void Display_WelcomeScreen(void)
 {
 }
 
-void Display_Similarity(float similarity)
-{
-  g_similarity_percent = similarity * 100.f;
-}
+
 #endif /* ENABLE_LCD_DISPLAY */

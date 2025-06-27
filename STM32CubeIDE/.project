@@ -57,6 +57,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/app_postprocess.c</locationURI>
 		</link>
 		<link>
+			<name>Application/app_system.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/app_system.c</locationURI>
+		</link>
+		<link>
 			<name>Application/crop_img.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/crop_img.c</locationURI>
@@ -102,6 +107,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.c</locationURI>
 		</link>
 		<link>
+			<name>Application/nn_runner.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/nn_runner.c</locationURI>
+		</link>
+		<link>
 			<name>Application/npu_cache.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/npu_cache.c</locationURI>
@@ -110,11 +120,6 @@
 			<name>Application/pc_stream.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/pc_stream.c</locationURI>
-		</link>
-		<link>
-			<name>Application/pd_anchors.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Src/pd_anchors.c</locationURI>
 		</link>
 		<link>
 			<name>Application/stm32_lcd_ex.c</name>

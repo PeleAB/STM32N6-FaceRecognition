@@ -208,23 +208,6 @@ int main(void)
 
   UNUSED(nn_in_len);
 
-  /* Test recognition with a fixed input to compare embeddings */
-/*  memcpy(fr_nn_in, dummy_fr_input, DUMMY_FR_INPUT_SIZE);
-  SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
-  RunNetworkSync(&NN_Instance_face_recognition);
-  SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
-  float32_t verify_tmp[EMBEDDING_SIZE];
-  for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
-  {
-    verify_tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;
-  }
-  float verify_similarity =
-    embedding_cosine_similarity(verify_tmp, target_embedding, EMBEDDING_SIZE);
-  Display_Similarity(verify_similarity);
-#ifdef ENABLE_PC_STREAM
-  PC_STREAM_SendEmbedding(verify_tmp, EMBEDDING_SIZE);
-#endif
-  LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);*/
 
   /*** Post Processing Init ***************************************************/
   app_postprocess_init(&pp_params);
@@ -246,9 +229,10 @@ int main(void)
     SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
 
     ts[0] = HAL_GetTick();
-    RunNetworkSync(&NN_Instance_face_detection);
-    LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
-
+    LL_ATON_RT_Main(&NN_Instance_face_detection);
+//    RunNetworkSync(&NN_Instance_face_detection);
+//    LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
+    ts[1] = HAL_GetTick();
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
 
     if (pp_output.box_nb > 0)
@@ -278,7 +262,8 @@ int main(void)
         img_rgb_to_chw_s8(fr_rgb, fr_nn_in,
                           FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
         SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
-        RunNetworkSync(&NN_Instance_face_recognition);
+        LL_ATON_RT_Main(&NN_Instance_face_recognition);
+//        RunNetworkSync(&NN_Instance_face_recognition);
         SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
         float32_t tmp[EMBEDDING_SIZE];
 
@@ -294,7 +279,7 @@ int main(void)
         PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
         PC_STREAM_SendEmbedding(tmp, EMBEDDING_SIZE);
 #endif
-        LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
+//        LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
       }
     }
     tracker_process(&g_tracker, &pp_output, SIMILARITY_THRESHOLD);
@@ -308,7 +293,7 @@ int main(void)
       BSP_LED_On(LED1);
       BSP_LED_Off(LED2);
     }
-    ts[1] = HAL_GetTick();
+    //ts[1] = HAL_GetTick();
     if (ts[2] == 0)
     {
       ts[2] = HAL_GetTick();
