@@ -64,7 +64,7 @@ def main() -> None:
     parser.add_argument("--image", help="Input image path", default="trump.jpg")
     parser.add_argument(
         "--rec-model",
-        default="models/mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1_OE_3_2_0.onnx",
+        default="models/mobilefacenet_integer_quant_1_OE_3_2_0.onnx",
         help="ONNX face recognition model path",
     )
     parser.add_argument(
