@@ -1,0 +1,6 @@
+numpy
+opencv-python
+pyserial
+PyQt5
+onnxruntime
+tensorflow
