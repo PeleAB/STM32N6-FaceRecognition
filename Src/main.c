@@ -319,6 +319,7 @@ int main(void)
     LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
 
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
+
     if (pp_output.box_nb > 0)
     {
       pd_pp_box_t *box = (pd_pp_box_t *)pp_output.pOutData;
