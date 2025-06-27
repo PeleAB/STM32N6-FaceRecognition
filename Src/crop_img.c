@@ -41,10 +41,38 @@ void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
 {
   const float32_t scale = 1.f / 128.f;
 
-
-  for (int i = 0; i< width*width*3; i++)
+  /* HWC layout: iterate over each pixel */
+  for (uint16_t y = 0; y < height; y++)
   {
-        dst_img[i] = ((float32_t) src_image[i]) * scale - 1.f;
+    const uint8_t *pIn = src_image + y * src_stride;
+    for (uint16_t x = 0; x < width; x++)
+    {
+      for (uint16_t c = 0; c < 3; c++)
+      {
+        dst_img[(y * width + x) * 3 + c] = ((float32_t)pIn[c]) * scale - 1.f;
+      }
+      pIn += 3;
+    }
+  }
+}
+
+void img_rgb_to_chw_float(uint8_t *src_image, float32_t *dst_img,
+                          const uint32_t src_stride, const uint16_t width,
+                          const uint16_t height)
+{
+  const float32_t scale = 1.f / 128.f;
+
+  /* CHW layout: channel-first order */
+  for (uint16_t y = 0; y < height; y++)
+  {
+    const uint8_t *pIn = src_image + y * src_stride;
+    for (uint16_t x = 0; x < width; x++)
+    {
+      dst_img[y * width + x] = ((float32_t)pIn[0]) * scale - 1.f;
+      dst_img[height * width + y * width + x] = ((float32_t)pIn[1]) * scale - 1.f;
+      dst_img[2 * height * width + y * width + x] = ((float32_t)pIn[2]) * scale - 1.f;
+      pIn += 3;
+    }
   }
 }
 
@@ -52,12 +80,10 @@ void img_rgb_to_hwc_float2(uint8_t *src_image, float32_t *dst_img,
                           const uint32_t src_stride, const uint16_t width,
                           const uint16_t height)
 {
-  const float32_t scale = 1.f / 128.f;
-
-
-  for (int i = 0; i< width*width*3; i++)
+  for (uint32_t i = 0; i < ((uint32_t)width * height * 3); i++)
   {
-        dst_img[i] = 0.0f;
+    (void)src_image; (void)src_stride; /* unused */
+    dst_img[i] = 0.0f;
   }
 }
 

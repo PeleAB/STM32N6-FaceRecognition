@@ -45,8 +45,8 @@
 /* Model Related Info */
 #define POSTPROCESS_TYPE POSTPROCESS_MPE_PD_UF
 
-#define NN_WIDTH 256
-#define NN_HEIGHT 256
+#define NN_WIDTH 128
+#define NN_HEIGHT 128
 #define NN_BPP 3
 
 #define COLOR_BGR (0)
