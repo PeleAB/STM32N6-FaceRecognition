@@ -5,39 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c982fc48-7cf4-41a9-90d7-0061582bf1c4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CenterFace_example/Models/centerface_1x3xHxW_full_integer_quant.tflite" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CenterFace_example/Models/centerface_1x3xHxW_integer_quant.tflite" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CenterFace_example/Models/centerface_1x3xHxW_original.onnx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CenterFace_example/Models/centerface_Nx3xHxW.onnx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CenterFace_example/Models/model_float32.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CenterFace_example/Models/model_integer_quant.tflite" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CenterFace_example/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CenterFace_example/demo_onnx.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CenterFace_example/demo_pb.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CenterFace_example/demo_tflite.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CenterFace_example/sample.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/face_detection_back_256x256_full_integer_quant_OE_3_2_0.onnx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/face_detection_back_256x256_full_integer_quant_OE_3_2_0_Q.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/face_detection_front_128_integer_quant_OE_3_2_0.onnx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/face_detection_front_128_integer_quant_OE_3_2_0_Q.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/mobilefacenet__PerChannel_quant_OE_3_2_0.onnx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/mobilefacenet__PerChannel_quant_OE_3_2_0_Q.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/mobilefacenet_fp32_OE_3_2_0.onnx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/model_integer_quant_OE_3_2_0_Q.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/BlazeFaceDetection/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/BlazeFaceDetection/blazeFaceDetector.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/BlazeFaceDetection/blazeFaceUtils.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/models/centerface_1x3xHxW_full_integer_quant.tflite" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/models/face_detection_back.tflite" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/models/face_detection_back_256x256_full_integer_quant.tflite" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/models/face_detection_back_256x256_integer_quant.tflite" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/models/face_detection_front_128_integer_quant.tflite" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/models/mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1.onnx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/models/mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1_OE_3_2_0.onnx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/output.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/output_int.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/python_tools/run_face_recognition.py" beforeDir="false" afterPath="$PROJECT_DIR$/python_tools/run_face_recognition.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/app_system.d" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/app_system.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/app_system.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/app_system.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,31 +36,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.build_unified_face_rec.executor": "Run",
-    "Python.compare_detections (1).executor": "Run",
-    "Python.compare_detections.executor": "Debug",
-    "Python.demo_tflite.executor": "Run",
-    "Python.genLogo.executor": "Run",
-    "Python.generate_blazeface_anchors.executor": "Run",
-    "Python.imageFaceDetection.executor": "Run",
-    "Python.pc_stream_receiver.executor": "Run",
-    "Python.pc_uart_client (1).executor": "Run",
-    "Python.pc_uart_client.executor": "Run",
-    "Python.run_face_recognition.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "CenterFace",
-    "last_opened_file_path": "C:/Users/pele/Documents/GitHub/ObjectDet",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.build_unified_face_rec.executor&quot;: &quot;Run&quot;,
+    &quot;Python.compare_detections (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.compare_detections.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.demo_tflite.executor&quot;: &quot;Run&quot;,
+    &quot;Python.genLogo.executor&quot;: &quot;Run&quot;,
+    &quot;Python.generate_blazeface_anchors.executor&quot;: &quot;Run&quot;,
+    &quot;Python.imageFaceDetection.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pc_stream_receiver.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pc_uart_client (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.pc_uart_client.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_face_recognition.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;codex/refactor-project-architecture-and-functions&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/pele/Documents/GitHub/ObjectDet&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\pele\Documents\GitHub\ObjectDet\CenterFace_example" />
@@ -288,11 +261,6 @@
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/scripts/generate_blazeface_anchors.py</url>
-          <line>13</line>
-          <option name="timeStamp" value="43" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/BlazeFace-EXAMPLE/BlazeFaceDetection/blazeFaceUtils.py</url>
           <line>129</line>
           <option name="timeStamp" value="46" />
@@ -335,6 +303,6 @@
     <SUITE FILE_PATH="coverage/pc_send_photos_py$build_unified_face_rec.coverage" NAME="build_unified_face_rec Coverage Results" MODIFIED="1750449981027" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_uart_client.coverage" NAME="pc_uart_client Coverage Results" MODIFIED="1750586065050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ObjectDet$blazeFaceDetector.coverage" NAME="blazeFaceDetector Coverage Results" MODIFIED="1751017618979" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/python_tools/BlazeFaceDetection" />
-    <SUITE FILE_PATH="coverage/ObjectDet$run_face_recognition.coverage" NAME="run_face_recognition Coverage Results" MODIFIED="1751028430842" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/python_tools" />
+    <SUITE FILE_PATH="coverage/ObjectDet$run_face_recognition.coverage" NAME="run_face_recognition Coverage Results" MODIFIED="1751028483185" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/python_tools" />
   </component>
 </project>

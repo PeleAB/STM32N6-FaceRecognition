@@ -30,6 +30,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "stm32n6xx_hal_rif.h"
+#include "app_system.h"
+#include "nn_runner.h"
 #include "pc_stream.h"
 #include "app_config.h"
 #include "crop_img.h"
@@ -85,7 +87,6 @@ static int  App_GetFrame(uint8_t *dest, uint32_t pitch_nn);
 static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
                        uint32_t boot_ms);
 
-static void RunNetworkSync(NN_Instance_TypeDef *inst);
 
 /*-------------------------------------------------------------------------*/
 static void App_InputInit(uint32_t *pitch_nn)
@@ -151,23 +152,8 @@ static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
   (void)res;
   (void)inf_ms;
 #endif
+
 }
-
-static void RunNetworkSync(NN_Instance_TypeDef *inst)
-{
-  LL_ATON_RT_Init_Network(inst);
-  LL_ATON_RT_RetValues_t st;
-  do
-  {
-    st = LL_ATON_RT_RunEpochBlock(inst);
-    if (st == LL_ATON_RT_WFE)
-    {
-      LL_ATON_OSAL_WFE();
-    }
-  } while (st != LL_ATON_RT_DONE);
-}
-
-
 
 /**
   * @brief  Main program
@@ -176,50 +162,7 @@ static void RunNetworkSync(NN_Instance_TypeDef *inst)
   */
 int main(void)
 {
-  /* Power on ICACHE */
-  MEMSYSCTL->MSCR |= MEMSYSCTL_MSCR_ICACTIVE_Msk;
-
-  /* Set back system and CPU clock source to HSI */
-  __HAL_RCC_CPUCLK_CONFIG(RCC_CPUCLKSOURCE_HSI);
-  __HAL_RCC_SYSCLK_CONFIG(RCC_SYSCLKSOURCE_HSI);
-
-  HAL_Init();
-
-  SCB_EnableICache();
-
-#if defined(USE_DCACHE)
-  /* Power on DCACHE */
-  MEMSYSCTL->MSCR |= MEMSYSCTL_MSCR_DCACTIVE_Msk;
-  SCB_EnableDCache();
-#endif
-
-  SystemClock_Config();
-
-  NPURam_enable();
-
-  Fuse_Programming();
-
-  NPUCache_config();
-
-#ifdef ENABLE_PC_STREAM
-  PC_STREAM_Init();
-#endif
-
-  /*** External RAM and NOR Flash *********************************************/
-  BSP_XSPI_RAM_Init(0);
-  BSP_XSPI_RAM_EnableMemoryMappedMode(0);
-
-  BSP_XSPI_NOR_Init_t NOR_Init;
-  NOR_Init.InterfaceMode = BSP_XSPI_NOR_OPI_MODE;
-  NOR_Init.TransferRate = BSP_XSPI_NOR_DTR_TRANSFER;
-  BSP_XSPI_NOR_Init(0, &NOR_Init);
-  BSP_XSPI_NOR_EnableMemoryMappedMode(0);
-
-  /* Set all required IPs as secure privileged */
-  Security_Config();
-
-  IAC_Config();
-  set_clk_sleep_mode();
+  App_SystemInit();
 
   LL_ATON_RT_RuntimeInit();
   tracker_init(&g_tracker);
@@ -265,23 +208,6 @@ int main(void)
 
   UNUSED(nn_in_len);
 
-  /* Test recognition with a fixed input to compare embeddings */
-/*  memcpy(fr_nn_in, dummy_fr_input, DUMMY_FR_INPUT_SIZE);
-  SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
-  RunNetworkSync(&NN_Instance_face_recognition);
-  SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
-  float32_t verify_tmp[EMBEDDING_SIZE];
-  for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
-  {
-    verify_tmp[i] = ((float32_t)fr_nn_out[i]) / 128.f;
-  }
-  float verify_similarity =
-    embedding_cosine_similarity(verify_tmp, target_embedding, EMBEDDING_SIZE);
-  Display_Similarity(verify_similarity);
-#ifdef ENABLE_PC_STREAM
-  PC_STREAM_SendEmbedding(verify_tmp, EMBEDDING_SIZE);
-#endif
-  LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);*/
 
   /*** Post Processing Init ***************************************************/
   app_postprocess_init(&pp_params);
@@ -303,6 +229,7 @@ int main(void)
     SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
 
     ts[0] = HAL_GetTick();
+
     RunNetworkSync(&NN_Instance_face_detection);
     LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
 
