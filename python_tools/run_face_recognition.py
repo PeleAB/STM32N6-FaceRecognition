@@ -7,9 +7,8 @@ import numpy as np
 import onnxruntime as ort
 
 # allow importing CenterFace demo from repository root
-ROOT_DIR = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT_DIR))
-from CenterFace_example.demo_tflite import CenterFace
+
+from centerface import CenterFace
 
 
 def crop_align(image: np.ndarray, box: np.ndarray, left_eye: np.ndarray,
@@ -62,7 +61,7 @@ def inflate_box(box: np.ndarray, factor: float = 1.2) -> np.ndarray:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--image", help="Input image path", default="pele.jpg")
+    parser.add_argument("--image", help="Input image path", default="trump.jpg")
     parser.add_argument(
         "--rec-model",
         default="models/mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1_OE_3_2_0.onnx",
@@ -70,10 +69,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--det-model",
-        default=str(
-            ROOT_DIR
-            / "CenterFace_example/Models/centerface_1x3xHxW_full_integer_quant.tflite"
-        ),
+        default="models/centerface_1x3xHxW_integer_quant.tflite",
         help="CenterFace TFLite model path",
     )
     parser.add_argument(
@@ -98,7 +94,10 @@ def main() -> None:
     off_y = (h0 - crop_size) // 2
     img_sq = img[off_y : off_y + crop_size, off_x : off_x + crop_size]
 
+
     # detect and align using CenterFace
+    print(img_sq.dtype)
+    print(img_sq.shape)
     dets, lms = detector.inference(img_sq, threshold=0.5)
     if len(dets) == 0:
         print("No face detected")

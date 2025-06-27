@@ -57,7 +57,7 @@ class CenterFace(object ):
             crop=False
         )
         #input_image = np.transpose(input_image, (0, 2, 3, 1))
-        #input_image= input_image.astype(np.int8)
+        input_image= input_image.astype(np.int8)
         
         # Set input tensor
         self.interpreter.set_tensor(self.input_details[0]['index'], input_image)
@@ -136,13 +136,13 @@ class CenterFace(object ):
                 x2 = max(x1 + s1, size[1])
                 y2 = max(y1 + s0, size[0])
 
-                boxes.append([x1, y1, x2, y2, score])
+                # boxes.append([x1, y1, x2, y2, score])
                 
                 # this is the code from demo_onnx.py:
      
-                # x1, y1 = max(0, (c1[i] + o1 + 0.5) * 4 - s1 / 2), max(0, (c0[i] + o0 + 0.5) * 4 - s0 / 2)
-                # x1, y1 = min(x1, size[1]), min(y1, size[0])
-                # boxes.append([x1, y1, min(x1 + s1, size[1]), min(y1 + s0, size[0]), score])
+                x1, y1 = max(0, (c1[i] + o1 + 0.5) * 4 - s1 / 2), max(0, (c0[i] + o0 + 0.5) * 4 - s0 / 2)
+                x1, y1 = min(x1, size[1]), min(y1, size[0])
+                boxes.append([x1, y1, min(x1 + s1, size[1]), min(y1 + s0, size[0]), score])
 
 
                 lms_temp = []
@@ -219,7 +219,7 @@ def main():
 
 
 
-    model_path = "./Models/centerface_1x3xHxW_integer_quant.tflite" #this the qunatized first version model using the webcame calib data that works well
+    model_path = "./Models/centerface_1x3xHxW_full_integer_quant.tflite" #this the qunatized first version model using the webcame calib data that works well
 
 
     threshold = 0.50
@@ -262,6 +262,7 @@ def main():
         # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         # # replicate the grayscale image to 3 channels
         # frame = cv2.merge([frame, frame, frame])
+        print(square_frame.dtype)
 
         dets, lms = centerface.inference(frame, threshold)
         dt = time.time() - t + 0.001
