@@ -39,9 +39,7 @@ void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
                           const uint32_t src_stride, const uint16_t width,
                           const uint16_t height)
 {
-  const float32_t scale = 1.f / 128.f;
-
-  /* HWC layout: iterate over each pixel */
+  /* HWC layout: iterate over each pixel and convert to float */
   for (uint16_t y = 0; y < height; y++)
   {
     const uint8_t *pIn = src_image + y * src_stride;
@@ -49,7 +47,7 @@ void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
     {
       for (uint16_t c = 0; c < 3; c++)
       {
-        dst_img[(y * width + x) * 3 + c] = ((float32_t)pIn[c]) * scale - 1.f;
+        dst_img[(y * width + x) * 3 + c] = (float32_t)pIn[c];
       }
       pIn += 3;
     }
@@ -60,17 +58,15 @@ void img_rgb_to_chw_float(uint8_t *src_image, float32_t *dst_img,
                           const uint32_t src_stride, const uint16_t width,
                           const uint16_t height)
 {
-  const float32_t scale = 1.f / 128.f;
-
   /* CHW layout: channel-first order */
   for (uint16_t y = 0; y < height; y++)
   {
     const uint8_t *pIn = src_image + y * src_stride;
     for (uint16_t x = 0; x < width; x++)
     {
-      dst_img[y * width + x] = ((float32_t)pIn[0]) * scale - 1.f;
-      dst_img[height * width + y * width + x] = ((float32_t)pIn[1]) * scale - 1.f;
-      dst_img[2 * height * width + y * width + x] = ((float32_t)pIn[2]) * scale - 1.f;
+      dst_img[y * width + x] = (float32_t)pIn[0];
+      dst_img[height * width + y * width + x] = (float32_t)pIn[1];
+      dst_img[2 * height * width + y * width + x] = (float32_t)pIn[2];
       pIn += 3;
     }
   }
