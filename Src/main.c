@@ -36,7 +36,6 @@
 #include "display_utils.h"
 #include "img_buffer.h"
 #include "system_utils.h"
-#include "blazeface_anchors.h"
 #include "face_utils.h"
 #include "target_embedding.h"
 //#include "dummy_fr_input.h"
@@ -83,7 +82,6 @@ uint8_t dcmipp_out_nn[DCMIPP_OUT_NN_BUFF_LEN];
 /* Utility functions handling the various I/O configurations */
 static void App_InputInit(uint32_t *pitch_nn);
 static int  App_GetFrame(uint8_t *dest, uint32_t pitch_nn);
-static void App_PreInference(const uint8_t *frame);
 static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
                        uint32_t boot_ms);
 
@@ -140,16 +138,6 @@ static int App_GetFrame(uint8_t *dest, uint32_t pitch_nn)
 #endif
 }
 
-static void App_PreInference(const uint8_t *frame)
-{
-#if INPUT_SRC_MODE != INPUT_SRC_CAMERA
-#ifdef ENABLE_PC_STREAM
-  PC_STREAM_SendFrame(frame, NN_WIDTH, NN_HEIGHT, NN_BPP);
-#endif
-#else
-  (void)frame;
-#endif
-}
 
 static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
                        uint32_t boot_ms)
