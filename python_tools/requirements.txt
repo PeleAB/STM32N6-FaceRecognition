@@ -1,6 +1,6 @@
 numpy
 opencv-python
 pyserial
-PyQt5
+PySide6
 onnxruntime
 tensorflow

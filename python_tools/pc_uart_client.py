@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PyQt5 GUI to send images and display the UART detection stream."""
+"""PySide6 GUI to send images and display the UART detection stream."""
 
 import sys
 import re
@@ -10,7 +10,7 @@ import serial
 from serial.tools import list_ports
 import cv2
 import numpy as np
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 
 import pc_uart_utils as utils
 
@@ -33,9 +33,9 @@ def load_target_embedding() -> np.ndarray | None:
 class StreamThread(QtCore.QThread):
     """Background thread reading frames from the MCU."""
 
-    frame_received = QtCore.pyqtSignal(np.ndarray)
-    aligned_received = QtCore.pyqtSignal(np.ndarray)
-    fps_updated = QtCore.pyqtSignal(float)
+    frame_received = QtCore.Signal(np.ndarray)
+    aligned_received = QtCore.Signal(np.ndarray)
+    fps_updated = QtCore.Signal(float)
 
     def __init__(self, ser: serial.Serial, target_emb: np.ndarray | None = None):
         super().__init__()
@@ -73,6 +73,11 @@ class StreamThread(QtCore.QThread):
 
     def stop(self) -> None:
         self._running = False
+        # Flush any pending data so the MCU can resume without overflowing
+        try:
+            self.ser.reset_input_buffer()
+        except serial.SerialException:
+            pass
         self.wait()
 
 
@@ -186,6 +191,8 @@ class App(QtWidgets.QMainWindow):
         if self.stream_thread:
             self.stream_thread.stop()
             self.stream_thread = None
+            if self.ser:
+                self.ser.reset_input_buffer()
             self.stream_btn.setText("Start Stream")
         else:
             self.start_stream()
@@ -285,7 +292,7 @@ def main() -> None:
     app = QtWidgets.QApplication(sys.argv)
     window = App()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":
