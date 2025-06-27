@@ -29,7 +29,7 @@ int32_t app_postprocess_init(void *params_postprocess)
 
 int32_t app_postprocess_run(void *pInput[], int nb_input, void *pOutput, void *pInput_param)
 {
-  assert(nb_input == 2);
+  assert(nb_input == 4);
   pd_postprocess_out_t *pPdOutput = (pd_postprocess_out_t *)pOutput;
   pd_model_pp_in_t pp_input = {
       .pProbs = (float32_t *)pInput[0],

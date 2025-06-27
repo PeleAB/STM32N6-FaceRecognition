@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="783977ca-b6fc-460f-b5ce-64387e4c52a2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Binary/STM32N6_GettingStarted_ObjectDetection_signed.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Binary/STM32N6_GettingStarted_ObjectDetection_signed.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Binary/STM32N6_GettingStarted_ObjectDetection_signed.hex" beforeDir="false" afterPath="$PROJECT_DIR$/../Binary/STM32N6_GettingStarted_ObjectDetection_signed.hex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Binary/det_network_data.hex" beforeDir="false" afterPath="$PROJECT_DIR$/../Binary/det_network_data.hex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/face_detection.c" beforeDir="false" afterPath="$PROJECT_DIR$/face_detection.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/face_detection.h" beforeDir="false" afterPath="$PROJECT_DIR$/face_detection.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/face_detection_analyze_report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/face_detection_analyze_report.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/face_detection_atonbuf.xSPI2.raw" beforeDir="false" afterPath="$PROJECT_DIR$/face_detection_atonbuf.xSPI2.raw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/face_detection_c_info.json" beforeDir="false" afterPath="$PROJECT_DIR$/face_detection_c_info.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/face_detection_ecblobs.h" beforeDir="false" afterPath="$PROJECT_DIR$/face_detection_ecblobs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../python_tools/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../python_tools/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unified_face_recognition.onnx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unified_face_recognition_quant.onnx" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="2z3Xh2tss4ITtGSUuLI6Ka8MXq1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/pele/Documents/GitHub/ObjectDet/Model",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-PY-251.25410.159" />
+        <option value="bundled-python-sdk-e0ed3721d81e-36ea0e71a18c-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.25410.159" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="783977ca-b6fc-460f-b5ce-64387e4c52a2" name="Changes" comment="" />
+      <created>1750960845831</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750960845831</updated>
+      <workItem from="1750960846914" duration="15000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

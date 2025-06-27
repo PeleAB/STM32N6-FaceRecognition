@@ -10,7 +10,7 @@ import numpy as np
 
 
 def generate_anchors(img_width=128, img_height=128):
-    anchors = np.load("C:\\Users\\pele\\Downloads\\anchors.npy")
+    anchors = np.load("C:\\Users\\pele\\Downloads\\anchorsback.npy")
     return anchors
 
 
@@ -34,8 +34,8 @@ def write_header(anchors, path):
 def main():
     parser = argparse.ArgumentParser(description="Generate BlazeFace anchors and update header file")
     parser.add_argument("output", help="Path to output header file", default="../Inc/blazeface_anchors.h", nargs='?')
-    parser.add_argument("--width", type=int, default=128, help="Input width")
-    parser.add_argument("--height", type=int, default=128, help="Input height")
+    parser.add_argument("--width", type=int, default=256, help="Input width")
+    parser.add_argument("--height", type=int, default=256, help="Input height")
     args = parser.parse_args()
 
     anchors = generate_anchors(args.width, args.height)

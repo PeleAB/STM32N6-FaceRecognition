@@ -32,6 +32,8 @@ void PC_STREAM_Init(void)
 #define STREAM_MAX_WIDTH  (LCD_FG_WIDTH / STREAM_SCALE)
 #define STREAM_MAX_HEIGHT (LCD_FG_HEIGHT / STREAM_SCALE)
 
+__attribute__ ((section (".psram_bss")))
+__attribute__((aligned (32)))
 static uint8_t stream_buffer[STREAM_MAX_WIDTH * STREAM_MAX_HEIGHT];
 
 typedef struct {

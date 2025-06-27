@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    face_detection.h
   * @author  STEdgeAI
-  * @date    2025-06-22 21:48:24
+  * @date    2025-06-26 20:52:07
   * @brief   Minimal description of the generated c-implemention of the network
   ******************************************************************************
   * @attention
@@ -20,7 +20,7 @@
 
 /******************************************************************************/
 #define LL_ATON_FACE_DETECTION_C_MODEL_NAME        "face_detection"
-#define LL_ATON_FACE_DETECTION_ORIGIN_MODEL_NAME   "face_detection_front_128_integer_quant"
+#define LL_ATON_FACE_DETECTION_ORIGIN_MODEL_NAME   "face_detection_back_256x256_full_integer_quant"
 
 /************************** USER ALLOCATED IOs ********************************/
 // No user allocated inputs
@@ -33,12 +33,18 @@
 #define LL_ATON_FACE_DETECTION_IN_1_SIZE_BYTES  (196608)
 
 /************************** OUTPUTS *******************************************/
-#define LL_ATON_FACE_DETECTION_OUT_NUM        (2)    // Total number of output buffers
-// Output buffer 1 -- Transpose_259_out_0
+#define LL_ATON_FACE_DETECTION_OUT_NUM        (4)    // Total number of output buffers
+// Output buffer 1 -- Transpose_408_out_0
 #define LL_ATON_FACE_DETECTION_OUT_1_ALIGNMENT   (32)
-#define LL_ATON_FACE_DETECTION_OUT_1_SIZE_BYTES  (3584)
-// Output buffer 2 -- Transpose_239_out_0
+#define LL_ATON_FACE_DETECTION_OUT_1_SIZE_BYTES  (512)
+// Output buffer 2 -- Transpose_388_out_0
 #define LL_ATON_FACE_DETECTION_OUT_2_ALIGNMENT   (32)
-#define LL_ATON_FACE_DETECTION_OUT_2_SIZE_BYTES  (57344)
+#define LL_ATON_FACE_DETECTION_OUT_2_SIZE_BYTES  (384)
+// Output buffer 3 -- Transpose_398_out_0
+#define LL_ATON_FACE_DETECTION_OUT_3_ALIGNMENT   (32)
+#define LL_ATON_FACE_DETECTION_OUT_3_SIZE_BYTES  (8192)
+// Output buffer 4 -- Transpose_378_out_0
+#define LL_ATON_FACE_DETECTION_OUT_4_ALIGNMENT   (32)
+#define LL_ATON_FACE_DETECTION_OUT_4_SIZE_BYTES  (6144)
 
 #endif /* LL_ATON_FACE_DETECTION_H */

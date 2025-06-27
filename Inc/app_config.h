@@ -45,8 +45,8 @@
 /* Model Related Info */
 #define POSTPROCESS_TYPE POSTPROCESS_MPE_PD_UF
 
-#define NN_WIDTH 128
-#define NN_HEIGHT 128
+#define NN_WIDTH 256
+#define NN_HEIGHT 256
 #define NN_BPP 3
 
 #define COLOR_BGR (0)
@@ -66,22 +66,6 @@
 #ifndef INPUT_SRC_MODE
 #define INPUT_SRC_MODE INPUT_SRC_CAMERA
 #endif
-
-/* I/O configuration */
-#define AI_OBJDETECT_YOLOV2_PP_NB_CLASSES        (1)
-#define AI_OBJDETECT_YOLOV2_PP_NB_ANCHORS        (5)
-#define AI_OBJDETECT_YOLOV2_PP_GRID_WIDTH        (7)
-#define AI_OBJDETECT_YOLOV2_PP_GRID_HEIGHT       (7)
-#define AI_OBJDETECT_YOLOV2_PP_NB_INPUT_BOXES    (AI_OBJDETECT_YOLOV2_PP_GRID_WIDTH * AI_OBJDETECT_YOLOV2_PP_GRID_HEIGHT)
-
-/* Anchor boxes */
-static const float32_t AI_OBJDETECT_YOLOV2_PP_ANCHORS[2*AI_OBJDETECT_YOLOV2_PP_NB_ANCHORS] = {
-    0.9883000000f,     3.3606000000f,
-    2.1194000000f,     5.3759000000f,
-    3.0520000000f,     9.1336000000f,
-    5.5517000000f,     9.3066000000f,
-    9.7260000000f,     11.1422000000f,
-  };
 
 /* --------  Tuning below can be modified by the application --------- */
 #define AI_OBJDETECT_YOLOV2_PP_CONF_THRESHOLD    (0.6f)

@@ -5,63 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c982fc48-7cf4-41a9-90d7-0061582bf1c4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Binary/STM32N6_GettingStarted_ObjectDetection_signed.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Binary/STM32N6_GettingStarted_ObjectDetection_signed.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Binary/STM32N6_GettingStarted_ObjectDetection_signed.hex" beforeDir="false" afterPath="$PROJECT_DIR$/Binary/STM32N6_GettingStarted_ObjectDetection_signed.hex" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Binary/det_network_data.hex" beforeDir="false" afterPath="$PROJECT_DIR$/Binary/det_network_data.hex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Binary/rec_network_data.hex" beforeDir="false" afterPath="$PROJECT_DIR$/Binary/rec_network_data.hex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ecloader.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ecloader.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_caches_interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_caches_interface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_cipher.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_cipher.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_cipher.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_cipher.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_dbgtrc.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_dbgtrc.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_debug.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_debug.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib_sw_operators.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib_sw_operators.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib_sw_operators.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_lib_sw_operators.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_freertos.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_freertos.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_freertos.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_freertos.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_threadx.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_threadx.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_threadx.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_threadx.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_zephyr.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_zephyr.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_zephyr.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal_zephyr.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_platform.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_platform.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_profiler.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_profiler.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rcompat.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rcompat.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_reloc_callbacks.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_reloc_callbacks.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_reloc_network.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_reloc_network.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_reloc_network.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_reloc_network.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rt_main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rt_main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_version.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_version.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw.h" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_float.c" beforeDir="false" afterPath="$PROJECT_DIR$/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_float.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Inc/app_config.h" beforeDir="false" afterPath="$PROJECT_DIR$/Inc/app_config.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/face_detection.c" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_detection.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/face_detection.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_detection.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/face_detection_analyze_report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_detection_analyze_report.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/face_detection_atonbuf.xSPI2.raw" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_detection_atonbuf.xSPI2.raw" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/face_detection_c_info.json" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_detection_c_info.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/face_detection_ecblobs.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_detection_ecblobs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/face_detection_front_128_integer_quant_OE_3_2_0_Q.json" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_detection_front_128_integer_quant_OE_3_2_0_Q.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/face_recognition.c" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_recognition.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/face_recognition.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_recognition.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/face_recognition_analyze_report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_recognition_analyze_report.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/face_recognition_atonbuf.xSPI2.raw" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_recognition_atonbuf.xSPI2.raw" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/face_recognition_c_info.json" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_recognition_c_info.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/face_recognition_ecblobs.h" beforeDir="false" afterPath="$PROJECT_DIR$/Model/face_recognition_ecblobs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/dummy_fr_input.d" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/dummy_fr_input.d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/main.d" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/Application/main.d" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.elf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.list" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" beforeDir="false" afterPath="$PROJECT_DIR$/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/PrepareBinary.bat" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/PrepareBinary.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/app_postprocess.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/app_postprocess.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/dummy_fr_input.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/dummy_fr_input.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Src/pc_stream.c" beforeDir="false" afterPath="$PROJECT_DIR$/Src/pc_stream.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/python_tools/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/python_tools/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/generate_blazeface_anchors.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/generate_blazeface_anchors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unified_face_recognition.onnx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unified_face_recognition_quant.onnx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +70,8 @@
     "Python.pc_uart_client.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "codex/adapt-code-to-use-face__detection-and-face__recognition-models",
+    "git-widget-placeholder": "CenterFace",
+    "last_opened_file_path": "C:/Users/pele/Documents/GitHub/ObjectDet",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -109,7 +79,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Python.jjj">
+  <component name="RunManager" selected="Python.generate_blazeface_anchors">
     <configuration name="compare_detections (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ObjectDet" />
       <option name="ENV_FILES" value="" />
@@ -133,7 +103,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="imageFaceDetection" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="generate_blazeface_anchors" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ObjectDet" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -142,12 +112,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/BlazeFace-EXAMPLE" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/BlazeFace-EXAMPLE/imageFaceDetection.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/generate_blazeface_anchors.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -227,11 +197,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.generate_blazeface_anchors" />
         <item itemvalue="Python.jjj" />
         <item itemvalue="Python.pc_uart_client (1)" />
         <item itemvalue="Python.compare_detections (1)" />
         <item itemvalue="Python.pc_uart_client" />
-        <item itemvalue="Python.imageFaceDetection" />
       </list>
     </recent_temporary>
   </component>
@@ -252,6 +222,7 @@
       <updated>1749498066618</updated>
       <workItem from="1749498067646" duration="1558000" />
       <workItem from="1750600426470" duration="666000" />
+      <workItem from="1750960862709" duration="500000" />
     </task>
     <servers />
   </component>
@@ -334,6 +305,8 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/pc_send_photos_py$imageFaceDetection.coverage" NAME="imageFaceDetection Coverage Results" MODIFIED="1750537599535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/BlazeFace-EXAMPLE" />
+    <SUITE FILE_PATH="coverage/ObjectDet$generate_blazeface_anchors.coverage" NAME="generate_blazeface_anchors Coverage Results" MODIFIED="1750969860997" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts" />
+    <SUITE FILE_PATH="coverage/ObjectDet$demo_tflite.coverage" NAME="demo_tflite Coverage Results" MODIFIED="1751013847438" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../face-detector-quantization/CenterFace" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_send_photos.coverage" NAME="pc_send_photos Coverage Results" MODIFIED="1749918113217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_uart_utils.coverage" NAME="pc_uart_utils Coverage Results" MODIFIED="1750366315620" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_uart_client__1_.coverage" NAME="pc_uart_client (1) Coverage Results" MODIFIED="1750588636050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/python_tools" />
@@ -342,9 +315,12 @@
     <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_stream_receiver.coverage" NAME="pc_stream_receiver Coverage Results" MODIFIED="1750193783390" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$compare_detections.coverage" NAME="compare_detections Coverage Results" MODIFIED="1750585768311" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/python_tools" />
     <SUITE FILE_PATH="coverage/ObjectDet$jjj.coverage" NAME="jjj Coverage Results" MODIFIED="1750603865324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ObjectDet$fff.coverage" NAME="fff Coverage Results" MODIFIED="1750974295975" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$compare_detections__1_.coverage" NAME="compare_detections (1) Coverage Results" MODIFIED="1750587656354" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/python_tools" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$genLogo.coverage" NAME="genLogo Coverage Results" MODIFIED="1750200716157" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$build_unified_face_rec.coverage" NAME="build_unified_face_rec Coverage Results" MODIFIED="1750449981027" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/pc_send_photos_py$pc_uart_client.coverage" NAME="pc_uart_client Coverage Results" MODIFIED="1750586065050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ObjectDet$blazeFaceDetector.coverage" NAME="blazeFaceDetector Coverage Results" MODIFIED="1751017618979" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/python_tools/BlazeFaceDetection" />
+    <SUITE FILE_PATH="coverage/ObjectDet$run_face_recognition.coverage" NAME="run_face_recognition Coverage Results" MODIFIED="1751018694835" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/python_tools" />
   </component>
 </project>
