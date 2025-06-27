@@ -122,15 +122,10 @@ class App(QtWidgets.QMainWindow):
         self.disconnect_btn.clicked.connect(self.disconnect)
         layout.addWidget(self.disconnect_btn, 4, 1)
 
-        self.stream_btn = QtWidgets.QPushButton("Stop Stream")
-        self.stream_btn.setEnabled(False)
-        self.stream_btn.clicked.connect(self.toggle_stream)
-        layout.addWidget(self.stream_btn, 5, 0, 1, 2)
-
         self.send_btn = QtWidgets.QPushButton("Send Images")
         self.send_btn.setEnabled(False)
         self.send_btn.clicked.connect(self.send_images)
-        layout.addWidget(self.send_btn, 6, 0, 1, 2)
+        layout.addWidget(self.send_btn, 5, 0, 1, 2)
 
         self.image_label = QtWidgets.QLabel()
         self.image_label.setFixedSize(640, 480)
@@ -170,8 +165,6 @@ class App(QtWidgets.QMainWindow):
         self.connect_btn.setEnabled(False)
         self.disconnect_btn.setEnabled(True)
         self.send_btn.setEnabled(True)
-        self.stream_btn.setEnabled(True)
-
         self.start_stream()
 
     # ------------------------------------------------------------------
@@ -184,18 +177,6 @@ class App(QtWidgets.QMainWindow):
         self.stream_thread.aligned_received.connect(self.update_aligned)
         self.stream_thread.fps_updated.connect(self.update_fps)
         self.stream_thread.start()
-        self.stream_btn.setText("Stop Stream")
-
-    # ------------------------------------------------------------------
-    def toggle_stream(self) -> None:
-        if self.stream_thread:
-            self.stream_thread.stop()
-            self.stream_thread = None
-            if self.ser:
-                self.ser.reset_input_buffer()
-            self.stream_btn.setText("Start Stream")
-        else:
-            self.start_stream()
 
     # ------------------------------------------------------------------
     def disconnect(self) -> None:
@@ -208,8 +189,6 @@ class App(QtWidgets.QMainWindow):
         self.connect_btn.setEnabled(True)
         self.disconnect_btn.setEnabled(False)
         self.send_btn.setEnabled(False)
-        self.stream_btn.setEnabled(False)
-        self.stream_btn.setText("Stop Stream")
 
     # ------------------------------------------------------------------
     def send_images(self) -> None:
