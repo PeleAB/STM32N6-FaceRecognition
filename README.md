@@ -221,7 +221,7 @@ Do a power cycle to boot from the external flash.
 
 ## PC streaming receiver
 The board streams a downsampled view (160x96) compressed as JPEG and detection results over UART at 921600 baud.
-Install the required Python packages listed in `python_tools/requirements.txt` and run `pc_uart_client.py` to display the stream with a modern GUI:
+Install the required Python packages listed in `python_tools/requirements.txt` and run `pc_uart_client.py` to display the stream with a modern GUI. Use the **Refresh** button to list available ports. The GUI also shows the current FPS while streaming:
 
 ```bash
 pip install -r python_tools/requirements.txt

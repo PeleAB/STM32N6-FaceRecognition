@@ -4,8 +4,10 @@
 import sys
 import re
 from pathlib import Path
+import time
 
 import serial
+from serial.tools import list_ports
 import cv2
 import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -33,6 +35,7 @@ class StreamThread(QtCore.QThread):
 
     frame_received = QtCore.pyqtSignal(np.ndarray)
     aligned_received = QtCore.pyqtSignal(np.ndarray)
+    fps_updated = QtCore.pyqtSignal(float)
 
     def __init__(self, ser: serial.Serial, target_emb: np.ndarray | None = None):
         super().__init__()
@@ -42,6 +45,8 @@ class StreamThread(QtCore.QThread):
 
     def run(self) -> None:
         self.ser.reset_input_buffer()
+        last = time.time()
+        count = 0
         while self._running:
             tag, frame, _, _ = utils.read_frame(self.ser)
             if frame is None:
@@ -55,10 +60,16 @@ class StreamThread(QtCore.QThread):
                     sim = float(np.dot(a, b))
                     print(f"Similarity: {sim:.4f}")
                 self.aligned_received.emit(frame)
-                continue
-            _, dets = utils.read_detections(self.ser)
-            frame = utils.draw_detections(frame, dets)
-            self.frame_received.emit(frame)
+            else:
+                _, dets = utils.read_detections(self.ser)
+                frame = utils.draw_detections(frame, dets)
+                self.frame_received.emit(frame)
+            count += 1
+            now = time.time()
+            if now - last >= 1.0:
+                self.fps_updated.emit(count / (now - last))
+                count = 0
+                last = now
 
     def stop(self) -> None:
         self._running = False
@@ -78,8 +89,12 @@ class App(QtWidgets.QMainWindow):
         layout = QtWidgets.QGridLayout(central)
 
         layout.addWidget(QtWidgets.QLabel("Port"), 0, 0)
-        self.port_edit = QtWidgets.QLineEdit("COM3")
-        layout.addWidget(self.port_edit, 0, 1)
+        self.port_combo = QtWidgets.QComboBox()
+        layout.addWidget(self.port_combo, 0, 1)
+        refresh_btn = QtWidgets.QPushButton("Refresh")
+        refresh_btn.clicked.connect(self.refresh_ports)
+        layout.addWidget(refresh_btn, 0, 2)
+        self.refresh_ports()
 
         layout.addWidget(QtWidgets.QLabel("Baud"), 1, 0)
         self.baud_edit = QtWidgets.QLineEdit(str(921600 * 8))
@@ -117,14 +132,22 @@ class App(QtWidgets.QMainWindow):
         self.aligned_label.setAlignment(QtCore.Qt.AlignCenter)
         layout.addWidget(self.aligned_label, 7, 0, 1, 2)
 
+        self.fps_label = QtWidgets.QLabel("FPS: 0.0")
+        layout.addWidget(self.fps_label, 8, 0, 1, 2)
+
         self.ser: serial.Serial | None = None
         self.stream_thread: StreamThread | None = None
+
+    def refresh_ports(self) -> None:
+        self.port_combo.clear()
+        for p in list_ports.comports():
+            self.port_combo.addItem(p.device)
 
     # ------------------------------------------------------------------
     def connect(self) -> None:
         try:
             self.ser = serial.Serial(
-                self.port_edit.text(), int(self.baud_edit.text()), timeout=1
+                self.port_combo.currentText(), int(self.baud_edit.text()), timeout=1
             )
         except Exception as exc:  # pragma: no cover - UI feedback only
             QtWidgets.QMessageBox.critical(self, "Connection error", str(exc))
@@ -144,6 +167,7 @@ class App(QtWidgets.QMainWindow):
         self.stream_thread = StreamThread(self.ser, target)
         self.stream_thread.frame_received.connect(self.update_frame)
         self.stream_thread.aligned_received.connect(self.update_aligned)
+        self.stream_thread.fps_updated.connect(self.update_fps)
         self.stream_thread.start()
 
     # ------------------------------------------------------------------
@@ -215,6 +239,10 @@ class App(QtWidgets.QMainWindow):
             self.aligned_label.size(), QtCore.Qt.AspectRatioMode.KeepAspectRatio
         )
         self.aligned_label.setPixmap(pix)
+
+    # ------------------------------------------------------------------
+    def update_fps(self, fps: float) -> None:
+        self.fps_label.setText(f"FPS: {fps:.1f}")
 
     # ------------------------------------------------------------------
     def closeEvent(self, event: QtGui.QCloseEvent) -> None:  # pragma: no cover
