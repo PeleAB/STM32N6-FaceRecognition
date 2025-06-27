@@ -11,8 +11,104 @@ from serial.tools import list_ports
 import cv2
 import numpy as np
 from PySide6 import QtCore, QtGui, QtWidgets
+import onnxruntime as ort
+
+from centerface import CenterFace
 
 import pc_uart_utils as utils
+
+
+def crop_align(image: np.ndarray, box: np.ndarray, left_eye: np.ndarray,
+               right_eye: np.ndarray, size=(96, 112)) -> np.ndarray:
+    """Crop and align face using eye landmarks without squashing."""
+    h, w, _ = image.shape
+    x_center = (box[0] + box[2]) / 2 * w
+    y_center = (box[1] + box[3]) / 2 * h
+    width = (box[2] - box[0]) * w
+    height = (box[3] - box[1]) * h
+    lx = left_eye[0] * w
+    ly = left_eye[1] * h
+    rx = right_eye[0] * w
+    ry = right_eye[1] * h
+
+    angle = -np.arctan2(ry - ly, rx - lx)
+    cos_a = np.cos(angle)
+    sin_a = np.sin(angle)
+
+    dst_w, dst_h = size
+    dst_full = max(dst_w, dst_h)
+    off_x = (dst_full - dst_w) / 2.0
+    off_y = (dst_full - dst_h) / 2.0
+
+    out = np.zeros((dst_h, dst_w, 3), dtype=image.dtype)
+    for y in range(dst_h):
+        ny = ((y + off_y) + 0.5) / dst_full - 0.5
+        for x in range(dst_w):
+            nx = ((x + off_x) + 0.5) / dst_full - 0.5
+            src_x = x_center + (nx * width) * cos_a + (ny * height) * sin_a
+            src_y = y_center + (ny * height) * cos_a - (nx * width) * sin_a
+            src_x = np.clip(src_x, 0, w - 1)
+            src_y = np.clip(src_y, 0, h - 1)
+            out[y, x] = image[int(src_y), int(src_x)]
+    return out
+
+
+def inflate_box(box: np.ndarray, factor: float = 1.2) -> np.ndarray:
+    """Return *box* scaled by *factor* around its center."""
+    cx = (box[0] + box[2]) / 2
+    cy = (box[1] + box[3]) / 2
+    w = (box[2] - box[0]) * factor
+    h = (box[3] - box[1]) * factor
+    half = np.array([w / 2, h / 2], dtype=box.dtype)
+    new_box = np.array([cx - half[0], cy - half[1], cx + half[0], cy + half[1]],
+                       dtype=box.dtype)
+    new_box = np.clip(new_box, 0.0, 1.0)
+    return new_box
+
+
+def compute_embedding(img_path: Path, detector: CenterFace, sess: ort.InferenceSession,
+                      input_name: str, output_name: str) -> np.ndarray | None:
+    """Return L2-normalized embedding for *img_path* or None on failure."""
+    img = cv2.imread(str(img_path))
+    if img is None:
+        print(f"Failed to read {img_path}")
+        return None
+
+    h0, w0, _ = img.shape
+    crop_size = min(h0, w0)
+    off_x = (w0 - crop_size) // 2
+    off_y = (h0 - crop_size) // 2
+    img_sq = img[off_y : off_y + crop_size, off_x : off_x + crop_size]
+
+    dets, lms = detector.inference(img_sq, threshold=0.5)
+    if len(dets) == 0:
+        print(f"No face detected in {img_path}")
+        return None
+
+    det = dets[0]
+    lm = lms[0]
+    box = np.array([
+        det[0] / img_sq.shape[1],
+        det[1] / img_sq.shape[0],
+        det[2] / img_sq.shape[1],
+        det[3] / img_sq.shape[0],
+    ], dtype=np.float32)
+    box = inflate_box(box)
+    left_eye = np.array([lm[0] / img_sq.shape[1], lm[1] / img_sq.shape[0]], dtype=np.float32)
+    right_eye = np.array([lm[2] / img_sq.shape[1], lm[3] / img_sq.shape[0]], dtype=np.float32)
+    aligned = crop_align(img_sq, box, left_eye, right_eye, size=(96, 112))
+
+    face_rgb = cv2.cvtColor(aligned, cv2.COLOR_BGR2RGB).astype(np.int16)
+    face_rgb -= 128
+    face = np.transpose(face_rgb.astype(np.int8), (2, 0, 1))[None, ...]
+
+    onnx_out = sess.run([output_name], {input_name: face})[0]
+    embedding = onnx_out.astype(np.int8).flatten() / 128.0
+
+    norm = np.linalg.norm(embedding)
+    if norm > 0:
+        embedding /= norm
+    return embedding
 
 
 def load_target_embedding() -> np.ndarray | None:
@@ -127,6 +223,10 @@ class App(QtWidgets.QMainWindow):
         self.send_btn.clicked.connect(self.send_images)
         layout.addWidget(self.send_btn, 5, 0, 1, 2)
 
+        self.enroll_btn = QtWidgets.QPushButton("Enroll")
+        self.enroll_btn.clicked.connect(self.enroll)
+        layout.addWidget(self.enroll_btn, 6, 0, 1, 2)
+
         self.image_label = QtWidgets.QLabel()
         self.image_label.setFixedSize(640, 480)
         self.image_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -232,6 +332,41 @@ class App(QtWidgets.QMainWindow):
 
         if was_streaming:
             self.start_stream()
+
+    # ------------------------------------------------------------------
+    def enroll(self) -> None:
+        dir_path = QtWidgets.QFileDialog.getExistingDirectory(
+            self, "Select directory with face images"
+        )
+        if not dir_path:
+            return
+
+        model_dir = Path(__file__).resolve().parent / "models"
+        det_model = model_dir / "centerface_1x3xHxW_integer_quant.tflite"
+        rec_model = model_dir / "mobilefacenet_integer_quant_1_OE_3_2_0.onnx"
+        detector = CenterFace(str(det_model))
+        sess = ort.InferenceSession(str(rec_model))
+        input_name = sess.get_inputs()[0].name
+        output_name = sess.get_outputs()[0].name
+
+        embeddings = []
+        for ext in ("*.jpg", "*.jpeg", "*.png"):
+            for img_path in Path(dir_path).glob(ext):
+                emb = compute_embedding(img_path, detector, sess, input_name, output_name)
+                if emb is not None:
+                    embeddings.append(emb)
+
+        if not embeddings:
+            QtWidgets.QMessageBox.information(self, "Enroll", "No embeddings generated")
+            return
+
+        avg = np.mean(np.stack(embeddings), axis=0)
+        norm = np.linalg.norm(avg)
+        if norm > 0:
+            avg /= norm
+
+        print("Enrollment embedding:")
+        print(" ".join(f"{x:.6f}" for x in avg))
 
     # ------------------------------------------------------------------
     def update_frame(self, frame: np.ndarray) -> None:
