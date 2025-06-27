@@ -73,12 +73,12 @@
 #define AI_OBJDETECT_YOLOV2_PP_MAX_BOXES_LIMIT   (10)
 
 
-/* BlazeFace/Palm detection parameters */
+/* CenterFace detection parameters */
 #define AI_PD_MODEL_PP_WIDTH              (NN_WIDTH)
 #define AI_PD_MODEL_PP_HEIGHT             (NN_HEIGHT)
-#define AI_PD_MODEL_PP_NB_KEYPOINTS       (6)
-#define AI_PD_MODEL_PP_TOTAL_DETECTIONS   (896)
-#define AI_PD_MODEL_PP_CONF_THRESHOLD     (0.85f)
+#define AI_PD_MODEL_PP_NB_KEYPOINTS       (5)
+#define AI_PD_MODEL_PP_TOTAL_DETECTIONS   (1024)
+#define AI_PD_MODEL_PP_CONF_THRESHOLD     (0.5f)
 #define AI_PD_MODEL_PP_IOU_THRESHOLD      (0.3f)
 #define AI_PD_MODEL_PP_MAX_BOXES_LIMIT    (10)
 
@@ -86,7 +86,7 @@
 #define MP_FACE_PP_CONF_THRESHOLD (0.5f)
 
 /* Display */
-#define WELCOME_MSG_1         "blazeface_128_float.tflite"
+#define WELCOME_MSG_1         "centerface_float.tflite"
 #define WELCOME_MSG_2         "Model Running in STM32 MCU internal memory"
 
 #endif
