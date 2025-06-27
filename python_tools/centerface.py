@@ -56,6 +56,8 @@ class CenterFace(object):
             swapRB=True,
             crop=False
         )
+        print("[INFO] inference started...")
+        print(input_image)
         # input_image = np.transpose(input_image, (0, 2, 3, 1))
         # input_image= input_image.astype(np.int8)
 
