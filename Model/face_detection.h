@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    face_detection.h
   * @author  STEdgeAI
-  * @date    2025-06-26 20:52:07
+  * @date    2025-06-27 14:35:28
   * @brief   Minimal description of the generated c-implemention of the network
   ******************************************************************************
   * @attention
@@ -20,7 +20,7 @@
 
 /******************************************************************************/
 #define LL_ATON_FACE_DETECTION_C_MODEL_NAME        "face_detection"
-#define LL_ATON_FACE_DETECTION_ORIGIN_MODEL_NAME   "face_detection_back_256x256_full_integer_quant"
+#define LL_ATON_FACE_DETECTION_ORIGIN_MODEL_NAME   "centerface_1x3xHxW_integer_quant"
 
 /************************** USER ALLOCATED IOs ********************************/
 // No user allocated inputs
@@ -34,17 +34,17 @@
 
 /************************** OUTPUTS *******************************************/
 #define LL_ATON_FACE_DETECTION_OUT_NUM        (4)    // Total number of output buffers
-// Output buffer 1 -- Transpose_408_out_0
+// Output buffer 1 -- Transpose_290_out_0
 #define LL_ATON_FACE_DETECTION_OUT_1_ALIGNMENT   (32)
-#define LL_ATON_FACE_DETECTION_OUT_1_SIZE_BYTES  (512)
-// Output buffer 2 -- Transpose_388_out_0
+#define LL_ATON_FACE_DETECTION_OUT_1_SIZE_BYTES  (8192)
+// Output buffer 2 -- Transpose_282_out_0
 #define LL_ATON_FACE_DETECTION_OUT_2_ALIGNMENT   (32)
-#define LL_ATON_FACE_DETECTION_OUT_2_SIZE_BYTES  (384)
-// Output buffer 3 -- Transpose_398_out_0
+#define LL_ATON_FACE_DETECTION_OUT_2_SIZE_BYTES  (40960)
+// Output buffer 3 -- Transpose_297_out_0
 #define LL_ATON_FACE_DETECTION_OUT_3_ALIGNMENT   (32)
-#define LL_ATON_FACE_DETECTION_OUT_3_SIZE_BYTES  (8192)
-// Output buffer 4 -- Transpose_378_out_0
+#define LL_ATON_FACE_DETECTION_OUT_3_SIZE_BYTES  (4096)
+// Output buffer 4 -- Transpose_286_out_0
 #define LL_ATON_FACE_DETECTION_OUT_4_ALIGNMENT   (32)
-#define LL_ATON_FACE_DETECTION_OUT_4_SIZE_BYTES  (6144)
+#define LL_ATON_FACE_DETECTION_OUT_4_SIZE_BYTES  (8192)
 
 #endif /* LL_ATON_FACE_DETECTION_H */

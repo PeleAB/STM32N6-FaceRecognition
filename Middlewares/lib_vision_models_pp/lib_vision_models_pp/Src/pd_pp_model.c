@@ -91,37 +91,50 @@ static int32_t pd_pp_decode(pd_model_pp_in_t *pInput,
   pd_pp_box_t *pBoxes = (pd_pp_box_t *)pOutput->pOutData;
   float32_t width  = pInput_static_param->width;
   float32_t height = pInput_static_param->height;
-  float32_t *pRawBoxes = (float32_t *)pInput->pBoxes;
-  float32_t *pRawProbs = (float32_t *)pInput->pProbs;
-  pd_anchor_t *pAnchors = pInput_static_param->pAnchors;
-  const size_t in_struct_size = (2 * pInput_static_param->nb_keypoints) + AI_PD_MODEL_PP_KEYPOINTS;
+  const int grid = 32;
   size_t box_nb = 0;
 
-  for (uint32_t i = 0; i < pInput_static_param->nb_total_boxes; i++) {
-    pd_pp_box_t *pBox = &pBoxes[box_nb]; //&pd_boxes[box_nb];
+  float32_t *pScale = pInput->pScale;
+  float32_t *pLms = pInput->pLms;
+  float32_t *pHeatmap = pInput->pHeatmap;
+  float32_t *pOffset = pInput->pOffset;
 
-    /* decode prob */
-    pBox->prob = 1.0f / (1.0f + expf(-pRawProbs[i]));
-    if (pBox->prob >= pInput_static_param->conf_threshold) {
-      const float ax = pAnchors[i].x;
-      const float ay = pAnchors[i].y;
+  for (int y = 0; y < grid; y++) {
+    for (int x = 0; x < grid; x++) {
+      int index_h = (y * grid + x);
+      float32_t score = pHeatmap[index_h];
+      if (score > pInput_static_param->conf_threshold) {
+        float32_t s0 = expf(pScale[(index_h * 2) + 0]) * 4.0f;
+        float32_t s1 = expf(pScale[(index_h * 2) + 1]) * 4.0f;
+        float32_t o0 = pOffset[(index_h * 2) + 0];
+        float32_t o1 = pOffset[(index_h * 2) + 1];
 
-      /* The network outputs absolute offsets in pixels. Convert them back to
-       * normalized coordinates in the [0,1] range using the anchor center. */
-      pBox->x_center = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_XCENTER] + (ax * width)) / width;
-      pBox->y_center = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_YCENTER] + (ay * height)) / height;
-      pBox->width  = pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_WIDTHREL]  / width;
-      pBox->height = pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_HEIGHTREL] / height;
+        float32_t x1 = (x + o1 + 0.5f) * 4.0f - s1 / 2.0f;
+        float32_t y1 = (y + o0 + 0.5f) * 4.0f - s0 / 2.0f;
+        if (x1 < 0) x1 = 0;
+        if (y1 < 0) y1 = 0;
+        float32_t x2 = x1 + s1;
+        float32_t y2 = y1 + s0;
 
-      /* decode keypoints */
-      for (uint32_t j = 0; j < pInput_static_param->nb_keypoints; j++) {
-        pBox->pKps[j].x = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_KEYPOINTS + (2 * j) + 0] + (ax * width)) / width;
-        pBox->pKps[j].y = (pRawBoxes[i * in_struct_size + AI_PD_MODEL_PP_KEYPOINTS + (2 * j) + 1] + (ay * height)) / height;
-      }
+        pd_pp_box_t *pBox = &pBoxes[box_nb];
+        pBox->prob = score;
+        pBox->x_center = ((x1 + x2) * 0.5f) / width;
+        pBox->y_center = ((y1 + y2) * 0.5f) / height;
+        pBox->width  = s1 / width;
+        pBox->height = s0 / height;
 
-      box_nb++;
-      if (box_nb >= pInput_static_param->max_boxes_limit) {
-        break;
+        for (uint32_t j = 0; j < pInput_static_param->nb_keypoints; j++) {
+          float32_t lm_y = pLms[index_h * pInput_static_param->nb_keypoints * 2 + j * 2 + 0];
+          float32_t lm_x = pLms[index_h * pInput_static_param->nb_keypoints * 2 + j * 2 + 1];
+          pBox->pKps[j].x = (lm_x * s1 + x1) / width;
+          pBox->pKps[j].y = (lm_y * s0 + y1) / height;
+        }
+
+        box_nb++;
+        if (box_nb >= pInput_static_param->max_boxes_limit) {
+          pOutput->box_nb = box_nb;
+          return AI_PD_POSTPROCESS_ERROR_NO;
+        }
       }
     }
   }

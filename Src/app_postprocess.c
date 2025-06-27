@@ -18,7 +18,7 @@ int32_t app_postprocess_init(void *params_postprocess)
   params->iou_threshold = AI_PD_MODEL_PP_IOU_THRESHOLD;
   params->nb_total_boxes = AI_PD_MODEL_PP_TOTAL_DETECTIONS;
   params->max_boxes_limit = AI_PD_MODEL_PP_MAX_BOXES_LIMIT;
-  params->pAnchors = g_Anchors;
+  params->pAnchors = NULL;
   pd_anchor_init();
   for (int i = 0; i < AI_PD_MODEL_PP_MAX_BOXES_LIMIT; i++)
   {
@@ -32,8 +32,10 @@ int32_t app_postprocess_run(void *pInput[], int nb_input, void *pOutput, void *p
   assert(nb_input == 4);
   pd_postprocess_out_t *pPdOutput = (pd_postprocess_out_t *)pOutput;
   pd_model_pp_in_t pp_input = {
-      .pProbs = (float32_t *)pInput[0],
-      .pBoxes = (float32_t *)pInput[1],
+      .pScale   = (float32_t *)pInput[0],
+      .pLms     = (float32_t *)pInput[1],
+      .pHeatmap = (float32_t *)pInput[2],
+      .pOffset  = (float32_t *)pInput[3],
   };
   pPdOutput->pOutData = out_detections;
   return pd_model_pp_process(&pp_input, pPdOutput,

@@ -310,7 +310,7 @@ int main(void)
       continue;
     }
 
-    img_rgb_to_hwc_float(nn_rgb, (float32_t *)nn_in, NN_WIDTH * NN_BPP,
+    img_rgb_to_chw_float(nn_rgb, (float32_t *)nn_in, NN_WIDTH * NN_BPP,
                         NN_WIDTH, NN_HEIGHT);
     SCB_CleanInvalidateDCache_by_Addr(nn_in, nn_in_len);
 
@@ -319,6 +319,7 @@ int main(void)
     LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
 
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
+
     if (pp_output.box_nb > 0)
     {
       pd_pp_box_t *box = (pd_pp_box_t *)pp_output.pOutData;

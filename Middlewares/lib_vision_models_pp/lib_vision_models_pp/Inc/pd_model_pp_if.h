@@ -35,8 +35,10 @@ typedef struct {
 /* I/O structures for model PD type */
 typedef struct pd_model_pp_in
 {
-  float32_t *pProbs;
-  float32_t *pBoxes;
+  float32_t *pScale;
+  float32_t *pLms;
+  float32_t *pHeatmap;
+  float32_t *pOffset;
 } pd_model_pp_in_t;
 
 typedef struct pd_model_static_param {
