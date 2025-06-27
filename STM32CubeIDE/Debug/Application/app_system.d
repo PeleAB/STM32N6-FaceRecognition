@@ -80,7 +80,8 @@ Application/app_system.o: \
  ../../Inc/mx66uw1g45g_conf.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/aps256xx/aps256xx.h \
  ../../Inc/aps256xx_conf.h \
- ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery.h
+ ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery.h \
+ ../../Inc/app_config.h
 ../../Inc/app_system.h:
 ../../Inc/system_utils.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
@@ -164,3 +165,4 @@ Application/app_system.o: \
 ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/aps256xx/aps256xx.h:
 ../../Inc/aps256xx_conf.h:
 ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery.h:
+../../Inc/app_config.h:

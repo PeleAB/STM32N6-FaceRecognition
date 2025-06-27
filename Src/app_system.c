@@ -4,6 +4,12 @@
 #include "pc_stream.h"
 #include "stm32n6570_discovery_xspi.h"
 #include "stm32n6570_discovery.h"
+#include "app_config.h"
+
+
+
+#include "system_utils.h"
+
 
 void App_SystemInit(void)
 {
