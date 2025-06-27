@@ -6,9 +6,10 @@ import cv2
 import numpy as np
 import onnxruntime as ort
 
-# allow importing BlazeFace modules from this directory
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from BlazeFaceDetection.blazeFaceDetector import blazeFaceDetector
+# allow importing CenterFace demo from repository root
+ROOT_DIR = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT_DIR))
+from CenterFace_example.demo_tflite import CenterFace
 
 
 def crop_align(image: np.ndarray, box: np.ndarray, left_eye: np.ndarray,
@@ -68,10 +69,12 @@ def main() -> None:
         help="ONNX face recognition model path",
     )
     parser.add_argument(
-        "--det-model-type",
-        choices=["front", "back"],
-        default="front",
-        help="BlazeFace model type",
+        "--det-model",
+        default=str(
+            ROOT_DIR
+            / "CenterFace_example/Models/centerface_1x3xHxW_full_integer_quant.tflite"
+        ),
+        help="CenterFace TFLite model path",
     )
     parser.add_argument(
         "--visualize",
@@ -81,8 +84,8 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    # load BlazeFace detector
-    detector = blazeFaceDetector(args.det_model_type)
+    # load CenterFace detector
+    detector = CenterFace(args.det_model)
 
     img = cv2.imread(args.image)
     if img is None:
@@ -95,15 +98,26 @@ def main() -> None:
     off_y = (h0 - crop_size) // 2
     img_sq = img[off_y : off_y + crop_size, off_x : off_x + crop_size]
 
-    # detect and align
-    results = detector.detectFaces(img_sq)
-    if results.boxes.shape[0] == 0:
+    # detect and align using CenterFace
+    dets, lms = detector.inference(img_sq, threshold=0.5)
+    if len(dets) == 0:
         print("No face detected")
         return
 
-    box = inflate_box(results.boxes[0])
-    left_eye = results.keypoints[0, 0]
-    right_eye = results.keypoints[0, 1]
+    det = dets[0]
+    lm = lms[0]
+    box = np.array(
+        [
+            det[0] / img_sq.shape[1],
+            det[1] / img_sq.shape[0],
+            det[2] / img_sq.shape[1],
+            det[3] / img_sq.shape[0],
+        ],
+        dtype=np.float32,
+    )
+    box = inflate_box(box)
+    left_eye = np.array([lm[0] / img_sq.shape[1], lm[1] / img_sq.shape[0]], dtype=np.float32)
+    right_eye = np.array([lm[2] / img_sq.shape[1], lm[3] / img_sq.shape[0]], dtype=np.float32)
     aligned = crop_align(img_sq, box, left_eye, right_eye, size=(96, 112))
 
     shown = False
