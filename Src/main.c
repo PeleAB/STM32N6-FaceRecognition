@@ -152,12 +152,8 @@ static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
   (void)res;
   (void)inf_ms;
 #endif
+
 }
-
-  } while (st != LL_ATON_RT_DONE);
-}
-
-
 
 /**
   * @brief  Main program
