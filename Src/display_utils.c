@@ -77,7 +77,7 @@ static void DrawPDBoundingBoxes(const pd_pp_box_t *boxes, uint32_t nb,
     height = ((y0 + height) < lcd_bg_area.Y0 + lcd_bg_area.YSize) ? height : (lcd_bg_area.Y0 + lcd_bg_area.YSize - y0 - 1);
     uint32_t color_idx = boxes[i].prob >= SIMILARITY_COLOR_THRESHOLD ? 1 : 0;
     UTIL_LCD_DrawRect(x0, y0, width, height, colors[color_idx]);
-    UTIL_LCDEx_PrintfAt(-x0 - width, y0, RIGHT_MODE, "%.1f%%", boxes[i].prob * 100.f);
+    //UTIL_LCDEx_PrintfAt(-x0 - width, y0, RIGHT_MODE, "%.1f%%", boxes[i].prob * 100.f);
   }
   if (tracker && tracker->state == TRACK_STATE_TRACKING)
   {

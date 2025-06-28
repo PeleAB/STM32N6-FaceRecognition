@@ -338,6 +338,7 @@ int main(void)
             if (boxes[i].prob > g_candidate_box.prob)
               g_candidate_box = boxes[i];
           }
+          g_tracker.similarity = 0;
           g_pipe_state = PIPE_STATE_VERIFY;
         }
         break;
@@ -357,6 +358,7 @@ int main(void)
         }
         else
         {
+          g_tracker.similarity = sim;
           g_pipe_state = PIPE_STATE_SEARCH;
         }
         break;
@@ -376,7 +378,7 @@ int main(void)
         break;
     }
 
-    if (g_pipe_state != PIPE_STATE_TRACK)
+    if ((HAL_GetTick() - g_last_verified) > (REVERIFY_INTERVAL_MS+1000))
     {
       BSP_LED_On(LED1);
       BSP_LED_Off(LED2);

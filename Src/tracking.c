@@ -5,7 +5,7 @@
 static float minf(float a, float b) { return a < b ? a : b; }
 static float maxf(float a, float b) { return a > b ? a : b; }
 
-#define TRACKER_SMOOTH_FACTOR (0.2f)
+#define TRACKER_SMOOTH_FACTOR (0.5f)
 
 static void smooth_box(pd_pp_box_t *dst, const pd_pp_box_t *src)
 {
