@@ -228,7 +228,7 @@ pip install -r python_tools/requirements.txt
 python3 python_tools/pc_uart_client.py
 ```
 
-The client automatically starts streaming once connected and shows the frames in a larger view embedded in the interface. The **Enroll** button lets you select a folder of photos and prints the average face embedding computed from them.
+The client automatically starts streaming once connected and shows the frames in a larger view embedded in the interface. The **Enroll** button lets you select a folder of photos, computes the average face embedding and automatically updates `Src/target_embedding.c` with the new vector.
 
 ## Compare detections
 Use `compare_detections.py` to run the Tiny YOLOv2 TFLite model on the PC and
@@ -242,8 +242,9 @@ python3 compare_detections.py my_image.jpg /dev/ttyUSB0
 ```
 
 ## Update target embedding
-Run `python_tools/run_face_recognition.py` with an image of the authorized user
-to regenerate `Src/target_embedding.c` and `Src/dummy_fr_input.c`:
+The **Enroll** button in the GUI updates `Src/target_embedding.c` automatically.
+You can also run `python_tools/run_face_recognition.py` with an image of the
+authorized user to regenerate `Src/target_embedding.c` and `Src/dummy_fr_input.c`:
 
 ```bash
 python3 python_tools/run_face_recognition.py my_face.jpg
