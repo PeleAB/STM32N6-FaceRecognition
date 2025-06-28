@@ -71,6 +71,12 @@ uint32_t fr_in_len;
 uint32_t fr_out_len;
 tracker_t g_tracker;
 
+static float current_embedding[EMBEDDING_SIZE];
+static int embedding_valid = 0;
+static uint32_t button_press_ts = 0;
+static int prev_button_state = 0;
+#define LONG_PRESS_MS 1000
+
 #define ALIGN_TO_16(value) (((value) + 15) & ~15)
 
 /* Working buffer for camera capture when pitch differs */
@@ -86,6 +92,7 @@ static void App_InputInit(uint32_t *pitch_nn);
 static int  App_GetFrame(uint8_t *dest, uint32_t pitch_nn);
 static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
                        uint32_t boot_ms);
+static void HandleUserButton(void);
 
 
 /*-------------------------------------------------------------------------*/
@@ -155,6 +162,28 @@ static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
 
 }
 
+static void HandleUserButton(void)
+{
+  int state = BSP_PB_GetState(BUTTON_USER1);
+  if (state && !prev_button_state)
+  {
+    button_press_ts = HAL_GetTick();
+  }
+  else if (!state && prev_button_state)
+  {
+    uint32_t duration = HAL_GetTick() - button_press_ts;
+    if (duration >= LONG_PRESS_MS)
+    {
+      embeddings_bank_reset();
+    }
+    else if (embedding_valid)
+    {
+      embeddings_bank_add(current_embedding);
+    }
+  }
+  prev_button_state = state;
+}
+
 /**
   * @brief  Main program
   * @param  None
@@ -170,6 +199,8 @@ int main(void)
   BSP_LED_Init(LED2);
   BSP_LED_Off(LED1);
   BSP_LED_Off(LED2);
+  BSP_PB_Init(BUTTON_USER1, BUTTON_MODE_GPIO);
+  embeddings_bank_init();
 
   /*** NN Init ****************************************************************/
   LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_detection);
@@ -271,6 +302,14 @@ int main(void)
           float val = ((float32_t)fr_nn_out[i]) / 128.f;
           tmp[i] = val;
         }
+        if (b == 0)
+        {
+          for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
+          {
+            current_embedding[i] = tmp[i];
+          }
+          embedding_valid = 1;
+        }
         float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
         box[b].prob = similarity;
 
@@ -300,6 +339,7 @@ int main(void)
     assert(ret == 0);
 
     App_Output(&pp_output, ts[1] - ts[0], ts[2]);
+    HandleUserButton();
 
     /* Discard nn_out region (used by pp_input and pp_outputs variables) to avoid Dcache evictions during nn inference */
     for (int i = 0; i < number_output; i++)
