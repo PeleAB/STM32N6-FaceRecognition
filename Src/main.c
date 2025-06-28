@@ -351,6 +351,7 @@ int main(void)
           g_tracker.box = g_candidate_box;
           g_tracker.state = TRACK_STATE_TRACKING;
           g_tracker.lost_count = 0;
+          g_tracker.similarity = sim;
           g_last_verified = HAL_GetTick();
           g_pipe_state = PIPE_STATE_TRACK;
         }
