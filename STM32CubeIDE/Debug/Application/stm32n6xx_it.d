@@ -50,7 +50,8 @@ Application/stm32n6xx_it.o: \
  ../../Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h \
  ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_core.h \
  ../../Inc/isp_conf.h \
- ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_platform.h
+ ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_platform.h \
+ ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery.h
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
 ../../Inc/stm32n6xx_hal_conf.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc.h:
@@ -102,3 +103,4 @@ Application/stm32n6xx_it.o: \
 ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_core.h:
 ../../Inc/isp_conf.h:
 ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_platform.h:
+../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery.h:

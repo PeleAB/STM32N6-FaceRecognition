@@ -21,6 +21,7 @@
 #include "stm32n6xx_it.h"
 
 #include "cmw_camera.h"
+#include "stm32n6570_discovery.h"
 
 /**
   * @brief   This function handles NMI exception.
@@ -155,4 +156,9 @@ void DCMIPP_IRQHandler(void)
 {
   DCMIPP_HandleTypeDef *hcamera_dcmipp = CMW_CAMERA_GetDCMIPPHandle();
   HAL_DCMIPP_IRQHandler(hcamera_dcmipp);
+}
+
+void EXTI13_IRQHandler(void)
+{
+  BSP_PB_IRQHandler(BUTTON_USER1);
 }

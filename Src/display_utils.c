@@ -12,6 +12,7 @@
 #endif
 #include "stm32n6570_discovery_conf.h"
 #include "tracking.h"
+#include "target_embedding.h"
 
 #ifdef ENABLE_LCD_DISPLAY
 #define NUMBER_COLORS 10
@@ -124,7 +125,8 @@ static void PrintInfo(uint32_t nb_rois, uint32_t inference_ms, uint32_t boottime
   UTIL_LCD_SetBackColor(0x40000000);
   UTIL_LCDEx_PrintfAt(0, LINE(2), CENTER_MODE, "Objects %u", nb_rois);
   UTIL_LCDEx_PrintfAt(0, LINE(20), CENTER_MODE, "Inference: %ums", inference_ms);
-  UTIL_LCDEx_PrintfAt(0, LINE(21), CENTER_MODE, "Boot time: %ums", boottime_ms);
+  UTIL_LCDEx_PrintfAt(0, LINE(21), CENTER_MODE, "Embeddings: %d/%d", embeddings_bank_count(), EMBEDDING_BANK_SIZE);
+  UTIL_LCDEx_PrintfAt(0, LINE(22), CENTER_MODE, "Boot time: %ums", boottime_ms);
   UTIL_LCD_SetBackColor(0);
   Display_WelcomeScreen();
 }
