@@ -368,6 +368,23 @@ class App(QtWidgets.QMainWindow):
         print("Enrollment embedding:")
         print(" ".join(f"{x:.6f}" for x in avg))
 
+        emb_line = (
+            "float target_embedding[EMBEDDING_SIZE] = {"
+            + ", ".join(f"{x:.6f}" for x in avg)
+            + "};\n"
+        )
+        c_path = Path(__file__).resolve().parents[1] / "Src" / "target_embedding.c"
+        lines = c_path.read_text().splitlines(keepends=True)
+        for i, line in enumerate(lines):
+            if line.strip().startswith("float target_embedding"):
+                lines[i] = emb_line
+                break
+        c_path.write_text("".join(lines))
+        QtWidgets.QMessageBox.information(self, "Enroll", f"Updated {c_path}")
+
+        if self.stream_thread is not None:
+            self.stream_thread.target_emb = avg
+
     # ------------------------------------------------------------------
     def update_frame(self, frame: np.ndarray) -> None:
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
