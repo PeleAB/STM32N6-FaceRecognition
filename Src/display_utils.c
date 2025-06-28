@@ -123,7 +123,7 @@ static void StreamOutputPd(const pd_postprocess_out_t *p_postprocess)
 static void PrintInfo(uint32_t nb_rois, uint32_t inference_ms, uint32_t boottime_ms)
 {
   UTIL_LCD_SetBackColor(0x40000000);
-  UTIL_LCDEx_PrintfAt(0, LINE(2), CENTER_MODE, "Objects %u", nb_rois);
+//  UTIL_LCDEx_PrintfAt(0, LINE(2), CENTER_MODE, "Objects %u", nb_rois);
   UTIL_LCDEx_PrintfAt(0, LINE(20), CENTER_MODE, "Inference: %ums", inference_ms);
   UTIL_LCDEx_PrintfAt(0, LINE(21), CENTER_MODE, "Embeddings: %d/%d", embeddings_bank_count(), EMBEDDING_BANK_SIZE);
   UTIL_LCDEx_PrintfAt(0, LINE(22), CENTER_MODE, "Boot time: %ums", boottime_ms);

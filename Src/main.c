@@ -107,7 +107,7 @@ static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
 static void HandleUserButton(void);
 static float VerifyBox(const pd_pp_box_t *box);
 
-
+LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_recognition);
 /*-------------------------------------------------------------------------*/
 static void App_InputInit(uint32_t *pitch_nn)
 {
@@ -288,7 +288,7 @@ int main(void)
   uint32_t nn_in_len = LL_Buffer_len(&nn_in_info[0]);
   uint32_t pitch_nn = 0;
 
-  LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_recognition);
+
   const LL_Buffer_InfoTypeDef *fr_in_info = LL_ATON_Input_Buffers_Info_face_recognition();
   const LL_Buffer_InfoTypeDef *fr_out_info = LL_ATON_Output_Buffers_Info_face_recognition();
   fr_nn_in = (int8_t *) LL_Buffer_addr_start(&fr_in_info[0]);
