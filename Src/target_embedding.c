@@ -1,4 +1,80 @@
 #include "target_embedding.h"
+#include <string.h>
+#include <math.h>
 
-/* Placeholder embedding initialized to zeros */
-float target_embedding[EMBEDDING_SIZE] = {-0.032452, -0.064904, 0.000000, -0.029207, -0.113582, -0.012981, 0.019471, 0.019471, -0.061659, -0.074640, -0.133054, 0.009736, 0.097356, -0.012981, -0.126563, 0.000000, -0.116828, 0.159015, -0.165506, 0.051923, 0.142789, -0.038943, 0.081130, -0.058414, -0.009736, 0.081130, 0.113582, -0.042188, 0.162261, 0.246636, -0.038943, -0.003245, -0.022716, -0.136299, -0.012981, 0.022716, 0.003245, 0.032452, 0.000000, -0.136299, -0.022716, 0.045433, 0.019471, -0.090866, -0.045433, 0.097356, 0.042188, -0.048678, 0.155770, 0.029207, 0.100602, -0.029207, 0.016226, -0.016226, 0.071395, -0.107092, -0.094111, 0.064904, 0.003245, -0.087621, -0.032452, 0.116828, 0.077885, -0.071395, 0.012981, 0.084376, 0.197958, 0.110337, 0.058414, 0.061659, -0.016226, 0.022716, -0.129809, 0.116828, 0.032452, -0.074640, 0.038943, -0.003245, 0.191468, 0.230410, 0.000000, 0.068149, -0.048678, -0.003245, -0.016226, -0.074640, -0.022716, -0.019471, -0.061659, -0.120073, -0.042188, 0.022716, 0.051923, 0.048678, -0.107092, 0.009736, -0.048678, 0.110337, 0.009736, 0.103847, 0.074640, 0.113582, 0.042188, 0.058414, 0.094111, -0.162261, 0.116828, -0.038943, -0.129809, 0.009736, -0.064904, 0.077885, 0.025962, 0.042188, -0.097356, 0.038943, 0.061659, -0.029207, -0.162261, 0.217429, 0.181732, 0.019471, -0.149280, 0.025962, -0.055169, -0.100602, -0.126563, 0.016226};
+float target_embedding[EMBEDDING_SIZE];
+static float embedding_bank[EMBEDDING_BANK_SIZE][EMBEDDING_SIZE];
+static int bank_count = 0;
+
+void embeddings_bank_init(void)
+{
+    bank_count = 0;
+    memset(embedding_bank, 0, sizeof(embedding_bank));
+    memset(target_embedding, 0, sizeof(target_embedding));
+}
+
+static void compute_target(void)
+{
+    if (bank_count == 0)
+    {
+        memset(target_embedding, 0, sizeof(target_embedding));
+        return;
+    }
+    float sum[EMBEDDING_SIZE];
+    memset(sum, 0, sizeof(sum));
+    for (int n = 0; n < bank_count; n++)
+    {
+        for (int i = 0; i < EMBEDDING_SIZE; i++)
+        {
+            sum[i] += embedding_bank[n][i];
+        }
+    }
+    for (int i = 0; i < EMBEDDING_SIZE; i++)
+    {
+        target_embedding[i] = sum[i] / (float)bank_count;
+    }
+    float norm = 0.f;
+    for (int i = 0; i < EMBEDDING_SIZE; i++)
+    {
+        norm += target_embedding[i] * target_embedding[i];
+    }
+    norm = sqrtf(norm);
+    if (norm > 0.f)
+    {
+        for (int i = 0; i < EMBEDDING_SIZE; i++)
+        {
+            target_embedding[i] /= norm;
+        }
+    }
+}
+
+int embeddings_bank_add(const float *embedding)
+{
+    if (bank_count >= EMBEDDING_BANK_SIZE)
+        return -1;
+    float norm = 0.f;
+    for (int i = 0; i < EMBEDDING_SIZE; i++)
+    {
+        norm += embedding[i] * embedding[i];
+    }
+    norm = sqrtf(norm);
+    if (norm == 0.f)
+        return -1;
+    for (int i = 0; i < EMBEDDING_SIZE; i++)
+    {
+        embedding_bank[bank_count][i] = embedding[i] / norm;
+    }
+    bank_count++;
+    compute_target();
+    return bank_count;
+}
+
+void embeddings_bank_reset(void)
+{
+    embeddings_bank_init();
+}
+
+int embeddings_bank_count(void)
+{
+    return bank_count;
+}

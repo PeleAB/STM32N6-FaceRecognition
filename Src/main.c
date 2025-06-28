@@ -43,6 +43,14 @@
 //#include "dummy_fr_input.h"
 #include "tracking.h"
 
+typedef enum {
+  PIPE_STATE_SEARCH = 0,
+  PIPE_STATE_VERIFY,
+  PIPE_STATE_TRACK
+} pipe_state_t;
+
+#define REVERIFY_INTERVAL_MS 1000
+
 
 #define MAX_NUMBER_OUTPUT 5
 
@@ -71,6 +79,16 @@ uint32_t fr_in_len;
 uint32_t fr_out_len;
 tracker_t g_tracker;
 
+static pipe_state_t g_pipe_state = PIPE_STATE_SEARCH;
+static pd_pp_box_t g_candidate_box;
+static uint32_t g_last_verified = 0;
+
+static float current_embedding[EMBEDDING_SIZE];
+static int embedding_valid = 0;
+static uint32_t button_press_ts = 0;
+static int prev_button_state = 0;
+#define LONG_PRESS_MS 1000
+
 #define ALIGN_TO_16(value) (((value) + 15) & ~15)
 
 /* Working buffer for camera capture when pitch differs */
@@ -86,8 +104,10 @@ static void App_InputInit(uint32_t *pitch_nn);
 static int  App_GetFrame(uint8_t *dest, uint32_t pitch_nn);
 static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
                        uint32_t boot_ms);
+static void HandleUserButton(void);
+static float VerifyBox(const pd_pp_box_t *box);
 
-
+LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_recognition);
 /*-------------------------------------------------------------------------*/
 static void App_InputInit(uint32_t *pitch_nn)
 {
@@ -155,6 +175,74 @@ static void App_Output(pd_postprocess_out_t *res, uint32_t inf_ms,
 
 }
 
+static void HandleUserButton(void)
+{
+  int state = BSP_PB_GetState(BUTTON_USER1);
+  if (state && !prev_button_state)
+  {
+    button_press_ts = HAL_GetTick();
+  }
+  else if (!state && prev_button_state)
+  {
+    uint32_t duration = HAL_GetTick() - button_press_ts;
+    if (duration >= LONG_PRESS_MS)
+    {
+      embeddings_bank_reset();
+    }
+    else if (embedding_valid)
+    {
+      embeddings_bank_add(current_embedding);
+    }
+  }
+  prev_button_state = state;
+}
+
+static float VerifyBox(const pd_pp_box_t *box)
+{
+  float cx = box->x_center * lcd_bg_area.XSize;
+  float cy = box->y_center * lcd_bg_area.YSize;
+  float w  = box->width  * lcd_bg_area.XSize * 1.2f;
+  float h  = box->height * lcd_bg_area.YSize * 1.2f;
+  float lx = box->pKps[0].x * lcd_bg_area.XSize;
+  float ly = box->pKps[0].y * lcd_bg_area.YSize;
+  float rx = box->pKps[1].x * lcd_bg_area.XSize;
+  float ry = box->pKps[1].y * lcd_bg_area.YSize;
+#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
+  img_crop_align565_to_888(img_buffer, lcd_bg_area.XSize, fr_rgb,
+                           lcd_bg_area.XSize, lcd_bg_area.YSize,
+                           FR_WIDTH, FR_HEIGHT,
+                           cx, cy, w, h, lx, ly, rx, ry);
+#else
+  img_crop_align(nn_rgb, fr_rgb,
+                 NN_WIDTH, NN_HEIGHT,
+                 FR_WIDTH, FR_HEIGHT, NN_BPP,
+                 cx, cy, w, h, lx, ly, rx, ry);
+#endif
+  img_rgb_to_chw_s8(fr_rgb, fr_nn_in,
+                    FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
+  SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
+  RunNetworkSync(&NN_Instance_face_recognition);
+  SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
+  float32_t tmp[EMBEDDING_SIZE];
+  for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
+  {
+    float val = ((float32_t)fr_nn_out[i]) / 128.f;
+    tmp[i] = val;
+  }
+  for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
+  {
+    current_embedding[i] = tmp[i];
+  }
+  embedding_valid = 1;
+  float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
+#ifdef ENABLE_PC_STREAM
+  PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
+  PC_STREAM_SendEmbedding(tmp, EMBEDDING_SIZE);
+#endif
+  LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
+  return similarity;
+}
+
 /**
   * @brief  Main program
   * @param  None
@@ -170,6 +258,8 @@ int main(void)
   BSP_LED_Init(LED2);
   BSP_LED_Off(LED1);
   BSP_LED_Off(LED2);
+  BSP_PB_Init(BUTTON_USER1, BUTTON_MODE_GPIO);
+  embeddings_bank_init();
 
   /*** NN Init ****************************************************************/
   LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_detection);
@@ -198,7 +288,7 @@ int main(void)
   uint32_t nn_in_len = LL_Buffer_len(&nn_in_info[0]);
   uint32_t pitch_nn = 0;
 
-  LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_recognition);
+
   const LL_Buffer_InfoTypeDef *fr_in_info = LL_ATON_Input_Buffers_Info_face_recognition();
   const LL_Buffer_InfoTypeDef *fr_out_info = LL_ATON_Output_Buffers_Info_face_recognition();
   fr_nn_in = (int8_t *) LL_Buffer_addr_start(&fr_in_info[0]);
@@ -235,62 +325,68 @@ int main(void)
 
     int32_t ret = app_postprocess_run((void **) nn_out, number_output, &pp_output, &pp_params);
 
-    if (pp_output.box_nb > 0)
-    {
-      pd_pp_box_t *box = (pd_pp_box_t *)pp_output.pOutData;
-      for (uint32_t b = 0; b < pp_output.box_nb; b++)
-      {
-        float cx = box[b].x_center * lcd_bg_area.XSize;
-        float cy = box[b].y_center * lcd_bg_area.YSize;
-        float w  = box[b].width  * lcd_bg_area.XSize * 1.2f;
-        float h  = box[b].height * lcd_bg_area.YSize * 1.2f;
-        float lx = box[b].pKps[0].x * lcd_bg_area.XSize;
-        float ly = box[b].pKps[0].y * lcd_bg_area.YSize;
-        float rx = box[b].pKps[1].x * lcd_bg_area.XSize;
-        float ry = box[b].pKps[1].y * lcd_bg_area.YSize;
-#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
-        img_crop_align565_to_888(img_buffer, lcd_bg_area.XSize, fr_rgb,
-                                 lcd_bg_area.XSize, lcd_bg_area.YSize,
-                                 FR_WIDTH, FR_HEIGHT,
-                                 cx, cy, w, h, lx, ly, rx, ry);
-#else
-        img_crop_align(nn_rgb, fr_rgb,
-                       NN_WIDTH, NN_HEIGHT,
-                       FR_WIDTH, FR_HEIGHT, NN_BPP,
-                       cx, cy, w, h, lx, ly, rx, ry);
-#endif
-        img_rgb_to_chw_s8(fr_rgb, fr_nn_in,
-                          FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
-        SCB_CleanInvalidateDCache_by_Addr(fr_nn_in, fr_in_len);
-        RunNetworkSync(&NN_Instance_face_recognition);
-        SCB_InvalidateDCache_by_Addr(fr_nn_out, fr_out_len);
-        float32_t tmp[EMBEDDING_SIZE];
+    pd_pp_box_t *boxes = (pd_pp_box_t *)pp_output.pOutData;
 
-        for (uint32_t i = 0; i < EMBEDDING_SIZE; i++)
+    switch (g_pipe_state)
+    {
+      case PIPE_STATE_SEARCH:
+        if (pp_output.box_nb > 0)
         {
-          float val = ((float32_t)fr_nn_out[i]) / 128.f;
-          tmp[i] = val;
+          g_candidate_box = boxes[0];
+          for (uint32_t i = 1; i < pp_output.box_nb; i++)
+          {
+            if (boxes[i].prob > g_candidate_box.prob)
+              g_candidate_box = boxes[i];
+          }
+          g_tracker.similarity = 0;
+          g_pipe_state = PIPE_STATE_VERIFY;
         }
-        float similarity = embedding_cosine_similarity(tmp, target_embedding, EMBEDDING_SIZE);
-        box[b].prob = similarity;
+        break;
 
-#ifdef ENABLE_PC_STREAM
-        PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
-        PC_STREAM_SendEmbedding(tmp, EMBEDDING_SIZE);
-#endif
-        LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
+      case PIPE_STATE_VERIFY:
+      {
+        float sim = VerifyBox(&g_candidate_box);
+        if (sim >= SIMILARITY_THRESHOLD)
+        {
+          g_candidate_box.prob = sim;
+          g_tracker.box = g_candidate_box;
+          g_tracker.state = TRACK_STATE_TRACKING;
+          g_tracker.lost_count = 0;
+          g_tracker.similarity = sim;
+          g_last_verified = HAL_GetTick();
+          g_pipe_state = PIPE_STATE_TRACK;
+        }
+        else
+        {
+          g_tracker.similarity = sim;
+          g_pipe_state = PIPE_STATE_SEARCH;
+        }
+        break;
       }
+
+      case PIPE_STATE_TRACK:
+        tracker_process(&g_tracker, &pp_output, AI_PD_MODEL_PP_CONF_THRESHOLD);
+        if (g_tracker.state != TRACK_STATE_TRACKING)
+        {
+          g_pipe_state = PIPE_STATE_SEARCH;
+        }
+        else if ((HAL_GetTick() - g_last_verified) > REVERIFY_INTERVAL_MS)
+        {
+          g_candidate_box = g_tracker.box;
+          g_pipe_state = PIPE_STATE_VERIFY;
+        }
+        break;
     }
-    tracker_process(&g_tracker, &pp_output, SIMILARITY_THRESHOLD);
-    if (g_tracker.state == TRACK_STATE_TRACKING)
-    {
-      BSP_LED_On(LED2);
-      BSP_LED_Off(LED1);
-    }
-    else
+
+    if ((HAL_GetTick() - g_last_verified) > (REVERIFY_INTERVAL_MS+1000))
     {
       BSP_LED_On(LED1);
       BSP_LED_Off(LED2);
+    }
+    else
+    {
+      BSP_LED_On(LED2);
+      BSP_LED_Off(LED1);
     }
     ts[1] = HAL_GetTick();
     if (ts[2] == 0)
@@ -300,6 +396,7 @@ int main(void)
     assert(ret == 0);
 
     App_Output(&pp_output, ts[1] - ts[0], ts[2]);
+    HandleUserButton();
 
     /* Discard nn_out region (used by pp_input and pp_outputs variables) to avoid Dcache evictions during nn inference */
     for (int i = 0; i < number_output; i++)

@@ -16,6 +16,7 @@ typedef struct {
   pd_pp_box_t box;
   track_state_t state;
   uint32_t lost_count;
+  float similarity; /* last verified similarity */
 } tracker_t;
 
 void tracker_init(tracker_t *t);

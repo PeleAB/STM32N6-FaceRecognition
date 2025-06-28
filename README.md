@@ -221,14 +221,14 @@ Do a power cycle to boot from the external flash.
 
 ## PC streaming receiver
 The board streams a downsampled view (160x96) compressed as JPEG and detection results over UART at 921600 baud.
-Install PyQt5 and run `pc_uart_client.py` to display the stream with a modern GUI:
+Install the required Python packages listed in `python_tools/requirements.txt` and run `pc_uart_client.py` to display the stream with a modern PySide6 GUI. Use the **Refresh** button to list available ports. The GUI automatically starts streaming once connected, shows the current FPS, and displays a progress bar when sending images:
 
 ```bash
-pip install pyqt5
-python3 pc_uart_client.py
+pip install -r python_tools/requirements.txt
+python3 python_tools/pc_uart_client.py
 ```
 
-The client automatically starts streaming once connected and shows the frames in a larger view embedded in the interface.
+The client automatically starts streaming once connected and shows the frames in a larger view embedded in the interface. The **Enroll** button lets you select a folder of photos, computes the average face embedding and automatically updates `Src/target_embedding.c` with the new vector.
 
 ## Compare detections
 Use `compare_detections.py` to run the Tiny YOLOv2 TFLite model on the PC and
@@ -239,5 +239,14 @@ right:
 ```bash
 pip install tensorflow-cpu opencv-python-headless pyserial
 python3 compare_detections.py my_image.jpg /dev/ttyUSB0
+```
+
+## Update target embedding
+The **Enroll** button in the GUI updates `Src/target_embedding.c` automatically.
+You can also run `python_tools/run_face_recognition.py` with an image of the
+authorized user to regenerate `Src/target_embedding.c` and `Src/dummy_fr_input.c`:
+
+```bash
+python3 python_tools/run_face_recognition.py my_face.jpg
 ```
 

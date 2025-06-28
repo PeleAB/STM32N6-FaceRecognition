@@ -33,7 +33,7 @@ cp st_ai_output/network_atonbuf.xSPI2.raw network_data.xSPI2.bin
 arm-none-eabi-objcopy -I binary network_data.xSPI2.bin --change-addresses 0x70380000 -O ihex network_data.hex
 ```
 
-You can find the following script at [Model/generate-n6-model.sh](../Model/generate-n6-model.sh)
+You can place these commands in a small shell script (for example `generate-n6-model.sh`) to automate model generation.
 
 ## 2. Program your network data
 

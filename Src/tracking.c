@@ -5,6 +5,30 @@
 static float minf(float a, float b) { return a < b ? a : b; }
 static float maxf(float a, float b) { return a > b ? a : b; }
 
+#define TRACKER_SMOOTH_FACTOR (0.5f)
+
+static void smooth_box(pd_pp_box_t *dst, const pd_pp_box_t *src)
+{
+  dst->x_center = dst->x_center * (1.f - TRACKER_SMOOTH_FACTOR) +
+                   src->x_center * TRACKER_SMOOTH_FACTOR;
+  dst->y_center = dst->y_center * (1.f - TRACKER_SMOOTH_FACTOR) +
+                   src->y_center * TRACKER_SMOOTH_FACTOR;
+  dst->width    = dst->width * (1.f - TRACKER_SMOOTH_FACTOR) +
+                   src->width * TRACKER_SMOOTH_FACTOR;
+  dst->height   = dst->height * (1.f - TRACKER_SMOOTH_FACTOR) +
+                   src->height * TRACKER_SMOOTH_FACTOR;
+  if (dst->pKps && src->pKps)
+  {
+    for (uint32_t k = 0; k < AI_PD_MODEL_PP_NB_KEYPOINTS; k++)
+    {
+      dst->pKps[k].x = dst->pKps[k].x * (1.f - TRACKER_SMOOTH_FACTOR) +
+                       src->pKps[k].x * TRACKER_SMOOTH_FACTOR;
+      dst->pKps[k].y = dst->pKps[k].y * (1.f - TRACKER_SMOOTH_FACTOR) +
+                       src->pKps[k].y * TRACKER_SMOOTH_FACTOR;
+    }
+  }
+}
+
 float tracker_iou(const pd_pp_box_t *b0, const pd_pp_box_t *b1)
 {
   float xmin0 = b0->x_center - b0->width / 2.f;
@@ -40,6 +64,7 @@ void tracker_init(tracker_t *t)
 {
   memset(t, 0, sizeof(*t));
   t->state = TRACK_STATE_IDLE;
+  t->similarity = 0.f;
 }
 
 void tracker_process(tracker_t *t, pd_postprocess_out_t *det, float sim_threshold)
@@ -53,7 +78,14 @@ void tracker_process(tracker_t *t, pd_postprocess_out_t *det, float sim_threshol
     pd_pp_box_t *b = &boxes[i];
     if (b->prob >= sim_threshold)
     {
-      t->box = *b;
+      if (t->state == TRACK_STATE_TRACKING)
+      {
+        smooth_box(&t->box, b);
+      }
+      else
+      {
+        t->box = *b;
+      }
       t->state = TRACK_STATE_TRACKING;
       t->lost_count = 0;
       updated = 1;
@@ -62,7 +94,7 @@ void tracker_process(tracker_t *t, pd_postprocess_out_t *det, float sim_threshol
     {
       if (tracker_iou(&t->box, b) > 0.3f)
       {
-        t->box = *b;
+        smooth_box(&t->box, b);
         t->lost_count = 0;
         updated = 1;
       }
@@ -75,6 +107,7 @@ void tracker_process(tracker_t *t, pd_postprocess_out_t *det, float sim_threshol
     {
       t->state = TRACK_STATE_IDLE;
       t->lost_count = 0;
+      t->similarity = 0.f;
     }
   }
 
@@ -83,6 +116,7 @@ void tracker_process(tracker_t *t, pd_postprocess_out_t *det, float sim_threshol
     if (nb < AI_PD_MODEL_PP_MAX_BOXES_LIMIT)
     {
       boxes[nb] = t->box;
+      boxes[nb].prob = t->similarity;
       det->box_nb = nb + 1;
     }
   }
