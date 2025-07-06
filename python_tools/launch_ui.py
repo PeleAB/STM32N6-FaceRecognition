@@ -15,24 +15,27 @@ def show_menu():
     print("Available UI versions:")
     print("1. Basic UI (Fixed) - Original with stability improvements")
     print("2. Improved UI - Enhanced with buffering and performance optimizations")
-    print("3. Simple Test UI - Minimal test version")
-    print("4. Exit")
+    print("3. Robust UI - New binary protocol with checksums and message framing")
+    print("4. Simple Test UI - Minimal test version")
+    print("5. Exit")
     print()
     
     while True:
         try:
-            choice = input("Select UI version (1-4): ").strip()
+            choice = input("Select UI version (1-5): ").strip()
             
             if choice == "1":
                 return "basic_ui.py"
             elif choice == "2":
                 return "improved_basic_ui.py"
             elif choice == "3":
-                return "simple_ui_test.py"
+                return "robust_ui.py"
             elif choice == "4":
+                return "simple_ui_test.py"
+            elif choice == "5":
                 return None
             else:
-                print("Invalid choice. Please enter 1, 2, 3, or 4.")
+                print("Invalid choice. Please enter 1, 2, 3, 4, or 5.")
                 
         except (KeyboardInterrupt, EOFError):
             return None
@@ -58,6 +61,8 @@ def main():
             from basic_ui import main as ui_main
         elif ui_file == "improved_basic_ui.py":
             from improved_basic_ui import main as ui_main
+        elif ui_file == "robust_ui.py":
+            from robust_ui import main as ui_main
         elif ui_file == "simple_ui_test.py":
             from simple_ui_test import main as ui_main
         
