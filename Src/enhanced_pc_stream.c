@@ -73,18 +73,6 @@ typedef struct __attribute__((packed)) {
     uint32_t reserved;        /* Reserved for future use */
 } enhanced_packet_header_t;
 
-/**
- * @brief Protocol statistics
- */
-typedef struct {
-    uint32_t packets_sent;
-    uint32_t packets_received;
-    uint32_t bytes_sent;
-    uint32_t bytes_received;
-    uint32_t crc_errors;
-    uint32_t timeouts;
-    uint32_t last_heartbeat;
-} protocol_stats_t;
 
 /**
  * @brief Enhanced protocol context
