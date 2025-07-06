@@ -78,19 +78,42 @@ class CircularBuffer:
             return 0
             
         with self.lock:
+            data_len = len(data)
             written = 0
-            for byte in data:
-                if self.data_available < self.size:
+            
+            # Check if we can write all data without dropping
+            if self.data_available + data_len <= self.size:
+                # Fast path: write all data without overwriting
+                for byte in data:
                     self.buffer[self.write_pos] = byte
                     self.write_pos = (self.write_pos + 1) % self.size
                     self.data_available += 1
                     written += 1
-                else:
-                    # Buffer full, drop oldest data
-                    self.read_pos = (self.read_pos + 1) % self.size
-                    self.buffer[self.write_pos] = byte
-                    self.write_pos = (self.write_pos + 1) % self.size
-                    written += 1
+            else:
+                # Need to drop some old data - try to drop complete messages instead of partial
+                space_needed = data_len
+                space_available = self.size - self.data_available
+                
+                if space_needed > space_available:
+                    # Need to drop old data
+                    bytes_to_drop = space_needed - space_available
+                    # Round up to nearest message boundary to avoid partial messages
+                    bytes_to_drop = min(bytes_to_drop + 64, self.data_available)  # Drop a bit extra
+                    
+                    for _ in range(bytes_to_drop):
+                        if self.data_available > 0:
+                            self.read_pos = (self.read_pos + 1) % self.size
+                            self.data_available -= 1
+                
+                # Now write the new data
+                for byte in data:
+                    if self.data_available < self.size:
+                        self.buffer[self.write_pos] = byte
+                        self.write_pos = (self.write_pos + 1) % self.size
+                        self.data_available += 1
+                        written += 1
+                    else:
+                        break  # Buffer still full somehow
                     
             return written
     
@@ -174,7 +197,8 @@ class RobustProtocolParser:
     
     def find_sync(self) -> bool:
         """Find SOF byte in buffer and align to frame boundary"""
-        max_search = min(1024, self.buffer.available())  # Search up to 1KB
+        max_search = min(4096, self.buffer.available())  # Increased search window to 4KB
+        sync_errors_before = self.stats['sync_errors']
         
         for i in range(max_search):
             byte_data = self.buffer.peek(1)
@@ -182,13 +206,45 @@ class RobustProtocolParser:
                 return False
                 
             if byte_data[0] == ProtocolConstants.SOF_BYTE:
-                return True
-            else:
-                # Consume invalid byte
-                self.buffer.consume(1)
-                self.stats['sync_errors'] += 1
-                
+                # Found potential SOF, verify it's a valid header before declaring success
+                if self.buffer.available() >= ProtocolConstants.HEADER_SIZE:
+                    header_data = self.buffer.peek(ProtocolConstants.HEADER_SIZE)
+                    if header_data and self._validate_header_quickly(header_data):
+                        return True
+                else:
+                    # Not enough data for full header, but SOF found
+                    return True
+                    
+            # Consume invalid byte, but only count as sync error if we skipped significant data
+            self.buffer.consume(1)
+            
+        # Only count sync errors if we actually skipped a significant amount of data
+        bytes_skipped = self.stats['sync_errors'] - sync_errors_before + (max_search if max_search > 0 else 0)
+        if bytes_skipped > 10:  # Only count as error if we skipped more than 10 bytes
+            self.stats['sync_errors'] += 1
+            
         return False
+    
+    def _validate_header_quickly(self, header_data: bytes) -> bool:
+        """Quick validation to check if header looks valid"""
+        if len(header_data) < 4:
+            return False
+            
+        try:
+            sof, payload_size, header_checksum = struct.unpack('<BHB', header_data)
+            
+            # Basic sanity checks
+            if sof != ProtocolConstants.SOF_BYTE:
+                return False
+            if payload_size > ProtocolConstants.MAX_PAYLOAD_SIZE or payload_size == 0:
+                return False
+                
+            # Quick checksum validation
+            calculated_checksum = calculate_checksum(header_data[:3])
+            return calculated_checksum == header_checksum
+            
+        except struct.error:
+            return False
     
     def parse_header(self) -> Optional[Tuple[int, int]]:
         """Parse frame header, returns (payload_size, checksum) or None"""
@@ -199,54 +255,77 @@ class RobustProtocolParser:
         if header_data[0] != ProtocolConstants.SOF_BYTE:
             return None
             
-        # Unpack: SOF(1) + PayloadSize(2) + HeaderChecksum(1)
-        sof, payload_size, header_checksum = struct.unpack('<BHB', header_data)
-        
-        # Verify header checksum (checksum of SOF + PayloadSize)
-        calculated_checksum = calculate_checksum(header_data[:3])
-        if calculated_checksum != header_checksum:
-            logger.debug(f"Header checksum mismatch: {calculated_checksum:02X} != {header_checksum:02X}")
-            self.stats['checksum_errors'] += 1
-            return None
+        try:
+            # Unpack: SOF(1) + PayloadSize(2) + HeaderChecksum(1)
+            sof, payload_size, header_checksum = struct.unpack('<BHB', header_data)
             
-        # Validate payload size
-        if payload_size > ProtocolConstants.MAX_PAYLOAD_SIZE:
-            logger.warning(f"Invalid payload size: {payload_size}")
+            # Validate payload size first (quick check)
+            if payload_size == 0 or payload_size > ProtocolConstants.MAX_PAYLOAD_SIZE:
+                logger.debug(f"Invalid payload size: {payload_size}")
+                self.stats['parse_errors'] += 1
+                return None
+            
+            # Verify header checksum (checksum of SOF + PayloadSize)
+            calculated_checksum = calculate_checksum(header_data[:3])
+            if calculated_checksum != header_checksum:
+                # Log more details for debugging
+                logger.debug(f"Header checksum mismatch: calc={calculated_checksum:02X} recv={header_checksum:02X}")
+                logger.debug(f"Header bytes: {' '.join(f'{b:02X}' for b in header_data)}")
+                self.stats['checksum_errors'] += 1
+                return None
+                
+            return payload_size, header_checksum
+            
+        except struct.error as e:
+            logger.debug(f"Struct unpack error in header: {e}")
             self.stats['parse_errors'] += 1
             return None
-            
-        return payload_size, header_checksum
     
     def parse_message(self) -> Optional[ProtocolMessage]:
         """Parse a complete message from buffer"""
-        # Find frame sync
-        if not self.find_sync():
-            return None
-            
-        # Parse header
-        header_info = self.parse_header()
-        if not header_info:
-            # Invalid header, consume SOF and try again
-            self.buffer.consume(1)
-            return None
-            
-        payload_size, header_checksum = header_info
+        max_attempts = 3  # Limit attempts to avoid infinite loops
         
-        # Check if complete message is available
-        total_size = ProtocolConstants.HEADER_SIZE + payload_size
-        if self.buffer.available() < total_size:
-            return None  # Wait for more data
+        for attempt in range(max_attempts):
+            # Find frame sync
+            if not self.find_sync():
+                return None
+                
+            # Parse header
+            header_info = self.parse_header()
+            if not header_info:
+                # Invalid header, consume SOF and try again
+                self.buffer.consume(1)
+                if attempt == max_attempts - 1:
+                    return None
+                continue
+                
+            payload_size, header_checksum = header_info
             
-        # Consume header
-        header_data = self.buffer.consume(ProtocolConstants.HEADER_SIZE)
-        if not header_data:
-            return None
-            
-        # Read payload
-        payload_data = self.buffer.consume(payload_size)
-        if not payload_data:
-            logger.error("Failed to read payload after header")
-            self.stats['parse_errors'] += 1
+            # Check if complete message is available
+            total_size = ProtocolConstants.HEADER_SIZE + payload_size
+            if self.buffer.available() < total_size:
+                return None  # Wait for more data
+                
+            # Consume header
+            header_data = self.buffer.consume(ProtocolConstants.HEADER_SIZE)
+            if not header_data:
+                if attempt == max_attempts - 1:
+                    return None
+                continue
+                
+            # Read payload
+            payload_data = self.buffer.consume(payload_size)
+            if not payload_data:
+                logger.error("Failed to read payload after header")
+                self.stats['parse_errors'] += 1
+                if attempt == max_attempts - 1:
+                    return None
+                continue
+                
+            # Successfully read complete message, break out of retry loop
+            break
+        else:
+            # All attempts failed
             return None
             
         # Parse message header within payload

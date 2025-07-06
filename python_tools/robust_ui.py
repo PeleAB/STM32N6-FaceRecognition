@@ -172,11 +172,19 @@ class RobustStatsWidget(QWidget):
         self.sync_errors_label = QLabel("Sync Errors: 0")
         self.checksum_errors_label = QLabel("Checksum Errors: 0")
         self.dropped_label = QLabel("Dropped: 0")
+        self.parse_errors_label = QLabel("Parse Errors: 0")
+        
+        # Error rate indicators
+        self.sync_rate_label = QLabel("Sync Error Rate: 0.0%")
+        self.checksum_rate_label = QLabel("Checksum Error Rate: 0.0%")
         
         protocol_layout.addWidget(self.messages_label)
         protocol_layout.addWidget(self.bytes_label)
         protocol_layout.addWidget(self.sync_errors_label)
+        protocol_layout.addWidget(self.sync_rate_label)
         protocol_layout.addWidget(self.checksum_errors_label)
+        protocol_layout.addWidget(self.checksum_rate_label)
+        protocol_layout.addWidget(self.parse_errors_label)
         protocol_layout.addWidget(self.dropped_label)
         layout.addWidget(protocol_group)
         
@@ -210,11 +218,34 @@ class RobustStatsWidget(QWidget):
     
     def update_protocol_stats(self, stats: Dict[str, Any]):
         """Update protocol statistics"""
-        self.messages_label.setText(f"Messages: {stats.get('messages_received', 0)}")
-        self.bytes_label.setText(f"Bytes: {stats.get('bytes_received', 0)}")
-        self.sync_errors_label.setText(f"Sync Errors: {stats.get('sync_errors', 0)}")
-        self.checksum_errors_label.setText(f"Checksum Errors: {stats.get('checksum_errors', 0)}")
-        self.dropped_label.setText(f"Dropped: {stats.get('messages_dropped', 0)}")
+        messages = stats.get('messages_received', 0)
+        bytes_received = stats.get('bytes_received', 0)
+        sync_errors = stats.get('sync_errors', 0)
+        checksum_errors = stats.get('checksum_errors', 0)
+        parse_errors = stats.get('parse_errors', 0)
+        dropped = stats.get('messages_dropped', 0)
+        
+        self.messages_label.setText(f"Messages: {messages}")
+        self.bytes_label.setText(f"Bytes: {bytes_received}")
+        self.sync_errors_label.setText(f"Sync Errors: {sync_errors}")
+        self.checksum_errors_label.setText(f"Checksum Errors: {checksum_errors}")
+        self.parse_errors_label.setText(f"Parse Errors: {parse_errors}")
+        self.dropped_label.setText(f"Dropped: {dropped}")
+        
+        # Calculate error rates
+        if bytes_received > 0:
+            sync_rate = (sync_errors / bytes_received) * 100
+            checksum_rate = (checksum_errors / max(messages + checksum_errors, 1)) * 100
+            
+            # Color code error rates
+            sync_color = "red" if sync_rate > 5 else "orange" if sync_rate > 1 else "green"
+            checksum_color = "red" if checksum_rate > 5 else "orange" if checksum_rate > 1 else "green"
+            
+            self.sync_rate_label.setText(f"Sync Error Rate: {sync_rate:.2f}%")
+            self.sync_rate_label.setStyleSheet(f"color: {sync_color};")
+            
+            self.checksum_rate_label.setText(f"Checksum Error Rate: {checksum_rate:.2f}%")
+            self.checksum_rate_label.setStyleSheet(f"color: {checksum_color};")
     
     def update_frame_stats(self, frame_count: int, frame_rate: float, detections: int, embeddings: int):
         """Update frame statistics"""
