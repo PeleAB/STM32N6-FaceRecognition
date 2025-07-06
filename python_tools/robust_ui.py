@@ -8,6 +8,7 @@ import sys
 import json
 import time
 import threading
+import struct
 from pathlib import Path
 from dataclasses import dataclass, asdict
 from typing import Optional, List, Dict, Any
@@ -273,6 +274,8 @@ class RobustSerialReader(QThread):
         self.protocol_parser.register_handler(MessageType.FRAME_DATA, self._handle_frame_data)
         self.protocol_parser.register_handler(MessageType.DETECTION_RESULTS, self._handle_detections)
         self.protocol_parser.register_handler(MessageType.EMBEDDING_DATA, self._handle_embedding)
+        self.protocol_parser.register_handler(MessageType.PERFORMANCE_METRICS, self._handle_performance_metrics)
+        self.protocol_parser.register_handler(MessageType.HEARTBEAT, self._handle_heartbeat)
         
         # Statistics
         self.detection_count = 0
@@ -352,6 +355,24 @@ class RobustSerialReader(QThread):
                 self.embedding_received.emit(embedding)
         except Exception as e:
             logger.error(f"Error handling embedding: {e}")
+    
+    def _handle_performance_metrics(self, message: ProtocolMessage):
+        """Handle performance metrics message"""
+        try:
+            if len(message.payload) >= 28:  # Size of performance_metrics_t
+                # Just log for now, could emit signal if needed
+                logger.debug(f"Performance metrics received: {len(message.payload)} bytes")
+        except Exception as e:
+            logger.error(f"Error handling performance metrics: {e}")
+    
+    def _handle_heartbeat(self, message: ProtocolMessage):
+        """Handle heartbeat message"""
+        try:
+            if len(message.payload) >= 4:  # Timestamp
+                timestamp = struct.unpack('<I', message.payload[:4])[0]
+                logger.debug(f"Heartbeat received: timestamp={timestamp}")
+        except Exception as e:
+            logger.error(f"Error handling heartbeat: {e}")
 
 class RobustMainWindow(QMainWindow):
     """Main window using robust protocol"""
@@ -627,7 +648,13 @@ class RobustMainWindow(QMainWindow):
     def on_detections_received(self, frame_id: int, detections: List):
         """Handle received detections"""
         self.detection_count += len(detections)
-        self.log_message(f"Frame {frame_id}: {len(detections)} detections")
+        det_info = []
+        for det in detections:
+            class_id, x, y, w, h, confidence, keypoints = det
+            det_info.append(f"cls:{class_id} conf:{confidence:.2f}")
+        
+        detection_details = ", ".join(det_info) if det_info else "none"
+        self.log_message(f"Frame {frame_id}: {len(detections)} detections [{detection_details}]")
     
     def on_embedding_received(self, embedding: List[float]):
         """Handle received embedding"""
