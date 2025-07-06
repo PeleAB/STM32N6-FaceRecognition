@@ -55,7 +55,7 @@ __attribute__ ((aligned (32)))
 uint8_t lcd_fg_buffer[2][LCD_FG_WIDTH * LCD_FG_HEIGHT * 2];
 static int lcd_fg_buffer_rd_idx;
 static BSP_LCD_LayerConfig_t LayerConfig = {0};
-extern tracker_t g_tracker;
+/* Removed global tracker reference - now passed as parameter */
 
 #define SIMILARITY_COLOR_THRESHOLD 0.7f
 
@@ -133,14 +133,14 @@ static void PrintInfo(uint32_t nb_rois, uint32_t inference_ms, uint32_t boottime
 }
 #endif /* ENABLE_LCD_DISPLAY */
 
-void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ts)
+void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ts, const tracker_t *tracker)
 {
 #ifdef ENABLE_LCD_DISPLAY
   int ret = HAL_LTDC_SetAddress_NoReload(&hlcd_ltdc,
                                          (uint32_t)lcd_fg_buffer[lcd_fg_buffer_rd_idx],
                                          LTDC_LAYER_2);
   assert(ret == HAL_OK);
-  DrawPDBoundingBoxes(p_postprocess->pOutData, p_postprocess->box_nb, &g_tracker);
+  DrawPDBoundingBoxes(p_postprocess->pOutData, p_postprocess->box_nb, tracker);
   DrawPdLandmarks(p_postprocess->pOutData, p_postprocess->box_nb, AI_PD_MODEL_PP_NB_KEYPOINTS);
 #endif
 #ifdef ENABLE_PC_STREAM
@@ -156,6 +156,7 @@ void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t inferen
   (void)boottime_ts;
 #endif
   (void)p_postprocess; /* in case both features are disabled */
+  (void)tracker; /* in case LCD display is disabled */
 }
 
 #ifdef ENABLE_LCD_DISPLAY

@@ -121,7 +121,7 @@ static void app_init(app_context_t *ctx);
 static void app_main_loop(app_context_t *ctx);
 static void app_input_init(uint32_t *pitch_nn);
 static int  app_get_frame(uint8_t *dest, uint32_t pitch_nn);
-static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot_ms);
+static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot_ms, const tracker_t *tracker);
 static void handle_user_button(app_context_t *ctx);
 static float verify_box(app_context_t *ctx, const pd_pp_box_t *box);
 static void process_detection_state(app_context_t *ctx, pd_pp_box_t *boxes, uint32_t box_count);
@@ -192,15 +192,17 @@ static int app_get_frame(uint8_t *dest, uint32_t pitch_nn)
  * @param res Post-processing results
  * @param inf_ms Inference time in milliseconds
  * @param boot_ms Boot time in milliseconds
+ * @param tracker Tracker state for display
  */
-static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot_ms)
+static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot_ms, const tracker_t *tracker)
 {
 #if defined(ENABLE_PC_STREAM) || defined(ENABLE_LCD_DISPLAY)
-    Display_NetworkOutput(res, inf_ms, boot_ms);
+    Display_NetworkOutput(res, inf_ms, boot_ms, tracker);
 #else
     (void)res;
     (void)inf_ms;
     (void)boot_ms;
+    (void)tracker;
 #endif
 }
 
@@ -469,7 +471,7 @@ static void app_main_loop(app_context_t *ctx)
             timestamps[2] = HAL_GetTick();
         }
         
-        app_output(&ctx->pp_output, timestamps[1] - timestamps[0], timestamps[2]);
+        app_output(&ctx->pp_output, timestamps[1] - timestamps[0], timestamps[2], &ctx->tracker);
         handle_user_button(ctx);
         
         /* Clean up buffers */
