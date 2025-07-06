@@ -33,7 +33,7 @@
 #include "app_system.h"
 #include "nn_runner.h"
 #include "pc_stream.h"
-#include "robust_pc_stream.h"
+#include "enhanced_pc_stream.h"
 #include "app_config.h"
 #include "crop_img.h"
 #include "display_utils.h"
@@ -291,8 +291,8 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
     float similarity = embedding_cosine_similarity(embedding, target_embedding, EMBEDDING_SIZE);
 
     /* Send aligned face and embedding data */
-    Robust_PC_STREAM_SendFrame(fr_rgb, FR_WIDTH * FR_HEIGHT * NN_BPP, FR_WIDTH, FR_HEIGHT, "ALN");
-    Robust_PC_STREAM_SendEmbedding(embedding, EMBEDDING_SIZE);
+    Enhanced_PC_STREAM_SendFrame(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN", NULL, NULL);
+    Enhanced_PC_STREAM_SendEmbedding(embedding, EMBEDDING_SIZE);
 
 #ifdef ENABLE_PC_STREAM
     PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
@@ -315,8 +315,8 @@ static void app_init(app_context_t *ctx)
     tracker_init(&ctx->tracker);
     embeddings_bank_init();
     
-    /* Initialize robust PC streaming */
-    Robust_PC_STREAM_Init();
+    /* Initialize enhanced PC streaming */
+    Enhanced_PC_STREAM_Init();
     
     /* Hardware initialization */
     BSP_LED_Init(LED1);
@@ -489,26 +489,12 @@ static void app_main_loop(app_context_t *ctx)
         ctx->performance.frame_count = ctx->frame_count;
         ctx->performance.detection_count = ctx->pp_output.box_nb;
         
-        /* Send frame data with robust protocol */
-        Robust_PC_STREAM_SendFrame(nn_rgb, NN_WIDTH * NN_HEIGHT * NN_BPP, NN_WIDTH, NN_HEIGHT, "JPG");
-        
-        /* Send detection results */
-        Robust_PC_STREAM_SendDetections(ctx->frame_count, &ctx->pp_output);
-        
-        /* Send performance metrics */
-        robust_performance_metrics_t metrics = {
-            .fps = ctx->performance.fps,
-            .inference_time_ms = ctx->performance.inference_time_ms,
-            .cpu_usage_percent = 0.0f,
-            .memory_usage_bytes = 0,
-            .frame_count = ctx->performance.frame_count,
-            .detection_count = ctx->performance.detection_count,
-            .recognition_count = 0
-        };
-        Robust_PC_STREAM_SendPerformanceMetrics(&metrics);
+        /* Send enhanced frame data */
+        Enhanced_PC_STREAM_SendFrame(nn_rgb, NN_WIDTH, NN_HEIGHT, NN_BPP, "JPG", 
+                                    &ctx->pp_output, &ctx->performance);
         
         /* Send heartbeat periodically */
-        Robust_PC_STREAM_SendHeartbeat();
+        Enhanced_PC_STREAM_SendHeartbeat();
         
         app_output(&ctx->pp_output, timestamps[1] - timestamps[0], timestamps[2], &ctx->tracker);
         handle_user_button(ctx);
