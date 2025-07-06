@@ -73,79 +73,103 @@ class CircularBuffer:
         self.lock = threading.Lock()
         
     def write(self, data: bytes) -> int:
-        """Write data to buffer, returns bytes written"""
+        """Write data to buffer, returns bytes written (optimized for bulk operations)"""
         if not data:
             return 0
             
         with self.lock:
             data_len = len(data)
-            written = 0
             
             # Check if we can write all data without dropping
             if self.data_available + data_len <= self.size:
-                # Fast path: write all data without overwriting
-                for byte in data:
-                    self.buffer[self.write_pos] = byte
-                    self.write_pos = (self.write_pos + 1) % self.size
-                    self.data_available += 1
-                    written += 1
+                # Fast path: bulk write using slicing when possible
+                if self.write_pos + data_len <= self.size:
+                    # Single contiguous write
+                    self.buffer[self.write_pos:self.write_pos + data_len] = data
+                    self.write_pos = (self.write_pos + data_len) % self.size
+                else:
+                    # Split write at buffer boundary
+                    first_chunk = self.size - self.write_pos
+                    self.buffer[self.write_pos:] = data[:first_chunk]
+                    self.buffer[:data_len - first_chunk] = data[first_chunk:]
+                    self.write_pos = data_len - first_chunk
+                
+                self.data_available += data_len
+                return data_len
             else:
-                # Need to drop some old data - try to drop complete messages instead of partial
+                # Need to drop some old data - try to drop complete messages
                 space_needed = data_len
                 space_available = self.size - self.data_available
                 
                 if space_needed > space_available:
-                    # Need to drop old data
+                    # Drop old data in chunks for efficiency
                     bytes_to_drop = space_needed - space_available
-                    # Round up to nearest message boundary to avoid partial messages
-                    bytes_to_drop = min(bytes_to_drop + 64, self.data_available)  # Drop a bit extra
+                    bytes_to_drop = min(bytes_to_drop + 1024, self.data_available)  # Drop 1KB extra
                     
-                    for _ in range(bytes_to_drop):
-                        if self.data_available > 0:
-                            self.read_pos = (self.read_pos + 1) % self.size
-                            self.data_available -= 1
+                    self.read_pos = (self.read_pos + bytes_to_drop) % self.size
+                    self.data_available -= bytes_to_drop
                 
-                # Now write the new data
-                for byte in data:
-                    if self.data_available < self.size:
-                        self.buffer[self.write_pos] = byte
-                        self.write_pos = (self.write_pos + 1) % self.size
-                        self.data_available += 1
-                        written += 1
+                # Now write the new data using fast path
+                if self.write_pos + data_len <= self.size:
+                    self.buffer[self.write_pos:self.write_pos + data_len] = data
+                    self.write_pos = (self.write_pos + data_len) % self.size
+                else:
+                    first_chunk = self.size - self.write_pos
+                    self.buffer[self.write_pos:] = data[:first_chunk]
+                    remaining = data_len - first_chunk
+                    if remaining <= self.size - self.data_available:
+                        self.buffer[:remaining] = data[first_chunk:]
+                        self.write_pos = remaining
                     else:
-                        break  # Buffer still full somehow
-                    
-            return written
+                        # Truncate if still not enough space
+                        remaining = self.size - self.data_available
+                        self.buffer[:remaining] = data[first_chunk:first_chunk + remaining]
+                        self.write_pos = remaining
+                        data_len = first_chunk + remaining
+                
+                self.data_available = min(self.data_available + data_len, self.size)
+                return data_len
     
     def peek(self, length: int) -> Optional[bytes]:
-        """Peek at data without consuming it"""
+        """Peek at data without consuming it (optimized for bulk operations)"""
         with self.lock:
             if self.data_available < length:
                 return None
-                
-            result = bytearray()
-            pos = self.read_pos
             
-            for _ in range(length):
-                result.append(self.buffer[pos])
-                pos = (pos + 1) % self.size
-                
-            return bytes(result)
+            # Fast path: bulk read using slicing when possible
+            if self.read_pos + length <= self.size:
+                # Single contiguous read
+                return bytes(self.buffer[self.read_pos:self.read_pos + length])
+            else:
+                # Split read at buffer boundary
+                first_chunk = self.size - self.read_pos
+                result = bytearray()
+                result.extend(self.buffer[self.read_pos:])
+                result.extend(self.buffer[:length - first_chunk])
+                return bytes(result)
     
     def consume(self, length: int) -> Optional[bytes]:
-        """Read and consume data from buffer"""
+        """Read and consume data from buffer (optimized for bulk operations)"""
         with self.lock:
             if self.data_available < length:
                 return None
-                
-            result = bytearray()
             
-            for _ in range(length):
-                result.append(self.buffer[self.read_pos])
-                self.read_pos = (self.read_pos + 1) % self.size
-                self.data_available -= 1
-                
-            return bytes(result)
+            # Fast path: bulk read using slicing
+            if self.read_pos + length <= self.size:
+                # Single contiguous read
+                result = bytes(self.buffer[self.read_pos:self.read_pos + length])
+                self.read_pos = (self.read_pos + length) % self.size
+            else:
+                # Split read at buffer boundary
+                first_chunk = self.size - self.read_pos
+                result = bytearray()
+                result.extend(self.buffer[self.read_pos:])
+                result.extend(self.buffer[:length - first_chunk])
+                result = bytes(result)
+                self.read_pos = length - first_chunk
+            
+            self.data_available -= length
+            return result
     
     def available(self) -> int:
         """Get number of bytes available to read"""
@@ -171,7 +195,11 @@ class RobustProtocolParser:
             'sync_errors': 0,
             'checksum_errors': 0,
             'parse_errors': 0,
-            'messages_dropped': 0
+            'messages_dropped': 0,
+            'parse_time_ms': 0,
+            'decode_time_ms': 0,
+            'throughput_mbps': 0.0,
+            'last_throughput_time': time.time()
         }
         self.running = False
         self.last_sequence_id = {}  # Track sequence per message type
@@ -188,10 +216,19 @@ class RobustProtocolParser:
         self.message_handlers[msg_type] = handler
         
     def add_data(self, data: bytes) -> int:
-        """Add incoming serial data to buffer"""
+        """Add incoming serial data to buffer with throughput monitoring"""
         if data:
             written = self.buffer.write(data)
             self.stats['bytes_received'] += len(data)
+            
+            # Update throughput statistics
+            current_time = time.time()
+            time_diff = current_time - self.stats['last_throughput_time']
+            if time_diff >= 1.0:  # Update every second
+                bytes_per_sec = self.stats['bytes_received'] / time_diff
+                self.stats['throughput_mbps'] = (bytes_per_sec * 8) / (1024 * 1024)  # Convert to Mbps
+                self.stats['last_throughput_time'] = current_time
+            
             return written
         return 0
     
@@ -372,15 +409,21 @@ class RobustProtocolParser:
             self.stats['parse_errors'] += 1
             return None
     
-    def process_messages(self, max_messages: int = 10) -> int:
-        """Process available messages, returns number processed"""
+    def process_messages(self, max_messages: int = 50) -> int:
+        """Process available messages, returns number processed (increased throughput)"""
         processed = 0
+        consecutive_failures = 0
         
         for _ in range(max_messages):
             message = self.parse_message()
             if not message:
-                break
+                consecutive_failures += 1
+                if consecutive_failures > 5:
+                    break  # Avoid spinning on bad data
+                continue
                 
+            consecutive_failures = 0  # Reset on successful parse
+            
             # Dispatch to handler
             handler = self.message_handlers.get(message.msg_type)
             if handler:
@@ -451,6 +494,48 @@ class FrameDataParser:
                     
         except Exception as e:
             logger.error(f"Error parsing frame data: {e}")
+            
+        return None
+    
+    @staticmethod
+    def parse_frame_fast(payload: bytes) -> Optional[Tuple[str, np.ndarray, int, int]]:
+        """Optimized frame parsing with reduced memory allocations"""
+        try:
+            # Frame format: FrameType(4) + Width(4) + Height(4) + ImageData(...)
+            if len(payload) < 12:
+                return None
+                
+            # Fast header parsing without intermediate objects
+            frame_type = payload[:4].decode('ascii').rstrip('\x00')
+            width = struct.unpack('<I', payload[4:8])[0]
+            height = struct.unpack('<I', payload[8:12])[0]
+            
+            # Direct slice for image data (no copy)
+            image_data = payload[12:]
+            
+            # Decode JPEG with optimized flags
+            if image_data:
+                # Use memoryview to avoid copying
+                img_array = np.frombuffer(image_data, dtype=np.uint8)
+                
+                # Decode with specific flags for better performance
+                if frame_type == "ALN":
+                    # Keep color for alignment frames
+                    frame = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+                else:
+                    # Decode as grayscale for regular frames (faster)
+                    frame = cv2.imdecode(img_array, cv2.IMREAD_GRAYSCALE)
+                    if frame is not None and len(frame.shape) == 2:
+                        # Convert single channel to 3-channel for consistency
+                        frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
+                
+                if frame is not None:
+                    return frame_type, frame, width, height
+                    
+        except Exception as e:
+            logger.error(f"Error parsing frame data (fast): {e}")
+            # Fallback to regular parsing
+            return FrameDataParser.parse_frame(payload)
             
         return None
 

@@ -179,13 +179,19 @@ class RobustStatsWidget(QWidget):
         self.sync_rate_label = QLabel("Sync Error Rate: 0.0%")
         self.checksum_rate_label = QLabel("Checksum Error Rate: 0.0%")
         
+        # Performance indicators
+        self.throughput_label = QLabel("Throughput: 0.0 Mbps")
+        self.parse_time_label = QLabel("Parse Time: 0 ms")
+        
         protocol_layout.addWidget(self.messages_label)
         protocol_layout.addWidget(self.bytes_label)
+        protocol_layout.addWidget(self.throughput_label)
         protocol_layout.addWidget(self.sync_errors_label)
         protocol_layout.addWidget(self.sync_rate_label)
         protocol_layout.addWidget(self.checksum_errors_label)
         protocol_layout.addWidget(self.checksum_rate_label)
         protocol_layout.addWidget(self.parse_errors_label)
+        protocol_layout.addWidget(self.parse_time_label)
         protocol_layout.addWidget(self.dropped_label)
         layout.addWidget(protocol_group)
         
@@ -228,6 +234,13 @@ class RobustStatsWidget(QWidget):
         
         self.messages_label.setText(f"Messages: {messages}")
         self.bytes_label.setText(f"Bytes: {bytes_received}")
+        
+        # Performance metrics
+        throughput = stats.get('throughput_mbps', 0.0)
+        parse_time = stats.get('parse_time_ms', 0)
+        self.throughput_label.setText(f"Throughput: {throughput:.1f} Mbps")
+        self.parse_time_label.setText(f"Parse Time: {parse_time} ms")
+        
         self.sync_errors_label.setText(f"Sync Errors: {sync_errors}")
         self.checksum_errors_label.setText(f"Checksum Errors: {checksum_errors}")
         self.parse_errors_label.setText(f"Parse Errors: {parse_errors}")
@@ -290,14 +303,17 @@ class RobustSerialReader(QThread):
         
         while self._running and self.serial_port and self.serial_port.is_open:
             try:
-                # Read available data
-                if self.serial_port.in_waiting > 0:
-                    data = self.serial_port.read(self.serial_port.in_waiting)
+                # Read available data in larger chunks for efficiency
+                bytes_waiting = self.serial_port.in_waiting
+                if bytes_waiting > 0:
+                    # Read up to 64KB at once for better throughput
+                    chunk_size = min(bytes_waiting, 65536)
+                    data = self.serial_port.read(chunk_size)
                     if data:
                         self.protocol_parser.add_data(data)
                         
-                # Process messages
-                processed = self.protocol_parser.process_messages(max_messages=10)
+                # Process more messages per iteration for higher throughput
+                processed = self.protocol_parser.process_messages(max_messages=100)
                 
                 # Update statistics periodically
                 current_time = time.time()
@@ -306,9 +322,14 @@ class RobustSerialReader(QThread):
                     self.stats_updated.emit(stats)
                     last_stats_time = current_time
                 
-                # Small sleep to prevent busy waiting
-                if processed == 0:
-                    time.sleep(0.01)
+                # Adaptive sleep based on activity
+                if processed == 0 and bytes_waiting == 0:
+                    time.sleep(0.005)  # Reduced sleep for better responsiveness
+                elif processed > 50:
+                    # High activity, don't sleep
+                    pass
+                else:
+                    time.sleep(0.001)  # Minimal sleep for moderate activity
                     
             except Exception as e:
                 self.error_occurred.emit(f"Serial read error: {e}")
@@ -326,9 +347,9 @@ class RobustSerialReader(QThread):
             self.wait(1000)
     
     def _handle_frame_data(self, message: ProtocolMessage):
-        """Handle frame data message"""
+        """Handle frame data message with optimized decoding"""
         try:
-            frame_data = FrameDataParser.parse_frame(message.payload)
+            frame_data = FrameDataParser.parse_frame_fast(message.payload)
             if frame_data:
                 frame_type, image, width, height = frame_data
                 self.frame_received.emit(image, frame_type)
