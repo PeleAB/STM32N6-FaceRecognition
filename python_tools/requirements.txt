@@ -1,14 +1,21 @@
-numpy>=1.21.0
-opencv-python>=4.8.0
-pyserial>=3.5
-PySide6>=6.5.0
-onnxruntime>=1.15.0
-tensorflow>=2.13.0
-matplotlib>=3.7.0
-plotly>=5.15.0
-pandas>=2.0.0
-scikit-learn>=1.3.0
-Pillow>=10.0.0
-psutil>=5.9.0
-aiofiles>=23.0.0
-asyncio-mqtt>=0.11.0
+# Core dependencies with compatible versions
+numpy==1.24.3
+opencv-python==4.8.1.78
+pyserial==3.5
+PySide6==6.6.0
+
+# AI/ML dependencies - optional for basic functionality
+onnxruntime==1.16.3
+tensorflow==2.13.1
+pandas==2.0.3
+scikit-learn==1.3.2
+
+# Optional visualization and utilities
+matplotlib==3.7.4
+plotly==5.17.0
+Pillow==10.1.0
+psutil==5.9.6
+
+# Optional async dependencies
+aiofiles==23.2.1
+asyncio-mqtt==0.13.0

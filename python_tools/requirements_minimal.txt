@@ -1,0 +1,5 @@
+# Minimal requirements for basic UI functionality
+numpy==1.24.3
+opencv-python==4.8.1.78
+pyserial==3.5
+PySide6==6.6.0
