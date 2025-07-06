@@ -24,7 +24,7 @@
 #define ROBUST_MAX_PAYLOAD_SIZE     (64 * 1024)
 #define ROBUST_MSG_HEADER_SIZE      3
 #define UART_TIMEOUT                100
-#define JPEG_QUALITY                85
+#define JPEG_QUALITY                70  // Reduced quality for grayscale streaming
 #define STREAM_SCALE                2
 
 /* ========================================================================= */
@@ -215,29 +215,38 @@ static bool robust_send_message(robust_message_type_t message_type,
     // Calculate total payload size (message header + payload)
     uint32_t total_payload_size = ROBUST_MSG_HEADER_SIZE + payload_size;
     
-    // Prepare frame header
-    robust_frame_header_t frame_header = {
-        .sof = ROBUST_SOF_BYTE,
-        .payload_size = total_payload_size,
-        .header_checksum = 0
-    };
+    // Validate payload size
+    if (total_payload_size > ROBUST_MAX_PAYLOAD_SIZE) {
+        g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
+        return false;
+    }
     
-    // Calculate header checksum (SOF + payload_size)
+    // Prepare frame header with proper byte ordering
+    robust_frame_header_t frame_header;
+    frame_header.sof = ROBUST_SOF_BYTE;
+    frame_header.payload_size = (uint16_t)total_payload_size;
+    frame_header.header_checksum = 0;
+    
+    // Calculate header checksum using exact same method as Python
+    // SOF(1 byte) + payload_size(2 bytes, little endian)
     uint8_t header_data[3];
-    header_data[0] = frame_header.sof;
-    header_data[1] = (uint8_t)(frame_header.payload_size & 0xFF);
-    header_data[2] = (uint8_t)((frame_header.payload_size >> 8) & 0xFF);
+    header_data[0] = frame_header.sof;                              // SOF byte
+    header_data[1] = (uint8_t)(frame_header.payload_size & 0xFF);   // Low byte of payload_size
+    header_data[2] = (uint8_t)((frame_header.payload_size >> 8) & 0xFF); // High byte of payload_size
     frame_header.header_checksum = robust_calculate_checksum(header_data, 3);
     
     HAL_StatusTypeDef status;
     
-    // Send frame header
+    // Send frame header as atomic operation
     status = HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t*)&frame_header, 
                               ROBUST_HEADER_SIZE, UART_TIMEOUT);
     if (status != HAL_OK) {
         g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
         return false;
     }
+    
+    // Add small delay to ensure header is transmitted completely
+    HAL_Delay(1);
     
     // Send message header
     status = HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t*)&msg_header, 
@@ -247,13 +256,29 @@ static bool robust_send_message(robust_message_type_t message_type,
         return false;
     }
     
-    // Send payload data
+    // Send payload data in chunks to avoid UART buffer overflow
     if (payload_size > 0) {
-        status = HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t*)payload, 
-                                  payload_size, UART_TIMEOUT * 10);
-        if (status != HAL_OK) {
-            g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
-            return false;
+        uint32_t bytes_sent = 0;
+        const uint32_t chunk_size = 1024; // Send 1KB chunks
+        
+        while (bytes_sent < payload_size) {
+            uint32_t chunk_len = (payload_size - bytes_sent > chunk_size) ? 
+                                chunk_size : (payload_size - bytes_sent);
+            
+            status = HAL_UART_Transmit(&hcom_uart[COM1], 
+                                      (uint8_t*)(payload + bytes_sent), 
+                                      chunk_len, UART_TIMEOUT * 10);
+            if (status != HAL_OK) {
+                g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
+                return false;
+            }
+            
+            bytes_sent += chunk_len;
+            
+            // Small delay between chunks to prevent buffer overflow
+            if (bytes_sent < payload_size) {
+                HAL_Delay(1);
+            }
         }
     }
     
@@ -305,50 +330,42 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
         return false;
     }
     
-    // Determine if we need to convert/compress the frame
-    bool is_full_color = (bpp == 3);  // Assume RGB888
+    // Always convert to grayscale to reduce bandwidth
     mem_writer_t writer = {0};
     writer.buffer = jpeg_buffer;
     writer.capacity = sizeof(jpeg_buffer);
     
-    uint32_t output_width, output_height;
+    // Always downsample for streaming
+    uint32_t output_width = width / STREAM_SCALE;
+    uint32_t output_height = height / STREAM_SCALE;
     
-    if (is_full_color) {
-        // Full color frame - compress as JPEG
-        output_width = width;
-        output_height = height;
-        stbi_write_jpg_to_func(mem_write_func, &writer, width, height, bpp, frame, JPEG_QUALITY);
-    } else {
-        // Grayscale or RGB565 - downsample and compress
-        output_width = width / STREAM_SCALE;
-        output_height = height / STREAM_SCALE;
-        
-        if (output_width * output_height > sizeof(stream_buffer)) {
-            output_width = 160;  // Fallback size
-            output_height = 120;
-        }
-        
-        // Convert to grayscale and downsample
-        for (uint32_t y = 0; y < output_height; y++) {
-            const uint8_t *src_line = frame + (y * STREAM_SCALE) * width * bpp;
-            for (uint32_t x = 0; x < output_width; x++) {
-                if (bpp == 2) {
-                    const uint16_t *src_pixel = (const uint16_t *)(src_line + x * STREAM_SCALE * 2);
-                    stream_buffer[y * output_width + x] = rgb565_to_gray(*src_pixel);
-                } else if (bpp == 3) {
-                    const uint8_t *src_pixel = src_line + x * STREAM_SCALE * 3;
-                    stream_buffer[y * output_width + x] = rgb888_to_gray(src_pixel[0], src_pixel[1], src_pixel[2]);
-                } else {
-                    // Grayscale
-                    stream_buffer[y * output_width + x] = src_line[x * STREAM_SCALE];
-                }
+    if (output_width * output_height > sizeof(stream_buffer)) {
+        output_width = 160;  // Fallback size
+        output_height = 120;
+    }
+    
+    // Convert to grayscale and downsample
+    for (uint32_t y = 0; y < output_height; y++) {
+        const uint8_t *src_line = frame + (y * STREAM_SCALE) * width * bpp;
+        for (uint32_t x = 0; x < output_width; x++) {
+            if (bpp == 2) {
+                // RGB565 to grayscale
+                const uint16_t *src_pixel = (const uint16_t *)(src_line + x * STREAM_SCALE * 2);
+                stream_buffer[y * output_width + x] = rgb565_to_gray(*src_pixel);
+            } else if (bpp == 3) {
+                // RGB888 to grayscale
+                const uint8_t *src_pixel = src_line + x * STREAM_SCALE * 3;
+                stream_buffer[y * output_width + x] = rgb888_to_gray(src_pixel[0], src_pixel[1], src_pixel[2]);
+            } else {
+                // Already grayscale
+                stream_buffer[y * output_width + x] = src_line[x * STREAM_SCALE];
             }
         }
-        
-        // Compress grayscale data
-        writer.size = 0;  // Reset writer
-        stbi_write_jpg_to_func(mem_write_func, &writer, output_width, output_height, 1, stream_buffer, JPEG_QUALITY);
     }
+    
+    // Compress grayscale data to JPEG
+    writer.size = 0;
+    stbi_write_jpg_to_func(mem_write_func, &writer, output_width, output_height, 1, stream_buffer, JPEG_QUALITY);
     
     // Prepare frame data header
     robust_frame_data_t frame_data = {
@@ -372,7 +389,19 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
     memcpy(temp_buffer, &frame_data, sizeof(robust_frame_data_t));
     memcpy(temp_buffer + sizeof(robust_frame_data_t), jpeg_buffer, writer.size);
     
-    return robust_send_message(ROBUST_MSG_FRAME_DATA, temp_buffer, total_size);
+    bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, temp_buffer, total_size);
+    
+    // Send detections if available
+    if (detections && detections->nb_dets > 0) {
+        Enhanced_PC_STREAM_SendDetections(0, detections);  // Frame ID = 0 for now
+    }
+    
+    // Send performance metrics if available
+    if (performance) {
+        Enhanced_PC_STREAM_SendPerformanceMetrics(performance);
+    }
+    
+    return frame_sent;
 }
 
 /**
@@ -406,6 +435,60 @@ bool Enhanced_PC_STREAM_SendEmbedding(const float *embedding, uint32_t size)
     offset += embedding_bytes;
     
     return robust_send_message(ROBUST_MSG_EMBEDDING_DATA, buffer, offset);
+}
+
+/**
+ * @brief Send detection results with robust protocol
+ */
+bool Enhanced_PC_STREAM_SendDetections(uint32_t frame_id, const pd_postprocess_out_t *detections)
+{
+    if (!detections || detections->nb_dets == 0) {
+        return false;
+    }
+    
+    uint8_t *buffer = temp_buffer;
+    uint32_t offset = 0;
+    
+    // Prepare detection data header
+    struct __attribute__((packed)) {
+        uint32_t frame_id;
+        uint32_t detection_count;
+    } det_header = {
+        .frame_id = frame_id,
+        .detection_count = detections->nb_dets
+    };
+    
+    memcpy(buffer + offset, &det_header, sizeof(det_header));
+    offset += sizeof(det_header);
+    
+    // Add detection data
+    for (uint32_t i = 0; i < detections->nb_dets && i < MAX_NUM_DET; i++) {
+        const pd_pp_box_t *box = &detections->boxes[i];
+        
+        struct __attribute__((packed)) {
+            uint32_t class_id;
+            float x, y, w, h;
+            float confidence;
+            uint32_t keypoint_count;
+        } det = {
+            .class_id = box->obj_class,
+            .x = box->xc,
+            .y = box->yc,
+            .w = box->w,
+            .h = box->h,
+            .confidence = box->conf,
+            .keypoint_count = 0  // No keypoints for now
+        };
+        
+        if (offset + sizeof(det) > sizeof(temp_buffer)) {
+            break;  // Buffer full
+        }
+        
+        memcpy(buffer + offset, &det, sizeof(det));
+        offset += sizeof(det);
+    }
+    
+    return robust_send_message(ROBUST_MSG_DETECTION_RESULTS, buffer, offset);
 }
 
 /**

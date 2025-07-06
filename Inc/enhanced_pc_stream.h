@@ -80,6 +80,14 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
 bool Enhanced_PC_STREAM_SendEmbedding(const float *embedding, uint32_t size);
 
 /**
+ * @brief Send detection results with robust protocol
+ * @param frame_id Frame ID for correlation
+ * @param detections Detection results
+ * @return true if successful, false otherwise
+ */
+bool Enhanced_PC_STREAM_SendDetections(uint32_t frame_id, const pd_postprocess_out_t *detections);
+
+/**
  * @brief Send performance metrics
  * @param metrics Pointer to performance metrics structure
  * @return true if successful, false otherwise
