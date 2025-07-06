@@ -392,7 +392,7 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
     bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, temp_buffer, total_size);
     
     // Send detections if available
-    if (detections && detections->nb_dets > 0) {
+    if (detections && detections->box_nb > 0) {
         Enhanced_PC_STREAM_SendDetections(0, detections);  // Frame ID = 0 for now
     }
     
@@ -442,7 +442,7 @@ bool Enhanced_PC_STREAM_SendEmbedding(const float *embedding, uint32_t size)
  */
 bool Enhanced_PC_STREAM_SendDetections(uint32_t frame_id, const pd_postprocess_out_t *detections)
 {
-    if (!detections || detections->nb_dets == 0) {
+    if (!detections || detections->box_nb == 0) {
         return false;
     }
     
@@ -455,15 +455,16 @@ bool Enhanced_PC_STREAM_SendDetections(uint32_t frame_id, const pd_postprocess_o
         uint32_t detection_count;
     } det_header = {
         .frame_id = frame_id,
-        .detection_count = detections->nb_dets
+        .detection_count = detections->box_nb
     };
     
     memcpy(buffer + offset, &det_header, sizeof(det_header));
     offset += sizeof(det_header);
     
-    // Add detection data
-    for (uint32_t i = 0; i < detections->nb_dets && i < MAX_NUM_DET; i++) {
-        const pd_pp_box_t *box = &detections->boxes[i];
+    // Add detection data (limit to reasonable number)
+    uint32_t max_detections = 10;  // Reasonable limit for streaming
+    for (uint32_t i = 0; i < detections->box_nb && i < max_detections; i++) {
+        const pd_pp_box_t *box = &detections->pOutData[i];
         
         struct __attribute__((packed)) {
             uint32_t class_id;
@@ -471,12 +472,12 @@ bool Enhanced_PC_STREAM_SendDetections(uint32_t frame_id, const pd_postprocess_o
             float confidence;
             uint32_t keypoint_count;
         } det = {
-            .class_id = box->obj_class,
-            .x = box->xc,
-            .y = box->yc,
-            .w = box->w,
-            .h = box->h,
-            .confidence = box->conf,
+            .class_id = 0,  // Default class (person detection)
+            .x = box->x_center,
+            .y = box->y_center,
+            .w = box->width,
+            .h = box->height,
+            .confidence = box->prob,
             .keypoint_count = 0  // No keypoints for now
         };
         
