@@ -1,0 +1,20 @@
+# Build artifacts
+build/
+dist/
+*.pyc
+__pycache__/
+
+# Generated executables
+*.exe
+STM32N6_ObjectDetection_UI
+STM32N6_ObjectDetection_UI_Linux
+
+# Settings files
+basic_settings.json
+
+# PyInstaller cache
+*.spec.bak
+
+# Large build outputs
+*.zip
+*.tar.gz
