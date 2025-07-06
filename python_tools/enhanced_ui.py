@@ -27,19 +27,28 @@ import cv2
 import numpy as np
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtCore import QTimer, Signal, QThread
+from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QHBoxLayout, QGridLayout,
     QWidget, QLabel, QPushButton, QComboBox, QLineEdit, QProgressBar,
     QTextEdit, QTabWidget, QGroupBox, QCheckBox, QSpinBox, QSlider,
     QSplitter, QFrame, QScrollArea, QMessageBox, QFileDialog,
-    QStatusBar, QMenuBar, QToolBar, QAction
+    QStatusBar, QMenuBar, QToolBar
 )
 import serial
 from serial.tools import list_ports
 import onnxruntime as ort
 
-from centerface import CenterFace
-import enhanced_protocol as protocol
+try:
+    from centerface import CenterFace
+except ImportError:
+    CenterFace = None
+
+try:
+    import enhanced_protocol as protocol
+except ImportError:
+    # Fallback to basic protocol if enhanced not available
+    import pc_uart_utils as protocol
 
 # Configure logging
 logging.basicConfig(
@@ -565,27 +574,31 @@ class EnhancedMainWindow(QMainWindow):
         # File menu
         file_menu = menubar.addMenu("File")
         
-        settings_action = QAction("Settings...", self)
+        settings_action = QAction(self)
+        settings_action.setText("Settings...")
         settings_action.triggered.connect(self.show_settings)
         file_menu.addAction(settings_action)
         
         file_menu.addSeparator()
         
-        exit_action = QAction("Exit", self)
+        exit_action = QAction(self)
+        exit_action.setText("Exit")
         exit_action.triggered.connect(self.close)
         file_menu.addAction(exit_action)
         
         # View menu
         view_menu = menubar.addMenu("View")
         
-        theme_action = QAction("Toggle Theme", self)
+        theme_action = QAction(self)
+        theme_action.setText("Toggle Theme")
         theme_action.triggered.connect(self.toggle_theme)
         view_menu.addAction(theme_action)
         
         # Help menu
         help_menu = menubar.addMenu("Help")
         
-        about_action = QAction("About", self)
+        about_action = QAction(self)
+        about_action.setText("About")
         about_action.triggered.connect(self.show_about)
         help_menu.addAction(about_action)
         
@@ -595,14 +608,16 @@ class EnhancedMainWindow(QMainWindow):
         self.addToolBar(toolbar)
         
         # Quick connection toggle
-        self.quick_connect_action = QAction("🔌 Connect", self)
+        self.quick_connect_action = QAction(self)
+        self.quick_connect_action.setText("🔌 Connect")
         self.quick_connect_action.triggered.connect(self.toggle_connection)
         toolbar.addAction(self.quick_connect_action)
         
         toolbar.addSeparator()
         
         # Settings
-        settings_action = QAction("⚙️ Settings", self)
+        settings_action = QAction(self)
+        settings_action.setText("⚙️ Settings")
         settings_action.triggered.connect(self.show_settings)
         toolbar.addAction(settings_action)
         

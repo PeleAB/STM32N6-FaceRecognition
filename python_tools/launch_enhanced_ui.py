@@ -11,18 +11,21 @@ from pathlib import Path
 def check_dependencies():
     """Check if all required dependencies are installed"""
     required_packages = [
-        'numpy', 'cv2', 'serial', 'PySide6', 'onnxruntime'
+        ('numpy', 'numpy'),
+        ('cv2', 'opencv-python'), 
+        ('serial', 'pyserial'),
+        ('PySide6', 'PySide6'),
+        ('onnxruntime', 'onnxruntime')
     ]
     
     missing_packages = []
-    for package in required_packages:
+    for module_name, package_name in required_packages:
         try:
-            if package == 'cv2':
-                importlib.import_module('cv2')
-            else:
-                importlib.import_module(package)
+            importlib.import_module(module_name)
+            print(f"✓ {package_name} is available")
         except ImportError:
-            missing_packages.append(package)
+            missing_packages.append(package_name)
+            print(f"✗ {package_name} is missing")
     
     return missing_packages
 
@@ -55,6 +58,20 @@ def main():
             print(f"pip install -r {Path(__file__).parent / 'requirements.txt'}")
             return 1
     
+    # Test basic UI first
+    try:
+        print("Testing basic UI functionality...")
+        from simple_ui_test import main as test_main
+        
+        # Ask user if they want to run the test
+        response = input("Run simple UI test first? (y/n): ").lower()
+        if response == 'y':
+            test_main()
+            return 0
+            
+    except Exception as e:
+        print(f"Basic UI test failed: {e}")
+    
     # Launch enhanced UI
     try:
         print("Launching Enhanced UI...")
@@ -67,10 +84,17 @@ def main():
             from pc_uart_client import main as legacy_main
             legacy_main()
         except ImportError:
-            print("No UI available. Please check installation.")
-            return 1
+            print("Legacy UI also not available.")
+            print("Running simple UI test instead...")
+            try:
+                from simple_ui_test import main as test_main
+                test_main()
+            except Exception as test_e:
+                print(f"All UI options failed: {test_e}")
+                return 1
     except Exception as e:
         print(f"UI error: {e}")
+        print("If this is a QAction error, the fixes should resolve it.")
         return 1
     
     return 0
