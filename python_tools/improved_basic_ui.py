@@ -1,23 +1,24 @@
 #!/usr/bin/env python3
 """
-Basic UI for STM32N6 Object Detection System
-Minimal dependencies - no TensorFlow/ML libraries required
+Improved Basic UI for STM32N6 Object Detection System
+Fixed for high-speed data handling and UI responsiveness
 """
 
 import sys
 import json
 import time
+import queue
+import threading
 from pathlib import Path
 from dataclasses import dataclass, asdict
 from typing import Optional, List, Dict, Any
 from datetime import datetime, timedelta
-import threading
 import logging
 
 import cv2
 import numpy as np
 from PySide6 import QtCore, QtGui, QtWidgets
-from PySide6.QtCore import QTimer, Signal, QThread
+from PySide6.QtCore import QTimer, Signal, QThread, QMutex, QMutexLocker
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QHBoxLayout, QGridLayout,
@@ -43,11 +44,13 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 @dataclass
-class BasicSettings:
-    """Basic application settings"""
+class ImprovedSettings:
+    """Improved application settings"""
     baud_rate: int = 921600 * 8
     auto_reconnect: bool = True
     theme: str = "dark"
+    max_fps: int = 30  # Limit frame rate to prevent UI overload
+    buffer_size: int = 5  # Maximum frames to buffer
     
     def save(self, path: Path):
         """Save settings to JSON file"""
@@ -58,7 +61,7 @@ class BasicSettings:
             logger.warning(f"Failed to save settings: {e}")
     
     @classmethod
-    def load(cls, path: Path) -> 'BasicSettings':
+    def load(cls, path: Path) -> 'ImprovedSettings':
         """Load settings from JSON file"""
         if path.exists():
             try:
@@ -69,8 +72,51 @@ class BasicSettings:
                 logger.warning(f"Failed to load settings: {e}")
         return cls()
 
-class BasicImageWidget(QLabel):
-    """Basic image display widget"""
+class FrameBuffer:
+    """Thread-safe frame buffer with rate limiting"""
+    
+    def __init__(self, max_size: int = 5):
+        self.max_size = max_size
+        self.frames = queue.Queue(maxsize=max_size)
+        self.mutex = QMutex()
+        self.dropped_frames = 0
+    
+    def add_frame(self, frame: np.ndarray) -> bool:
+        """Add frame to buffer, returns False if dropped"""
+        with QMutexLocker(self.mutex):
+            try:
+                self.frames.put_nowait(frame.copy())  # Copy to avoid memory issues
+                return True
+            except queue.Full:
+                # Drop oldest frame
+                try:
+                    self.frames.get_nowait()
+                    self.frames.put_nowait(frame.copy())
+                    self.dropped_frames += 1
+                    return True
+                except queue.Empty:
+                    self.dropped_frames += 1
+                    return False
+    
+    def get_frame(self) -> Optional[np.ndarray]:
+        """Get next frame from buffer"""
+        with QMutexLocker(self.mutex):
+            try:
+                return self.frames.get_nowait()
+            except queue.Empty:
+                return None
+    
+    def clear(self):
+        """Clear all frames from buffer"""
+        with QMutexLocker(self.mutex):
+            while not self.frames.empty():
+                try:
+                    self.frames.get_nowait()
+                except queue.Empty:
+                    break
+
+class ImprovedImageWidget(QLabel):
+    """Improved image display widget with better performance"""
     
     def __init__(self):
         super().__init__()
@@ -85,11 +131,17 @@ class BasicImageWidget(QLabel):
         """)
         self.setAlignment(QtCore.Qt.AlignCenter)
         self.setText("No Image")
+        self.setScaledContents(False)
+        
+        # Cache for scaled pixmap
+        self._cached_pixmap = None
+        self._last_size = None
         
     def set_image(self, image: np.ndarray):
-        """Set image to display"""
+        """Set image to display with caching"""
         if image is None:
             self.setText("No Image")
+            self._cached_pixmap = None
             return
             
         try:
@@ -101,6 +153,7 @@ class BasicImageWidget(QLabel):
                 
             height, width = image_rgb.shape[:2]
             
+            # Create QImage
             if len(image_rgb.shape) == 3:
                 bytes_per_line = 3 * width
                 q_image = QtGui.QImage(
@@ -112,45 +165,61 @@ class BasicImageWidget(QLabel):
                     image_rgb.data, width, height, bytes_per_line, QtGui.QImage.Format_Grayscale8
                 )
             
-            # Scale to fit widget
+            # Create and cache pixmap
             pixmap = QtGui.QPixmap.fromImage(q_image)
-            scaled_pixmap = pixmap.scaled(
-                self.size(), QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation
-            )
-            self.setPixmap(scaled_pixmap)
+            
+            # Only rescale if widget size changed
+            current_size = self.size()
+            if self._last_size != current_size or self._cached_pixmap is None:
+                self._cached_pixmap = pixmap.scaled(
+                    current_size, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation
+                )
+                self._last_size = current_size
+            else:
+                # Use cached scaling
+                self._cached_pixmap = pixmap.scaled(
+                    current_size, QtCore.Qt.KeepAspectRatio, QtCore.Qt.FastTransformation
+                )
+            
+            self.setPixmap(self._cached_pixmap)
             
         except Exception as e:
             logger.error(f"Failed to display image: {e}")
             self.setText("Image Error")
 
-class StreamReader(QThread):
-    """Basic stream reader for UART data"""
+class ImprovedStreamReader(QThread):
+    """Improved stream reader with better data handling"""
     
     frame_received = Signal(np.ndarray)
     error_occurred = Signal(str)
     stats_updated = Signal(dict)
     
-    def __init__(self, serial_port):
+    def __init__(self, serial_port, max_fps: int = 30):
         super().__init__()
         self.serial_port = serial_port
         self._running = False
         self.frame_count = 0
         self.start_time = time.time()
+        self.max_fps = max_fps
+        self.min_frame_interval = 1.0 / max_fps if max_fps > 0 else 0
         self.last_frame_time = 0
-        self.min_frame_interval = 1.0 / 30  # 30 FPS limit
+        self.error_count = 0
+        self.max_errors = 10
         
     def run(self):
         """Main reading loop with rate limiting"""
         self._running = True
         last_stats_time = time.time()
         
+        logger.info(f"Stream reader started with max FPS: {self.max_fps}")
+        
         while self._running and self.serial_port and self.serial_port.is_open:
             try:
                 current_time = time.time()
                 
-                # Rate limiting to prevent UI overload
+                # Rate limiting
                 if current_time - self.last_frame_time < self.min_frame_interval:
-                    time.sleep(0.01)
+                    time.sleep(0.001)  # Small sleep to prevent busy waiting
                     continue
                 
                 # Try to read frame using available utilities
@@ -160,19 +229,26 @@ class StreamReader(QThread):
                         if frame is not None:
                             self.frame_count += 1
                             self.last_frame_time = current_time
-                            # Create a copy to avoid memory issues
-                            self.frame_received.emit(frame.copy())
+                            self.frame_received.emit(frame)
+                            self.error_count = 0  # Reset error count on success
                             
-                            # Read detections if available
+                            # Read detections if available (non-blocking)
                             try:
                                 frame_id, detections = uart_utils.read_detections(self.serial_port)
                             except:
                                 pass
                         else:
                             time.sleep(0.01)  # No data available
-                    except Exception as read_error:
-                        # Don't emit error for every failed read attempt
-                        time.sleep(0.05)
+                    except Exception as e:
+                        self.error_count += 1
+                        if self.error_count <= 3:  # Only log first few errors
+                            logger.warning(f"Frame reading error: {e}")
+                        
+                        if self.error_count > self.max_errors:
+                            self.error_occurred.emit(f"Too many read errors: {e}")
+                            break
+                        
+                        time.sleep(0.1)  # Wait longer on error
                 else:
                     # Basic UART reading without protocol
                     time.sleep(0.1)
@@ -184,7 +260,8 @@ class StreamReader(QThread):
                     stats = {
                         'frame_count': self.frame_count,
                         'fps': fps,
-                        'uptime': elapsed
+                        'uptime': elapsed,
+                        'error_count': self.error_count
                     }
                     self.stats_updated.emit(stats)
                     last_stats_time = current_time
@@ -192,18 +269,22 @@ class StreamReader(QThread):
             except Exception as e:
                 self.error_occurred.emit(f"Stream error: {e}")
                 time.sleep(1)  # Wait before retry
+                
+        logger.info("Stream reader stopped")
     
     def stop(self):
         """Stop reading with timeout"""
+        logger.info("Stopping stream reader...")
         self._running = False
+        
         # Wait with timeout to prevent hanging
         if not self.wait(3000):  # 3 second timeout
             logger.warning("Stream reader thread did not stop gracefully")
             self.terminate()
             self.wait(1000)  # Wait 1 more second after terminate
 
-class BasicStatsWidget(QWidget):
-    """Basic statistics display"""
+class ImprovedStatsWidget(QWidget):
+    """Improved statistics display"""
     
     def __init__(self):
         super().__init__()
@@ -231,10 +312,12 @@ class BasicStatsWidget(QWidget):
         self.fps_label = QLabel("FPS: 0.0")
         self.frames_label = QLabel("Frames: 0")
         self.uptime_label = QLabel("Uptime: 0s")
+        self.errors_label = QLabel("Errors: 0")
         
         stats_layout.addWidget(self.fps_label)
         stats_layout.addWidget(self.frames_label)
         stats_layout.addWidget(self.uptime_label)
+        stats_layout.addWidget(self.errors_label)
         layout.addWidget(stats_group)
         
         layout.addStretch()
@@ -259,17 +342,25 @@ class BasicStatsWidget(QWidget):
         if 'uptime' in stats:
             uptime = timedelta(seconds=int(stats['uptime']))
             self.uptime_label.setText(f"Uptime: {uptime}")
+        if 'error_count' in stats:
+            self.errors_label.setText(f"Errors: {stats['error_count']}")
 
-class BasicMainWindow(QMainWindow):
-    """Basic main window with minimal dependencies"""
+class ImprovedMainWindow(QMainWindow):
+    """Improved main window with better performance and stability"""
     
     def __init__(self):
         super().__init__()
-        self.settings = BasicSettings.load(Path("basic_settings.json"))
+        self.settings = ImprovedSettings.load(Path("improved_settings.json"))
         self.serial_port: Optional[serial.Serial] = None
-        self.stream_reader: Optional[StreamReader] = None
+        self.stream_reader: Optional[ImprovedStreamReader] = None
+        self.frame_buffer = FrameBuffer(self.settings.buffer_size)
         
-        self.setWindowTitle("STM32N6 Object Detection - Basic UI")
+        # UI update timer
+        self.ui_timer = QTimer()
+        self.ui_timer.timeout.connect(self.update_display)
+        self.ui_timer.start(33)  # ~30 FPS UI updates
+        
+        self.setWindowTitle("STM32N6 Object Detection - Improved UI")
         self.setMinimumSize(900, 600)
         
         self.setup_ui()
@@ -315,6 +406,16 @@ class BasicMainWindow(QMainWindow):
         baud_layout.addWidget(self.baud_combo)
         conn_layout.addLayout(baud_layout)
         
+        # Max FPS control
+        fps_layout = QHBoxLayout()
+        fps_layout.addWidget(QLabel("Max FPS:"))
+        self.fps_spin = QSpinBox()
+        self.fps_spin.setRange(1, 60)
+        self.fps_spin.setValue(self.settings.max_fps)
+        self.fps_spin.valueChanged.connect(self.update_max_fps)
+        fps_layout.addWidget(self.fps_spin)
+        conn_layout.addLayout(fps_layout)
+        
         # Connect button
         self.connect_btn = QPushButton("Connect")
         self.connect_btn.clicked.connect(self.toggle_connection)
@@ -323,7 +424,7 @@ class BasicMainWindow(QMainWindow):
         left_layout.addWidget(conn_group)
         
         # Statistics
-        self.stats_widget = BasicStatsWidget()
+        self.stats_widget = ImprovedStatsWidget()
         left_layout.addWidget(self.stats_widget)
         
         # Tools
@@ -347,7 +448,7 @@ class BasicMainWindow(QMainWindow):
         right_splitter = QSplitter(QtCore.Qt.Vertical)
         
         # Image display
-        self.image_widget = BasicImageWidget()
+        self.image_widget = ImprovedImageWidget()
         right_splitter.addWidget(self.image_widget)
         
         # Log output
@@ -418,7 +519,7 @@ class BasicMainWindow(QMainWindow):
                 QPushButton:pressed {
                     background-color: #353535;
                 }
-                QComboBox {
+                QComboBox, QSpinBox {
                     background-color: #404040;
                     border: 1px solid #555;
                     border-radius: 4px;
@@ -442,6 +543,13 @@ class BasicMainWindow(QMainWindow):
             self.log_message(f"Found {len(ports)} serial ports")
         else:
             self.log_message("No serial ports found")
+    
+    def update_max_fps(self, value):
+        """Update maximum FPS setting"""
+        self.settings.max_fps = value
+        if self.stream_reader:
+            self.stream_reader.max_fps = value
+            self.stream_reader.min_frame_interval = 1.0 / value if value > 0 else 0
     
     def toggle_connection(self):
         """Toggle connection"""
@@ -469,7 +577,7 @@ class BasicMainWindow(QMainWindow):
             
             # Start stream reader
             if uart_utils:
-                self.stream_reader = StreamReader(self.serial_port)
+                self.stream_reader = ImprovedStreamReader(self.serial_port, self.settings.max_fps)
                 self.stream_reader.frame_received.connect(self.on_frame_received)
                 self.stream_reader.error_occurred.connect(self.on_error)
                 self.stream_reader.stats_updated.connect(self.stats_widget.update_stats)
@@ -490,6 +598,9 @@ class BasicMainWindow(QMainWindow):
             self.stream_reader.stop()
             self.stream_reader = None
             
+        # Clear frame buffer
+        self.frame_buffer.clear()
+        
         # Close serial port
         if self.serial_port:
             try:
@@ -504,17 +615,26 @@ class BasicMainWindow(QMainWindow):
         self.log_message("Disconnected")
     
     def on_frame_received(self, frame: np.ndarray):
-        """Handle received frame"""
-        self.image_widget.set_image(frame)
+        """Handle received frame - add to buffer instead of direct display"""
+        if not self.frame_buffer.add_frame(frame):
+            # Frame was dropped due to buffer full
+            pass
+    
+    def update_display(self):
+        """Update display from frame buffer (called by timer)"""
+        frame = self.frame_buffer.get_frame()
+        if frame is not None:
+            self.image_widget.set_image(frame)
     
     def on_error(self, error_msg: str):
         """Handle error"""
         self.log_message(f"ERROR: {error_msg}")
     
     def clear_display(self):
-        """Clear image display"""
+        """Clear image display and buffer"""
         self.image_widget.setText("No Image")
         self.image_widget.clear()
+        self.frame_buffer.clear()
     
     def toggle_theme(self):
         """Toggle theme"""
@@ -522,29 +642,38 @@ class BasicMainWindow(QMainWindow):
         self.apply_theme()
     
     def log_message(self, message: str):
-        """Add message to log"""
+        """Add message to log with line limit"""
         timestamp = datetime.now().strftime("%H:%M:%S")
         self.log_widget.append(f"[{timestamp}] {message}")
+        
+        # Limit log lines to prevent memory issues
+        document = self.log_widget.document()
+        if document.blockCount() > 100:
+            cursor = self.log_widget.textCursor()
+            cursor.movePosition(cursor.Start)
+            cursor.select(cursor.BlockUnderCursor)
+            cursor.removeSelectedText()
     
     def show_about(self):
         """Show about dialog"""
         QMessageBox.about(self, "About", 
-                         "STM32N6 Object Detection - Basic UI\\n"
-                         "Minimal dependency version for basic functionality\\n\\n"
+                         "STM32N6 Object Detection - Improved Basic UI\\n"
+                         "High-performance version with better data handling\\n\\n"
                          "Built with PySide6 and OpenCV")
     
     def closeEvent(self, event):
         """Handle window close"""
+        self.ui_timer.stop()
         self.disconnect()
-        self.settings.save(Path("basic_settings.json"))
+        self.settings.save(Path("improved_settings.json"))
         event.accept()
 
 def main():
     """Main entry point"""
     app = QApplication(sys.argv)
-    app.setApplicationName("STM32N6 Object Detection Basic UI")
+    app.setApplicationName("STM32N6 Object Detection Improved UI")
     
-    window = BasicMainWindow()
+    window = ImprovedMainWindow()
     window.show()
     
     sys.exit(app.exec())
