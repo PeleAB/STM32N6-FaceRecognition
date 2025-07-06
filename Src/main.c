@@ -33,6 +33,7 @@
 #include "app_system.h"
 #include "nn_runner.h"
 #include "pc_stream.h"
+#include "enhanced_pc_stream.h"
 #include "app_config.h"
 #include "crop_img.h"
 #include "display_utils.h"
@@ -89,6 +90,10 @@ typedef struct {
     
     /* Tracking */
     tracker_t tracker;
+    
+    /* Performance monitoring */
+    performance_metrics_t performance;
+    uint32_t frame_count;
 } app_context_t;
 
 /* Global Variables */
@@ -285,6 +290,10 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
     /* Calculate similarity with target embedding */
     float similarity = embedding_cosine_similarity(embedding, target_embedding, EMBEDDING_SIZE);
 
+    /* Send aligned face and embedding data */
+    Enhanced_PC_STREAM_SendFrame(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN", NULL, NULL);
+    Enhanced_PC_STREAM_SendEmbedding(embedding, EMBEDDING_SIZE);
+
 #ifdef ENABLE_PC_STREAM
     PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
     PC_STREAM_SendEmbedding(embedding, EMBEDDING_SIZE);
@@ -305,6 +314,9 @@ static void app_init(app_context_t *ctx)
     LL_ATON_RT_RuntimeInit();
     tracker_init(&ctx->tracker);
     embeddings_bank_init();
+    
+    /* Initialize enhanced PC streaming */
+    Enhanced_PC_STREAM_Init();
     
     /* Hardware initialization */
     BSP_LED_Init(LED1);
@@ -465,11 +477,24 @@ static void app_main_loop(app_context_t *ctx)
         /* Update system status */
         update_led_status(ctx);
         
-        /* Output results */
+        /* Update performance metrics */
         timestamps[1] = HAL_GetTick();
         if (timestamps[2] == 0) {
             timestamps[2] = HAL_GetTick();
         }
+        
+        ctx->frame_count++;
+        ctx->performance.fps = 1000.0f / (timestamps[1] - timestamps[0] + 1);
+        ctx->performance.inference_time_ms = timestamps[1] - timestamps[0];
+        ctx->performance.frame_count = ctx->frame_count;
+        ctx->performance.detection_count = ctx->pp_output.box_nb;
+        
+        /* Send enhanced frame data */
+        Enhanced_PC_STREAM_SendFrame(nn_rgb, NN_WIDTH, NN_HEIGHT, NN_BPP, "JPG", 
+                                    &ctx->pp_output, &ctx->performance);
+        
+        /* Send heartbeat periodically */
+        Enhanced_PC_STREAM_SendHeartbeat();
         
         app_output(&ctx->pp_output, timestamps[1] - timestamps[0], timestamps[2], &ctx->tracker);
         handle_user_button(ctx);
