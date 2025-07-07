@@ -294,11 +294,6 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
     Enhanced_PC_STREAM_SendFrame(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN", NULL, NULL);
     Enhanced_PC_STREAM_SendEmbedding(embedding, EMBEDDING_SIZE);
 
-#ifdef ENABLE_PC_STREAM
-    PC_STREAM_SendFrameEx(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN");
-    PC_STREAM_SendEmbedding(embedding, EMBEDDING_SIZE);
-#endif
-
     LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
     return similarity;
 }
