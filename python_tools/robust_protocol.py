@@ -513,24 +513,57 @@ class FrameDataParser:
             # Direct slice for image data (no copy)
             image_data = payload[12:]
             
-            # Decode JPEG with optimized flags
+            # Validate and decode JPEG with better error handling
             if image_data:
-                # Use memoryview to avoid copying
+                # Validate JPEG data
+                if len(image_data) < 100:  # Minimum reasonable JPEG size
+                    logger.warning(f"Image data too small: {len(image_data)} bytes")
+                    return FrameDataParser.parse_frame(payload)  # Fallback
+                
+                # Check for JPEG markers
+                if not image_data.startswith(b'\xff\xd8'):
+                    logger.warning(f"Invalid JPEG header for {frame_type} frame")
+                    # Try to find JPEG start
+                    jpeg_start = image_data.find(b'\xff\xd8')
+                    if jpeg_start > 0 and jpeg_start < 100:
+                        logger.info(f"Found JPEG start at offset {jpeg_start}")
+                        image_data = image_data[jpeg_start:]
+                    else:
+                        return FrameDataParser.parse_frame(payload)  # Fallback
+                
+                # Decode with error handling
                 img_array = np.frombuffer(image_data, dtype=np.uint8)
                 
-                # Decode with specific flags for better performance
+                # Try multiple decode strategies for robustness
+                frame = None
+                
                 if frame_type == "ALN":
                     # Keep color for alignment frames
                     frame = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
                 else:
-                    # Decode as grayscale for regular frames (faster)
-                    frame = cv2.imdecode(img_array, cv2.IMREAD_GRAYSCALE)
-                    if frame is not None and len(frame.shape) == 2:
-                        # Convert single channel to 3-channel for consistency
-                        frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
+                    # Try color decode first for JPG frames
+                    frame = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+                    
+                # Fallback decode if first attempt failed
+                if frame is None:
+                    logger.warning(f"Primary decode failed for {frame_type}, trying fallback")
+                    frame = cv2.imdecode(img_array, cv2.IMREAD_UNCHANGED)
                 
                 if frame is not None:
+                    # Ensure 3-channel output for consistency
+                    if len(frame.shape) == 2:  # Grayscale
+                        frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
+                    elif len(frame.shape) == 3 and frame.shape[2] == 4:  # RGBA
+                        frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2BGR)
+                    
+                    # Validate frame dimensions
+                    actual_height, actual_width = frame.shape[:2]
+                    if abs(actual_width - width) > 10 or abs(actual_height - height) > 10:
+                        logger.warning(f"Size mismatch for {frame_type}: expected {width}x{height}, got {actual_width}x{actual_height}")
+                    
                     return frame_type, frame, width, height
+                else:
+                    logger.error(f"All decode strategies failed for {frame_type} frame")
                     
         except Exception as e:
             logger.error(f"Error parsing frame data (fast): {e}")
