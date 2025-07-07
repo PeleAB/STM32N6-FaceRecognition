@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
-#include "stb_image_write.h"
+#include "jpeg_hw_encoder.h"
 
 /* ========================================================================= */
 /* CONFIGURATION CONSTANTS                                                   */
@@ -151,22 +151,14 @@ static uint16_t get_next_sequence_id(robust_message_type_t msg_type)
 }
 
 /**
- * @brief Memory writer for JPEG compression
+ * @brief Hardware JPEG encoding result
  */
 typedef struct {
     uint8_t *buffer;
-    size_t size;
-    size_t capacity;
-} mem_writer_t;
+    uint32_t size;
+    bool success;
+} hw_jpeg_result_t;
 
-static void mem_write_func(void *context, void *data, int size)
-{
-    mem_writer_t *writer = (mem_writer_t *)context;
-    if (writer->size + size <= writer->capacity) {
-        memcpy(writer->buffer + writer->size, data, size);
-        writer->size += size;
-    }
-}
 
 /**
  * @brief Convert RGB565 to grayscale
@@ -305,6 +297,12 @@ void Enhanced_PC_STREAM_Init(void)
     BSP_COM_SelectLogPort(COM1);
 #endif
     
+    // Initialize hardware JPEG encoder
+    if (!JPEG_HW_Init()) {
+        // Hardware JPEG encoder initialization failed
+        // This is a critical error for the streaming functionality
+    }
+    
     // Clear statistics
     memset(&g_protocol_ctx.stats, 0, sizeof(g_protocol_ctx.stats));
     memset(g_protocol_ctx.sequence_counters, 0, sizeof(g_protocol_ctx.sequence_counters));
@@ -386,10 +384,37 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
         }
     }
     
-    // Compress to JPEG (grayscale or color based on frame type)
-    writer.size = 0;
-    int channels = is_alignment_frame ? (bpp == 2 ? 3 : bpp) : 1;
-    stbi_write_jpg_to_func(mem_write_func, &writer, output_width, output_height, channels, stream_buffer, JPEG_QUALITY);
+    // Compress to JPEG using hardware encoder
+    hw_jpeg_result_t jpeg_result = {0};
+    jpeg_result.buffer = jpeg_buffer;
+    
+    // Use hardware JPEG encoder
+    JPEG_EncodeResult_t hw_result;
+    bool hw_success = false;
+    
+    if (JPEG_HW_IsReady()) {
+        if (is_alignment_frame) {
+            // Color encoding for alignment frames
+            if (bpp == 2) {
+                // RGB565 encoding
+                hw_success = JPEG_HW_EncodeRGB565(stream_buffer, output_width, output_height, 
+                                                 JPEG_QUALITY, jpeg_buffer, sizeof(jpeg_buffer), &hw_result);
+            } else if (bpp == 3) {
+                // RGB888 encoding
+                hw_success = JPEG_HW_EncodeRGB888(stream_buffer, output_width, output_height, 
+                                                 JPEG_QUALITY, jpeg_buffer, sizeof(jpeg_buffer), &hw_result);
+            }
+        } else {
+            // Grayscale encoding for detection frames
+            hw_success = JPEG_HW_EncodeGrayscale(stream_buffer, output_width, output_height, 
+                                                JPEG_QUALITY, jpeg_buffer, sizeof(jpeg_buffer), &hw_result);
+        }
+        
+        if (hw_success) {
+            jpeg_result.size = hw_result.encoded_size;
+            jpeg_result.success = true;
+        }
+    }
     
     // Prepare frame data header
     robust_frame_data_t frame_data = {
@@ -401,8 +426,14 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
     strncpy(frame_data.frame_type, tag, 3);
     frame_data.frame_type[3] = '\0';
     
+    // Check JPEG encoding success
+    if (!jpeg_result.success || jpeg_result.size == 0) {
+        g_protocol_ctx.stats.crc_errors++; // Reuse for encoding errors
+        return false;
+    }
+    
     // Calculate total payload size
-    uint32_t total_size = sizeof(robust_frame_data_t) + writer.size;
+    uint32_t total_size = sizeof(robust_frame_data_t) + jpeg_result.size;
     
     if (total_size > ROBUST_MAX_PAYLOAD_SIZE - ROBUST_MSG_HEADER_SIZE) {
         g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
@@ -411,7 +442,7 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
     
     // Copy data to temporary buffer
     memcpy(temp_buffer, &frame_data, sizeof(robust_frame_data_t));
-    memcpy(temp_buffer + sizeof(robust_frame_data_t), jpeg_buffer, writer.size);
+    memcpy(temp_buffer + sizeof(robust_frame_data_t), jpeg_buffer, jpeg_result.size);
     
     bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, temp_buffer, total_size);
     
