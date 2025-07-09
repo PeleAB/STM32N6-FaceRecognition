@@ -171,13 +171,15 @@ class RobustStatsWidget(QWidget):
         self.messages_label = QLabel("Messages: 0")
         self.bytes_label = QLabel("Bytes: 0")
         self.sync_errors_label = QLabel("Sync Errors: 0")
-        self.checksum_errors_label = QLabel("Checksum Errors: 0")
+        self.checksum_errors_label = QLabel("Header Errors: 0")
+        self.crc_errors_label = QLabel("CRC32 Errors: 0")
         self.dropped_label = QLabel("Dropped: 0")
         self.parse_errors_label = QLabel("Parse Errors: 0")
         
         # Error rate indicators
         self.sync_rate_label = QLabel("Sync Error Rate: 0.0%")
-        self.checksum_rate_label = QLabel("Checksum Error Rate: 0.0%")
+        self.checksum_rate_label = QLabel("Header Error Rate: 0.0%")
+        self.crc_rate_label = QLabel("CRC32 Error Rate: 0.0%")
         
         # Performance indicators
         self.throughput_label = QLabel("Throughput: 0.0 Mbps")
@@ -190,6 +192,8 @@ class RobustStatsWidget(QWidget):
         protocol_layout.addWidget(self.sync_rate_label)
         protocol_layout.addWidget(self.checksum_errors_label)
         protocol_layout.addWidget(self.checksum_rate_label)
+        protocol_layout.addWidget(self.crc_errors_label)
+        protocol_layout.addWidget(self.crc_rate_label)
         protocol_layout.addWidget(self.parse_errors_label)
         protocol_layout.addWidget(self.parse_time_label)
         protocol_layout.addWidget(self.dropped_label)
@@ -229,6 +233,7 @@ class RobustStatsWidget(QWidget):
         bytes_received = stats.get('bytes_received', 0)
         sync_errors = stats.get('sync_errors', 0)
         checksum_errors = stats.get('checksum_errors', 0)
+        crc_errors = stats.get('crc_errors', 0)
         parse_errors = stats.get('parse_errors', 0)
         dropped = stats.get('messages_dropped', 0)
         
@@ -242,7 +247,8 @@ class RobustStatsWidget(QWidget):
         self.parse_time_label.setText(f"Parse Time: {parse_time} ms")
         
         self.sync_errors_label.setText(f"Sync Errors: {sync_errors}")
-        self.checksum_errors_label.setText(f"Checksum Errors: {checksum_errors}")
+        self.checksum_errors_label.setText(f"Header Errors: {checksum_errors}")
+        self.crc_errors_label.setText(f"CRC32 Errors: {crc_errors}")
         self.parse_errors_label.setText(f"Parse Errors: {parse_errors}")
         self.dropped_label.setText(f"Dropped: {dropped}")
         
@@ -250,16 +256,21 @@ class RobustStatsWidget(QWidget):
         if bytes_received > 0:
             sync_rate = (sync_errors / bytes_received) * 100
             checksum_rate = (checksum_errors / max(messages + checksum_errors, 1)) * 100
+            crc_rate = (crc_errors / max(messages + crc_errors, 1)) * 100
             
             # Color code error rates
             sync_color = "red" if sync_rate > 5 else "orange" if sync_rate > 1 else "green"
             checksum_color = "red" if checksum_rate > 5 else "orange" if checksum_rate > 1 else "green"
+            crc_color = "red" if crc_rate > 5 else "orange" if crc_rate > 1 else "green"
             
             self.sync_rate_label.setText(f"Sync Error Rate: {sync_rate:.2f}%")
             self.sync_rate_label.setStyleSheet(f"color: {sync_color};")
             
-            self.checksum_rate_label.setText(f"Checksum Error Rate: {checksum_rate:.2f}%")
+            self.checksum_rate_label.setText(f"Header Error Rate: {checksum_rate:.2f}%")
             self.checksum_rate_label.setStyleSheet(f"color: {checksum_color};")
+            
+            self.crc_rate_label.setText(f"CRC32 Error Rate: {crc_rate:.2f}%")
+            self.crc_rate_label.setStyleSheet(f"color: {crc_color};")
     
     def update_frame_stats(self, frame_count: int, frame_rate: float, detections: int, embeddings: int):
         """Update frame statistics"""
