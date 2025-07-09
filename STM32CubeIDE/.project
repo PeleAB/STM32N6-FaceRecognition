@@ -77,6 +77,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/dummy_fr_input.c</locationURI>
 		</link>
 		<link>
+			<name>Application/enhanced_pc_stream.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/enhanced_pc_stream.c</locationURI>
+		</link>
+		<link>
 			<name>Application/face_detection.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Model/face_detection.c</locationURI>
@@ -115,11 +120,6 @@
 			<name>Application/npu_cache.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/npu_cache.c</locationURI>
-		</link>
-		<link>
-			<name>Application/pc_stream.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Src/pc_stream.c</locationURI>
 		</link>
 		<link>
 			<name>Application/stm32_lcd_ex.c</name>

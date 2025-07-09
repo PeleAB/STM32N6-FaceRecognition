@@ -128,9 +128,9 @@ Application/main.o: C:/Users/pele/Documents/GitHub/ObjectDet/Src/main.c \
  ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/ATON.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rcompat.h \
  ../../Inc/app_cam.h ../../Inc/main.h ../../Inc/app_system.h \
- ../../Inc/nn_runner.h ../../Inc/pc_stream.h ../../Inc/app_config.h \
- ../../Inc/crop_img.h ../../Inc/display_utils.h \
- ../../Inc/app_postprocess.h ../../Inc/app_config.h \
+ ../../Inc/nn_runner.h ../../Inc/enhanced_pc_stream.h \
+ ../../Inc/app_postprocess.h ../../Inc/app_config.h ../../Inc/crop_img.h \
+ ../../Inc/display_utils.h ../../Inc/app_config.h ../../Inc/tracking.h \
  ../../Inc/img_buffer.h ../../Inc/system_utils.h ../../Inc/face_utils.h \
  ../../Inc/target_embedding.h ../../Inc/tracking.h
 ../../Middlewares/Camera_Middleware/cmw_camera.h:
@@ -266,12 +266,13 @@ Application/main.o: C:/Users/pele/Documents/GitHub/ObjectDet/Src/main.c \
 ../../Inc/main.h:
 ../../Inc/app_system.h:
 ../../Inc/nn_runner.h:
-../../Inc/pc_stream.h:
+../../Inc/enhanced_pc_stream.h:
+../../Inc/app_postprocess.h:
 ../../Inc/app_config.h:
 ../../Inc/crop_img.h:
 ../../Inc/display_utils.h:
-../../Inc/app_postprocess.h:
 ../../Inc/app_config.h:
+../../Inc/tracking.h:
 ../../Inc/img_buffer.h:
 ../../Inc/system_utils.h:
 ../../Inc/face_utils.h:

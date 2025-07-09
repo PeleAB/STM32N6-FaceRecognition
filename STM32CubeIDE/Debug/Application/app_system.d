@@ -41,8 +41,16 @@ Application/app_system.o: \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_uart_ex.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_xspi.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cacheaxi.h \
- ../../Inc/app_fuseprogramming.h ../../Inc/pc_stream.h \
- ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/pd_pp_output_if.h \
+ ../../Inc/app_fuseprogramming.h \
+ ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_xspi.h \
+ ../../Inc/stm32n6570_discovery_conf.h \
+ ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
+ ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/mx66uw1g45g/mx66uw1g45g.h \
+ ../../Inc/mx66uw1g45g_conf.h \
+ ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/aps256xx/aps256xx.h \
+ ../../Inc/aps256xx_conf.h \
+ ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery.h \
+ ../../Inc/app_config.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h \
@@ -72,16 +80,7 @@ Application/app_system.o: \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/complex_math_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h \
- ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_xspi.h \
- ../../Inc/stm32n6570_discovery_conf.h \
- ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
- ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/mx66uw1g45g/mx66uw1g45g.h \
- ../../Inc/mx66uw1g45g_conf.h \
- ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/aps256xx/aps256xx.h \
- ../../Inc/aps256xx_conf.h \
- ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery.h \
- ../../Inc/app_config.h
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h
 ../../Inc/app_system.h:
 ../../Inc/system_utils.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
@@ -125,8 +124,15 @@ Application/app_system.o: \
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_xspi.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cacheaxi.h:
 ../../Inc/app_fuseprogramming.h:
-../../Inc/pc_stream.h:
-../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/pd_pp_output_if.h:
+../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_xspi.h:
+../../Inc/stm32n6570_discovery_conf.h:
+../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h:
+../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/mx66uw1g45g/mx66uw1g45g.h:
+../../Inc/mx66uw1g45g_conf.h:
+../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/aps256xx/aps256xx.h:
+../../Inc/aps256xx_conf.h:
+../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery.h:
+../../Inc/app_config.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h:
@@ -157,12 +163,3 @@ Application/app_system.o: \
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h:
-../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_xspi.h:
-../../Inc/stm32n6570_discovery_conf.h:
-../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h:
-../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/mx66uw1g45g/mx66uw1g45g.h:
-../../Inc/mx66uw1g45g_conf.h:
-../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/aps256xx/aps256xx.h:
-../../Inc/aps256xx_conf.h:
-../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery.h:
-../../Inc/app_config.h:

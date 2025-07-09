@@ -32,7 +32,6 @@
 #include "stm32n6xx_hal_rif.h"
 #include "app_system.h"
 #include "nn_runner.h"
-#include "pc_stream.h"
 #include "enhanced_pc_stream.h"
 #include "app_config.h"
 #include "crop_img.h"
@@ -456,6 +455,7 @@ static void app_main_loop(app_context_t *ctx)
                             NN_WIDTH, NN_HEIGHT);
         SCB_CleanInvalidateDCache_by_Addr(ctx->nn_in, nn_in_len);
         
+
         /* Run face detection */
         timestamps[0] = HAL_GetTick();
         RunNetworkSync(&NN_Instance_face_detection);
@@ -484,10 +484,7 @@ static void app_main_loop(app_context_t *ctx)
         ctx->performance.frame_count = ctx->frame_count;
         ctx->performance.detection_count = ctx->pp_output.box_nb;
         
-        /* Send enhanced frame data */
-        Enhanced_PC_STREAM_SendFrame(nn_rgb, NN_WIDTH, NN_HEIGHT, NN_BPP, "JPG", 
-                                    &ctx->pp_output, &ctx->performance);
-        
+
         /* Send heartbeat periodically */
         Enhanced_PC_STREAM_SendHeartbeat();
         

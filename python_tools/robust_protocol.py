@@ -476,6 +476,7 @@ class FrameDataParser:
         """Parse frame data payload"""
         try:
             # Frame format: FrameType(4) + Width(4) + Height(4) + ImageData(...)
+
             if len(payload) < 12:
                 return None
                 
@@ -499,6 +500,7 @@ class FrameDataParser:
     
     @staticmethod
     def parse_frame_fast(payload: bytes) -> Optional[Tuple[str, np.ndarray, int, int]]:
+
         """Optimized frame parsing with reduced memory allocations"""
         try:
             # Frame format: FrameType(4) + Width(4) + Height(4) + ImageData(...)
@@ -509,7 +511,8 @@ class FrameDataParser:
             frame_type = payload[:4].decode('ascii').rstrip('\x00')
             width = struct.unpack('<I', payload[4:8])[0]
             height = struct.unpack('<I', payload[8:12])[0]
-            
+
+            print(width, height)
             # Direct slice for image data (no copy)
             image_data = payload[12:]
             

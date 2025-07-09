@@ -1,7 +1,6 @@
 #include "app_system.h"
 #include "system_utils.h"
 #include "app_fuseprogramming.h"
-#include "pc_stream.h"
 #include "stm32n6570_discovery_xspi.h"
 #include "stm32n6570_discovery.h"
 #include "app_config.h"
@@ -33,9 +32,6 @@ void App_SystemInit(void)
   NPURam_enable();
   Fuse_Programming();
   NPUCache_config();
-#ifdef ENABLE_PC_STREAM
-  PC_STREAM_Init();
-#endif
 
   BSP_XSPI_RAM_Init(0);
   BSP_XSPI_RAM_EnableMemoryMappedMode(0);

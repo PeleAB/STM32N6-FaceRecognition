@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
 /* ========================================================================= */
@@ -23,10 +24,10 @@
 #define ROBUST_HEADER_SIZE          4
 #define ROBUST_MAX_PAYLOAD_SIZE     (64 * 1024)
 #define ROBUST_MSG_HEADER_SIZE      3
-#define UART_TIMEOUT                100
-#define JPEG_QUALITY                85  // High quality for better visual experience
+#define UART_TIMEOUT                1000
+#define JPEG_QUALITY                80  // High quality for better visual experience
 #define STREAM_SCALE                2
-
+#define CHUNK_SIZE                  255  // adjust as needed
 /* ========================================================================= */
 /* MESSAGE TYPES                                                             */
 /* ========================================================================= */
@@ -113,11 +114,11 @@ static enhanced_protocol_ctx_t g_protocol_ctx = {0};
 /* Buffers */
 __attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
-static uint8_t jpeg_buffer[64 * 1024];
+static uint8_t jpeg_buffer[64 * 512];
 
 __attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
-static uint8_t temp_buffer[8 * 1024];
+static uint8_t temp_buffer[64 * 1024];
 
 __attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
@@ -256,7 +257,7 @@ static bool robust_send_message(robust_message_type_t message_type,
     // Send payload data in chunks to avoid UART buffer overflow
     if (payload_size > 0) {
         uint32_t bytes_sent = 0;
-        const uint32_t chunk_size = 8192; // Send 8KB chunks for better efficiency
+        const uint32_t chunk_size = CHUNK_SIZE; // Send 8KB chunks for better efficiency
         
         while (bytes_sent < payload_size) {
             uint32_t chunk_len = (payload_size - bytes_sent > chunk_size) ? 
@@ -264,7 +265,7 @@ static bool robust_send_message(robust_message_type_t message_type,
             
             status = HAL_UART_Transmit(&hcom_uart[COM1], 
                                       (uint8_t*)(payload + bytes_sent), 
-                                      chunk_len, UART_TIMEOUT * 10);
+                                      chunk_len, UART_TIMEOUT);
             if (status != HAL_OK) {
                 g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
                 return false;
@@ -457,8 +458,8 @@ bool Enhanced_PC_STREAM_SendEmbedding(const float *embedding, uint32_t size)
     
     memcpy(buffer + offset, embedding, embedding_bytes);
     offset += embedding_bytes;
-    
-    return robust_send_message(ROBUST_MSG_EMBEDDING_DATA, buffer, offset);
+    return 0;
+    //return robust_send_message(ROBUST_MSG_EMBEDDING_DATA, buffer, offset);
 }
 
 /**
@@ -512,8 +513,8 @@ bool Enhanced_PC_STREAM_SendDetections(uint32_t frame_id, const pd_postprocess_o
         memcpy(buffer + offset, &det, sizeof(det));
         offset += sizeof(det);
     }
-    
-    return robust_send_message(ROBUST_MSG_DETECTION_RESULTS, buffer, offset);
+    return 0;
+    //return robust_send_message(ROBUST_MSG_DETECTION_RESULTS, buffer, offset);
 }
 
 /**
@@ -524,10 +525,10 @@ bool Enhanced_PC_STREAM_SendPerformanceMetrics(const performance_metrics_t *metr
     if (!metrics) {
         return false;
     }
-    
-    return robust_send_message(ROBUST_MSG_PERFORMANCE_METRICS, 
+    return 0;
+    /*return robust_send_message(ROBUST_MSG_PERFORMANCE_METRICS,
                               (const uint8_t*)metrics, 
-                              sizeof(performance_metrics_t));
+                              sizeof(performance_metrics_t));*/
 }
 
 /**
@@ -536,7 +537,7 @@ bool Enhanced_PC_STREAM_SendPerformanceMetrics(const performance_metrics_t *metr
 void Enhanced_PC_STREAM_SendHeartbeat(void)
 {
     uint32_t timestamp = HAL_GetTick();
-    robust_send_message(ROBUST_MSG_HEARTBEAT, (const uint8_t*)&timestamp, sizeof(timestamp));
+    //robust_send_message(ROBUST_MSG_HEARTBEAT, (const uint8_t*)&timestamp, sizeof(timestamp));
     g_protocol_ctx.last_heartbeat_time = timestamp;
 }
 
