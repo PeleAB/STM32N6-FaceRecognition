@@ -72,9 +72,25 @@ class EnhancedProtocolReceiver:
             checksum ^= byte
         return checksum
     
+    def calculate_stm32_crc32(self, data: bytes) -> int:
+        """Calculate CRC32 matching STM32 hardware CRC peripheral"""
+        polynomial = 0x04C11DB7
+        crc = 0xFFFFFFFF
+        
+        for byte in data:
+            crc ^= (byte << 24)
+            for _ in range(8):
+                if crc & 0x80000000:
+                    crc = (crc << 1) ^ polynomial
+                else:
+                    crc = crc << 1
+                crc &= 0xFFFFFFFF
+        
+        return crc
+    
     def validate_crc32(self, payload: bytes, expected_crc32: int) -> bool:
-        """Validate payload CRC32"""
-        calculated_crc32 = zlib.crc32(payload) & 0xFFFFFFFF
+        """Validate payload CRC32 using STM32-compatible algorithm"""
+        calculated_crc32 = self.calculate_stm32_crc32(payload)
         return calculated_crc32 == expected_crc32
     
     def read_frame_header(self) -> Optional[FrameHeader]:

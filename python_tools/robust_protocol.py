@@ -51,9 +51,36 @@ def calculate_checksum(data: bytes) -> int:
         checksum ^= byte
     return checksum & 0xFF
 
+def calculate_stm32_crc32(data: bytes) -> int:
+    """Calculate CRC32 matching STM32 hardware CRC peripheral
+    
+    STM32 CRC32 configuration:
+    - Polynomial: 0x04C11DB7 (IEEE 802.3)
+    - Initial value: 0xFFFFFFFF  
+    - Input reflection: None
+    - Output reflection: None
+    - Output XOR: None
+    """
+    # STM32 CRC32 matches standard IEEE CRC32 but without input/output reflection
+    # We need to implement the exact algorithm used by STM32 hardware
+    
+    polynomial = 0x04C11DB7
+    crc = 0xFFFFFFFF
+    
+    for byte in data:
+        crc ^= (byte << 24)
+        for _ in range(8):
+            if crc & 0x80000000:
+                crc = (crc << 1) ^ polynomial
+            else:
+                crc = crc << 1
+            crc &= 0xFFFFFFFF
+    
+    return crc
+
 def validate_crc32(payload: bytes, expected_crc32: int) -> bool:
-    """Validate payload CRC32"""
-    calculated_crc32 = zlib.crc32(payload) & 0xFFFFFFFF
+    """Validate payload CRC32 using STM32-compatible algorithm"""
+    calculated_crc32 = calculate_stm32_crc32(payload)
     return calculated_crc32 == expected_crc32
 
 class ProtocolMessage:
@@ -375,7 +402,8 @@ class RobustProtocolParser:
             try:
                 received_crc32, = struct.unpack('<I', crc32_bytes)
                 if not validate_crc32(payload_data, received_crc32):
-                    logger.debug(f"CRC32 mismatch: expected {received_crc32:08X}, calculated {zlib.crc32(payload_data) & 0xFFFFFFFF:08X}")
+                    calculated_crc32 = calculate_stm32_crc32(payload_data)
+                    logger.debug(f"CRC32 mismatch: expected {received_crc32:08X}, calculated {calculated_crc32:08X}")
                     self.stats['crc_errors'] += 1
                     if attempt == max_attempts - 1:
                         return None
