@@ -9,6 +9,7 @@
 #include "stm32n6570_discovery.h"
 #include "stm32n6570_discovery_conf.h"
 #include "stm32n6xx_hal_uart.h"
+#include "stm32n6xx_hal_crc.h"
 #include "app_config.h"
 #include <stdio.h>
 #include <string.h>
@@ -21,7 +22,8 @@
 /* ========================================================================= */
 
 #define ROBUST_SOF_BYTE             0xAA
-#define ROBUST_HEADER_SIZE          4
+#define ROBUST_HEADER_SIZE          4   // Back to 4 bytes for header only
+#define ROBUST_CRC_SIZE             4   // CRC32 at end of packet
 #define ROBUST_MAX_PAYLOAD_SIZE     (64 * 1024)
 #define ROBUST_MSG_HEADER_SIZE      3
 #define UART_TIMEOUT                1000
@@ -49,11 +51,11 @@ typedef enum {
 /* ========================================================================= */
 
 /**
- * @brief Robust 4-byte frame header structure
+ * @brief Robust 4-byte frame header structure (CRC32 follows payload)
  */
 typedef struct __attribute__((packed)) {
     uint8_t sof;                /* Start of Frame (0xAA) */
-    uint16_t payload_size;      /* Payload size in bytes */
+    uint16_t payload_size;      /* Payload size in bytes (not including CRC32) */
     uint8_t header_checksum;    /* XOR checksum of SOF + payload_size */
 } robust_frame_header_t;
 
@@ -111,6 +113,9 @@ static MX_UART_InitTypeDef PcUartInit = {
 /* Protocol context */
 static enhanced_protocol_ctx_t g_protocol_ctx = {0};
 
+/* CRC handle for payload validation */
+static CRC_HandleTypeDef hcrc;
+
 /* Buffers */
 __attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
@@ -127,6 +132,39 @@ static uint8_t stream_buffer[320 * 240];  // Downscaled frame buffer
 /* ========================================================================= */
 /* UTILITY FUNCTIONS                                                         */
 /* ========================================================================= */
+
+/**
+ * @brief Initialize CRC32 peripheral
+ */
+static bool crc32_init(void)
+{
+    hcrc.Instance = CRC;
+    hcrc.Init.DefaultPolynomialUse = DEFAULT_POLYNOMIAL_ENABLE;
+    hcrc.Init.DefaultInitValueUse = DEFAULT_INIT_VALUE_ENABLE;
+    hcrc.Init.InputDataInversionMode = CRC_INPUTDATA_INVERSION_NONE;
+    hcrc.Init.OutputDataInversionMode = CRC_OUTPUTDATA_INVERSION_DISABLE;
+    hcrc.InputDataFormat = CRC_INPUTDATA_FORMAT_BYTES;
+    
+    __HAL_RCC_CRC_CLK_ENABLE();
+    
+    if (HAL_CRC_Init(&hcrc) != HAL_OK) {
+        return false;
+    }
+    
+    return true;
+}
+
+/**
+ * @brief Calculate CRC32 for payload data
+ */
+static uint32_t calculate_crc32(const uint8_t *data, uint32_t length)
+{
+    if (!data || length == 0) {
+        return 0;
+    }
+    
+    return HAL_CRC_Calculate(&hcrc, (uint32_t*)data, (length + 3) / 4);
+}
 
 /**
  * @brief Calculate XOR checksum for robust protocol
@@ -193,7 +231,7 @@ static uint8_t rgb888_to_gray(uint8_t r, uint8_t g, uint8_t b)
 /* ========================================================================= */
 
 /**
- * @brief Send raw message with robust 4-byte header framing
+ * @brief Send raw message with robust header and CRC32 at packet end
  */
 static bool robust_send_message(robust_message_type_t message_type, 
                                const uint8_t *payload, uint32_t payload_size)
@@ -213,7 +251,7 @@ static bool robust_send_message(robust_message_type_t message_type,
         .sequence_id = get_next_sequence_id(message_type)
     };
     
-    // Calculate total payload size (message header + payload)
+    // Calculate total payload size (message header + payload data, not including CRC32)
     uint32_t total_payload_size = ROBUST_MSG_HEADER_SIZE + payload_size;
     
     // Validate payload size
@@ -222,18 +260,37 @@ static bool robust_send_message(robust_message_type_t message_type,
         return false;
     }
     
-    // Prepare frame header with proper byte ordering
+    // Check if we have enough buffer space for payload + CRC32
+    if (total_payload_size + ROBUST_CRC_SIZE > sizeof(temp_buffer)) {
+        g_protocol_ctx.stats.crc_errors++; // Buffer too small
+        return false;
+    }
+    
+    // Prepare complete payload (message header + payload data)
+    uint8_t *complete_payload = temp_buffer;
+    memcpy(complete_payload, &msg_header, ROBUST_MSG_HEADER_SIZE);
+    if (payload_size > 0) {
+        memcpy(complete_payload + ROBUST_MSG_HEADER_SIZE, payload, payload_size);
+    }
+    
+    // Calculate CRC32 for the payload (before appending CRC)
+    uint32_t payload_crc32 = calculate_crc32(complete_payload, total_payload_size);
+    
+    // Append CRC32 at the end of payload (little endian)
+    uint32_t crc32_le = payload_crc32;  // STM32 is little endian
+    memcpy(complete_payload + total_payload_size, &crc32_le, ROBUST_CRC_SIZE);
+    
+    // Prepare frame header (payload size does NOT include CRC32)
     robust_frame_header_t frame_header;
     frame_header.sof = ROBUST_SOF_BYTE;
-    frame_header.payload_size = (uint16_t)total_payload_size;
+    frame_header.payload_size = (uint16_t)total_payload_size;  // Payload only, not CRC
     frame_header.header_checksum = 0;
     
-    // Calculate header checksum using exact same method as Python
-    // SOF(1 byte) + payload_size(2 bytes, little endian)
+    // Calculate header checksum
     uint8_t header_data[3];
-    header_data[0] = frame_header.sof;                              // SOF byte
-    header_data[1] = (uint8_t)(frame_header.payload_size & 0xFF);   // Low byte of payload_size
-    header_data[2] = (uint8_t)((frame_header.payload_size >> 8) & 0xFF); // High byte of payload_size
+    header_data[0] = frame_header.sof;
+    header_data[1] = (uint8_t)(frame_header.payload_size & 0xFF);
+    header_data[2] = (uint8_t)((frame_header.payload_size >> 8) & 0xFF);
     frame_header.header_checksum = robust_calculate_checksum(header_data, 3);
     
     HAL_StatusTypeDef status;
@@ -246,25 +303,18 @@ static bool robust_send_message(robust_message_type_t message_type,
         return false;
     }
     
-    // Send message header immediately after frame header
-    status = HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t*)&msg_header, 
-                              ROBUST_MSG_HEADER_SIZE, UART_TIMEOUT);
-    if (status != HAL_OK) {
-        g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
-        return false;
-    }
-    
-    // Send payload data in chunks to avoid UART buffer overflow
-    if (payload_size > 0) {
+    // Send payload + CRC32 in chunks to avoid UART buffer overflow
+    uint32_t total_data_size = total_payload_size + ROBUST_CRC_SIZE;
+    if (total_data_size > 0) {
         uint32_t bytes_sent = 0;
-        const uint32_t chunk_size = CHUNK_SIZE; // Send 8KB chunks for better efficiency
+        const uint32_t chunk_size = CHUNK_SIZE; // Send chunks for better efficiency
         
-        while (bytes_sent < payload_size) {
-            uint32_t chunk_len = (payload_size - bytes_sent > chunk_size) ? 
-                                chunk_size : (payload_size - bytes_sent);
+        while (bytes_sent < total_data_size) {
+            uint32_t chunk_len = (total_data_size - bytes_sent > chunk_size) ? 
+                                chunk_size : (total_data_size - bytes_sent);
             
             status = HAL_UART_Transmit(&hcom_uart[COM1], 
-                                      (uint8_t*)(payload + bytes_sent), 
+                                      complete_payload + bytes_sent, 
                                       chunk_len, UART_TIMEOUT);
             if (status != HAL_OK) {
                 g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
@@ -274,7 +324,7 @@ static bool robust_send_message(robust_message_type_t message_type,
             bytes_sent += chunk_len;
             
             // Minimal delay only for very large payloads
-            if (bytes_sent < payload_size && chunk_len >= 4096) {
+            if (bytes_sent < total_data_size && chunk_len >= 4096) {
                 HAL_Delay(1);
             }
         }
@@ -282,7 +332,7 @@ static bool robust_send_message(robust_message_type_t message_type,
     
     // Update statistics
     g_protocol_ctx.stats.packets_sent++;
-    g_protocol_ctx.stats.bytes_sent += ROBUST_HEADER_SIZE + total_payload_size;
+    g_protocol_ctx.stats.bytes_sent += ROBUST_HEADER_SIZE + total_payload_size + ROBUST_CRC_SIZE;
     
     return true;
 }
@@ -306,11 +356,19 @@ void Enhanced_PC_STREAM_Init(void)
     BSP_COM_SelectLogPort(COM1);
 #endif
     
+    // Initialize CRC32 peripheral
+    if (!crc32_init()) {
+        printf("Failed to initialize CRC32 peripheral\n");
+        return;
+    }
+    
     // Clear statistics
     memset(&g_protocol_ctx.stats, 0, sizeof(g_protocol_ctx.stats));
     memset(g_protocol_ctx.sequence_counters, 0, sizeof(g_protocol_ctx.sequence_counters));
     
     g_protocol_ctx.initialized = true;
+    
+    printf("Enhanced PC streaming initialized with CRC32 validation\n");
     
     // Send initialization heartbeat
     Enhanced_PC_STREAM_SendHeartbeat();
@@ -458,8 +516,8 @@ bool Enhanced_PC_STREAM_SendEmbedding(const float *embedding, uint32_t size)
     
     memcpy(buffer + offset, embedding, embedding_bytes);
     offset += embedding_bytes;
-    return 0;
-    //return robust_send_message(ROBUST_MSG_EMBEDDING_DATA, buffer, offset);
+    
+    return robust_send_message(ROBUST_MSG_EMBEDDING_DATA, buffer, offset);
 }
 
 /**
@@ -513,8 +571,8 @@ bool Enhanced_PC_STREAM_SendDetections(uint32_t frame_id, const pd_postprocess_o
         memcpy(buffer + offset, &det, sizeof(det));
         offset += sizeof(det);
     }
-    return 0;
-    //return robust_send_message(ROBUST_MSG_DETECTION_RESULTS, buffer, offset);
+    
+    return robust_send_message(ROBUST_MSG_DETECTION_RESULTS, buffer, offset);
 }
 
 /**
@@ -525,10 +583,10 @@ bool Enhanced_PC_STREAM_SendPerformanceMetrics(const performance_metrics_t *metr
     if (!metrics) {
         return false;
     }
-    return 0;
-    /*return robust_send_message(ROBUST_MSG_PERFORMANCE_METRICS,
+    
+    return robust_send_message(ROBUST_MSG_PERFORMANCE_METRICS,
                               (const uint8_t*)metrics, 
-                              sizeof(performance_metrics_t));*/
+                              sizeof(performance_metrics_t));
 }
 
 /**
@@ -537,7 +595,7 @@ bool Enhanced_PC_STREAM_SendPerformanceMetrics(const performance_metrics_t *metr
 void Enhanced_PC_STREAM_SendHeartbeat(void)
 {
     uint32_t timestamp = HAL_GetTick();
-    //robust_send_message(ROBUST_MSG_HEARTBEAT, (const uint8_t*)&timestamp, sizeof(timestamp));
+    robust_send_message(ROBUST_MSG_HEARTBEAT, (const uint8_t*)&timestamp, sizeof(timestamp));
     g_protocol_ctx.last_heartbeat_time = timestamp;
 }
 
