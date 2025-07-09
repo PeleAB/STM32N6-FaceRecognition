@@ -9,6 +9,7 @@ import time
 import logging
 import threading
 import queue
+import zlib
 from collections import deque
 from enum import IntEnum
 from typing import Optional, Tuple, List, Dict, Any, Callable
@@ -33,6 +34,7 @@ class ProtocolConstants:
     """Protocol constants and configuration"""
     SOF_BYTE = 0xAA                    # Start of Frame marker
     HEADER_SIZE = 4                    # SOF(1) + PayloadSize(2) + Checksum(1)
+    CRC_SIZE = 4                       # CRC32 at end of packet
     MAX_PAYLOAD_SIZE = 64 * 1024       # 64KB max payload
     BUFFER_SIZE = 256 * 1024           # 256KB circular buffer
     SYNC_TIMEOUT = 5.0                 # 5 seconds to find sync
@@ -43,11 +45,16 @@ class ProtocolConstants:
     MSG_HEADER_SIZE = 3
 
 def calculate_checksum(data: bytes) -> int:
-    """Calculate simple XOR checksum"""
+    """Calculate simple XOR checksum for header validation"""
     checksum = 0
     for byte in data:
         checksum ^= byte
     return checksum & 0xFF
+
+def validate_crc32(payload: bytes, expected_crc32: int) -> bool:
+    """Validate payload CRC32"""
+    calculated_crc32 = zlib.crc32(payload) & 0xFFFFFFFF
+    return calculated_crc32 == expected_crc32
 
 class ProtocolMessage:
     """Represents a parsed protocol message"""
@@ -194,6 +201,7 @@ class RobustProtocolParser:
             'bytes_received': 0,
             'sync_errors': 0,
             'checksum_errors': 0,
+            'crc_errors': 0,
             'parse_errors': 0,
             'messages_dropped': 0,
             'parse_time_ms': 0,
@@ -338,8 +346,8 @@ class RobustProtocolParser:
                 
             payload_size, header_checksum = header_info
             
-            # Check if complete message is available
-            total_size = ProtocolConstants.HEADER_SIZE + payload_size
+            # Check if complete message is available (payload + CRC32)
+            total_size = ProtocolConstants.HEADER_SIZE + payload_size + ProtocolConstants.CRC_SIZE
             if self.buffer.available() < total_size:
                 return None  # Wait for more data
                 
@@ -350,10 +358,30 @@ class RobustProtocolParser:
                     return None
                 continue
                 
-            # Read payload
-            payload_data = self.buffer.consume(payload_size)
-            if not payload_data:
-                logger.error("Failed to read payload after header")
+            # Read payload + CRC32
+            payload_and_crc = self.buffer.consume(payload_size + ProtocolConstants.CRC_SIZE)
+            if not payload_and_crc:
+                logger.error("Failed to read payload and CRC32 after header")
+                self.stats['parse_errors'] += 1
+                if attempt == max_attempts - 1:
+                    return None
+                continue
+                
+            # Split payload and CRC32
+            payload_data = payload_and_crc[:payload_size]
+            crc32_bytes = payload_and_crc[payload_size:]
+            
+            # Extract and validate CRC32
+            try:
+                received_crc32, = struct.unpack('<I', crc32_bytes)
+                if not validate_crc32(payload_data, received_crc32):
+                    logger.debug(f"CRC32 mismatch: expected {received_crc32:08X}, calculated {zlib.crc32(payload_data) & 0xFFFFFFFF:08X}")
+                    self.stats['crc_errors'] += 1
+                    if attempt == max_attempts - 1:
+                        return None
+                    continue
+            except struct.error:
+                logger.warning("Failed to unpack CRC32")
                 self.stats['parse_errors'] += 1
                 if attempt == max_attempts - 1:
                     return None
