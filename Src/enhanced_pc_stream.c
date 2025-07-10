@@ -245,12 +245,6 @@ static bool robust_send_message(robust_message_type_t message_type,
         return false;
     }
     
-    // Prepare message header
-    robust_message_header_t msg_header = {
-        .message_type = (uint8_t)message_type,
-        .sequence_id = get_next_sequence_id(message_type)
-    };
-    
     // Calculate total payload size (message header + payload data, not including CRC32)
     uint32_t total_payload_size = ROBUST_MSG_HEADER_SIZE + payload_size;
     
@@ -260,59 +254,67 @@ static bool robust_send_message(robust_message_type_t message_type,
         return false;
     }
     
-    // Check if we have enough buffer space for payload + CRC32
-    if (total_payload_size + ROBUST_CRC_SIZE > sizeof(temp_buffer)) {
-        g_protocol_ctx.stats.crc_errors++; // Buffer too small
-        return false;
-    }
+    // Prepare message header
+    uint8_t msg_header[ROBUST_MSG_HEADER_SIZE];
+    msg_header[0] = (uint8_t)message_type;
+    uint16_t sequence_id = get_next_sequence_id(message_type);
+    msg_header[1] = (uint8_t)(sequence_id & 0xFF);
+    msg_header[2] = (uint8_t)((sequence_id >> 8) & 0xFF);
     
-    // Prepare complete payload (message header + payload data)
-    uint8_t *complete_payload = temp_buffer;
-    memcpy(complete_payload, &msg_header, ROBUST_MSG_HEADER_SIZE);
+    // Calculate CRC32 only on payload data (header has its own checksum)
+    uint32_t payload_crc32 = 0;
     if (payload_size > 0) {
-        memcpy(complete_payload + ROBUST_MSG_HEADER_SIZE, payload, payload_size);
+        payload_crc32 = calculate_crc32(payload, payload_size);
     }
     
-    // Calculate CRC32 for the payload (before appending CRC)
-    uint32_t payload_crc32 = calculate_crc32(complete_payload, total_payload_size);
+    // Prepare CRC32 bytes (little endian)
+    uint8_t crc32_bytes[ROBUST_CRC_SIZE];
+    crc32_bytes[0] = (uint8_t)(payload_crc32 & 0xFF);
+    crc32_bytes[1] = (uint8_t)((payload_crc32 >> 8) & 0xFF);
+    crc32_bytes[2] = (uint8_t)((payload_crc32 >> 16) & 0xFF);
+    crc32_bytes[3] = (uint8_t)((payload_crc32 >> 24) & 0xFF);
     
-    // Append CRC32 at the end of payload (little endian)
-    uint32_t crc32_le = payload_crc32;  // STM32 is little endian
-    memcpy(complete_payload + total_payload_size, &crc32_le, ROBUST_CRC_SIZE);
-    
-    // Prepare frame header (payload size does NOT include CRC32)
-    robust_frame_header_t frame_header;
-    frame_header.sof = ROBUST_SOF_BYTE;
-    frame_header.payload_size = (uint16_t)total_payload_size;  // Payload only, not CRC
-    frame_header.header_checksum = 0;
-    
-    // Calculate header checksum
-    uint8_t header_data[3];
-    header_data[0] = frame_header.sof;
-    header_data[1] = (uint8_t)(frame_header.payload_size & 0xFF);
-    header_data[2] = (uint8_t)((frame_header.payload_size >> 8) & 0xFF);
-    frame_header.header_checksum = robust_calculate_checksum(header_data, 3);
+    // Prepare frame header
+    uint8_t frame_header[ROBUST_HEADER_SIZE];
+    frame_header[0] = ROBUST_SOF_BYTE;
+    frame_header[1] = (uint8_t)(total_payload_size & 0xFF);
+    frame_header[2] = (uint8_t)((total_payload_size >> 8) & 0xFF);
+    frame_header[3] = frame_header[0] ^ frame_header[1] ^ frame_header[2]; // XOR checksum
     
     HAL_StatusTypeDef status;
     
-    // Send frame header as atomic operation
-    status = HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t*)&frame_header, 
+    // Send frame header
+    status = HAL_UART_Transmit(&hcom_uart[COM1], frame_header, 
                               ROBUST_HEADER_SIZE, UART_TIMEOUT);
     if (status != HAL_OK) {
         g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
         return false;
     }
     
-    // Send payload + CRC32 in one atomic transmission
-    uint32_t total_data_size = total_payload_size + ROBUST_CRC_SIZE;
-    if (total_data_size > 0) {
-        status = HAL_UART_Transmit(&hcom_uart[COM1], 
-                                  complete_payload, 
-                                  total_data_size, UART_TIMEOUT);
+    // Send message header
+    status = HAL_UART_Transmit(&hcom_uart[COM1], msg_header, 
+                              ROBUST_MSG_HEADER_SIZE, UART_TIMEOUT);
+    if (status != HAL_OK) {
+        g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
+        return false;
+    }
+    
+    // Send payload data if any
+    if (payload_size > 0) {
+        status = HAL_UART_Transmit(&hcom_uart[COM1], (uint8_t*)payload, 
+                                  payload_size, UART_TIMEOUT);
         if (status != HAL_OK) {
             g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
             return false;
         }
+    }
+    
+    // Send CRC32
+    status = HAL_UART_Transmit(&hcom_uart[COM1], crc32_bytes, 
+                              ROBUST_CRC_SIZE, UART_TIMEOUT);
+    if (status != HAL_OK) {
+        g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
+        return false;
     }
     
     // Update statistics
@@ -424,14 +426,11 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
         return false;
     }
     
-    // Use a different buffer to avoid conflict with robust_send_message's temp_buffer usage
-    static uint8_t frame_payload_buffer[64 * 1024];
+    // Build payload directly in temp_buffer (no copying needed in robust_send_message now)
+    memcpy(temp_buffer, &frame_data, sizeof(robust_frame_data_t));
+    memcpy(temp_buffer + sizeof(robust_frame_data_t), w.buffer, w.size);
     
-    // Copy data to separate payload buffer (avoid temp_buffer conflict)
-    memcpy(frame_payload_buffer, &frame_data, sizeof(robust_frame_data_t));
-    memcpy(frame_payload_buffer + sizeof(robust_frame_data_t), w.buffer, w.size);
-    
-    bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, frame_payload_buffer, total_size);
+    bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, temp_buffer, total_size);
     
     // Send detections if available
     if (detections && detections->box_nb > 0) {
