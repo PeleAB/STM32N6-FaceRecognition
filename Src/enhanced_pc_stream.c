@@ -431,6 +431,8 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
     // Add sync markers at key positions to detect shifts
     writer.buffer[0] = 0xFF;           // Start marker
     writer.buffer[1] = 0xD8;           // JPEG SOI marker (for pattern recognition)
+    writer.buffer[2] = 0xDE;           // DEBUG: Extra marker to verify our data
+    writer.buffer[3] = 0xAD;           // DEBUG: Extra marker to verify our data
     writer.buffer[test_size - 2] = 0xFF;  // End marker
     writer.buffer[test_size - 1] = 0xD9;   // JPEG EOI marker
     
@@ -441,6 +443,12 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
     }
     
     writer.size = test_size;  // Set the size directly instead of using JPEG compression
+    
+    // DEBUG: Force specific values in first few bytes to verify buffer copying
+    writer.buffer[4] = 0xCA;
+    writer.buffer[5] = 0xFE;
+    writer.buffer[6] = 0xBA;
+    writer.buffer[7] = 0xBE;
     
     // Prepare frame data header
     robust_frame_data_t frame_data = {
@@ -460,11 +468,9 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
         return false;
     }
     
-    // Copy data to temporary buffer
-    memcpy(temp_buffer, &frame_data, sizeof(robust_frame_data_t));
-    memcpy(temp_buffer + sizeof(robust_frame_data_t), writer.buffer, writer.size);
-    
-    bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, temp_buffer, total_size);
+    // DEBUG: Send ONLY our test pattern, bypass frame header entirely
+    // This will help us determine if the issue is in the frame header or buffer copying
+    bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, writer.buffer, writer.size);
     
     // Send detections if available
     if (detections && detections->box_nb > 0) {
