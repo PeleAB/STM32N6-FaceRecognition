@@ -439,11 +439,14 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
         return false;
     }
     
-    // Copy data to temporary buffer (use simplified writer result)
-    memcpy(temp_buffer, &frame_data, sizeof(robust_frame_data_t));
-    memcpy(temp_buffer + sizeof(robust_frame_data_t), w.buffer, w.size);
+    // Use a different buffer to avoid conflict with robust_send_message's temp_buffer usage
+    static uint8_t frame_payload_buffer[64 * 1024];
     
-    bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, temp_buffer, total_size);
+    // Copy data to separate payload buffer (avoid temp_buffer conflict)
+    memcpy(frame_payload_buffer, &frame_data, sizeof(robust_frame_data_t));
+    memcpy(frame_payload_buffer + sizeof(robust_frame_data_t), w.buffer, w.size);
+    
+    bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, frame_payload_buffer, total_size);
     
     // Send detections if available
     if (detections && detections->box_nb > 0) {
