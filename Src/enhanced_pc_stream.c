@@ -386,69 +386,40 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
         return false;
     }
     
-    // Convert to grayscale or keep color based on frame type
-    mem_writer_t writer = {0};
-    writer.buffer = jpeg_buffer;
-    writer.capacity = sizeof(jpeg_buffer);
+    // Generate JPEG like the original working version
+    bool full_color = (strcmp(tag, "ALN") == 0);
     
-    // Check if this is an alignment frame (ALN) - keep full color and resolution
-    bool is_alignment_frame = (strcmp(tag, "ALN") == 0);
-    uint32_t output_width = is_alignment_frame ? width : (width / STREAM_SCALE);
-    uint32_t output_height = is_alignment_frame ? height : (height / STREAM_SCALE);
+    uint32_t output_width = full_color ? width : width / STREAM_SCALE;
+    uint32_t output_height = full_color ? height : height / STREAM_SCALE;
     
-    if (output_width * output_height > sizeof(stream_buffer)) {
-        output_width = 160;  // Fallback size
-        output_height = 120;
-    }
+    if (output_width > 320) output_width = 320;   // Max width limit
+    if (output_height > 240) output_height = 240; // Max height limit
     
-    // Handle color vs grayscale based on frame type
-    if (is_alignment_frame) {
-        // Keep full color and resolution for alignment frames
-        if (bpp == 2) {
-            // RGB565 to RGB888 for better quality
-            for (uint32_t y = 0; y < output_height; y++) {
-                const uint8_t *src_line = frame + y * width * bpp;
-                uint8_t *dst_line = stream_buffer + y * output_width * 3;
-                for (uint32_t x = 0; x < output_width; x++) {
-                    const uint16_t *src_pixel = (const uint16_t *)(src_line + x * 2);
-                    uint16_t pixel = *src_pixel;
-                    dst_line[x * 3 + 0] = ((pixel >> 11) & 0x1F) << 3;  // R
-                    dst_line[x * 3 + 1] = ((pixel >> 5) & 0x3F) << 2;   // G
-                    dst_line[x * 3 + 2] = (pixel & 0x1F) << 3;          // B
-                }
-            }
-        } else {
-            // Copy RGB888 or grayscale directly
-            uint32_t bytes_to_copy = output_width * output_height * bpp;
-            if (bytes_to_copy <= sizeof(stream_buffer)) {
-                memcpy(stream_buffer, frame, bytes_to_copy);
-            }
-        }
+    // Simple writer setup like original working version
+    mem_writer_t w = { jpeg_buffer, 0, sizeof(jpeg_buffer) };
+    
+    if (full_color) {
+        // Full color for alignment frames - use original frame data directly
+        stbi_write_jpg_to_func(mem_write_func, &w, output_width, output_height, bpp, frame, 80);
     } else {
-        // Convert to grayscale and downsample for regular frames
+        // Convert to grayscale like original working version
         for (uint32_t y = 0; y < output_height; y++) {
-            const uint8_t *src_line = frame + (y * STREAM_SCALE) * width * bpp;
+            const uint8_t *line = frame + (y * STREAM_SCALE) * width * bpp;
             for (uint32_t x = 0; x < output_width; x++) {
                 if (bpp == 2) {
-                    // RGB565 to grayscale
-                    const uint16_t *src_pixel = (const uint16_t *)(src_line + x * STREAM_SCALE * 2);
-                    stream_buffer[y * output_width + x] = rgb565_to_gray(*src_pixel);
+                    const uint16_t *line16 = (const uint16_t *)line;
+                    uint16_t px = line16[x * STREAM_SCALE];
+                    stream_buffer[y * output_width + x] = rgb565_to_gray(px);
                 } else if (bpp == 3) {
-                    // RGB888 to grayscale
-                    const uint8_t *src_pixel = src_line + x * STREAM_SCALE * 3;
-                    stream_buffer[y * output_width + x] = rgb888_to_gray(src_pixel[0], src_pixel[1], src_pixel[2]);
+                    const uint8_t *px = line + x * STREAM_SCALE * 3;
+                    stream_buffer[y * output_width + x] = rgb888_to_gray(px[0], px[1], px[2]);
                 } else {
-                    // Already grayscale
-                    stream_buffer[y * output_width + x] = src_line[x * STREAM_SCALE];
+                    stream_buffer[y * output_width + x] = line[x * STREAM_SCALE];
                 }
             }
         }
+        stbi_write_jpg_to_func(mem_write_func, &w, output_width, output_height, 1, stream_buffer, 80);
     }
-    
-    // Compress to JPEG (grayscale or color based on frame type)
-    writer.size = 0;
-    int channels = is_alignment_frame ? (bpp == 2 ? 3 : bpp) : 1;
-    stbi_write_jpg_to_func(mem_write_func, &writer, output_width, output_height, channels, stream_buffer, JPEG_QUALITY);
     
     // Prepare frame data header
     robust_frame_data_t frame_data = {
@@ -460,17 +431,17 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
     strncpy(frame_data.frame_type, tag, 3);
     frame_data.frame_type[3] = '\0';
     
-    // Calculate total payload size
-    uint32_t total_size = sizeof(robust_frame_data_t) + writer.size;
+    // Calculate total payload size using simplified writer
+    uint32_t total_size = sizeof(robust_frame_data_t) + w.size;
     
     if (total_size > ROBUST_MAX_PAYLOAD_SIZE - ROBUST_MSG_HEADER_SIZE) {
         g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
         return false;
     }
     
-    // Copy data to temporary buffer (FIXED: use writer.buffer instead of jpeg_buffer)
+    // Copy data to temporary buffer (use simplified writer result)
     memcpy(temp_buffer, &frame_data, sizeof(robust_frame_data_t));
-    memcpy(temp_buffer + sizeof(robust_frame_data_t), writer.buffer, writer.size);
+    memcpy(temp_buffer + sizeof(robust_frame_data_t), w.buffer, w.size);
     
     bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, temp_buffer, total_size);
     
