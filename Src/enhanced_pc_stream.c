@@ -391,59 +391,12 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
     writer.buffer = jpeg_buffer;
     writer.capacity = sizeof(jpeg_buffer);
     
-    // Check if this is an alignment frame (ALN) - keep full color and resolution
-    bool is_alignment_frame = (strcmp(tag, "ALN") == 0);
-    uint32_t output_width = is_alignment_frame ? width : (width / STREAM_SCALE);
-    uint32_t output_height = is_alignment_frame ? height : (height / STREAM_SCALE);
+    // DEBUG: Skip all image processing and generate test pattern for any frame type
+    // This ensures the test pattern is sent regardless of "JPG" or "ALN" frame type
     
-    if (output_width * output_height > sizeof(stream_buffer)) {
-        output_width = 160;  // Fallback size
-        output_height = 120;
-    }
-    
-    // Handle color vs grayscale based on frame type
-    if (is_alignment_frame) {
-        // Keep full color and resolution for alignment frames
-        if (bpp == 2) {
-            // RGB565 to RGB888 for better quality
-            for (uint32_t y = 0; y < output_height; y++) {
-                const uint8_t *src_line = frame + y * width * bpp;
-                uint8_t *dst_line = stream_buffer + y * output_width * 3;
-                for (uint32_t x = 0; x < output_width; x++) {
-                    const uint16_t *src_pixel = (const uint16_t *)(src_line + x * 2);
-                    uint16_t pixel = *src_pixel;
-                    dst_line[x * 3 + 0] = ((pixel >> 11) & 0x1F) << 3;  // R
-                    dst_line[x * 3 + 1] = ((pixel >> 5) & 0x3F) << 2;   // G
-                    dst_line[x * 3 + 2] = (pixel & 0x1F) << 3;          // B
-                }
-            }
-        } else {
-            // Copy RGB888 or grayscale directly
-            uint32_t bytes_to_copy = output_width * output_height * bpp;
-            if (bytes_to_copy <= sizeof(stream_buffer)) {
-                memcpy(stream_buffer, frame, bytes_to_copy);
-            }
-        }
-    } else {
-        // Convert to grayscale and downsample for regular frames
-        for (uint32_t y = 0; y < output_height; y++) {
-            const uint8_t *src_line = frame + (y * STREAM_SCALE) * width * bpp;
-            for (uint32_t x = 0; x < output_width; x++) {
-                if (bpp == 2) {
-                    // RGB565 to grayscale
-                    const uint16_t *src_pixel = (const uint16_t *)(src_line + x * STREAM_SCALE * 2);
-                    stream_buffer[y * output_width + x] = rgb565_to_gray(*src_pixel);
-                } else if (bpp == 3) {
-                    // RGB888 to grayscale
-                    const uint8_t *src_pixel = src_line + x * STREAM_SCALE * 3;
-                    stream_buffer[y * output_width + x] = rgb888_to_gray(src_pixel[0], src_pixel[1], src_pixel[2]);
-                } else {
-                    // Already grayscale
-                    stream_buffer[y * output_width + x] = src_line[x * STREAM_SCALE];
-                }
-            }
-        }
-    }
+    // Set dummy dimensions for test pattern
+    uint32_t output_width = 160;
+    uint32_t output_height = 120;
     
     // DEBUG: Create artificial test buffer instead of JPEG compression
     // This will help us detect if bytes are missing or scrambled during transmission
