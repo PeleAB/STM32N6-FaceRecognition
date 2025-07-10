@@ -303,30 +303,15 @@ static bool robust_send_message(robust_message_type_t message_type,
         return false;
     }
     
-    // Send payload + CRC32 in chunks to avoid UART buffer overflow
+    // Send payload + CRC32 in one atomic transmission
     uint32_t total_data_size = total_payload_size + ROBUST_CRC_SIZE;
     if (total_data_size > 0) {
-        uint32_t bytes_sent = 0;
-        const uint32_t chunk_size = CHUNK_SIZE; // Send chunks for better efficiency
-        
-        while (bytes_sent < total_data_size) {
-            uint32_t chunk_len = (total_data_size - bytes_sent > chunk_size) ? 
-                                chunk_size : (total_data_size - bytes_sent);
-            
-            status = HAL_UART_Transmit(&hcom_uart[COM1], 
-                                      complete_payload + bytes_sent, 
-                                      chunk_len, UART_TIMEOUT);
-            if (status != HAL_OK) {
-                g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
-                return false;
-            }
-            
-            bytes_sent += chunk_len;
-            
-            // Minimal delay only for very large payloads
-            if (bytes_sent < total_data_size && chunk_len >= 4096) {
-                HAL_Delay(1);
-            }
+        status = HAL_UART_Transmit(&hcom_uart[COM1], 
+                                  complete_payload, 
+                                  total_data_size, UART_TIMEOUT);
+        if (status != HAL_OK) {
+            g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
+            return false;
         }
     }
     
