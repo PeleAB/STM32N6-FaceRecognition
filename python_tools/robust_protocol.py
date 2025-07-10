@@ -64,21 +64,21 @@ class Crc32:
             self.crc_table[i] = c & 0xFFFFFFFF
 
     def calculate(self, buf):
-        """Calculate CRC from input buffer - processes in 4-byte chunks with byte order reversal"""
+        """Calculate CRC from input buffer - processes in 4-byte chunks in little-endian order"""
         crc = 0xFFFFFFFF
 
         i = 0
         while i < len(buf):
             # Handle remaining bytes if buffer length is not multiple of 4
             if i + 4 <= len(buf):
-                b = [buf[i+3], buf[i+2], buf[i+1], buf[i+0]]
+                b = [buf[i+0], buf[i+1], buf[i+2], buf[i+3]]
                 i += 4
             else:
                 # Pad remaining bytes with zeros for partial chunk
                 remaining = len(buf) - i
                 b = [0, 0, 0, 0]
                 for j in range(remaining):
-                    b[3-j] = buf[i+j]
+                    b[j] = buf[i+j]
                 i = len(buf)
             
             for byte in b:
