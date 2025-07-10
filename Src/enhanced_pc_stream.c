@@ -382,30 +382,21 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
     if (output_width > 320) output_width = 320;   // Max width limit
     if (output_height > 240) output_height = 240; // Max height limit
     
-    // Simple writer setup like original working version
-    mem_writer_t w = { jpeg_buffer, 0, sizeof(jpeg_buffer) };
-    
-    if (full_color) {
-        // Full color for alignment frames - use original frame data directly
-        stbi_write_jpg_to_func(mem_write_func, &w, output_width, output_height, bpp, frame, 80);
-    } else {
-        // Convert to grayscale like original working version
-        for (uint32_t y = 0; y < output_height; y++) {
-            const uint8_t *line = frame + (y * STREAM_SCALE) * width * bpp;
-            for (uint32_t x = 0; x < output_width; x++) {
-                if (bpp == 2) {
-                    const uint16_t *line16 = (const uint16_t *)line;
-                    uint16_t px = line16[x * STREAM_SCALE];
-                    stream_buffer[y * output_width + x] = rgb565_to_gray(px);
-                } else if (bpp == 3) {
-                    const uint8_t *px = line + x * STREAM_SCALE * 3;
-                    stream_buffer[y * output_width + x] = rgb888_to_gray(px[0], px[1], px[2]);
-                } else {
-                    stream_buffer[y * output_width + x] = line[x * STREAM_SCALE];
-                }
+    // Convert to grayscale and send raw data (no JPEG compression for debugging)
+    for (uint32_t y = 0; y < output_height; y++) {
+        const uint8_t *line = frame + (y * STREAM_SCALE) * width * bpp;
+        for (uint32_t x = 0; x < output_width; x++) {
+            if (bpp == 2) {
+                const uint16_t *line16 = (const uint16_t *)line;
+                uint16_t px = line16[x * STREAM_SCALE];
+                stream_buffer[y * output_width + x] = rgb565_to_gray(px);
+            } else if (bpp == 3) {
+                const uint8_t *px = line + x * STREAM_SCALE * 3;
+                stream_buffer[y * output_width + x] = rgb888_to_gray(px[0], px[1], px[2]);
+            } else {
+                stream_buffer[y * output_width + x] = line[x * STREAM_SCALE];
             }
         }
-        stbi_write_jpg_to_func(mem_write_func, &w, output_width, output_height, 1, stream_buffer, 80);
     }
     
     // Prepare frame data header
@@ -414,21 +405,22 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
         .height = output_height
     };
     
-    // Copy frame type (ensure null termination)
-    strncpy(frame_data.frame_type, tag, 3);
+    // Copy frame type (ensure null termination) - mark as RAW for debugging
+    strncpy(frame_data.frame_type, "RAW", 3);
     frame_data.frame_type[3] = '\0';
     
-    // Calculate total payload size using simplified writer
-    uint32_t total_size = sizeof(robust_frame_data_t) + w.size;
+    // Calculate total payload size using raw grayscale data
+    uint32_t raw_data_size = output_width * output_height; // 1 byte per pixel
+    uint32_t total_size = sizeof(robust_frame_data_t) + raw_data_size;
     
     if (total_size > ROBUST_MAX_PAYLOAD_SIZE - ROBUST_MSG_HEADER_SIZE) {
         g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
         return false;
     }
     
-    // Build payload directly in temp_buffer (no copying needed in robust_send_message now)
+    // Build payload directly in temp_buffer with raw grayscale data
     memcpy(temp_buffer, &frame_data, sizeof(robust_frame_data_t));
-    memcpy(temp_buffer + sizeof(robust_frame_data_t), w.buffer, w.size);
+    memcpy(temp_buffer + sizeof(robust_frame_data_t), stream_buffer, raw_data_size);
     
     bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, temp_buffer, total_size);
     

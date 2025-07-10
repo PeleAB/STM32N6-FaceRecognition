@@ -566,13 +566,22 @@ class FrameDataParser:
             
             image_data = payload[12:]
             
-            # Decode JPEG data
-            if image_data:
-                img_array = np.frombuffer(image_data, dtype=np.uint8)
-                frame = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
-                
-                if frame is not None:
+            # Handle different frame types
+            if frame_type == "RAW":
+                # Raw grayscale data
+                if len(image_data) == width * height:
+                    frame = np.frombuffer(image_data, dtype=np.uint8).reshape((height, width))
+                    # Convert to 3-channel for consistency
+                    frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
                     return frame_type, frame, width, height
+            else:
+                # Decode JPEG data
+                if image_data:
+                    img_array = np.frombuffer(image_data, dtype=np.uint8)
+                    frame = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+                    
+                    if frame is not None:
+                        return frame_type, frame, width, height
                     
         except Exception as e:
             logger.error(f"Error parsing frame data: {e}")
@@ -597,7 +606,19 @@ class FrameDataParser:
             # Direct slice for image data (no copy)
             image_data = payload[12:]
             
-            # Normal JPEG processing
+            # Handle different frame types
+            if frame_type == "RAW":
+                # Raw grayscale data - fast path
+                if len(image_data) == width * height:
+                    frame = np.frombuffer(image_data, dtype=np.uint8).reshape((height, width))
+                    # Convert to 3-channel for consistency
+                    frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
+                    return frame_type, frame, width, height
+                else:
+                    logger.warning(f"RAW data size mismatch: expected {width * height}, got {len(image_data)}")
+                    return None
+            
+            # JPEG processing
             if image_data:
                 # Validate JPEG data
                 if len(image_data) < 100:  # Minimum reasonable JPEG size
