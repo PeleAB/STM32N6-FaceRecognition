@@ -445,10 +445,46 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
         }
     }
     
-    // Compress to JPEG (grayscale or color based on frame type)
+    // DEBUG: Create artificial test buffer instead of JPEG compression
+    // This will help us detect if bytes are missing or scrambled during transmission
+    
     writer.size = 0;
-    int channels = is_alignment_frame ? (bpp == 2 ? 3 : bpp) : 1;
-    stbi_write_jpg_to_func(mem_write_func, &writer, output_width, output_height, channels, stream_buffer, JPEG_QUALITY);
+    uint32_t test_size = 1024; // 1KB test buffer
+    
+    // Ensure we don't exceed buffer capacity
+    if (test_size > writer.capacity) {
+        test_size = writer.capacity;
+    }
+    
+    // Pattern 1: Sequential bytes (0x00, 0x01, 0x02, ...)
+    for (uint32_t i = 0; i < test_size / 4; i++) {
+        writer.buffer[i] = i & 0xFF;
+    }
+    
+    // Pattern 2: Alternating pattern (0xAA, 0x55, 0xAA, 0x55, ...)
+    for (uint32_t i = test_size / 4; i < test_size / 2; i++) {
+        writer.buffer[i] = (i % 2) ? 0x55 : 0xAA;
+    }
+    
+    // Pattern 3: Known sequence with markers (0xDEADBEEF pattern)
+    uint32_t *pattern_ptr = (uint32_t *)(writer.buffer + test_size / 2);
+    for (uint32_t i = 0; i < (test_size / 2) / 4; i++) {
+        pattern_ptr[i] = 0xDEADBEEF + i;
+    }
+    
+    // Add sync markers at key positions to detect shifts
+    writer.buffer[0] = 0xFF;           // Start marker
+    writer.buffer[1] = 0xD8;           // JPEG SOI marker (for pattern recognition)
+    writer.buffer[test_size - 2] = 0xFF;  // End marker
+    writer.buffer[test_size - 1] = 0xD9;   // JPEG EOI marker
+    
+    // Add position markers every 100 bytes to detect missing chunks
+    for (uint32_t i = 100; i < test_size - 100; i += 100) {
+        writer.buffer[i] = 0xFE;       // Position marker
+        writer.buffer[i + 1] = (i / 100) & 0xFF;  // Position ID
+    }
+    
+    writer.size = test_size;  // Set the size directly instead of using JPEG compression
     
     // Prepare frame data header
     robust_frame_data_t frame_data = {

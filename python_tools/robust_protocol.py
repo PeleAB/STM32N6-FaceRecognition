@@ -403,7 +403,24 @@ class RobustProtocolParser:
                 received_crc32, = struct.unpack('<I', crc32_bytes)
                 if not validate_crc32(payload_data, received_crc32):
                     calculated_crc32 = calculate_stm32_crc32(payload_data)
-                    logger.debug(f"CRC32 mismatch: expected {received_crc32:08X}, calculated {calculated_crc32:08X}")
+                    logger.error(f"DEBUG: CRC32 mismatch detected!")
+                    logger.error(f"DEBUG: Received CRC32: {received_crc32:08X}")
+                    logger.error(f"DEBUG: Calculated CRC32: {calculated_crc32:08X}")
+                    logger.error(f"DEBUG: Payload size: {len(payload_data)} bytes")
+                    logger.error(f"DEBUG: Payload first 32 bytes: {payload_data[:32].hex()}")
+                    logger.error(f"DEBUG: Payload last 32 bytes: {payload_data[-32:].hex()}")
+                    
+                    # Check if payload looks like test pattern
+                    if len(payload_data) >= 15 and payload_data[12:14] == b'\xff\xd8':
+                        logger.error("DEBUG: Payload appears to contain test pattern data")
+                        # Extract just the test pattern part (skip 12-byte header)
+                        test_data = payload_data[12:]
+                        if len(test_data) == 1024:
+                            test_crc = calculate_stm32_crc32(test_data)
+                            logger.error(f"DEBUG: Test pattern CRC32: {test_crc:08X}")
+                            logger.error(f"DEBUG: Test pattern first 16 bytes: {test_data[:16].hex()}")
+                            logger.error(f"DEBUG: Test pattern last 16 bytes: {test_data[-16:].hex()}")
+                    
                     self.stats['crc_errors'] += 1
                     if attempt == max_attempts - 1:
                         return None
@@ -572,7 +589,76 @@ class FrameDataParser:
             # Direct slice for image data (no copy)
             image_data = payload[12:]
             
-            # Validate and decode JPEG with better error handling
+            # DEBUG: Check if this is test pattern data instead of JPEG
+            if image_data and len(image_data) == 1024 and image_data.startswith(b'\xff\xd8'):
+                logger.info("DEBUG: Detected test pattern data, analyzing...")
+                
+                # Analyze test pattern
+                issues = []
+                
+                # Check end markers
+                if image_data[-2:] != b'\xff\xd9':
+                    issues.append(f"End markers wrong: got {image_data[-2]:02X} {image_data[-1]:02X}, expected FF D9")
+                
+                # Check sequential pattern (bytes 2-255)
+                sequential_errors = 0
+                for i in range(2, 256):
+                    expected = i & 0xFF
+                    if image_data[i] != expected:
+                        sequential_errors += 1
+                        if sequential_errors <= 5:
+                            issues.append(f"Sequential error at {i}: got {image_data[i]:02X}, expected {expected:02X}")
+                
+                # Check alternating pattern (256-511)
+                alternating_errors = 0
+                for i in range(256, 512):
+                    expected = 0x55 if (i % 2) else 0xAA
+                    if image_data[i] != expected:
+                        alternating_errors += 1
+                        if alternating_errors <= 5:
+                            issues.append(f"Alternating error at {i}: got {image_data[i]:02X}, expected {expected:02X}")
+                
+                # Check DEADBEEF pattern (512-924)
+                deadbeef_errors = 0
+                for i in range(512, 924, 4):
+                    if i + 3 < len(image_data):
+                        received = struct.unpack('<I', image_data[i:i+4])[0]
+                        expected = 0xDEADBEEF + ((i - 512) // 4)
+                        if received != expected:
+                            deadbeef_errors += 1
+                            if deadbeef_errors <= 5:
+                                issues.append(f"DEADBEEF error at {i}: got {received:08X}, expected {expected:08X}")
+                
+                # Check position markers
+                marker_errors = 0
+                for pos in range(100, 924, 100):
+                    if pos + 1 < len(image_data):
+                        if image_data[pos] != 0xFE:
+                            marker_errors += 1
+                            issues.append(f"Position marker error at {pos}: got {image_data[pos]:02X}, expected FE")
+                        
+                        expected_id = (pos // 100) & 0xFF
+                        if image_data[pos + 1] != expected_id:
+                            marker_errors += 1
+                            issues.append(f"Position ID error at {pos+1}: got {image_data[pos+1]:02X}, expected {expected_id:02X}")
+                
+                # Report results
+                if not issues:
+                    logger.info("DEBUG: ✓ Test pattern received correctly - no transmission errors")
+                else:
+                    logger.error(f"DEBUG: ✗ Test pattern has {len(issues)} issues:")
+                    for issue in issues[:10]:
+                        logger.error(f"DEBUG:   {issue}")
+                
+                # Calculate and log CRC32
+                test_crc = FrameDataParser.calculate_stm32_crc32(image_data)
+                logger.info(f"DEBUG: Test pattern CRC32: {test_crc:08X}")
+                
+                # Create a dummy frame to return (black image)
+                dummy_frame = np.zeros((height, width, 3), dtype=np.uint8)
+                return frame_type, dummy_frame, width, height
+            
+            # Normal JPEG processing
             if image_data:
                 # Validate JPEG data
                 if len(image_data) < 100:  # Minimum reasonable JPEG size
