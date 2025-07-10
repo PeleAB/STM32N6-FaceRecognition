@@ -456,6 +456,9 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
         test_size = writer.capacity;
     }
     
+    // Clear the buffer first to ensure clean state
+    memset(writer.buffer, 0, test_size);
+    
     // Pattern 1: Sequential bytes (0x00, 0x01, 0x02, ...)
     for (uint32_t i = 0; i < test_size / 4; i++) {
         writer.buffer[i] = i & 0xFF;
@@ -506,7 +509,7 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
     
     // Copy data to temporary buffer
     memcpy(temp_buffer, &frame_data, sizeof(robust_frame_data_t));
-    memcpy(temp_buffer + sizeof(robust_frame_data_t), jpeg_buffer, writer.size);
+    memcpy(temp_buffer + sizeof(robust_frame_data_t), writer.buffer, writer.size);
     
     bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, temp_buffer, total_size);
     
