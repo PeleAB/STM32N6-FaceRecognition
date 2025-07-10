@@ -51,6 +51,43 @@ def calculate_checksum(data: bytes) -> int:
         checksum ^= byte
     return checksum & 0xFF
 
+class Crc32:
+    """STM32-compatible CRC32 implementation"""
+    
+    def __init__(self, poly):
+        # Generate CRC table for polynomial
+        self.crc_table = {}
+        for i in range(256):
+            c = i << 24
+            for j in range(8):
+                c = (c << 1) ^ poly if (c & 0x80000000) else c << 1
+            self.crc_table[i] = c & 0xFFFFFFFF
+
+    def calculate(self, buf):
+        """Calculate CRC from input buffer - processes in 4-byte chunks with byte order reversal"""
+        crc = 0xFFFFFFFF
+
+        i = 0
+        while i < len(buf):
+            # Handle remaining bytes if buffer length is not multiple of 4
+            if i + 4 <= len(buf):
+                b = [buf[i+3], buf[i+2], buf[i+1], buf[i+0]]
+                i += 4
+            else:
+                # Pad remaining bytes with zeros for partial chunk
+                remaining = len(buf) - i
+                b = [0, 0, 0, 0]
+                for j in range(remaining):
+                    b[3-j] = buf[i+j]
+                i = len(buf)
+            
+            for byte in b:
+                crc = ((crc << 8) & 0xFFFFFFFF) ^ self.crc_table[(crc >> 24) ^ byte]
+        return crc
+
+# Global CRC32 instance
+_stm32_crc = Crc32(0x04C11DB7)
+
 def calculate_stm32_crc32(data: bytes) -> int:
     """Calculate CRC32 matching STM32 hardware CRC peripheral
     
@@ -60,23 +97,9 @@ def calculate_stm32_crc32(data: bytes) -> int:
     - Input reflection: None
     - Output reflection: None
     - Output XOR: None
+    - Processes data in 4-byte chunks with byte order reversal
     """
-    # STM32 CRC32 matches standard IEEE CRC32 but without input/output reflection
-    # We need to implement the exact algorithm used by STM32 hardware
-    
-    polynomial = 0x04C11DB7
-    crc = 0xFFFFFFFF
-    
-    for byte in data:
-        crc ^= (byte << 24)
-        for _ in range(8):
-            if crc & 0x80000000:
-                crc = (crc << 1) ^ polynomial
-            else:
-                crc = crc << 1
-            crc &= 0xFFFFFFFF
-    
-    return crc
+    return _stm32_crc.calculate(data)
 
 def validate_crc32(payload: bytes, expected_crc32: int) -> bool:
     """Validate payload CRC32 using STM32-compatible algorithm"""
@@ -403,24 +426,7 @@ class RobustProtocolParser:
                 received_crc32, = struct.unpack('<I', crc32_bytes)
                 if not validate_crc32(payload_data, received_crc32):
                     calculated_crc32 = calculate_stm32_crc32(payload_data)
-                    logger.error(f"DEBUG: CRC32 mismatch detected!")
-                    logger.error(f"DEBUG: Received CRC32: {received_crc32:08X}")
-                    logger.error(f"DEBUG: Calculated CRC32: {calculated_crc32:08X}")
-                    logger.error(f"DEBUG: Payload size: {len(payload_data)} bytes")
-                    logger.error(f"DEBUG: Payload first 32 bytes: {payload_data[:32].hex()}")
-                    logger.error(f"DEBUG: Payload last 32 bytes: {payload_data[-32:].hex()}")
-                    
-                    # Check if payload looks like test pattern
-                    if len(payload_data) >= 15 and payload_data[12:14] == b'\xff\xd8':
-                        logger.error("DEBUG: Payload appears to contain test pattern data")
-                        # Extract just the test pattern part (skip 12-byte header)
-                        test_data = payload_data[12:]
-                        if len(test_data) == 1024:
-                            test_crc = calculate_stm32_crc32(test_data)
-                            logger.error(f"DEBUG: Test pattern CRC32: {test_crc:08X}")
-                            logger.error(f"DEBUG: Test pattern first 16 bytes: {test_data[:16].hex()}")
-                            logger.error(f"DEBUG: Test pattern last 16 bytes: {test_data[-16:].hex()}")
-                    
+                    logger.debug(f"CRC32 mismatch: expected {received_crc32:08X}, calculated {calculated_crc32:08X}")
                     self.stats['crc_errors'] += 1
                     if attempt == max_attempts - 1:
                         return None
@@ -588,75 +594,6 @@ class FrameDataParser:
             print(width, height)
             # Direct slice for image data (no copy)
             image_data = payload[12:]
-            
-            # DEBUG: Check if this is test pattern data instead of JPEG
-            if image_data and len(image_data) == 1024 and image_data.startswith(b'\xff\xd8'):
-                logger.info("DEBUG: Detected test pattern data, analyzing...")
-                
-                # Analyze test pattern
-                issues = []
-                
-                # Check end markers
-                if image_data[-2:] != b'\xff\xd9':
-                    issues.append(f"End markers wrong: got {image_data[-2]:02X} {image_data[-1]:02X}, expected FF D9")
-                
-                # Check sequential pattern (bytes 2-255)
-                sequential_errors = 0
-                for i in range(2, 256):
-                    expected = i & 0xFF
-                    if image_data[i] != expected:
-                        sequential_errors += 1
-                        if sequential_errors <= 5:
-                            issues.append(f"Sequential error at {i}: got {image_data[i]:02X}, expected {expected:02X}")
-                
-                # Check alternating pattern (256-511)
-                alternating_errors = 0
-                for i in range(256, 512):
-                    expected = 0x55 if (i % 2) else 0xAA
-                    if image_data[i] != expected:
-                        alternating_errors += 1
-                        if alternating_errors <= 5:
-                            issues.append(f"Alternating error at {i}: got {image_data[i]:02X}, expected {expected:02X}")
-                
-                # Check DEADBEEF pattern (512-924)
-                deadbeef_errors = 0
-                for i in range(512, 924, 4):
-                    if i + 3 < len(image_data):
-                        received = struct.unpack('<I', image_data[i:i+4])[0]
-                        expected = 0xDEADBEEF + ((i - 512) // 4)
-                        if received != expected:
-                            deadbeef_errors += 1
-                            if deadbeef_errors <= 5:
-                                issues.append(f"DEADBEEF error at {i}: got {received:08X}, expected {expected:08X}")
-                
-                # Check position markers
-                marker_errors = 0
-                for pos in range(100, 924, 100):
-                    if pos + 1 < len(image_data):
-                        if image_data[pos] != 0xFE:
-                            marker_errors += 1
-                            issues.append(f"Position marker error at {pos}: got {image_data[pos]:02X}, expected FE")
-                        
-                        expected_id = (pos // 100) & 0xFF
-                        if image_data[pos + 1] != expected_id:
-                            marker_errors += 1
-                            issues.append(f"Position ID error at {pos+1}: got {image_data[pos+1]:02X}, expected {expected_id:02X}")
-                
-                # Report results
-                if not issues:
-                    logger.info("DEBUG: ✓ Test pattern received correctly - no transmission errors")
-                else:
-                    logger.error(f"DEBUG: ✗ Test pattern has {len(issues)} issues:")
-                    for issue in issues[:10]:
-                        logger.error(f"DEBUG:   {issue}")
-                
-                # Calculate and log CRC32
-                test_crc = FrameDataParser.calculate_stm32_crc32(image_data)
-                logger.info(f"DEBUG: Test pattern CRC32: {test_crc:08X}")
-                
-                # Create a dummy frame to return (black image)
-                dummy_frame = np.zeros((height, width, 3), dtype=np.uint8)
-                return frame_type, dummy_frame, width, height
             
             # Normal JPEG processing
             if image_data:

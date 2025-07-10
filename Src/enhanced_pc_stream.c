@@ -391,64 +391,64 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
     writer.buffer = jpeg_buffer;
     writer.capacity = sizeof(jpeg_buffer);
     
-    // DEBUG: Skip all image processing and generate test pattern for any frame type
-    // This ensures the test pattern is sent regardless of "JPG" or "ALN" frame type
+    // Check if this is an alignment frame (ALN) - keep full color and resolution
+    bool is_alignment_frame = (strcmp(tag, "ALN") == 0);
+    uint32_t output_width = is_alignment_frame ? width : (width / STREAM_SCALE);
+    uint32_t output_height = is_alignment_frame ? height : (height / STREAM_SCALE);
     
-    // Set dummy dimensions for test pattern
-    uint32_t output_width = 160;
-    uint32_t output_height = 120;
+    if (output_width * output_height > sizeof(stream_buffer)) {
+        output_width = 160;  // Fallback size
+        output_height = 120;
+    }
     
-    // DEBUG: Create artificial test buffer instead of JPEG compression
-    // This will help us detect if bytes are missing or scrambled during transmission
+    // Handle color vs grayscale based on frame type
+    if (is_alignment_frame) {
+        // Keep full color and resolution for alignment frames
+        if (bpp == 2) {
+            // RGB565 to RGB888 for better quality
+            for (uint32_t y = 0; y < output_height; y++) {
+                const uint8_t *src_line = frame + y * width * bpp;
+                uint8_t *dst_line = stream_buffer + y * output_width * 3;
+                for (uint32_t x = 0; x < output_width; x++) {
+                    const uint16_t *src_pixel = (const uint16_t *)(src_line + x * 2);
+                    uint16_t pixel = *src_pixel;
+                    dst_line[x * 3 + 0] = ((pixel >> 11) & 0x1F) << 3;  // R
+                    dst_line[x * 3 + 1] = ((pixel >> 5) & 0x3F) << 2;   // G
+                    dst_line[x * 3 + 2] = (pixel & 0x1F) << 3;          // B
+                }
+            }
+        } else {
+            // Copy RGB888 or grayscale directly
+            uint32_t bytes_to_copy = output_width * output_height * bpp;
+            if (bytes_to_copy <= sizeof(stream_buffer)) {
+                memcpy(stream_buffer, frame, bytes_to_copy);
+            }
+        }
+    } else {
+        // Convert to grayscale and downsample for regular frames
+        for (uint32_t y = 0; y < output_height; y++) {
+            const uint8_t *src_line = frame + (y * STREAM_SCALE) * width * bpp;
+            for (uint32_t x = 0; x < output_width; x++) {
+                if (bpp == 2) {
+                    // RGB565 to grayscale
+                    const uint16_t *src_pixel = (const uint16_t *)(src_line + x * STREAM_SCALE * 2);
+                    stream_buffer[y * output_width + x] = rgb565_to_gray(*src_pixel);
+                } else if (bpp == 3) {
+                    // RGB888 to grayscale
+                    const uint8_t *src_pixel = src_line + x * STREAM_SCALE * 3;
+                    stream_buffer[y * output_width + x] = rgb888_to_gray(src_pixel[0], src_pixel[1], src_pixel[2]);
+                } else {
+                    // Already grayscale
+                    stream_buffer[y * output_width + x] = src_line[x * STREAM_SCALE];
+                }
+            }
+        }
+    }
     
+    // Compress to JPEG (grayscale or color based on frame type)
     writer.size = 0;
-    uint32_t test_size = 1024; // 1KB test buffer
-    
-    // Ensure we don't exceed buffer capacity
-    if (test_size > writer.capacity) {
-        test_size = writer.capacity;
-    }
-    
-    // Clear the buffer first to ensure clean state
-    memset(writer.buffer, 0, test_size);
-    
-    // Pattern 1: Sequential bytes (0x00, 0x01, 0x02, ...)
-    for (uint32_t i = 0; i < test_size / 4; i++) {
-        writer.buffer[i] = i & 0xFF;
-    }
-    
-    // Pattern 2: Alternating pattern (0xAA, 0x55, 0xAA, 0x55, ...)
-    for (uint32_t i = test_size / 4; i < test_size / 2; i++) {
-        writer.buffer[i] = (i % 2) ? 0x55 : 0xAA;
-    }
-    
-    // Pattern 3: Known sequence with markers (0xDEADBEEF pattern)
-    uint32_t *pattern_ptr = (uint32_t *)(writer.buffer + test_size / 2);
-    for (uint32_t i = 0; i < (test_size / 2) / 4; i++) {
-        pattern_ptr[i] = 0xDEADBEEF + i;
-    }
-    
-    // Add sync markers at key positions to detect shifts
-    writer.buffer[0] = 0xFF;           // Start marker
-    writer.buffer[1] = 0xD8;           // JPEG SOI marker (for pattern recognition)
-    writer.buffer[2] = 0xDE;           // DEBUG: Extra marker to verify our data
-    writer.buffer[3] = 0xAD;           // DEBUG: Extra marker to verify our data
-    writer.buffer[test_size - 2] = 0xFF;  // End marker
-    writer.buffer[test_size - 1] = 0xD9;   // JPEG EOI marker
-    
-    // Add position markers every 100 bytes to detect missing chunks
-    for (uint32_t i = 100; i < test_size - 100; i += 100) {
-        writer.buffer[i] = 0xFE;       // Position marker
-        writer.buffer[i + 1] = (i / 100) & 0xFF;  // Position ID
-    }
-    
-    writer.size = test_size;  // Set the size directly instead of using JPEG compression
-    
-    // DEBUG: Force specific values in first few bytes to verify buffer copying
-    writer.buffer[4] = 0xCA;
-    writer.buffer[5] = 0xFE;
-    writer.buffer[6] = 0xBA;
-    writer.buffer[7] = 0xBE;
+    int channels = is_alignment_frame ? (bpp == 2 ? 3 : bpp) : 1;
+    stbi_write_jpg_to_func(mem_write_func, &writer, output_width, output_height, channels, stream_buffer, JPEG_QUALITY);
     
     // Prepare frame data header
     robust_frame_data_t frame_data = {
@@ -468,9 +468,11 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
         return false;
     }
     
-    // DEBUG: Send ONLY our test pattern, bypass frame header entirely
-    // This will help us determine if the issue is in the frame header or buffer copying
-    bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, writer.buffer, writer.size);
+    // Copy data to temporary buffer (FIXED: use writer.buffer instead of jpeg_buffer)
+    memcpy(temp_buffer, &frame_data, sizeof(robust_frame_data_t));
+    memcpy(temp_buffer + sizeof(robust_frame_data_t), writer.buffer, writer.size);
+    
+    bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, temp_buffer, total_size);
     
     // Send detections if available
     if (detections && detections->box_nb > 0) {
