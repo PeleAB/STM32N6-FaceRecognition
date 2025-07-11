@@ -100,7 +100,7 @@ Application/enhanced_pc_stream.o: \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_xspi.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cacheaxi.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
- ../../Inc/app_config.h ../../Inc/stb_image_write.h
+ ../../Inc/app_config.h
 ../../Inc/enhanced_pc_stream.h:
 ../../Inc/app_postprocess.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov2_pp_if.h:
@@ -203,4 +203,3 @@ Application/enhanced_pc_stream.o: \
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cacheaxi.h:
 ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h:
 ../../Inc/app_config.h:
-../../Inc/stb_image_write.h:

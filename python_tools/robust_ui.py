@@ -11,6 +11,7 @@ import threading
 import struct
 from pathlib import Path
 from dataclasses import dataclass, asdict
+from types import FrameType
 from typing import Optional, List, Dict, Any
 from datetime import datetime, timedelta
 import logging
@@ -177,7 +178,6 @@ class ALNDetectionWidget(QWidget):
                 }
             """)
             slot.setAlignment(QtCore.Qt.AlignCenter)
-            slot.setText(f"FACE[N-{i}]")
             slot.setScaledContents(True)
             self.detection_slots.append(slot)
             layout.addWidget(slot)
@@ -442,6 +442,7 @@ class RobustSerialReader(QThread):
         
         # Store current frame for ALN detection
         self.current_frame = None
+        self.current_faces = []
         
     def run(self):
         """Main reading loop"""
@@ -502,7 +503,12 @@ class RobustSerialReader(QThread):
             if frame_data:
                 frame_type, image, width, height = frame_data
                 # Store current frame for ALN detection
-                self.current_frame = image.copy() if image is not None else None
+                if frame_type == "RAW":
+                    self.current_frame = image.copy() if image is not None else None
+                if frame_type == "ALN":
+                    self.current_faces.append(image.copy())
+                    if len(self.current_faces) > 5:
+                        self.current_faces = self.current_faces[1:]
                 self.frame_received.emit(image, frame_type)
         except Exception as e:
             logger.error(f"Error handling frame data: {e}")
@@ -524,7 +530,7 @@ class RobustSerialReader(QThread):
                         class_id, x, y, w, h, confidence, keypoints = det
                         
                         # Crop face from current frame
-                        face_crop = self._crop_face(self.current_frame, x, y, w, h)
+                        face_crop = self.current_faces[-1]
                         if face_crop is not None:
                             aln_info = f"Frame {frame_id}: ALN conf={confidence:.2f}"
                             self.aln_detection_received.emit(face_crop, aln_info)

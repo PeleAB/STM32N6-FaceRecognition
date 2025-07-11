@@ -115,7 +115,7 @@ static void StreamOutputPd(const pd_postprocess_out_t *p_postprocess)
 {
   static uint32_t stream_frame_id = 0;
   SCB_InvalidateDCache_by_Addr(img_buffer, sizeof(img_buffer));
-  Enhanced_PC_STREAM_SendFrame(img_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2, "JPG", p_postprocess, NULL);
+  Enhanced_PC_STREAM_SendFrame(img_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2, "RAW", p_postprocess, NULL);
 }
 #endif /* ENABLE_PC_STREAM */
 
