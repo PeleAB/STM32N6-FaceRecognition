@@ -31,6 +31,8 @@
 "./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_bsec.o"
 "./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_cacheaxi.o"
 "./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_cortex.o"
+"./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_crc.o"
+"./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_crc_ex.o"
 "./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_dcmipp.o"
 "./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_dma2d.o"
 "./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_exti.o"

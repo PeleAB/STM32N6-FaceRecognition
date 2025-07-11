@@ -141,10 +141,14 @@ static bool crc32_init(void)
     hcrc.Instance = CRC;
     hcrc.Init.DefaultPolynomialUse = DEFAULT_POLYNOMIAL_ENABLE;
     hcrc.Init.DefaultInitValueUse = DEFAULT_INIT_VALUE_ENABLE;
+
+    hcrc.Init.CRCLength=CRC_POLYLENGTH_32B;
+
     hcrc.Init.InputDataInversionMode = CRC_INPUTDATA_INVERSION_NONE;
+
     hcrc.Init.OutputDataInversionMode = CRC_OUTPUTDATA_INVERSION_DISABLE;
-    hcrc.InputDataFormat = CRC_INPUTDATA_FORMAT_BYTES;
-    
+
+    hcrc.InputDataFormat = CRC_INPUTDATA_FORMAT_WORDS;
     __HAL_RCC_CRC_CLK_ENABLE();
     
     if (HAL_CRC_Init(&hcrc) != HAL_OK) {
@@ -163,7 +167,7 @@ static uint32_t calculate_crc32(const uint8_t *data, uint32_t length)
         return 0;
     }
     
-    return HAL_CRC_Calculate(&hcrc, (uint32_t*)data, (length + 3) / 4);
+    return HAL_CRC_Calculate(&hcrc, (uint32_t*)data, (length+3)/4);
 }
 
 /**
@@ -263,6 +267,7 @@ static bool robust_send_message(robust_message_type_t message_type,
     
     // Calculate CRC32 only on payload data (header has its own checksum)
     uint32_t payload_crc32 = 0;
+//    uint8_t test_data[4] = {0x01, 0x02, 0x03, 0x04};
     if (payload_size > 0) {
         payload_crc32 = calculate_crc32(payload, payload_size);
     }

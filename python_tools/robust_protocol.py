@@ -51,39 +51,34 @@ def calculate_checksum(data: bytes) -> int:
         checksum ^= byte
     return checksum & 0xFF
 
+
 class Crc32:
-    """STM32-compatible CRC32 implementation"""
-    
-    def __init__(self, poly):
+    crc_table = {}
+
+    def __init__(self, _poly):
         # Generate CRC table for polynomial
-        self.crc_table = {}
         for i in range(256):
             c = i << 24
             for j in range(8):
-                c = (c << 1) ^ poly if (c & 0x80000000) else c << 1
+                c = (c << 1) ^ _poly if (c & 0x80000000) else c << 1
             self.crc_table[i] = c & 0xFFFFFFFF
 
+    # Calculate CRC from input buffer
     def calculate(self, buf):
-        """Calculate CRC from input buffer - processes in 4-byte chunks in little-endian order"""
         crc = 0xFFFFFFFF
 
         i = 0
         while i < len(buf):
-            # Handle remaining bytes if buffer length is not multiple of 4
-            if i + 4 <= len(buf):
-                b = [buf[i+0], buf[i+1], buf[i+2], buf[i+3]]
-                i += 4
-            else:
-                # Pad remaining bytes with zeros for partial chunk
-                remaining = len(buf) - i
-                b = [0, 0, 0, 0]
-                for j in range(remaining):
-                    b[j] = buf[i+j]
-                i = len(buf)
-            
+            b = [buf[i + 3], buf[i + 2], buf[i + 1], buf[i + 0]]
+            i += 4
             for byte in b:
                 crc = ((crc << 8) & 0xFFFFFFFF) ^ self.crc_table[(crc >> 24) ^ byte]
         return crc
+
+    # Create bytes array from integer input
+    def crc_int_to_bytes(self, i):
+        return [(i >> 24) & 0xFF, (i >> 16) & 0xFF, (i >> 8) & 0xFF, i & 0xFF]
+
 
 # Global CRC32 instance
 _stm32_crc = Crc32(0x04C11DB7)
@@ -426,9 +421,11 @@ class RobustProtocolParser:
                 received_crc32, = struct.unpack('<I', crc32_bytes)
                 # CRC32 is calculated only on payload data (after message header)
                 actual_payload = payload_data[ProtocolConstants.MSG_HEADER_SIZE:]
+                # test_data = bytes([0x01, 0x02, 0x03, 0x04])
+                print(len(actual_payload))
                 if not validate_crc32(actual_payload, received_crc32):
                     calculated_crc32 = calculate_stm32_crc32(actual_payload)
-                    logger.debug(f"CRC32 mismatch: expected {received_crc32:08X}, calculated {calculated_crc32:08X}")
+                    print(f"CRC32 mismatch: expected {received_crc32:08X}, calculated {calculated_crc32:08X}")
                     self.stats['crc_errors'] += 1
                     if attempt == max_attempts - 1:
                         return None
