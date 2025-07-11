@@ -40,19 +40,23 @@
 #include "system_utils.h"
 #include "face_utils.h"
 #include "target_embedding.h"
-//#include "dummy_fr_input.h"
 #include "tracking.h"
 
-/* Application Configuration */
-#define REVERIFY_INTERVAL_MS        1000
-#define MAX_NUMBER_OUTPUT           5
-#define FR_WIDTH                    96
-#define FR_HEIGHT                   112
-#define SIMILARITY_THRESHOLD        0.55f
-#define LONG_PRESS_MS               1000
-#define ALIGN_TO_16(value)          (((value) + 15) & ~15)
-#define DCMIPP_OUT_NN_LEN           (ALIGN_TO_16(NN_WIDTH * NN_BPP) * NN_HEIGHT)
-#define DCMIPP_OUT_NN_BUFF_LEN      (DCMIPP_OUT_NN_LEN + 32 - DCMIPP_OUT_NN_LEN%32)
+/* New modular includes */
+#include "app_constants.h"
+#include "app_config_manager.h"
+#include "memory_pool.h"
+#include "app_neural_network.h"
+#include "enhanced_tracking.h"
+#include "app_frame_processing.h"
+
+/* Legacy compatibility - constants moved to app_constants.h */
+#define REVERIFY_INTERVAL_MS        FACE_REVERIFY_INTERVAL_MS
+#define MAX_NUMBER_OUTPUT           NN_MAX_OUTPUT_BUFFERS
+#define FR_WIDTH                    FACE_RECOGNITION_WIDTH
+#define FR_HEIGHT                   FACE_RECOGNITION_HEIGHT
+#define SIMILARITY_THRESHOLD        FACE_SIMILARITY_THRESHOLD
+#define LONG_PRESS_MS               BUTTON_LONG_PRESS_DURATION_MS
 
 /* Application State Machine */
 typedef enum {
@@ -61,38 +65,35 @@ typedef enum {
     PIPE_STATE_TRACK
 } pipe_state_t;
 
-/* Application Context Structure */
+/**
+ * @brief Enhanced application context structure
+ */
 typedef struct {
-    /* AI Model Buffers */
-    uint8_t *nn_in;
-    int8_t  *fr_nn_in;
-    int8_t  *fr_nn_out;
-    uint32_t fr_in_len;
-    uint32_t fr_out_len;
+    /* Configuration management */
+    app_config_t config;                    /**< Application configuration */
     
-    /* Post-processing */
-    pd_model_pp_static_param_t pp_params;
-    pd_postprocess_out_t pp_output;
+    /* Frame processing pipeline */
+    frame_processing_context_t frame_ctx;   /**< Frame processing context */
     
     /* State Management */
-    pipe_state_t pipe_state;
-    pd_pp_box_t candidate_box;
-    uint32_t last_verified;
+    pipe_state_t pipe_state;                /**< Current pipeline state */
+    pd_pp_box_t candidate_box;              /**< Candidate face box */
+    uint32_t last_verified;                 /**< Last verification timestamp */
     
     /* Face Recognition */
-    float current_embedding[EMBEDDING_SIZE];
-    int embedding_valid;
+    float current_embedding[EMBEDDING_SIZE]; /**< Current face embedding */
+    int embedding_valid;                    /**< Embedding validity flag */
     
     /* User Interface */
-    uint32_t button_press_ts;
-    int prev_button_state;
+    uint32_t button_press_ts;               /**< Button press timestamp */
+    int prev_button_state;                  /**< Previous button state */
     
-    /* Tracking */
-    tracker_t tracker;
+    /* Legacy tracking (to be migrated) */
+    tracker_t legacy_tracker;               /**< Legacy tracker */
     
     /* Performance monitoring */
-    performance_metrics_t performance;
-    uint32_t frame_count;
+    performance_metrics_t performance;      /**< Performance metrics */
+    uint32_t frame_count;                   /**< Frame counter */
 } app_context_t;
 
 /* Global Variables */
@@ -226,10 +227,10 @@ static void handle_user_button(app_context_t *ctx)
     else if (!current_state && ctx->prev_button_state) {
         uint32_t duration = HAL_GetTick() - ctx->button_press_ts;
         
-        if (duration >= LONG_PRESS_MS) {
+        if (duration >= ctx->config.ui.button_long_press_ms) {
             /* Long press: reset embeddings bank */
             embeddings_bank_reset();
-        } else if (ctx->embedding_valid) {
+        } else if (ctx->embedding_valid && ctx->config.ui.enable_button_feedback) {
             /* Short press: add current embedding */
             embeddings_bank_add(ctx->current_embedding);
         }
@@ -244,56 +245,139 @@ static void handle_user_button(app_context_t *ctx)
  * @param box Bounding box to verify
  * @return Similarity score (0.0 to 1.0)
  */
-static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
+/**
+ * @brief Convert normalized coordinates to pixel coordinates
+ * @param box Bounding box with normalized coordinates
+ * @param pixel_coords Output pixel coordinates structure
+ * @return 0 on success, negative on error
+ */
+static int convert_box_coordinates(const pd_pp_box_t *box, 
+                                  struct { float cx, cy, w, h, lx, ly, rx, ry; } *pixel_coords)
 {
-    /* Convert normalized coordinates to pixel coordinates */
-    float cx = box->x_center * lcd_bg_area.XSize;
-    float cy = box->y_center * lcd_bg_area.YSize;
-    float w  = box->width  * lcd_bg_area.XSize * 1.2f;  /* 20% padding */
-    float h  = box->height * lcd_bg_area.YSize * 1.2f;
-    float lx = box->pKps[0].x * lcd_bg_area.XSize;
-    float ly = box->pKps[0].y * lcd_bg_area.YSize;
-    float rx = box->pKps[1].x * lcd_bg_area.XSize;
-    float ry = box->pKps[1].y * lcd_bg_area.YSize;
-
-    /* Crop face region */
-#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
-    img_crop_align565_to_888(img_buffer, lcd_bg_area.XSize, fr_rgb,
-                            lcd_bg_area.XSize, lcd_bg_area.YSize,
-                            FR_WIDTH, FR_HEIGHT,
-                            cx, cy, w, h, lx, ly, rx, ry);
-#else
-    img_crop_align(nn_rgb, fr_rgb,
-                   NN_WIDTH, NN_HEIGHT,
-                   FR_WIDTH, FR_HEIGHT, NN_BPP,
-                   cx, cy, w, h, lx, ly, rx, ry);
-#endif
-
-    /* Prepare input for face recognition network */
-    img_rgb_to_chw_s8(fr_rgb, ctx->fr_nn_in, FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
-    SCB_CleanInvalidateDCache_by_Addr(ctx->fr_nn_in, ctx->fr_in_len);
-
-    /* Run face recognition inference */
-    RunNetworkSync(&NN_Instance_face_recognition);
-    SCB_InvalidateDCache_by_Addr(ctx->fr_nn_out, ctx->fr_out_len);
-
-    /* Convert output to float embedding */
-    float32_t embedding[EMBEDDING_SIZE];
-    for (uint32_t i = 0; i < EMBEDDING_SIZE; i++) {
-        embedding[i] = ((float32_t)ctx->fr_nn_out[i]) / 128.0f;
-        ctx->current_embedding[i] = embedding[i];
+    if (!box || !pixel_coords) {
+        return -1;
     }
     
+    pixel_coords->cx = box->x_center * lcd_bg_area.XSize;
+    pixel_coords->cy = box->y_center * lcd_bg_area.YSize;
+    pixel_coords->w  = box->width  * lcd_bg_area.XSize * FACE_BBOX_PADDING_FACTOR;
+    pixel_coords->h  = box->height * lcd_bg_area.YSize * FACE_BBOX_PADDING_FACTOR;
+    pixel_coords->lx = box->pKps[0].x * lcd_bg_area.XSize;
+    pixel_coords->ly = box->pKps[0].y * lcd_bg_area.YSize;
+    pixel_coords->rx = box->pKps[1].x * lcd_bg_area.XSize;
+    pixel_coords->ry = box->pKps[1].y * lcd_bg_area.YSize;
+    
+    return 0;
+}
+
+/**
+ * @brief Crop face region from input image
+ * @param coords Pixel coordinates structure
+ * @param output_buffer Output buffer for cropped face
+ * @return 0 on success, negative on error
+ */
+static int crop_face_region(const struct { float cx, cy, w, h, lx, ly, rx, ry; } *coords,
+                           uint8_t *output_buffer)
+{
+    if (!coords || !output_buffer) {
+        return -1;
+    }
+    
+#if INPUT_SRC_MODE == INPUT_SRC_CAMERA
+    img_crop_align565_to_888(img_buffer, lcd_bg_area.XSize, output_buffer,
+                            lcd_bg_area.XSize, lcd_bg_area.YSize,
+                            FACE_RECOGNITION_WIDTH, FACE_RECOGNITION_HEIGHT,
+                            coords->cx, coords->cy, coords->w, coords->h, 
+                            coords->lx, coords->ly, coords->rx, coords->ry);
+#else
+    img_crop_align(nn_rgb, output_buffer,
+                   NN_WIDTH, NN_HEIGHT,
+                   FACE_RECOGNITION_WIDTH, FACE_RECOGNITION_HEIGHT, NN_BPP,
+                   coords->cx, coords->cy, coords->w, coords->h, 
+                   coords->lx, coords->ly, coords->rx, coords->ry);
+#endif
+    
+    return 0;
+}
+
+/**
+ * @brief Run face recognition inference on cropped face
+ * @param ctx Application context
+ * @param face_region Cropped face region
+ * @param embedding Output embedding array
+ * @return 0 on success, negative on error
+ */
+static int run_face_recognition_inference(app_context_t *ctx,
+                                         const uint8_t *face_region,
+                                         float32_t *embedding)
+{
+    if (!ctx || !face_region || !embedding) {
+        return -1;
+    }
+    
+    /* Use frame processing pipeline for recognition */
+    return frame_processing_recognition_stage(&ctx->frame_ctx, 0, embedding);
+}
+
+/**
+ * @brief Calculate face similarity with target embedding
+ * @param embedding Current face embedding
+ * @param target_embedding Target embedding for comparison
+ * @param embedding_size Size of embedding arrays
+ * @return Cosine similarity score (0.0 to 1.0)
+ */
+static float calculate_face_similarity(const float32_t *embedding,
+                                      const float32_t *target_embedding,
+                                      uint32_t embedding_size)
+{
+    if (!embedding || !target_embedding || embedding_size == 0) {
+        return 0.0f;
+    }
+    
+    return embedding_cosine_similarity(embedding, target_embedding, embedding_size);
+}
+
+/**
+ * @brief Verify face in bounding box using face recognition (refactored)
+ * @param ctx Application context
+ * @param box Bounding box to verify
+ * @return Similarity score (0.0 to 1.0)
+ */
+static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
+{
+    struct { float cx, cy, w, h, lx, ly, rx, ry; } pixel_coords;
+    float32_t embedding[EMBEDDING_SIZE];
+    float similarity = 0.0f;
+    
+    /* Convert coordinates */
+    if (convert_box_coordinates(box, &pixel_coords) < 0) {
+        return 0.0f;
+    }
+    
+    /* Crop face region */
+    if (crop_face_region(&pixel_coords, fr_rgb) < 0) {
+        return 0.0f;
+    }
+    
+    /* Run face recognition inference */
+    if (run_face_recognition_inference(ctx, fr_rgb, embedding) < 0) {
+        return 0.0f;
+    }
+    
+    /* Store current embedding */
+    for (uint32_t i = 0; i < EMBEDDING_SIZE; i++) {
+        ctx->current_embedding[i] = embedding[i];
+    }
     ctx->embedding_valid = 1;
     
-    /* Calculate similarity with target embedding */
-    float similarity = embedding_cosine_similarity(embedding, target_embedding, EMBEDDING_SIZE);
-
-    /* Send aligned face and embedding data */
-    Enhanced_PC_STREAM_SendFrame(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN", NULL, NULL);
+    /* Calculate similarity */
+    similarity = calculate_face_similarity(embedding, target_embedding, EMBEDDING_SIZE);
+    
+    /* Send results via PC stream */
+    Enhanced_PC_STREAM_SendFrame(fr_rgb, FACE_RECOGNITION_WIDTH, 
+                                FACE_RECOGNITION_HEIGHT, NN_BPP, "ALN", NULL, NULL);
     Enhanced_PC_STREAM_SendEmbedding(embedding, EMBEDDING_SIZE);
-
-    LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
+    
     return similarity;
 }
 
@@ -301,12 +385,33 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
  * @brief Initialize application context and neural networks
  * @param ctx Application context
  */
-static void app_init(app_context_t *ctx)
+/**
+ * @brief Initialize application context and subsystems
+ * @param ctx Application context pointer
+ * @return 0 on success, negative on error
+ */
+static int app_init(app_context_t *ctx)
 {
+    int ret = 0;
+    
+    /* Initialize configuration manager */
+    ret = config_manager_init(&ctx->config);
+    if (ret < 0) {
+        return ret;
+    }
+    
     /* System initialization */
     App_SystemInit();
     LL_ATON_RT_RuntimeInit();
-    tracker_init(&ctx->tracker);
+    
+    /* Initialize frame processing pipeline */
+    ret = frame_processing_init(&ctx->frame_ctx, &ctx->config);
+    if (ret < 0) {
+        return ret;
+    }
+    
+    /* Initialize legacy tracker for backward compatibility */
+    tracker_init(&ctx->legacy_tracker);
     embeddings_bank_init();
     
     /* Initialize enhanced PC streaming */
@@ -319,20 +424,7 @@ static void app_init(app_context_t *ctx)
     BSP_LED_Off(LED2);
     BSP_PB_Init(BUTTON_USER1, BUTTON_MODE_GPIO);
     
-    /* Neural network initialization */
-    LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_detection);
-    const LL_Buffer_InfoTypeDef *nn_in_info = LL_ATON_Input_Buffers_Info_face_detection();
-    const LL_Buffer_InfoTypeDef *fr_in_info = LL_ATON_Input_Buffers_Info_face_recognition();
-    const LL_Buffer_InfoTypeDef *fr_out_info = LL_ATON_Output_Buffers_Info_face_recognition();
-    
-    ctx->nn_in = (uint8_t *) LL_Buffer_addr_start(&nn_in_info[0]);
-    ctx->fr_nn_in = (int8_t *) LL_Buffer_addr_start(&fr_in_info[0]);
-    ctx->fr_nn_out = (int8_t *) LL_Buffer_addr_start(&fr_out_info[0]);
-    ctx->fr_in_len = LL_Buffer_len(&fr_in_info[0]);
-    ctx->fr_out_len = LL_Buffer_len(&fr_out_info[0]);
-    
-    /* Post-processing initialization */
-    app_postprocess_init(&ctx->pp_params);
+    return 0;
 }
 
 /**
@@ -360,7 +452,7 @@ static void process_detection_state(app_context_t *ctx, pd_pp_box_t *boxes, uint
             
         case PIPE_STATE_VERIFY: {
             float similarity = verify_box(ctx, &ctx->candidate_box);
-            if (similarity >= SIMILARITY_THRESHOLD) {
+            if (similarity >= ctx->config.face_recognition.similarity_threshold) {
                 /* Face verified - start tracking */
                 ctx->candidate_box.prob = similarity;
                 ctx->tracker.box = ctx->candidate_box;
@@ -381,7 +473,7 @@ static void process_detection_state(app_context_t *ctx, pd_pp_box_t *boxes, uint
             tracker_process(&ctx->tracker, &ctx->pp_output, AI_PD_MODEL_PP_CONF_THRESHOLD);
             if (ctx->tracker.state != TRACK_STATE_TRACKING) {
                 ctx->pipe_state = PIPE_STATE_SEARCH;
-            } else if ((HAL_GetTick() - ctx->last_verified) > REVERIFY_INTERVAL_MS) {
+            } else if ((HAL_GetTick() - ctx->last_verified) > ctx->config.performance.reverify_interval_ms) {
                 /* Periodic re-verification */
                 ctx->candidate_box = ctx->tracker.box;
                 ctx->pipe_state = PIPE_STATE_VERIFY;
@@ -396,7 +488,7 @@ static void process_detection_state(app_context_t *ctx, pd_pp_box_t *boxes, uint
  */
 static void update_led_status(app_context_t *ctx)
 {
-    if ((HAL_GetTick() - ctx->last_verified) > (REVERIFY_INTERVAL_MS + 1000)) {
+    if ((HAL_GetTick() - ctx->last_verified) > (ctx->config.performance.reverify_interval_ms + ctx->config.ui.led_timeout_ms)) {
         BSP_LED_On(LED1);   /* Red LED - unverified */
         BSP_LED_Off(LED2);
     } else {
@@ -422,88 +514,133 @@ static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int numb
  * @brief Main application loop
  * @param ctx Application context
  */
-static void app_main_loop(app_context_t *ctx)
+/**
+ * @brief Initialize neural network buffers and prepare pipeline
+ * @param ctx Application context
+ * @return 0 on success, negative on error
+ */
+static int init_neural_network_buffers(app_context_t *ctx)
 {
-    LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_detection);
-    const LL_Buffer_InfoTypeDef *nn_out_info = LL_ATON_Output_Buffers_Info_face_detection();
+    return frame_processing_init_nn_buffers(&ctx->frame_ctx);
+}
+
+/**
+ * @brief Process complete frame pipeline
+ * @param ctx Application context
+ * @param timestamps Array to store timing information
+ * @return 0 on success, negative on error
+ */
+static int process_frame_pipeline(app_context_t *ctx, uint32_t *timestamps)
+{
+    pipeline_timing_t timing = {0};
     
-    float32_t *nn_out[MAX_NUMBER_OUTPUT];
-    int32_t nn_out_len[MAX_NUMBER_OUTPUT];
-    int number_output = 0;
-    
-    /* Count and initialize output buffers */
-    while (nn_out_info[number_output].name != NULL && number_output < MAX_NUMBER_OUTPUT) {
-        nn_out[number_output] = (float32_t *) LL_Buffer_addr_start(&nn_out_info[number_output]);
-        nn_out_len[number_output] = LL_Buffer_len(&nn_out_info[number_output]);
-        number_output++;
+    /* Frame capture */
+    if (app_get_frame(nn_rgb, 0) != 0) {
+        return -1;
     }
     
-    uint32_t nn_in_len = LL_Buffer_len(&LL_ATON_Input_Buffers_Info_face_detection()[0]);
+    /* Process frame through pipeline */
+    int ret = frame_processing_process_frame(&ctx->frame_ctx, nn_rgb, 
+                                           NN_WIDTH, NN_HEIGHT, &timing);
+    if (ret < 0) {
+        return ret;
+    }
+    
+    /* Update timestamps for legacy compatibility */
+    timestamps[0] = timing.timestamp;
+    timestamps[1] = timing.timestamp + timing.total_time;
+    
+    return 0;
+}
+
+/**
+ * @brief Update performance metrics
+ * @param ctx Application context
+ * @param timestamps Array with timing information
+ * @return 0 on success, negative on error
+ */
+static int update_performance_metrics(app_context_t *ctx, uint32_t *timestamps)
+{
+    pipeline_timing_t timing = {
+        .total_time = timestamps[1] - timestamps[0],
+        .timestamp = timestamps[0]
+    };
+    
+    return frame_processing_update_metrics(&ctx->frame_ctx, &timing);
+}
+
+/**
+ * @brief Main application loop (refactored)
+ * @param ctx Application context
+ * @return 0 on success, negative on error
+ */
+static int app_main_loop(app_context_t *ctx)
+{
     uint32_t pitch_nn = 0;
     uint32_t timestamps[3] = { 0 };
     
+    /* Initialize neural network buffers */
+    if (init_neural_network_buffers(ctx) < 0) {
+        return -1;
+    }
+    
+    /* Initialize input systems */
     app_input_init(&pitch_nn);
     
     while (1) {
-        /* Frame capture */
-        if (app_get_frame(nn_rgb, pitch_nn) != 0) {
+        /* Process frame through pipeline */
+        if (process_frame_pipeline(ctx, timestamps) < 0) {
             continue;
         }
         
-        /* Prepare input for neural network */
-        img_rgb_to_chw_float(nn_rgb, (float32_t *)ctx->nn_in, NN_WIDTH * NN_BPP,
-                            NN_WIDTH, NN_HEIGHT);
-        SCB_CleanInvalidateDCache_by_Addr(ctx->nn_in, nn_in_len);
-        
-
-        /* Run face detection */
-        timestamps[0] = HAL_GetTick();
-        RunNetworkSync(&NN_Instance_face_detection);
-        LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
-        
-        /* Post-processing */
-        int32_t ret = app_postprocess_run((void **) nn_out, number_output, &ctx->pp_output, &ctx->pp_params);
-        assert(ret == 0);
-        
-        /* Process detection results */
-        pd_pp_box_t *boxes = (pd_pp_box_t *)ctx->pp_output.pOutData;
-        process_detection_state(ctx, boxes, ctx->pp_output.box_nb);
-        
-        /* Update system status */
-        update_led_status(ctx);
-        
-        /* Update performance metrics */
-        timestamps[1] = HAL_GetTick();
+        /* Legacy processing for backward compatibility */
         if (timestamps[2] == 0) {
             timestamps[2] = HAL_GetTick();
         }
         
-        ctx->frame_count++;
-        ctx->performance.fps = 1000.0f / (timestamps[1] - timestamps[0] + 1);
-        ctx->performance.inference_time_ms = timestamps[1] - timestamps[0];
-        ctx->performance.frame_count = ctx->frame_count;
-        ctx->performance.detection_count = ctx->pp_output.box_nb;
+        /* Update performance metrics */
+        update_performance_metrics(ctx, timestamps);
         
-
+        /* Update system status */
+        update_led_status(ctx);
+        
         /* Send heartbeat periodically */
         Enhanced_PC_STREAM_SendHeartbeat();
         
-        app_output(&ctx->pp_output, timestamps[1] - timestamps[0], timestamps[2], &ctx->tracker);
+        /* Handle user interactions */
         handle_user_button(ctx);
         
-        /* Clean up buffers */
-        cleanup_nn_buffers(nn_out, nn_out_len, number_output);
+        /* Update frame counter */
+        ctx->frame_count++;
     }
+    
+    return 0;
 }
 
 /**
  * @brief Main program entry point
  * @return Never returns
  */
+/**
+ * @brief Main program entry point
+ * @return Never returns (0 on theoretical exit)
+ */
 int main(void)
 {
-    app_init(&g_app_ctx);
+    int ret = app_init(&g_app_ctx);
+    if (ret < 0) {
+        /* Initialization failed - handle error */
+        while (1) {
+            BSP_LED_On(LED1);  /* Red LED indicates error */
+            HAL_Delay(100);
+            BSP_LED_Off(LED1);
+            HAL_Delay(100);
+        }
+    }
+    
+    /* Start main application loop */
     app_main_loop(&g_app_ctx);
+    
     return 0; /* Never reached */
 }
 
