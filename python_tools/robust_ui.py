@@ -26,7 +26,7 @@ from PySide6.QtWidgets import (
     QWidget, QLabel, QPushButton, QComboBox, QLineEdit, QProgressBar,
     QTextEdit, QTabWidget, QGroupBox, QCheckBox, QSpinBox, QSlider,
     QSplitter, QFrame, QScrollArea, QMessageBox, QFileDialog,
-    QStatusBar, QMenuBar, QToolBar
+    QStatusBar, QMenuBar, QToolBar, QDialog
 )
 import serial
 from serial.tools import list_ports
@@ -42,6 +42,56 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+class FaceEnlargementDialog(QDialog):
+    """Dialog to show enlarged face detection"""
+    
+    def __init__(self, face_image: np.ndarray, detection_info: str, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Face Detection Details")
+        self.setModal(True)
+        self.resize(400, 500)
+        
+        layout = QVBoxLayout(self)
+        
+        # Detection info
+        info_label = QLabel(detection_info)
+        info_label.setStyleSheet("font-weight: bold; font-size: 14px; padding: 10px;")
+        info_label.setAlignment(QtCore.Qt.AlignCenter)
+        layout.addWidget(info_label)
+        
+        # Enlarged image
+        image_label = QLabel()
+        image_label.setAlignment(QtCore.Qt.AlignCenter)
+        image_label.setStyleSheet("""
+            QLabel {
+                border: 2px solid #4CAF50;
+                border-radius: 8px;
+                background-color: #222;
+                padding: 10px;
+            }
+        """)
+        
+        # Convert and scale the image
+        if len(face_image.shape) == 3:
+            height, width, channel = face_image.shape
+            bytes_per_line = 3 * width
+            q_image = QtGui.QImage(face_image.data, width, height, bytes_per_line, QtGui.QImage.Format_RGB888)
+        else:
+            height, width = face_image.shape
+            bytes_per_line = width
+            q_image = QtGui.QImage(face_image.data, width, height, bytes_per_line, QtGui.QImage.Format_Grayscale8)
+        
+        pixmap = QtGui.QPixmap.fromImage(q_image)
+        scaled_pixmap = pixmap.scaled(350, 350, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+        image_label.setPixmap(scaled_pixmap)
+        
+        layout.addWidget(image_label)
+        
+        # Close button
+        close_btn = QPushButton("Close")
+        close_btn.clicked.connect(self.accept)
+        layout.addWidget(close_btn)
 
 @dataclass
 class RobustSettings:
@@ -147,9 +197,14 @@ class ALNDetectionWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.setFixedWidth(200)  # Fixed width for vertical layout
-        self.detections = []  # Store last 5 detection images
+        self.detections = []  # Store last 5 detection images with timestamps and confidence
         self.max_detections = 5
         self.setup_ui()
+        
+        # Timer for updating timestamps
+        self.timestamp_timer = QTimer()
+        self.timestamp_timer.timeout.connect(self.update_timestamps)
+        self.timestamp_timer.start(1000)  # Update every second
         
     def setup_ui(self):
         layout = QVBoxLayout(self)
@@ -164,7 +219,15 @@ class ALNDetectionWidget(QWidget):
         
         # Create 5 slots for detection thumbnails - vertical layout
         self.detection_slots = []
+        self.timestamp_labels = []
         for i in range(self.max_detections):
+            # Container for each detection
+            container = QWidget()
+            container_layout = QVBoxLayout(container)
+            container_layout.setContentsMargins(2, 2, 2, 2)
+            container_layout.setSpacing(2)
+            
+            # Face thumbnail
             slot = QLabel()
             slot.setFixedSize(180, 180)  # Square thumbnails for face crops
             slot.setStyleSheet("""
@@ -179,16 +242,54 @@ class ALNDetectionWidget(QWidget):
             """)
             slot.setAlignment(QtCore.Qt.AlignCenter)
             slot.setScaledContents(True)
+            slot.setCursor(QtCore.Qt.PointingHandCursor)
+            
+            # Make slot clickable
+            slot.mousePressEvent = lambda event, idx=i: self.on_slot_clicked(idx)
+            
+            # Timestamp label
+            timestamp_label = QLabel("")
+            timestamp_label.setAlignment(QtCore.Qt.AlignCenter)
+            timestamp_label.setStyleSheet("""
+                QLabel {
+                    color: #888;
+                    font-size: 10px;
+                    background-color: transparent;
+                    border: none;
+                    padding: 2px;
+                }
+            """)
+            timestamp_label.setFixedHeight(15)
+            
+            container_layout.addWidget(slot)
+            container_layout.addWidget(timestamp_label)
+            
             self.detection_slots.append(slot)
-            layout.addWidget(slot)
+            self.timestamp_labels.append(timestamp_label)
+            layout.addWidget(container)
         
         layout.addStretch()  # Push everything to the top
         
     def add_detection(self, face_crop: np.ndarray, detection_info: str = ""):
         """Add new ALN face detection to the film strip"""
         try:
-            # Add to detections list (newest first)
-            self.detections.insert(0, (face_crop.copy(), detection_info))
+            # Extract confidence from detection_info
+            confidence = 0.0
+            if "conf=" in detection_info:
+                conf_str = detection_info.split("conf=")[1].split()[0]
+                try:
+                    confidence = float(conf_str)
+                except:
+                    confidence = 0.0
+            
+            # Add to detections list (newest first) with timestamp and confidence
+            detection_data = {
+                'image': face_crop.copy(),
+                'info': detection_info,
+                'timestamp': time.time(),
+                'confidence': confidence
+            }
+            self.detections.insert(0, detection_data)
             
             # Keep only last 5
             if len(self.detections) > self.max_detections:
@@ -217,11 +318,17 @@ class ALNDetectionWidget(QWidget):
                         font-weight: bold;
                     }
                 """)
+                # Clear timestamp labels
+                if i < len(self.timestamp_labels):
+                    self.timestamp_labels[i].setText("")
             
             # Fill slots with detections (newest to oldest)
-            for i, (face_crop, info) in enumerate(self.detections):
+            for i, detection_data in enumerate(self.detections):
                 if i < len(self.detection_slots):
                     slot = self.detection_slots[i]
+                    face_crop = detection_data['image']
+                    info = detection_data['info']
+                    confidence = detection_data['confidence']
                     
                     # Convert face crop to QPixmap
                     if len(face_crop.shape) == 3:
@@ -237,37 +344,78 @@ class ALNDetectionWidget(QWidget):
                     scaled_pixmap = pixmap.scaled(176, 176, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
                     
                     slot.setPixmap(scaled_pixmap)
-                    slot.setStyleSheet("""
-                        QLabel {
-                            border: 3px solid #4CAF50;
+                    
+                    # Color-code border based on confidence
+                    if confidence >= 0.8:
+                        border_color = "#4CAF50"  # Green - high confidence
+                    elif confidence >= 0.6:
+                        border_color = "#FF9800"  # Orange - medium confidence
+                    else:
+                        border_color = "#F44336"  # Red - low confidence
+                    
+                    slot.setStyleSheet(f"""
+                        QLabel {{
+                            border: 3px solid {border_color};
                             border-radius: 8px;
                             background-color: #222;
-                        }
+                        }}
                     """)
                     
-                    # Set tooltip with detection info
-                    if info:
-                        slot.setToolTip(f"Face {i+1}: {info}")
-                    else:
-                        slot.setToolTip(f"ALN Face {i+1}")
+                    # Set tooltip with detection info and confidence
+                    tooltip_text = f"Face {i+1}: {info}\nConfidence: {confidence:.2f}"
+                    slot.setToolTip(tooltip_text)
             
-            # Update empty slots
-            for i in range(len(self.detections), len(self.detection_slots)):
-                slot = self.detection_slots[i]
-                slot.setText(f"FACE[N-{i}]")
-                slot.setStyleSheet("""
-                    QLabel {
-                        border: 2px solid #444;
-                        border-radius: 8px;
-                        background-color: #1a1a1a;
-                        color: #666;
-                        font-size: 12px;
-                        font-weight: bold;
-                    }
-                """)
-                
+            # Update timestamps
+            self.update_timestamps()
+            
         except Exception as e:
             logger.error(f"Error updating ALN display: {e}")
+    
+    def update_timestamps(self):
+        """Update timestamp labels with age of detections"""
+        try:
+            current_time = time.time()
+            for i, detection_data in enumerate(self.detections):
+                if i < len(self.timestamp_labels):
+                    age_seconds = current_time - detection_data['timestamp']
+                    
+                    # Format age nicely
+                    if age_seconds < 60:
+                        age_text = f"{int(age_seconds)}s ago"
+                    elif age_seconds < 3600:
+                        age_text = f"{int(age_seconds/60)}m ago"
+                    else:
+                        age_text = f"{int(age_seconds/3600)}h ago"
+                    
+                    self.timestamp_labels[i].setText(age_text)
+        except Exception as e:
+            logger.error(f"Error updating timestamps: {e}")
+    
+    def on_slot_clicked(self, slot_index):
+        """Handle click on detection slot"""
+        try:
+            if slot_index < len(self.detections):
+                detection_data = self.detections[slot_index]
+                face_image = detection_data['image']
+                info = detection_data['info']
+                confidence = detection_data['confidence']
+                
+                # Create detailed info for dialog
+                age_seconds = time.time() - detection_data['timestamp']
+                if age_seconds < 60:
+                    age_text = f"{int(age_seconds)}s ago"
+                elif age_seconds < 3600:
+                    age_text = f"{int(age_seconds/60)}m ago"
+                else:
+                    age_text = f"{int(age_seconds/3600)}h ago"
+                
+                detailed_info = f"{info}\nConfidence: {confidence:.2f}\nDetected: {age_text}"
+                
+                # Show enlargement dialog
+                dialog = FaceEnlargementDialog(face_image, detailed_info, self)
+                dialog.exec()
+        except Exception as e:
+            logger.error(f"Error handling slot click: {e}")
     
     def clear_detections(self):
         """Clear all detections"""
