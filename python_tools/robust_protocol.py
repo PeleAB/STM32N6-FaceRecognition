@@ -424,10 +424,10 @@ class RobustProtocolParser:
             # Extract and validate CRC32 (calculated only on payload data, not message header)
             try:
                 received_crc32, = struct.unpack('<I', crc32_bytes)
-                # Calculate CRC32 on known test pattern for debugging
-                test_data = bytes([0x01, 0x02, 0x03])
-                calculated_crc32 = calculate_stm32_crc32(test_data)
-                if calculated_crc32 != received_crc32:
+                # CRC32 is calculated only on payload data (after message header)
+                actual_payload = payload_data[ProtocolConstants.MSG_HEADER_SIZE:]
+                if not validate_crc32(actual_payload, received_crc32):
+                    calculated_crc32 = calculate_stm32_crc32(actual_payload)
                     logger.debug(f"CRC32 mismatch: expected {received_crc32:08X}, calculated {calculated_crc32:08X}")
                     self.stats['crc_errors'] += 1
                     if attempt == max_attempts - 1:
