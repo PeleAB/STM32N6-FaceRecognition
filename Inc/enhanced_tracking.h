@@ -42,14 +42,14 @@ extern "C" {
 /* ========================================================================= */
 
 /**
- * @brief Track state enumeration
+ * @brief Enhanced track state enumeration
  */
 typedef enum {
-    TRACK_STATE_IDLE = 0,           /**< Track is idle/uninitialized */
-    TRACK_STATE_TENTATIVE,          /**< Track is tentative (low confidence) */
-    TRACK_STATE_CONFIRMED,          /**< Track is confirmed (high confidence) */
-    TRACK_STATE_LOST,               /**< Track is temporarily lost */
-    TRACK_STATE_DELETED             /**< Track is deleted */
+    ENHANCED_TRACK_STATE_IDLE = 0,           /**< Track is idle/uninitialized */
+    ENHANCED_TRACK_STATE_TENTATIVE,          /**< Track is tentative (low confidence) */
+    ENHANCED_TRACK_STATE_CONFIRMED,          /**< Track is confirmed (high confidence) */
+    ENHANCED_TRACK_STATE_LOST,               /**< Track is temporarily lost */
+    ENHANCED_TRACK_STATE_DELETED             /**< Track is deleted */
 } enhanced_track_state_t;
 
 /**

@@ -69,6 +69,17 @@ typedef enum {
  * @brief Enhanced application context structure
  */
 typedef struct {
+    /* AI Model Buffers - kept for compatibility */
+    uint8_t *nn_in;
+    int8_t  *fr_nn_in;
+    int8_t  *fr_nn_out;
+    uint32_t fr_in_len;
+    uint32_t fr_out_len;
+    
+    /* Post-processing - kept for compatibility */
+    pd_model_pp_static_param_t pp_params;
+    pd_postprocess_out_t pp_output;
+    
     /* Configuration management */
     app_config_t config;                    /**< Application configuration */
     
@@ -88,8 +99,8 @@ typedef struct {
     uint32_t button_press_ts;               /**< Button press timestamp */
     int prev_button_state;                  /**< Previous button state */
     
-    /* Legacy tracking (to be migrated) */
-    tracker_t legacy_tracker;               /**< Legacy tracker */
+    /* Tracking - kept for compatibility */
+    tracker_t tracker;                      /**< Legacy tracker */
     
     /* Performance monitoring */
     performance_metrics_t performance;      /**< Performance metrics */
@@ -122,8 +133,8 @@ static app_context_t g_app_ctx = {
 
 
 /* Function Prototypes */
-static void app_init(app_context_t *ctx);
-static void app_main_loop(app_context_t *ctx);
+static int app_init(app_context_t *ctx);
+static int app_main_loop(app_context_t *ctx);
 static void app_input_init(uint32_t *pitch_nn);
 static int  app_get_frame(uint8_t *dest, uint32_t pitch_nn);
 static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot_ms, const tracker_t *tracker);
@@ -246,13 +257,20 @@ static void handle_user_button(app_context_t *ctx)
  * @return Similarity score (0.0 to 1.0)
  */
 /**
+ * @brief Pixel coordinates structure
+ */
+typedef struct {
+    float cx, cy, w, h, lx, ly, rx, ry;
+} pixel_coords_t;
+
+/**
  * @brief Convert normalized coordinates to pixel coordinates
  * @param box Bounding box with normalized coordinates
  * @param pixel_coords Output pixel coordinates structure
  * @return 0 on success, negative on error
  */
 static int convert_box_coordinates(const pd_pp_box_t *box, 
-                                  struct { float cx, cy, w, h, lx, ly, rx, ry; } *pixel_coords)
+                                  pixel_coords_t *pixel_coords)
 {
     if (!box || !pixel_coords) {
         return -1;
@@ -276,7 +294,7 @@ static int convert_box_coordinates(const pd_pp_box_t *box,
  * @param output_buffer Output buffer for cropped face
  * @return 0 on success, negative on error
  */
-static int crop_face_region(const struct { float cx, cy, w, h, lx, ly, rx, ry; } *coords,
+static int crop_face_region(const pixel_coords_t *coords,
                            uint8_t *output_buffer)
 {
     if (!coords || !output_buffer) {
@@ -345,7 +363,7 @@ static float calculate_face_similarity(const float32_t *embedding,
  */
 static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
 {
-    struct { float cx, cy, w, h, lx, ly, rx, ry; } pixel_coords;
+    pixel_coords_t pixel_coords;
     float32_t embedding[EMBEDDING_SIZE];
     float similarity = 0.0f;
     
@@ -359,15 +377,20 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
         return 0.0f;
     }
     
+    /* Prepare input for face recognition network */
+    img_rgb_to_chw_s8(fr_rgb, ctx->fr_nn_in, FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
+    SCB_CleanInvalidateDCache_by_Addr(ctx->fr_nn_in, ctx->fr_in_len);
+
     /* Run face recognition inference */
-    if (run_face_recognition_inference(ctx, fr_rgb, embedding) < 0) {
-        return 0.0f;
-    }
-    
-    /* Store current embedding */
+    RunNetworkSync(&NN_Instance_face_recognition);
+    SCB_InvalidateDCache_by_Addr(ctx->fr_nn_out, ctx->fr_out_len);
+
+    /* Convert output to float embedding */
     for (uint32_t i = 0; i < EMBEDDING_SIZE; i++) {
+        embedding[i] = ((float32_t)ctx->fr_nn_out[i]) / FACE_EMBEDDING_QUANTIZATION_SCALE;
         ctx->current_embedding[i] = embedding[i];
     }
+    
     ctx->embedding_valid = 1;
     
     /* Calculate similarity */
@@ -378,6 +401,7 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
                                 FACE_RECOGNITION_HEIGHT, NN_BPP, "ALN", NULL, NULL);
     Enhanced_PC_STREAM_SendEmbedding(embedding, EMBEDDING_SIZE);
     
+    LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
     return similarity;
 }
 
@@ -404,14 +428,8 @@ static int app_init(app_context_t *ctx)
     App_SystemInit();
     LL_ATON_RT_RuntimeInit();
     
-    /* Initialize frame processing pipeline */
-    ret = frame_processing_init(&ctx->frame_ctx, &ctx->config);
-    if (ret < 0) {
-        return ret;
-    }
-    
-    /* Initialize legacy tracker for backward compatibility */
-    tracker_init(&ctx->legacy_tracker);
+    /* Initialize tracker for backward compatibility */
+    tracker_init(&ctx->tracker);
     embeddings_bank_init();
     
     /* Initialize enhanced PC streaming */
@@ -423,6 +441,21 @@ static int app_init(app_context_t *ctx)
     BSP_LED_Off(LED1);
     BSP_LED_Off(LED2);
     BSP_PB_Init(BUTTON_USER1, BUTTON_MODE_GPIO);
+    
+    /* Neural network initialization */
+    LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_detection);
+    const LL_Buffer_InfoTypeDef *nn_in_info = LL_ATON_Input_Buffers_Info_face_detection();
+    const LL_Buffer_InfoTypeDef *fr_in_info = LL_ATON_Input_Buffers_Info_face_recognition();
+    const LL_Buffer_InfoTypeDef *fr_out_info = LL_ATON_Output_Buffers_Info_face_recognition();
+    
+    ctx->nn_in = (uint8_t *) LL_Buffer_addr_start(&nn_in_info[0]);
+    ctx->fr_nn_in = (int8_t *) LL_Buffer_addr_start(&fr_in_info[0]);
+    ctx->fr_nn_out = (int8_t *) LL_Buffer_addr_start(&fr_out_info[0]);
+    ctx->fr_in_len = LL_Buffer_len(&fr_in_info[0]);
+    ctx->fr_out_len = LL_Buffer_len(&fr_out_info[0]);
+    
+    /* Post-processing initialization */
+    app_postprocess_init(&ctx->pp_params);
     
     return 0;
 }
@@ -514,60 +547,7 @@ static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int numb
  * @brief Main application loop
  * @param ctx Application context
  */
-/**
- * @brief Initialize neural network buffers and prepare pipeline
- * @param ctx Application context
- * @return 0 on success, negative on error
- */
-static int init_neural_network_buffers(app_context_t *ctx)
-{
-    return frame_processing_init_nn_buffers(&ctx->frame_ctx);
-}
-
-/**
- * @brief Process complete frame pipeline
- * @param ctx Application context
- * @param timestamps Array to store timing information
- * @return 0 on success, negative on error
- */
-static int process_frame_pipeline(app_context_t *ctx, uint32_t *timestamps)
-{
-    pipeline_timing_t timing = {0};
-    
-    /* Frame capture */
-    if (app_get_frame(nn_rgb, 0) != 0) {
-        return -1;
-    }
-    
-    /* Process frame through pipeline */
-    int ret = frame_processing_process_frame(&ctx->frame_ctx, nn_rgb, 
-                                           NN_WIDTH, NN_HEIGHT, &timing);
-    if (ret < 0) {
-        return ret;
-    }
-    
-    /* Update timestamps for legacy compatibility */
-    timestamps[0] = timing.timestamp;
-    timestamps[1] = timing.timestamp + timing.total_time;
-    
-    return 0;
-}
-
-/**
- * @brief Update performance metrics
- * @param ctx Application context
- * @param timestamps Array with timing information
- * @return 0 on success, negative on error
- */
-static int update_performance_metrics(app_context_t *ctx, uint32_t *timestamps)
-{
-    pipeline_timing_t timing = {
-        .total_time = timestamps[1] - timestamps[0],
-        .timestamp = timestamps[0]
-    };
-    
-    return frame_processing_update_metrics(&ctx->frame_ctx, &timing);
-}
+/* Removed unused helper functions to fix compilation warnings */
 
 /**
  * @brief Main application loop (refactored)
@@ -576,51 +556,80 @@ static int update_performance_metrics(app_context_t *ctx, uint32_t *timestamps)
  */
 static int app_main_loop(app_context_t *ctx)
 {
+    LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_detection);
+    const LL_Buffer_InfoTypeDef *nn_out_info = LL_ATON_Output_Buffers_Info_face_detection();
+    
+    float32_t *nn_out[MAX_NUMBER_OUTPUT];
+    int32_t nn_out_len[MAX_NUMBER_OUTPUT];
+    int number_output = 0;
+    
+    /* Count and initialize output buffers */
+    while (nn_out_info[number_output].name != NULL && number_output < MAX_NUMBER_OUTPUT) {
+        nn_out[number_output] = (float32_t *) LL_Buffer_addr_start(&nn_out_info[number_output]);
+        nn_out_len[number_output] = LL_Buffer_len(&nn_out_info[number_output]);
+        number_output++;
+    }
+    
+    uint32_t nn_in_len = LL_Buffer_len(&LL_ATON_Input_Buffers_Info_face_detection()[0]);
     uint32_t pitch_nn = 0;
     uint32_t timestamps[3] = { 0 };
     
-    /* Initialize neural network buffers */
-    if (init_neural_network_buffers(ctx) < 0) {
-        return -1;
-    }
-    
-    /* Initialize input systems */
     app_input_init(&pitch_nn);
     
     while (1) {
-        /* Process frame through pipeline */
-        if (process_frame_pipeline(ctx, timestamps) < 0) {
+        /* Frame capture */
+        if (app_get_frame(nn_rgb, pitch_nn) != 0) {
             continue;
         }
         
-        /* Legacy processing for backward compatibility */
-        if (timestamps[2] == 0) {
-            timestamps[2] = HAL_GetTick();
+        /* Prepare input for neural network */
+        img_rgb_to_chw_float(nn_rgb, (float32_t *)ctx->nn_in, NN_WIDTH * NN_BPP,
+                            NN_WIDTH, NN_HEIGHT);
+        SCB_CleanInvalidateDCache_by_Addr(ctx->nn_in, nn_in_len);
+        
+        /* Run face detection */
+        timestamps[0] = HAL_GetTick();
+        RunNetworkSync(&NN_Instance_face_detection);
+        LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
+        
+        /* Post-processing */
+        int32_t ret = app_postprocess_run((void **) nn_out, number_output, &ctx->pp_output, &ctx->pp_params);
+        if (ret != 0) {
+            continue;
         }
         
-        /* Update performance metrics */
-        update_performance_metrics(ctx, timestamps);
+        /* Process detection results */
+        pd_pp_box_t *boxes = (pd_pp_box_t *)ctx->pp_output.pOutData;
+        process_detection_state(ctx, boxes, ctx->pp_output.box_nb);
         
         /* Update system status */
         update_led_status(ctx);
         
+        /* Update performance metrics */
+        timestamps[1] = HAL_GetTick();
+        if (timestamps[2] == 0) {
+            timestamps[2] = HAL_GetTick();
+        }
+        
+        ctx->frame_count++;
+        ctx->performance.fps = 1000.0f / (timestamps[1] - timestamps[0] + 1);
+        ctx->performance.inference_time_ms = timestamps[1] - timestamps[0];
+        ctx->performance.frame_count = ctx->frame_count;
+        ctx->performance.detection_count = ctx->pp_output.box_nb;
+        
         /* Send heartbeat periodically */
         Enhanced_PC_STREAM_SendHeartbeat();
         
-        /* Handle user interactions */
+        app_output(&ctx->pp_output, timestamps[1] - timestamps[0], timestamps[2], &ctx->tracker);
         handle_user_button(ctx);
         
-        /* Update frame counter */
-        ctx->frame_count++;
+        /* Clean up buffers */
+        cleanup_nn_buffers(nn_out, nn_out_len, number_output);
     }
     
     return 0;
 }
 
-/**
- * @brief Main program entry point
- * @return Never returns
- */
 /**
  * @brief Main program entry point
  * @return Never returns (0 on theoretical exit)
@@ -639,7 +648,8 @@ int main(void)
     }
     
     /* Start main application loop */
-    app_main_loop(&g_app_ctx);
+    ret = app_main_loop(&g_app_ctx);
+    (void)ret; /* Suppress unused variable warning */
     
     return 0; /* Never reached */
 }

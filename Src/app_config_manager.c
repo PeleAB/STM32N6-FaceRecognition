@@ -220,45 +220,45 @@ void config_manager_print(const app_config_t *config)
     }
     
     printf("=== Application Configuration ===\n");
-    printf("Version: 0x%08X\n", config->config_version);
-    printf("CRC: 0x%08X\n", config->config_crc);
+    printf("Version: 0x%08lX\n", (unsigned long)config->config_version);
+    printf("CRC: 0x%08lX\n", (unsigned long)config->config_crc);
     
     printf("\n--- Face Detection ---\n");
     printf("Confidence Threshold: %.3f\n", config->face_detection.confidence_threshold);
     printf("NMS Threshold: %.3f\n", config->face_detection.nms_threshold);
-    printf("Max Detections: %u\n", config->face_detection.max_detections);
+    printf("Max Detections: %lu\n", (unsigned long)config->face_detection.max_detections);
     printf("Enable Preprocessing: %s\n", config->face_detection.enable_preprocessing ? "Yes" : "No");
     
     printf("\n--- Face Recognition ---\n");
     printf("Similarity Threshold: %.3f\n", config->face_recognition.similarity_threshold);
     printf("Embedding Scale: %.3f\n", config->face_recognition.embedding_scale);
-    printf("Max Embeddings: %u\n", config->face_recognition.max_embeddings);
+    printf("Max Embeddings: %lu\n", (unsigned long)config->face_recognition.max_embeddings);
     printf("Enable Alignment: %s\n", config->face_recognition.enable_alignment ? "Yes" : "No");
     printf("BBox Padding Factor: %.3f\n", config->face_recognition.bbox_padding_factor);
     
     printf("\n--- Tracking ---\n");
     printf("Smooth Factor: %.3f\n", config->tracking.smooth_factor);
     printf("IoU Threshold: %.3f\n", config->tracking.iou_threshold);
-    printf("Max Lost Frames: %u\n", config->tracking.max_lost_frames);
+    printf("Max Lost Frames: %lu\n", (unsigned long)config->tracking.max_lost_frames);
     printf("Min Init Confidence: %.3f\n", config->tracking.min_init_confidence);
     printf("Association Threshold: %.3f\n", config->tracking.association_threshold);
     printf("Enable Prediction: %s\n", config->tracking.enable_prediction ? "Yes" : "No");
     
     printf("\n--- Performance ---\n");
-    printf("Target FPS: %u\n", config->performance.target_fps);
-    printf("Reverify Interval: %u ms\n", config->performance.reverify_interval_ms);
-    printf("Update Interval: %u\n", config->performance.update_interval);
+    printf("Target FPS: %lu\n", (unsigned long)config->performance.target_fps);
+    printf("Reverify Interval: %lu ms\n", (unsigned long)config->performance.reverify_interval_ms);
+    printf("Update Interval: %lu\n", (unsigned long)config->performance.update_interval);
     printf("Enable Profiling: %s\n", config->performance.enable_profiling ? "Yes" : "No");
     
     printf("\n--- Protocol ---\n");
-    printf("Max Payload Size: %u bytes\n", config->protocol.max_payload_size);
-    printf("UART Timeout: %u ms\n", config->protocol.uart_timeout_ms);
-    printf("Stream Scale Factor: %u\n", config->protocol.stream_scale_factor);
+    printf("Max Payload Size: %lu bytes\n", (unsigned long)config->protocol.max_payload_size);
+    printf("UART Timeout: %lu ms\n", (unsigned long)config->protocol.uart_timeout_ms);
+    printf("Stream Scale Factor: %lu\n", (unsigned long)config->protocol.stream_scale_factor);
     printf("Enable CRC Validation: %s\n", config->protocol.enable_crc_validation ? "Yes" : "No");
     
     printf("\n--- User Interface ---\n");
-    printf("Button Long Press: %u ms\n", config->ui.button_long_press_ms);
-    printf("LED Timeout: %u ms\n", config->ui.led_timeout_ms);
+    printf("Button Long Press: %lu ms\n", (unsigned long)config->ui.button_long_press_ms);
+    printf("LED Timeout: %lu ms\n", (unsigned long)config->ui.led_timeout_ms);
     printf("Enable Button Feedback: %s\n", config->ui.enable_button_feedback ? "Yes" : "No");
     
     printf("================================\n");

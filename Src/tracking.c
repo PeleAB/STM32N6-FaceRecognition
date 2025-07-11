@@ -29,10 +29,8 @@
 /* CONFIGURATION CONSTANTS                                                   */
 /* ========================================================================= */
 
-/* Use constants from app_constants.h */
-#define TRACKER_SMOOTH_FACTOR       TRACKER_SMOOTH_FACTOR
-#define TRACKER_IOU_THRESHOLD       TRACKER_IOU_THRESHOLD
-#define TRACKER_MAX_LOST_FRAMES     TRACKER_MAX_LOST_FRAMES
+/* Constants are now defined in app_constants.h */
+/* No local redefinition needed */
 
 /* ========================================================================= */
 /* UTILITY FUNCTIONS                                                         */
