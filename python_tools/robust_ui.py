@@ -145,7 +145,7 @@ class ALNDetectionWidget(QWidget):
     
     def __init__(self):
         super().__init__()
-        self.setFixedHeight(120)
+        self.setFixedHeight(180)  # Increased height for bigger film strip
         self.detections = []  # Store last 5 detection images
         self.max_detections = 5
         self.setup_ui()
@@ -161,22 +161,24 @@ class ALNDetectionWidget(QWidget):
         
         # Film strip container
         self.film_container = QWidget()
-        self.film_container.setFixedHeight(80)
+        self.film_container.setFixedHeight(140)  # Increased height for bigger thumbnails
         self.film_layout = QHBoxLayout(self.film_container)
         self.film_layout.setContentsMargins(0, 0, 0, 0)
-        self.film_layout.setSpacing(2)
+        self.film_layout.setSpacing(3)  # Slightly more spacing
         
-        # Create 5 slots for detection thumbnails
+        # Create 5 slots for detection thumbnails - much bigger now
         self.detection_slots = []
         for i in range(self.max_detections):
             slot = QLabel()
-            slot.setFixedSize(75, 75)
+            slot.setFixedSize(120, 120)  # Much bigger thumbnails
             slot.setStyleSheet("""
                 QLabel {
-                    border: 1px solid #444;
-                    border-radius: 4px;
+                    border: 2px solid #444;
+                    border-radius: 6px;
                     background-color: #1a1a1a;
                     color: #666;
+                    font-size: 14px;
+                    font-weight: bold;
                 }
             """)
             slot.setAlignment(QtCore.Qt.AlignCenter)
@@ -212,10 +214,12 @@ class ALNDetectionWidget(QWidget):
                 slot.setText("")
                 slot.setStyleSheet("""
                     QLabel {
-                        border: 1px solid #444;
-                        border-radius: 4px;
+                        border: 2px solid #444;
+                        border-radius: 6px;
                         background-color: #1a1a1a;
                         color: #666;
+                        font-size: 14px;
+                        font-weight: bold;
                     }
                 """)
             
@@ -235,13 +239,13 @@ class ALNDetectionWidget(QWidget):
                         q_image = QtGui.QImage(image.data, width, height, bytes_per_line, QtGui.QImage.Format_Grayscale8)
                     
                     pixmap = QtGui.QPixmap.fromImage(q_image)
-                    scaled_pixmap = pixmap.scaled(73, 73, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+                    scaled_pixmap = pixmap.scaled(116, 116, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
                     
                     slot.setPixmap(scaled_pixmap)
                     slot.setStyleSheet("""
                         QLabel {
-                            border: 2px solid #4CAF50;
-                            border-radius: 4px;
+                            border: 3px solid #4CAF50;
+                            border-radius: 6px;
                             background-color: #222;
                         }
                     """)
@@ -258,10 +262,12 @@ class ALNDetectionWidget(QWidget):
                 slot.setText(f"{i+1}")
                 slot.setStyleSheet("""
                     QLabel {
-                        border: 1px solid #444;
-                        border-radius: 4px;
+                        border: 2px solid #444;
+                        border-radius: 6px;
                         background-color: #1a1a1a;
                         color: #666;
+                        font-size: 14px;
+                        font-weight: bold;
                     }
                 """)
                 
@@ -439,6 +445,9 @@ class RobustSerialReader(QThread):
         self.detection_count = 0
         self.embedding_count = 0
         
+        # Store current frame for ALN detection
+        self.current_frame = None
+        
     def run(self):
         """Main reading loop"""
         self._running = True
@@ -497,6 +506,8 @@ class RobustSerialReader(QThread):
             frame_data = FrameDataParser.parse_frame_fast(message.payload)
             if frame_data:
                 frame_type, image, width, height = frame_data
+                # Store current frame for ALN detection
+                self.current_frame = image.copy() if image is not None else None
                 self.frame_received.emit(image, frame_type)
         except Exception as e:
             logger.error(f"Error handling frame data: {e}")
@@ -512,17 +523,15 @@ class RobustSerialReader(QThread):
                 
                 # Check for ALN detections (assuming class_id 0 is ALN)
                 aln_detections = [det for det in detections if det[0] == 0]  # class_id == 0
-                if aln_detections:
+                if aln_detections and self.current_frame is not None:
                     # Create a summary for ALN detections
                     aln_info = f"Frame {frame_id}: {len(aln_detections)} ALN(s)"
                     for i, det in enumerate(aln_detections):
                         class_id, x, y, w, h, confidence, keypoints = det
                         aln_info += f" [{i+1}: conf={confidence:.2f}]"
                     
-                    # For now, emit with a placeholder image (we'll need the actual frame image)
-                    # This will be improved when we have access to the frame image
-                    dummy_image = np.zeros((100, 100), dtype=np.uint8)
-                    self.aln_detection_received.emit(dummy_image, aln_info)
+                    # Use actual frame image for ALN detection
+                    self.aln_detection_received.emit(self.current_frame, aln_info)
                     
         except Exception as e:
             logger.error(f"Error handling detections: {e}")
@@ -570,7 +579,7 @@ class RobustMainWindow(QMainWindow):
         self.embedding_count = 0
         
         self.setWindowTitle("STM32N6 Object Detection - Robust Protocol UI")
-        self.setMinimumSize(1000, 700)
+        self.setMinimumSize(1400, 800)  # Larger window to accommodate wider layout
         
         self.setup_ui()
         self.apply_theme()
@@ -592,7 +601,7 @@ class RobustMainWindow(QMainWindow):
         
         # Left panel - controls and stats
         left_panel = QWidget()
-        left_panel.setFixedWidth(280)
+        left_panel.setFixedWidth(640)  # Wider to accommodate bigger ALN display
         left_layout = QVBoxLayout(left_panel)
         
         # Connection controls
@@ -627,13 +636,19 @@ class RobustMainWindow(QMainWindow):
         
         left_layout.addWidget(conn_group)
         
-        # Statistics widget
-        self.stats_widget = RobustStatsWidget()
-        left_layout.addWidget(self.stats_widget)
+        # Create a horizontal layout for stats and ALN display
+        middle_layout = QHBoxLayout()
         
-        # ALN Detection widget
+        # Statistics widget (keep original width)
+        self.stats_widget = RobustStatsWidget()
+        middle_layout.addWidget(self.stats_widget)
+        
+        # ALN Detection widget (takes remaining space)
         self.aln_widget = ALNDetectionWidget()
-        left_layout.addWidget(self.aln_widget)
+        middle_layout.addWidget(self.aln_widget)
+        
+        # Add the middle layout to main left layout
+        left_layout.addLayout(middle_layout)
         
         # Tools
         tools_group = QGroupBox("Tools")
