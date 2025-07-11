@@ -506,25 +506,17 @@ class RobustMainWindow(QMainWindow):
         # Right panel - display and log
         right_splitter = QSplitter(QtCore.Qt.Vertical)
         
-        # Image displays - separate for main stream and alignment frames
+        # Single image display for all frame types
         image_container = QWidget()
-        image_layout = QHBoxLayout(image_container)
+        image_layout = QVBoxLayout(image_container)
         
-        # Main stream display (JPG frames)
-        main_stream_group = QGroupBox("Main Stream (Detection)")
+        # Main stream display (all raw grayscale frames)
+        main_stream_group = QGroupBox("Frame Stream (Raw Grayscale)")
         main_stream_layout = QVBoxLayout(main_stream_group)
         self.main_image_widget = RobustImageWidget()
-        self.main_image_widget.setMinimumSize(400, 300)
+        self.main_image_widget.setMinimumSize(640, 480)
         main_stream_layout.addWidget(self.main_image_widget)
         image_layout.addWidget(main_stream_group)
-        
-        # Alignment frame display (ALN frames)
-        aln_stream_group = QGroupBox("Alignment Frames (Face Recognition)")
-        aln_stream_layout = QVBoxLayout(aln_stream_group)
-        self.aln_image_widget = RobustImageWidget()
-        self.aln_image_widget.setMinimumSize(200, 200)
-        aln_stream_layout.addWidget(self.aln_image_widget)
-        image_layout.addWidget(aln_stream_group)
         
         right_splitter.addWidget(image_container)
         
@@ -691,16 +683,11 @@ class RobustMainWindow(QMainWindow):
         self.log_message("Disconnected")
     
     def on_frame_received(self, image: np.ndarray, frame_type: str):
-        """Handle received frame with separate displays for different frame types"""
+        """Handle received frame - all frame types go to single display"""
         self.frame_count += 1
         
-        # Route frames to appropriate display based on type
-        if frame_type == "ALN":
-            # Alignment frames go to the smaller ALN display
-            self.aln_image_widget.set_image(image, frame_type)
-        else:
-            # Main detection frames (JPG) go to the main display
-            self.main_image_widget.set_image(image, frame_type)
+        # All frames go to the main display (now single display for all types)
+        self.main_image_widget.set_image(image, frame_type)
     
     def on_detections_received(self, frame_id: int, detections: List):
         """Handle received detections"""
@@ -728,25 +715,21 @@ class RobustMainWindow(QMainWindow):
     
     def update_display_stats(self):
         """Update display statistics"""
-        # Combine stats from both displays
-        main_frames = getattr(self.main_image_widget, 'frames_received', 0)
-        aln_frames = getattr(self.aln_image_widget, 'frames_received', 0)
-        main_rate = getattr(self.main_image_widget, 'frame_rate', 0.0)
-        aln_rate = getattr(self.aln_image_widget, 'frame_rate', 0.0)
+        # Get stats from single display
+        frames_received = getattr(self.main_image_widget, 'frames_received', 0)
+        frame_rate = getattr(self.main_image_widget, 'frame_rate', 0.0)
         
         self.stats_widget.update_frame_stats(
-            main_frames + aln_frames,
-            max(main_rate, aln_rate),  # Show higher rate
+            frames_received,
+            frame_rate,
             self.detection_count,
             self.embedding_count
         )
     
     def clear_display(self):
-        """Clear both image displays"""
+        """Clear image display"""
         self.main_image_widget.setText("No Image")
         self.main_image_widget.clear()
-        self.aln_image_widget.setText("No Image")
-        self.aln_image_widget.clear()
     
     def reset_statistics(self):
         """Reset all statistics"""
@@ -754,13 +737,10 @@ class RobustMainWindow(QMainWindow):
         self.detection_count = 0
         self.embedding_count = 0
         
-        # Reset stats for both displays
+        # Reset stats for display
         if hasattr(self.main_image_widget, 'frames_received'):
             self.main_image_widget.frames_received = 0
             self.main_image_widget.frame_rate = 0.0
-        if hasattr(self.aln_image_widget, 'frames_received'):
-            self.aln_image_widget.frames_received = 0
-            self.aln_image_widget.frame_rate = 0.0
         
         if self.serial_reader:
             self.serial_reader.protocol_parser.clear_stats()

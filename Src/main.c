@@ -290,8 +290,8 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
     float similarity = embedding_cosine_similarity(embedding, target_embedding, EMBEDDING_SIZE);
 
     /* Send aligned face and embedding data */
-//    Enhanced_PC_STREAM_SendFrame(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN", NULL, NULL);
-//    Enhanced_PC_STREAM_SendEmbedding(embedding, EMBEDDING_SIZE);
+    Enhanced_PC_STREAM_SendFrame(fr_rgb, FR_WIDTH, FR_HEIGHT, NN_BPP, "ALN", NULL, NULL);
+    Enhanced_PC_STREAM_SendEmbedding(embedding, EMBEDDING_SIZE);
 
     LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
     return similarity;
@@ -486,7 +486,7 @@ static void app_main_loop(app_context_t *ctx)
         
 
         /* Send heartbeat periodically */
-//        Enhanced_PC_STREAM_SendHeartbeat();
+        Enhanced_PC_STREAM_SendHeartbeat();
         
         app_output(&ctx->pp_output, timestamps[1] - timestamps[0], timestamps[2], &ctx->tracker);
         handle_user_button(ctx);

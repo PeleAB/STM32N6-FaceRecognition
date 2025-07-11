@@ -92,7 +92,7 @@ def calculate_stm32_crc32(data: bytes) -> int:
     - Input reflection: None
     - Output reflection: None
     - Output XOR: None
-    - Processes data in 4-byte chunks with byte order reversal
+    - Processes data in 4-byte chunks with STM32 word-based ordering
     """
     return _stm32_crc.calculate(data)
 
@@ -421,11 +421,9 @@ class RobustProtocolParser:
                 received_crc32, = struct.unpack('<I', crc32_bytes)
                 # CRC32 is calculated only on payload data (after message header)
                 actual_payload = payload_data[ProtocolConstants.MSG_HEADER_SIZE:]
-                # test_data = bytes([0x01, 0x02, 0x03, 0x04])
-                print(len(actual_payload))
                 if not validate_crc32(actual_payload, received_crc32):
                     calculated_crc32 = calculate_stm32_crc32(actual_payload)
-                    print(f"CRC32 mismatch: expected {received_crc32:08X}, calculated {calculated_crc32:08X}")
+                    logger.debug(f"CRC32 mismatch: expected {received_crc32:08X}, calculated {calculated_crc32:08X}")
                     self.stats['crc_errors'] += 1
                     if attempt == max_attempts - 1:
                         return None
@@ -563,22 +561,15 @@ class FrameDataParser:
             
             image_data = payload[12:]
             
-            # Handle different frame types
-            if frame_type == "RAW":
-                # Raw grayscale data
-                if len(image_data) == width * height:
-                    frame = np.frombuffer(image_data, dtype=np.uint8).reshape((height, width))
-                    # Convert to 3-channel for consistency
-                    frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
-                    return frame_type, frame, width, height
+            # All frames are now raw grayscale data
+            if len(image_data) == width * height:
+                frame = np.frombuffer(image_data, dtype=np.uint8).reshape((height, width))
+                # Convert to 3-channel for consistency
+                frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
+                return frame_type, frame, width, height
             else:
-                # Decode JPEG data
-                if image_data:
-                    img_array = np.frombuffer(image_data, dtype=np.uint8)
-                    frame = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
-                    
-                    if frame is not None:
-                        return frame_type, frame, width, height
+                logger.warning(f"Raw data size mismatch: expected {width * height}, got {len(image_data)}")
+                return None
                     
         except Exception as e:
             logger.error(f"Error parsing frame data: {e}")
@@ -599,73 +590,18 @@ class FrameDataParser:
             width = struct.unpack('<I', payload[4:8])[0]
             height = struct.unpack('<I', payload[8:12])[0]
 
-            print(width, height)
             # Direct slice for image data (no copy)
             image_data = payload[12:]
             
-            # Handle different frame types
-            if frame_type == "RAW":
-                # Raw grayscale data - fast path
-                if len(image_data) == width * height:
-                    frame = np.frombuffer(image_data, dtype=np.uint8).reshape((height, width))
-                    # Convert to 3-channel for consistency
-                    frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
-                    return frame_type, frame, width, height
-                else:
-                    logger.warning(f"RAW data size mismatch: expected {width * height}, got {len(image_data)}")
-                    return None
-            
-            # JPEG processing
-            if image_data:
-                # Validate JPEG data
-                if len(image_data) < 100:  # Minimum reasonable JPEG size
-                    logger.warning(f"Image data too small: {len(image_data)} bytes")
-                    return FrameDataParser.parse_frame(payload)  # Fallback
-                
-                # Check for JPEG markers
-                if not image_data.startswith(b'\xff\xd8'):
-                    logger.warning(f"Invalid JPEG header for {frame_type} frame")
-                    # Try to find JPEG start
-                    jpeg_start = image_data.find(b'\xff\xd8')
-                    if jpeg_start > 0 and jpeg_start < 100:
-                        logger.info(f"Found JPEG start at offset {jpeg_start}")
-                        image_data = image_data[jpeg_start:]
-                    else:
-                        return FrameDataParser.parse_frame(payload)  # Fallback
-                
-                # Decode with error handling
-                img_array = np.frombuffer(image_data, dtype=np.uint8)
-                
-                # Try multiple decode strategies for robustness
-                frame = None
-                
-                if frame_type == "ALN":
-                    # Keep color for alignment frames
-                    frame = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
-                else:
-                    # Try color decode first for JPG frames
-                    frame = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
-                    
-                # Fallback decode if first attempt failed
-                if frame is None:
-                    logger.warning(f"Primary decode failed for {frame_type}, trying fallback")
-                    frame = cv2.imdecode(img_array, cv2.IMREAD_UNCHANGED)
-                
-                if frame is not None:
-                    # Ensure 3-channel output for consistency
-                    if len(frame.shape) == 2:  # Grayscale
-                        frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
-                    elif len(frame.shape) == 3 and frame.shape[2] == 4:  # RGBA
-                        frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2BGR)
-                    
-                    # Validate frame dimensions
-                    actual_height, actual_width = frame.shape[:2]
-                    if abs(actual_width - width) > 10 or abs(actual_height - height) > 10:
-                        logger.warning(f"Size mismatch for {frame_type}: expected {width}x{height}, got {actual_width}x{actual_height}")
-                    
-                    return frame_type, frame, width, height
-                else:
-                    logger.error(f"All decode strategies failed for {frame_type} frame")
+            # All frames are now raw grayscale data
+            if len(image_data) == width * height:
+                frame = np.frombuffer(image_data, dtype=np.uint8).reshape((height, width))
+                # Convert to 3-channel for consistency
+                frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
+                return frame_type, frame, width, height
+            else:
+                logger.warning(f"Raw data size mismatch: expected {width * height}, got {len(image_data)}")
+                return None
                     
         except Exception as e:
             logger.error(f"Error parsing frame data (fast): {e}")

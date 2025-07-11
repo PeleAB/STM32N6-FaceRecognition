@@ -14,8 +14,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image_write.h"
 
 /* ========================================================================= */
 /* CONFIGURATION CONSTANTS                                                   */
@@ -27,9 +25,7 @@
 #define ROBUST_MAX_PAYLOAD_SIZE     (64 * 1024)
 #define ROBUST_MSG_HEADER_SIZE      3
 #define UART_TIMEOUT                1000
-#define JPEG_QUALITY                80  // High quality for better visual experience
 #define STREAM_SCALE                2
-#define CHUNK_SIZE                  255  // adjust as needed
 /* ========================================================================= */
 /* MESSAGE TYPES                                                             */
 /* ========================================================================= */
@@ -68,13 +64,13 @@ typedef struct __attribute__((packed)) {
 } robust_message_header_t;
 
 /**
- * @brief Frame data payload format
+ * @brief Frame data payload format for raw grayscale frames
  */
 typedef struct __attribute__((packed)) {
-    char frame_type[4];         /* "JPG", "ALN", etc. */
+    char frame_type[4];         /* Frame type: "JPG", "ALN", etc. */
     uint32_t width;             /* Frame width */
     uint32_t height;            /* Frame height */
-    /* Image data follows */
+    /* Raw grayscale image data follows (1 byte per pixel) */
 } robust_frame_data_t;
 
 /**
@@ -119,15 +115,11 @@ static CRC_HandleTypeDef hcrc;
 /* Buffers */
 __attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
-static uint8_t jpeg_buffer[64 * 512];
-
-__attribute__ ((section (".psram_bss")))
-__attribute__((aligned (32)))
 static uint8_t temp_buffer[64 * 1024];
 
 __attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
-static uint8_t stream_buffer[320 * 240];  // Downscaled frame buffer
+static uint8_t stream_buffer[320 * 240];  // Raw grayscale frame buffer
 
 /* ========================================================================= */
 /* UTILITY FUNCTIONS                                                         */
@@ -193,23 +185,6 @@ static uint16_t get_next_sequence_id(robust_message_type_t msg_type)
     return 0;
 }
 
-/**
- * @brief Memory writer for JPEG compression
- */
-typedef struct {
-    uint8_t *buffer;
-    size_t size;
-    size_t capacity;
-} mem_writer_t;
-
-static void mem_write_func(void *context, void *data, int size)
-{
-    mem_writer_t *writer = (mem_writer_t *)context;
-    if (writer->size + size <= writer->capacity) {
-        memcpy(writer->buffer + writer->size, data, size);
-        writer->size += size;
-    }
-}
 
 /**
  * @brief Convert RGB565 to grayscale
@@ -367,7 +342,7 @@ void Enhanced_PC_STREAM_Init(void)
 }
 
 /**
- * @brief Send frame with enhanced protocol including metadata
+ * @brief Send frame with enhanced protocol as raw grayscale data
  */
 bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height,
                                  uint32_t bpp, const char *tag,
@@ -378,28 +353,29 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
         return false;
     }
     
-    // Generate JPEG like the original working version
-    bool full_color = (strcmp(tag, "ALN") == 0);
+    // Determine scaling based on frame type (ALN frames are full resolution)
+    bool full_resolution = (strcmp(tag, "ALN") == 0);
+    uint32_t scale_factor = full_resolution ? 1 : STREAM_SCALE;
     
-    uint32_t output_width = full_color ? width : width / STREAM_SCALE;
-    uint32_t output_height = full_color ? height : height / STREAM_SCALE;
+    uint32_t output_width = width / scale_factor;
+    uint32_t output_height = height / scale_factor;
     
     if (output_width > 320) output_width = 320;   // Max width limit
     if (output_height > 240) output_height = 240; // Max height limit
     
-    // Convert to grayscale and send raw data (no JPEG compression for debugging)
+    // Convert to grayscale and send raw data
     for (uint32_t y = 0; y < output_height; y++) {
-        const uint8_t *line = frame + (y * STREAM_SCALE) * width * bpp;
+        const uint8_t *line = frame + (y * scale_factor) * width * bpp;
         for (uint32_t x = 0; x < output_width; x++) {
             if (bpp == 2) {
                 const uint16_t *line16 = (const uint16_t *)line;
-                uint16_t px = line16[x * STREAM_SCALE];
+                uint16_t px = line16[x * scale_factor];
                 stream_buffer[y * output_width + x] = rgb565_to_gray(px);
             } else if (bpp == 3) {
-                const uint8_t *px = line + x * STREAM_SCALE * 3;
+                const uint8_t *px = line + x * scale_factor * 3;
                 stream_buffer[y * output_width + x] = rgb888_to_gray(px[0], px[1], px[2]);
             } else {
-                stream_buffer[y * output_width + x] = line[x * STREAM_SCALE];
+                stream_buffer[y * output_width + x] = line[x * scale_factor];
             }
         }
     }
@@ -410,8 +386,8 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
         .height = output_height
     };
     
-    // Copy frame type (ensure null termination) - mark as RAW for debugging
-    strncpy(frame_data.frame_type, "RAW", 3);
+    // Copy frame type (preserve original tag for different frame types)
+    strncpy(frame_data.frame_type, tag, 3);
     frame_data.frame_type[3] = '\0';
     
     // Calculate total payload size using raw grayscale data
@@ -429,14 +405,14 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
     
     bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, temp_buffer, total_size);
     
-    // Send detections if available
-    if (detections && detections->box_nb > 0) {
-        Enhanced_PC_STREAM_SendDetections(0, detections);  // Frame ID = 0 for now
-    }
-    
     // Send performance metrics if available
     if (performance) {
         Enhanced_PC_STREAM_SendPerformanceMetrics(performance);
+    }
+    
+    // Send detections if available
+    if (detections && detections->box_nb > 0) {
+        Enhanced_PC_STREAM_SendDetections(0, detections);  // Frame ID = 0 for now
     }
     
     return frame_sent;
