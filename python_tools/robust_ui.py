@@ -140,6 +140,139 @@ class RobustImageWidget(QLabel):
             logger.error(f"Failed to display image: {e}")
             self.setText("Image Error")
 
+class ALNDetectionWidget(QWidget):
+    """Film strip display for last 5 ALN detections"""
+    
+    def __init__(self):
+        super().__init__()
+        self.setFixedHeight(120)
+        self.detections = []  # Store last 5 detection images
+        self.max_detections = 5
+        self.setup_ui()
+        
+    def setup_ui(self):
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(5, 5, 5, 5)
+        
+        # Title
+        title_label = QLabel("ALN Detections (Last 5)")
+        title_label.setStyleSheet("font-weight: bold; color: #4CAF50;")
+        layout.addWidget(title_label)
+        
+        # Film strip container
+        self.film_container = QWidget()
+        self.film_container.setFixedHeight(80)
+        self.film_layout = QHBoxLayout(self.film_container)
+        self.film_layout.setContentsMargins(0, 0, 0, 0)
+        self.film_layout.setSpacing(2)
+        
+        # Create 5 slots for detection thumbnails
+        self.detection_slots = []
+        for i in range(self.max_detections):
+            slot = QLabel()
+            slot.setFixedSize(75, 75)
+            slot.setStyleSheet("""
+                QLabel {
+                    border: 1px solid #444;
+                    border-radius: 4px;
+                    background-color: #1a1a1a;
+                    color: #666;
+                }
+            """)
+            slot.setAlignment(QtCore.Qt.AlignCenter)
+            slot.setText(f"{i+1}")
+            slot.setScaledContents(True)
+            self.detection_slots.append(slot)
+            self.film_layout.addWidget(slot)
+        
+        layout.addWidget(self.film_container)
+        
+    def add_detection(self, image: np.ndarray, detection_info: str = ""):
+        """Add new ALN detection to the film strip"""
+        try:
+            # Add to detections list (newest first)
+            self.detections.insert(0, (image.copy(), detection_info))
+            
+            # Keep only last 5
+            if len(self.detections) > self.max_detections:
+                self.detections = self.detections[:self.max_detections]
+            
+            # Update display slots
+            self.update_display()
+            
+        except Exception as e:
+            logger.error(f"Error adding ALN detection: {e}")
+    
+    def update_display(self):
+        """Update the film strip display"""
+        try:
+            # Clear all slots first
+            for slot in self.detection_slots:
+                slot.clear()
+                slot.setText("")
+                slot.setStyleSheet("""
+                    QLabel {
+                        border: 1px solid #444;
+                        border-radius: 4px;
+                        background-color: #1a1a1a;
+                        color: #666;
+                    }
+                """)
+            
+            # Fill slots with detections (newest to oldest)
+            for i, (image, info) in enumerate(self.detections):
+                if i < len(self.detection_slots):
+                    slot = self.detection_slots[i]
+                    
+                    # Convert image to QPixmap
+                    if len(image.shape) == 3:
+                        height, width, channel = image.shape
+                        bytes_per_line = 3 * width
+                        q_image = QtGui.QImage(image.data, width, height, bytes_per_line, QtGui.QImage.Format_RGB888)
+                    else:
+                        height, width = image.shape
+                        bytes_per_line = width
+                        q_image = QtGui.QImage(image.data, width, height, bytes_per_line, QtGui.QImage.Format_Grayscale8)
+                    
+                    pixmap = QtGui.QPixmap.fromImage(q_image)
+                    scaled_pixmap = pixmap.scaled(73, 73, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+                    
+                    slot.setPixmap(scaled_pixmap)
+                    slot.setStyleSheet("""
+                        QLabel {
+                            border: 2px solid #4CAF50;
+                            border-radius: 4px;
+                            background-color: #222;
+                        }
+                    """)
+                    
+                    # Set tooltip with detection info
+                    if info:
+                        slot.setToolTip(f"Detection {i+1}: {info}")
+                    else:
+                        slot.setToolTip(f"ALN Detection {i+1}")
+            
+            # Update empty slots to show slot numbers
+            for i in range(len(self.detections), len(self.detection_slots)):
+                slot = self.detection_slots[i]
+                slot.setText(f"{i+1}")
+                slot.setStyleSheet("""
+                    QLabel {
+                        border: 1px solid #444;
+                        border-radius: 4px;
+                        background-color: #1a1a1a;
+                        color: #666;
+                    }
+                """)
+                
+        except Exception as e:
+            logger.error(f"Error updating ALN display: {e}")
+    
+    def clear_detections(self):
+        """Clear all detections"""
+        self.detections.clear()
+        self.update_display()
+
 class RobustStatsWidget(QWidget):
     """Statistics display for robust protocol"""
     
@@ -284,6 +417,7 @@ class RobustSerialReader(QThread):
     
     frame_received = Signal(np.ndarray, str)  # image, frame_type
     detections_received = Signal(int, list)   # frame_id, detections
+    aln_detection_received = Signal(np.ndarray, str)  # image, detection_info
     embedding_received = Signal(list)         # embedding
     stats_updated = Signal(dict)              # protocol stats
     error_occurred = Signal(str)              # error message
@@ -375,6 +509,21 @@ class RobustSerialReader(QThread):
                 frame_id, detections = detection_data
                 self.detection_count += len(detections)
                 self.detections_received.emit(frame_id, detections)
+                
+                # Check for ALN detections (assuming class_id 0 is ALN)
+                aln_detections = [det for det in detections if det[0] == 0]  # class_id == 0
+                if aln_detections:
+                    # Create a summary for ALN detections
+                    aln_info = f"Frame {frame_id}: {len(aln_detections)} ALN(s)"
+                    for i, det in enumerate(aln_detections):
+                        class_id, x, y, w, h, confidence, keypoints = det
+                        aln_info += f" [{i+1}: conf={confidence:.2f}]"
+                    
+                    # For now, emit with a placeholder image (we'll need the actual frame image)
+                    # This will be improved when we have access to the frame image
+                    dummy_image = np.zeros((100, 100), dtype=np.uint8)
+                    self.aln_detection_received.emit(dummy_image, aln_info)
+                    
         except Exception as e:
             logger.error(f"Error handling detections: {e}")
     
@@ -482,6 +631,10 @@ class RobustMainWindow(QMainWindow):
         self.stats_widget = RobustStatsWidget()
         left_layout.addWidget(self.stats_widget)
         
+        # ALN Detection widget
+        self.aln_widget = ALNDetectionWidget()
+        left_layout.addWidget(self.aln_widget)
+        
         # Tools
         tools_group = QGroupBox("Tools")
         tools_layout = QVBoxLayout(tools_group)
@@ -489,6 +642,10 @@ class RobustMainWindow(QMainWindow):
         self.clear_btn = QPushButton("Clear Display")
         self.clear_btn.clicked.connect(self.clear_display)
         tools_layout.addWidget(self.clear_btn)
+        
+        self.clear_aln_btn = QPushButton("Clear ALN History")
+        self.clear_aln_btn.clicked.connect(self.clear_aln_detections)
+        tools_layout.addWidget(self.clear_aln_btn)
         
         self.reset_stats_btn = QPushButton("Reset Statistics")
         self.reset_stats_btn.clicked.connect(self.reset_statistics)
@@ -651,6 +808,7 @@ class RobustMainWindow(QMainWindow):
             self.serial_reader = RobustSerialReader(self.serial_port)
             self.serial_reader.frame_received.connect(self.on_frame_received)
             self.serial_reader.detections_received.connect(self.on_detections_received)
+            self.serial_reader.aln_detection_received.connect(self.on_aln_detection_received)
             self.serial_reader.embedding_received.connect(self.on_embedding_received)
             self.serial_reader.stats_updated.connect(self.on_stats_updated)
             self.serial_reader.error_occurred.connect(self.on_error)
@@ -700,6 +858,11 @@ class RobustMainWindow(QMainWindow):
         detection_details = ", ".join(det_info) if det_info else "none"
         self.log_message(f"Frame {frame_id}: {len(detections)} detections [{detection_details}]")
     
+    def on_aln_detection_received(self, image: np.ndarray, detection_info: str):
+        """Handle received ALN detection"""
+        self.aln_widget.add_detection(image, detection_info)
+        self.log_message(f"ALN Detection: {detection_info}")
+    
     def on_embedding_received(self, embedding: List[float]):
         """Handle received embedding"""
         self.embedding_count += 1
@@ -730,6 +893,11 @@ class RobustMainWindow(QMainWindow):
         """Clear image display"""
         self.main_image_widget.setText("No Image")
         self.main_image_widget.clear()
+    
+    def clear_aln_detections(self):
+        """Clear ALN detection history"""
+        self.aln_widget.clear_detections()
+        self.log_message("ALN detection history cleared")
     
     def reset_statistics(self):
         """Reset all statistics"""
