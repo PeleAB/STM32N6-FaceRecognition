@@ -141,11 +141,11 @@ class RobustImageWidget(QLabel):
             self.setText("Image Error")
 
 class ALNDetectionWidget(QWidget):
-    """Film strip display for last 5 ALN detections"""
+    """Vertical film strip display for last 5 ALN face detections"""
     
     def __init__(self):
         super().__init__()
-        self.setFixedHeight(180)  # Increased height for bigger film strip
+        self.setFixedWidth(200)  # Fixed width for vertical layout
         self.detections = []  # Store last 5 detection images
         self.max_detections = 5
         self.setup_ui()
@@ -153,47 +153,42 @@ class ALNDetectionWidget(QWidget):
     def setup_ui(self):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(5, 5, 5, 5)
+        layout.setSpacing(5)
         
         # Title
-        title_label = QLabel("ALN Detections (Last 5)")
-        title_label.setStyleSheet("font-weight: bold; color: #4CAF50;")
+        title_label = QLabel("ALN Detections")
+        title_label.setStyleSheet("font-weight: bold; color: #4CAF50; font-size: 14px;")
+        title_label.setAlignment(QtCore.Qt.AlignCenter)
         layout.addWidget(title_label)
         
-        # Film strip container
-        self.film_container = QWidget()
-        self.film_container.setFixedHeight(140)  # Increased height for bigger thumbnails
-        self.film_layout = QHBoxLayout(self.film_container)
-        self.film_layout.setContentsMargins(0, 0, 0, 0)
-        self.film_layout.setSpacing(3)  # Slightly more spacing
-        
-        # Create 5 slots for detection thumbnails - much bigger now
+        # Create 5 slots for detection thumbnails - vertical layout
         self.detection_slots = []
         for i in range(self.max_detections):
             slot = QLabel()
-            slot.setFixedSize(120, 120)  # Much bigger thumbnails
+            slot.setFixedSize(180, 180)  # Square thumbnails for face crops
             slot.setStyleSheet("""
                 QLabel {
                     border: 2px solid #444;
-                    border-radius: 6px;
+                    border-radius: 8px;
                     background-color: #1a1a1a;
                     color: #666;
-                    font-size: 14px;
+                    font-size: 12px;
                     font-weight: bold;
                 }
             """)
             slot.setAlignment(QtCore.Qt.AlignCenter)
-            slot.setText(f"{i+1}")
+            slot.setText(f"FACE[N-{i}]")
             slot.setScaledContents(True)
             self.detection_slots.append(slot)
-            self.film_layout.addWidget(slot)
+            layout.addWidget(slot)
         
-        layout.addWidget(self.film_container)
+        layout.addStretch()  # Push everything to the top
         
-    def add_detection(self, image: np.ndarray, detection_info: str = ""):
-        """Add new ALN detection to the film strip"""
+    def add_detection(self, face_crop: np.ndarray, detection_info: str = ""):
+        """Add new ALN face detection to the film strip"""
         try:
             # Add to detections list (newest first)
-            self.detections.insert(0, (image.copy(), detection_info))
+            self.detections.insert(0, (face_crop.copy(), detection_info))
             
             # Keep only last 5
             if len(self.detections) > self.max_detections:
@@ -206,67 +201,67 @@ class ALNDetectionWidget(QWidget):
             logger.error(f"Error adding ALN detection: {e}")
     
     def update_display(self):
-        """Update the film strip display"""
+        """Update the vertical film strip display"""
         try:
             # Clear all slots first
-            for slot in self.detection_slots:
+            for i, slot in enumerate(self.detection_slots):
                 slot.clear()
-                slot.setText("")
+                slot.setText(f"FACE[N-{i}]")
                 slot.setStyleSheet("""
                     QLabel {
                         border: 2px solid #444;
-                        border-radius: 6px;
+                        border-radius: 8px;
                         background-color: #1a1a1a;
                         color: #666;
-                        font-size: 14px;
+                        font-size: 12px;
                         font-weight: bold;
                     }
                 """)
             
             # Fill slots with detections (newest to oldest)
-            for i, (image, info) in enumerate(self.detections):
+            for i, (face_crop, info) in enumerate(self.detections):
                 if i < len(self.detection_slots):
                     slot = self.detection_slots[i]
                     
-                    # Convert image to QPixmap
-                    if len(image.shape) == 3:
-                        height, width, channel = image.shape
+                    # Convert face crop to QPixmap
+                    if len(face_crop.shape) == 3:
+                        height, width, channel = face_crop.shape
                         bytes_per_line = 3 * width
-                        q_image = QtGui.QImage(image.data, width, height, bytes_per_line, QtGui.QImage.Format_RGB888)
+                        q_image = QtGui.QImage(face_crop.data, width, height, bytes_per_line, QtGui.QImage.Format_RGB888)
                     else:
-                        height, width = image.shape
+                        height, width = face_crop.shape
                         bytes_per_line = width
-                        q_image = QtGui.QImage(image.data, width, height, bytes_per_line, QtGui.QImage.Format_Grayscale8)
+                        q_image = QtGui.QImage(face_crop.data, width, height, bytes_per_line, QtGui.QImage.Format_Grayscale8)
                     
                     pixmap = QtGui.QPixmap.fromImage(q_image)
-                    scaled_pixmap = pixmap.scaled(116, 116, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+                    scaled_pixmap = pixmap.scaled(176, 176, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
                     
                     slot.setPixmap(scaled_pixmap)
                     slot.setStyleSheet("""
                         QLabel {
                             border: 3px solid #4CAF50;
-                            border-radius: 6px;
+                            border-radius: 8px;
                             background-color: #222;
                         }
                     """)
                     
                     # Set tooltip with detection info
                     if info:
-                        slot.setToolTip(f"Detection {i+1}: {info}")
+                        slot.setToolTip(f"Face {i+1}: {info}")
                     else:
-                        slot.setToolTip(f"ALN Detection {i+1}")
+                        slot.setToolTip(f"ALN Face {i+1}")
             
-            # Update empty slots to show slot numbers
+            # Update empty slots
             for i in range(len(self.detections), len(self.detection_slots)):
                 slot = self.detection_slots[i]
-                slot.setText(f"{i+1}")
+                slot.setText(f"FACE[N-{i}]")
                 slot.setStyleSheet("""
                     QLabel {
                         border: 2px solid #444;
-                        border-radius: 6px;
+                        border-radius: 8px;
                         background-color: #1a1a1a;
                         color: #666;
-                        font-size: 14px;
+                        font-size: 12px;
                         font-weight: bold;
                     }
                 """)
@@ -423,7 +418,7 @@ class RobustSerialReader(QThread):
     
     frame_received = Signal(np.ndarray, str)  # image, frame_type
     detections_received = Signal(int, list)   # frame_id, detections
-    aln_detection_received = Signal(np.ndarray, str)  # image, detection_info
+    aln_detection_received = Signal(np.ndarray, str)  # face_crop, detection_info
     embedding_received = Signal(list)         # embedding
     stats_updated = Signal(dict)              # protocol stats
     error_occurred = Signal(str)              # error message
@@ -524,14 +519,15 @@ class RobustSerialReader(QThread):
                 # Check for ALN detections (assuming class_id 0 is ALN)
                 aln_detections = [det for det in detections if det[0] == 0]  # class_id == 0
                 if aln_detections and self.current_frame is not None:
-                    # Create a summary for ALN detections
-                    aln_info = f"Frame {frame_id}: {len(aln_detections)} ALN(s)"
+                    # Process each ALN detection separately
                     for i, det in enumerate(aln_detections):
                         class_id, x, y, w, h, confidence, keypoints = det
-                        aln_info += f" [{i+1}: conf={confidence:.2f}]"
-                    
-                    # Use actual frame image for ALN detection
-                    self.aln_detection_received.emit(self.current_frame, aln_info)
+                        
+                        # Crop face from current frame
+                        face_crop = self._crop_face(self.current_frame, x, y, w, h)
+                        if face_crop is not None:
+                            aln_info = f"Frame {frame_id}: ALN conf={confidence:.2f}"
+                            self.aln_detection_received.emit(face_crop, aln_info)
                     
         except Exception as e:
             logger.error(f"Error handling detections: {e}")
@@ -563,6 +559,39 @@ class RobustSerialReader(QThread):
                 logger.debug(f"Heartbeat received: timestamp={timestamp}")
         except Exception as e:
             logger.error(f"Error handling heartbeat: {e}")
+    
+    def _crop_face(self, image: np.ndarray, x: int, y: int, w: int, h: int) -> Optional[np.ndarray]:
+        """Crop face from image using bounding box coordinates"""
+        try:
+            if image is None:
+                return None
+                
+            img_height, img_width = image.shape[:2]
+            
+            # Ensure coordinates are within image bounds
+            x = max(0, min(x, img_width - 1))
+            y = max(0, min(y, img_height - 1))
+            w = max(1, min(w, img_width - x))
+            h = max(1, min(h, img_height - y))
+            
+            # Crop the face region
+            face_crop = image[y:y+h, x:x+w]
+            
+            # Add some padding if the crop is too small
+            if face_crop.shape[0] < 50 or face_crop.shape[1] < 50:
+                # Add padding to make it at least 50x50
+                pad_h = max(0, 50 - face_crop.shape[0])
+                pad_w = max(0, 50 - face_crop.shape[1])
+                if len(face_crop.shape) == 3:
+                    face_crop = np.pad(face_crop, ((0, pad_h), (0, pad_w), (0, 0)), mode='constant', constant_values=0)
+                else:
+                    face_crop = np.pad(face_crop, ((0, pad_h), (0, pad_w)), mode='constant', constant_values=0)
+            
+            return face_crop
+            
+        except Exception as e:
+            logger.error(f"Error cropping face: {e}")
+            return None
 
 class RobustMainWindow(QMainWindow):
     """Main window using robust protocol"""
@@ -601,7 +630,7 @@ class RobustMainWindow(QMainWindow):
         
         # Left panel - controls and stats
         left_panel = QWidget()
-        left_panel.setFixedWidth(640)  # Wider to accommodate bigger ALN display
+        left_panel.setFixedWidth(280)  # Back to original width
         left_layout = QVBoxLayout(left_panel)
         
         # Connection controls
@@ -636,19 +665,9 @@ class RobustMainWindow(QMainWindow):
         
         left_layout.addWidget(conn_group)
         
-        # Create a horizontal layout for stats and ALN display
-        middle_layout = QHBoxLayout()
-        
-        # Statistics widget (keep original width)
+        # Statistics widget
         self.stats_widget = RobustStatsWidget()
-        middle_layout.addWidget(self.stats_widget)
-        
-        # ALN Detection widget (takes remaining space)
-        self.aln_widget = ALNDetectionWidget()
-        middle_layout.addWidget(self.aln_widget)
-        
-        # Add the middle layout to main left layout
-        left_layout.addLayout(middle_layout)
+        left_layout.addWidget(self.stats_widget)
         
         # Tools
         tools_group = QGroupBox("Tools")
@@ -675,8 +694,8 @@ class RobustMainWindow(QMainWindow):
         
         main_layout.addWidget(left_panel)
         
-        # Right panel - display and log
-        right_splitter = QSplitter(QtCore.Qt.Vertical)
+        # Center panel - display and log
+        center_splitter = QSplitter(QtCore.Qt.Vertical)
         
         # Single image display for all frame types
         image_container = QWidget()
@@ -690,15 +709,19 @@ class RobustMainWindow(QMainWindow):
         main_stream_layout.addWidget(self.main_image_widget)
         image_layout.addWidget(main_stream_group)
         
-        right_splitter.addWidget(image_container)
+        center_splitter.addWidget(image_container)
         
         # Log output
         self.log_widget = QTextEdit()
         self.log_widget.setMaximumHeight(150)
         self.log_widget.setReadOnly(True)
-        right_splitter.addWidget(self.log_widget)
+        center_splitter.addWidget(self.log_widget)
         
-        main_layout.addWidget(right_splitter, 1)
+        main_layout.addWidget(center_splitter, 1)
+        
+        # Right panel - ALN Detection film strip
+        self.aln_widget = ALNDetectionWidget()
+        main_layout.addWidget(self.aln_widget)
         
         # Status bar
         self.status_bar = QStatusBar()
@@ -856,11 +879,15 @@ class RobustMainWindow(QMainWindow):
         self.log_message("Disconnected")
     
     def on_frame_received(self, image: np.ndarray, frame_type: str):
-        """Handle received frame - all frame types go to single display"""
+        """Handle received frame - only RAW frames go to main display"""
         self.frame_count += 1
         
-        # All frames go to the main display (now single display for all types)
-        self.main_image_widget.set_image(image, frame_type)
+        # Only show RAW frames in the main display, skip ALN detection frames
+        if frame_type.upper() == "RAW" or frame_type.upper() == "GRAYSCALE":
+            self.main_image_widget.set_image(image, frame_type)
+        else:
+            # Log other frame types but don't display them in main view
+            self.log_message(f"Received {frame_type} frame (not displayed in main view)")
     
     def on_detections_received(self, frame_id: int, detections: List):
         """Handle received detections"""
@@ -873,9 +900,9 @@ class RobustMainWindow(QMainWindow):
         detection_details = ", ".join(det_info) if det_info else "none"
         self.log_message(f"Frame {frame_id}: {len(detections)} detections [{detection_details}]")
     
-    def on_aln_detection_received(self, image: np.ndarray, detection_info: str):
+    def on_aln_detection_received(self, face_crop: np.ndarray, detection_info: str):
         """Handle received ALN detection"""
-        self.aln_widget.add_detection(image, detection_info)
+        self.aln_widget.add_detection(face_crop, detection_info)
         self.log_message(f"ALN Detection: {detection_info}")
     
     def on_embedding_received(self, embedding: List[float]):
