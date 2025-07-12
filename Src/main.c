@@ -40,7 +40,7 @@
 #include "system_utils.h"
 #include "face_utils.h"
 #include "target_embedding.h"
-#include "tracking.h"
+// #include "tracking.h"  // Removed - no longer using tracker
 
 /* New modular includes */
 #include "app_constants.h"
@@ -58,11 +58,9 @@
 #define SIMILARITY_THRESHOLD        FACE_SIMILARITY_THRESHOLD
 #define LONG_PRESS_MS               BUTTON_LONG_PRESS_DURATION_MS
 
-/* Application State Machine */
+/* Simplified Application State Machine - No Tracking */
 typedef enum {
-    PIPE_STATE_SEARCH = 0,
-    PIPE_STATE_VERIFY,
-    PIPE_STATE_TRACK
+    PIPE_STATE_DETECT_AND_VERIFY = 0  /* Single state: detect faces and verify immediately */
 } pipe_state_t;
 
 /**
@@ -86,10 +84,14 @@ typedef struct {
     /* Frame processing pipeline */
     frame_processing_context_t frame_ctx;   /**< Frame processing context */
     
-    /* State Management */
+    /* State Management - Simplified */
     pipe_state_t pipe_state;                /**< Current pipeline state */
-    pd_pp_box_t candidate_box;              /**< Candidate face box */
-    uint32_t last_verified;                 /**< Last verification timestamp */
+    
+    /* Current Frame Results */
+    pd_pp_box_t best_detection;             /**< Best face detection this frame */
+    float current_similarity;               /**< Current face similarity score */
+    bool face_detected;                     /**< Face detected in current frame */
+    bool face_verified;                     /**< Face verified in current frame */
     
     /* Face Recognition */
     float current_embedding[EMBEDDING_SIZE]; /**< Current face embedding */
@@ -98,9 +100,6 @@ typedef struct {
     /* User Interface */
     uint32_t button_press_ts;               /**< Button press timestamp */
     int prev_button_state;                  /**< Previous button state */
-    
-    /* Tracking - kept for compatibility */
-    tracker_t tracker;                      /**< Legacy tracker */
     
     /* Performance monitoring */
     performance_metrics_t performance;      /**< Performance metrics */
@@ -124,8 +123,10 @@ uint8_t dcmipp_out_nn[DCMIPP_OUT_NN_BUFF_LEN];
 
 /* Application Context */
 static app_context_t g_app_ctx = {
-    .pipe_state = PIPE_STATE_SEARCH,
-    .last_verified = 0,
+    .pipe_state = PIPE_STATE_DETECT_AND_VERIFY,
+    .face_detected = false,
+    .face_verified = false,
+    .current_similarity = 0.0f,
     .embedding_valid = 0,
     .button_press_ts = 0,
     .prev_button_state = 0
@@ -137,11 +138,11 @@ static int app_init(app_context_t *ctx);
 static int app_main_loop(app_context_t *ctx);
 static void app_input_init(uint32_t *pitch_nn);
 static int  app_get_frame(uint8_t *dest, uint32_t pitch_nn);
-static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot_ms, const tracker_t *tracker);
+static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot_ms, const app_context_t *ctx);
 static void handle_user_button(app_context_t *ctx);
 static float verify_box(app_context_t *ctx, const pd_pp_box_t *box);
-static void process_detection_state(app_context_t *ctx, pd_pp_box_t *boxes, uint32_t box_count);
-static void update_led_status(app_context_t *ctx);
+static void process_frame_detections(app_context_t *ctx, pd_pp_box_t *boxes, uint32_t box_count);
+static void update_led_status(const app_context_t *ctx);
 static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int number_output);
 
 /* Neural Network Instance Declaration */
@@ -208,17 +209,17 @@ static int app_get_frame(uint8_t *dest, uint32_t pitch_nn)
  * @param res Post-processing results
  * @param inf_ms Inference time in milliseconds
  * @param boot_ms Boot time in milliseconds
- * @param tracker Tracker state for display
+ * @param ctx Application context with current frame results
  */
-static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot_ms, const tracker_t *tracker)
+static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot_ms, const app_context_t *ctx)
 {
 #if defined(ENABLE_PC_STREAM) || defined(ENABLE_LCD_DISPLAY)
-    Display_NetworkOutput(res, inf_ms, boot_ms, tracker);
+    Display_NetworkOutput(res, inf_ms, boot_ms, ctx);
 #else
     (void)res;
     (void)inf_ms;
     (void)boot_ms;
-    (void)tracker;
+    (void)ctx;
 #endif
 }
 
@@ -238,10 +239,10 @@ static void handle_user_button(app_context_t *ctx)
     else if (!current_state && ctx->prev_button_state) {
         uint32_t duration = HAL_GetTick() - ctx->button_press_ts;
         
-        if (duration >= ctx->config.ui.button_long_press_ms) {
+        if (duration >= BUTTON_LONG_PRESS_DURATION_MS) {
             /* Long press: reset embeddings bank */
             embeddings_bank_reset();
-        } else if (ctx->embedding_valid && ctx->config.ui.enable_button_feedback) {
+        } else if (ctx->embedding_valid) {
             /* Short press: add current embedding */
             embeddings_bank_add(ctx->current_embedding);
         }
@@ -428,8 +429,7 @@ static int app_init(app_context_t *ctx)
     App_SystemInit();
     LL_ATON_RT_RuntimeInit();
     
-    /* Initialize tracker for backward compatibility */
-    tracker_init(&ctx->tracker);
+    /* Initialize embeddings bank */
     embeddings_bank_init();
     
     /* Initialize enhanced PC streaming */
@@ -461,72 +461,66 @@ static int app_init(app_context_t *ctx)
 }
 
 /**
- * @brief Process detection results based on current state
+ * @brief Process frame detections - simplified tracker-free approach
  * @param ctx Application context
  * @param boxes Detected bounding boxes
  * @param box_count Number of detected boxes
  */
-static void process_detection_state(app_context_t *ctx, pd_pp_box_t *boxes, uint32_t box_count)
+static void process_frame_detections(app_context_t *ctx, pd_pp_box_t *boxes, uint32_t box_count)
 {
-    switch (ctx->pipe_state) {
-        case PIPE_STATE_SEARCH:
-            if (box_count > 0) {
-                /* Find box with highest confidence */
-                ctx->candidate_box = boxes[0];
-                for (uint32_t i = 1; i < box_count; i++) {
-                    if (boxes[i].prob > ctx->candidate_box.prob) {
-                        ctx->candidate_box = boxes[i];
-                    }
-                }
-                ctx->tracker.similarity = 0;
-                ctx->pipe_state = PIPE_STATE_VERIFY;
+    /* Reset frame state */
+    ctx->face_detected = false;
+    ctx->face_verified = false;
+    ctx->current_similarity = 0.0f;
+    
+    /* Process detections if any found */
+    if (box_count > 0) {
+        /* Find box with highest confidence */
+        uint32_t best_idx = 0;
+        for (uint32_t i = 1; i < box_count; i++) {
+            if (boxes[i].prob > boxes[best_idx].prob) {
+                best_idx = i;
             }
-            break;
-            
-        case PIPE_STATE_VERIFY: {
-            float similarity = verify_box(ctx, &ctx->candidate_box);
-            if (similarity >= ctx->config.face_recognition.similarity_threshold) {
-                /* Face verified - start tracking */
-                ctx->candidate_box.prob = similarity;
-                ctx->tracker.box = ctx->candidate_box;
-                ctx->tracker.state = TRACK_STATE_TRACKING;
-                ctx->tracker.lost_count = 0;
-                ctx->tracker.similarity = similarity;
-                ctx->last_verified = HAL_GetTick();
-                ctx->pipe_state = PIPE_STATE_TRACK;
-            } else {
-                /* Face not verified - return to search */
-                ctx->tracker.similarity = similarity;
-                ctx->pipe_state = PIPE_STATE_SEARCH;
-            }
-            break;
         }
         
-        case PIPE_STATE_TRACK:
-            tracker_process(&ctx->tracker, &ctx->pp_output, AI_PD_MODEL_PP_CONF_THRESHOLD);
-            if (ctx->tracker.state != TRACK_STATE_TRACKING) {
-                ctx->pipe_state = PIPE_STATE_SEARCH;
-            } else if ((HAL_GetTick() - ctx->last_verified) > ctx->config.performance.reverify_interval_ms) {
-                /* Periodic re-verification */
-                ctx->candidate_box = ctx->tracker.box;
-                ctx->pipe_state = PIPE_STATE_VERIFY;
+        ctx->best_detection = boxes[best_idx];
+        ctx->face_detected = true;
+        
+        /* Run face recognition if confidence is high enough */
+        if (ctx->best_detection.prob >= FACE_DETECTION_CONFIDENCE_THRESHOLD) {
+            float similarity = verify_box(ctx, &ctx->best_detection);
+            ctx->current_similarity = similarity;
+            
+            /* Update detection with similarity score */
+            ctx->best_detection.prob = similarity;
+            
+            /* Check if face is verified */
+            if (similarity >= FACE_SIMILARITY_THRESHOLD) {
+                ctx->face_verified = true;
             }
-            break;
+            
+            /* Update the box in the output with the similarity score */
+            boxes[best_idx].prob = similarity;
+        }
     }
 }
 
 /**
- * @brief Update LED status based on verification state
+ * @brief Update LED status based on current frame verification state
  * @param ctx Application context
  */
-static void update_led_status(app_context_t *ctx)
+static void update_led_status(const app_context_t *ctx)
 {
-    if ((HAL_GetTick() - ctx->last_verified) > (ctx->config.performance.reverify_interval_ms + ctx->config.ui.led_timeout_ms)) {
-        BSP_LED_On(LED1);   /* Red LED - unverified */
+    if (ctx->face_verified) {
+        BSP_LED_On(LED2);   /* Green LED - face verified */
+        BSP_LED_Off(LED1);
+    } else if (ctx->face_detected) {
+        BSP_LED_On(LED1);   /* Red LED - face detected but not verified */
         BSP_LED_Off(LED2);
     } else {
-        BSP_LED_On(LED2);   /* Green LED - verified */
+        /* No face detected - turn off both LEDs */
         BSP_LED_Off(LED1);
+        BSP_LED_Off(LED2);
     }
 }
 
@@ -598,9 +592,9 @@ static int app_main_loop(app_context_t *ctx)
             continue;
         }
         
-        /* Process detection results */
+        /* Process detection results - simplified approach */
         pd_pp_box_t *boxes = (pd_pp_box_t *)ctx->pp_output.pOutData;
-        process_detection_state(ctx, boxes, ctx->pp_output.box_nb);
+        process_frame_detections(ctx, boxes, ctx->pp_output.box_nb);
         
         /* Update system status */
         update_led_status(ctx);
@@ -620,7 +614,7 @@ static int app_main_loop(app_context_t *ctx)
         /* Send heartbeat periodically */
         Enhanced_PC_STREAM_SendHeartbeat();
         
-        app_output(&ctx->pp_output, timestamps[1] - timestamps[0], timestamps[2], &ctx->tracker);
+        app_output(&ctx->pp_output, timestamps[1] - timestamps[0], timestamps[2], ctx);
         handle_user_button(ctx);
         
         /* Clean up buffers */

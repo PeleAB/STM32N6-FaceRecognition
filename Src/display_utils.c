@@ -11,7 +11,7 @@
 #include "stm32_lcd_ex.h"
 #endif
 #include "stm32n6570_discovery_conf.h"
-#include "tracking.h"
+// #include "tracking.h"  // Removed - no longer using tracker
 #include "target_embedding.h"
 
 #ifdef ENABLE_LCD_DISPLAY
@@ -60,7 +60,7 @@ static BSP_LCD_LayerConfig_t LayerConfig = {0};
 #define SIMILARITY_COLOR_THRESHOLD 0.7f
 
 static void DrawPDBoundingBoxes(const pd_pp_box_t *boxes, uint32_t nb,
-                                const tracker_t *tracker)
+                                const void *ctx)
 {
   UTIL_LCD_FillRect(lcd_fg_area.X0, lcd_fg_area.Y0, lcd_fg_area.XSize,
                     lcd_fg_area.YSize, 0x00000000);
@@ -79,20 +79,8 @@ static void DrawPDBoundingBoxes(const pd_pp_box_t *boxes, uint32_t nb,
     UTIL_LCD_DrawRect(x0, y0, width, height, colors[color_idx]);
     //UTIL_LCDEx_PrintfAt(-x0 - width, y0, RIGHT_MODE, "%.1f%%", boxes[i].prob * 100.f);
   }
-  if (tracker && tracker->state == TRACK_STATE_TRACKING)
-  {
-    const pd_pp_box_t *b = &tracker->box;
-    uint32_t x0 = (uint32_t)((b->x_center - b->width / 2) * ((float)lcd_bg_area.XSize)) + lcd_bg_area.X0;
-    uint32_t y0 = (uint32_t)((b->y_center - b->height / 2) * ((float)lcd_bg_area.YSize));
-    uint32_t width  = (uint32_t)(b->width  * ((float)lcd_bg_area.XSize));
-    uint32_t height = (uint32_t)(b->height * ((float)lcd_bg_area.YSize));
-    x0 = x0 < lcd_bg_area.X0 + lcd_bg_area.XSize ? x0 : lcd_bg_area.X0 + lcd_bg_area.XSize - 1;
-    y0 = y0 < lcd_bg_area.Y0 + lcd_bg_area.YSize ? y0 : lcd_bg_area.Y0 + lcd_bg_area.YSize - 1;
-    width  = ((x0 + width)  < lcd_bg_area.X0 + lcd_bg_area.XSize) ? width  : (lcd_bg_area.X0 + lcd_bg_area.XSize - x0 - 1);
-    height = ((y0 + height) < lcd_bg_area.Y0 + lcd_bg_area.YSize) ? height : (lcd_bg_area.Y0 + lcd_bg_area.YSize - y0 - 1);
-    UTIL_LCD_DrawRect(x0, y0, width, height, colors[8]);
-    UTIL_LCDEx_PrintfAt(-x0 - width, y0, RIGHT_MODE, "%.1f%%", tracker->similarity * 100.f);
-  }
+  /* Tracker-specific overlay removed - now using detection-based display */
+  (void)ctx;  /* Context parameter unused in simplified version */
 }
 
 static void DrawPdLandmarks(const pd_pp_box_t *boxes, uint32_t nb, uint32_t nb_kp)
@@ -132,14 +120,14 @@ static void PrintInfo(uint32_t nb_rois, uint32_t inference_ms, uint32_t boottime
 }
 #endif /* ENABLE_LCD_DISPLAY */
 
-void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ts, const tracker_t *tracker)
+void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ts, const void *ctx)
 {
 #ifdef ENABLE_LCD_DISPLAY
   int ret = HAL_LTDC_SetAddress_NoReload(&hlcd_ltdc,
                                          (uint32_t)lcd_fg_buffer[lcd_fg_buffer_rd_idx],
                                          LTDC_LAYER_2);
   assert(ret == HAL_OK);
-  DrawPDBoundingBoxes(p_postprocess->pOutData, p_postprocess->box_nb, tracker);
+  DrawPDBoundingBoxes(p_postprocess->pOutData, p_postprocess->box_nb, ctx);
   DrawPdLandmarks(p_postprocess->pOutData, p_postprocess->box_nb, AI_PD_MODEL_PP_NB_KEYPOINTS);
 #endif
 #ifdef ENABLE_PC_STREAM
@@ -155,7 +143,7 @@ void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t inferen
   (void)boottime_ts;
 #endif
   (void)p_postprocess; /* in case both features are disabled */
-  (void)tracker; /* in case LCD display is disabled */
+  (void)ctx; /* in case LCD display is disabled */
 }
 
 #ifdef ENABLE_LCD_DISPLAY

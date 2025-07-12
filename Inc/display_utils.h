@@ -4,7 +4,7 @@
 #include "app_postprocess.h"
 #include "app_config.h"
 #include "stm32_lcd.h"
-#include "tracking.h"
+// #include "tracking.h"  // Removed - no longer using tracker
 
 typedef struct
 {
@@ -22,7 +22,7 @@ extern uint8_t lcd_fg_buffer[2][LCD_FG_WIDTH * LCD_FG_HEIGHT * 2];
 
 void LCD_init(void);
 void Display_WelcomeScreen(void);
-void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ms, const tracker_t *tracker);
+void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ms, const void *ctx);
 
 
 #endif /* DISPLAY_UTILS_H */
