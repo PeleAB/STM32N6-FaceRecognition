@@ -1,0 +1,320 @@
+{
+ "memory": {
+  "memFilePrefix": "atonbuf",
+  "mempools": [
+   {
+    "fname": "AXISRAM6",
+    "name": "npuRAM6",
+    "fformat": "FORMAT_RAW",
+    "prop": {
+     "rights": "ACC_WRITE",
+     "throughput": "HIGH",
+     "latency": "LOW",
+     "byteWidth": 8,
+     "freqRatio": 1.25,
+     "burstMaxLength": 4294967295,
+     "burstPenalty": 0,
+     "pipelined": "PIPELINED_ON",
+     "cacheable": "CACHEABLE_OFF",
+     "readPower": 19.006,
+     "writePower": 15.79,
+     "constantsPreferred": false
+    },
+    "offset": {
+     "value": "855360",
+     "magnitude": "KBYTES"
+    },
+    "size": {
+     "value": "448",
+     "magnitude": "KBYTES"
+    },
+    "mode": "USEMODE_ABSOLUTE",
+    "busNode": 0
+   },
+   {
+    "fname": "AXISRAM5",
+    "name": "npuRAM5",
+    "fformat": "FORMAT_RAW",
+    "prop": {
+     "rights": "ACC_WRITE",
+     "throughput": "HIGH",
+     "latency": "LOW",
+     "byteWidth": 8,
+     "freqRatio": 1.25,
+     "burstMaxLength": 4294967295,
+     "burstPenalty": 0,
+     "pipelined": "PIPELINED_ON",
+     "cacheable": "CACHEABLE_OFF",
+     "readPower": 18.531,
+     "writePower": 16.201,
+     "constantsPreferred": false
+    },
+    "offset": {
+     "value": "854912",
+     "magnitude": "KBYTES"
+    },
+    "size": {
+     "value": "448",
+     "magnitude": "KBYTES"
+    },
+    "mode": "USEMODE_ABSOLUTE",
+    "busNode": 0
+   },
+   {
+    "fname": "AXISRAM4",
+    "name": "npuRAM4",
+    "fformat": "FORMAT_RAW",
+    "prop": {
+     "rights": "ACC_WRITE",
+     "throughput": "HIGH",
+     "latency": "LOW",
+     "byteWidth": 8,
+     "freqRatio": 1.25,
+     "burstMaxLength": 4294967295,
+     "burstPenalty": 0,
+     "pipelined": "PIPELINED_ON",
+     "cacheable": "CACHEABLE_OFF",
+     "readPower": 18.531,
+     "writePower": 16.201,
+     "constantsPreferred": false
+    },
+    "offset": {
+     "value": "854464",
+     "magnitude": "KBYTES"
+    },
+    "size": {
+     "value": "448",
+     "magnitude": "KBYTES"
+    },
+    "mode": "USEMODE_ABSOLUTE",
+    "busNode": 0
+   },
+   {
+    "fname": "AXISRAM3",
+    "name": "npuRAM3",
+    "fformat": "FORMAT_RAW",
+    "prop": {
+     "rights": "ACC_WRITE",
+     "throughput": "HIGH",
+     "latency": "LOW",
+     "byteWidth": 8,
+     "freqRatio": 1.25,
+     "burstMaxLength": 4294967295,
+     "burstPenalty": 0,
+     "pipelined": "PIPELINED_ON",
+     "cacheable": "CACHEABLE_OFF",
+     "readPower": 18.531,
+     "writePower": 16.201,
+     "constantsPreferred": false
+    },
+    "offset": {
+     "value": "834",
+     "magnitude": "MBYTES"
+    },
+    "size": {
+     "value": "448",
+     "magnitude": "KBYTES"
+    },
+    "mode": "USEMODE_ABSOLUTE",
+    "busNode": 0
+   },
+   {
+    "fname": "AXISRAM2",
+    "name": "cpuRAM2",
+    "fformat": "FORMAT_RAW",
+    "prop": {
+     "rights": "ACC_WRITE",
+     "throughput": "MID",
+     "latency": "MID",
+     "byteWidth": 8,
+     "freqRatio": 2.5,
+     "burstMaxLength": 4294967295,
+     "burstPenalty": 0,
+     "pipelined": "PIPELINED_ON",
+     "cacheable": "CACHEABLE_OFF",
+     "readPower": 17.324,
+     "writePower": 15.321,
+     "constantsPreferred": false
+    },
+    "offset": {
+     "value": "833",
+     "magnitude": "MBYTES"
+    },
+    "size": {
+     "value": "1",
+     "magnitude": "MBYTES"
+    },
+    "mode": "USEMODE_ABSOLUTE",
+    "busNode": 0
+   },
+   {
+    "fname": "AXISRAM1",
+    "name": "cpuRAM1",
+    "fformat": "FORMAT_RAW",
+    "prop": {
+     "rights": "ACC_WRITE",
+     "throughput": "MID",
+     "latency": "MID",
+     "byteWidth": 8,
+     "freqRatio": 2.5,
+     "burstMaxLength": 4294967295,
+     "burstPenalty": 0,
+     "pipelined": "PIPELINED_ON",
+     "cacheable": "CACHEABLE_OFF",
+     "readPower": 16.616,
+     "writePower": 14.522,
+     "constantsPreferred": false
+    },
+    "offset": {
+     "value": "852480",
+     "magnitude": "KBYTES"
+    },
+    "size": {
+     "value": "0",
+     "magnitude": "BYTES"
+    },
+    "mode": "USEMODE_ABSOLUTE",
+    "busNode": 0
+   },
+   {
+    "fname": "AXIFLEXMEM",
+    "name": "flexMEM",
+    "fformat": "FORMAT_RAW",
+    "prop": {
+     "rights": "ACC_WRITE",
+     "throughput": "MID",
+     "latency": "MID",
+     "byteWidth": 8,
+     "freqRatio": 2.5,
+     "burstMaxLength": 4294967295,
+     "burstPenalty": 0,
+     "pipelined": "PIPELINED_ON",
+     "cacheable": "CACHEABLE_OFF",
+     "readPower": 9.381,
+     "writePower": 8.569,
+     "constantsPreferred": false
+    },
+    "offset": {
+     "value": "832",
+     "magnitude": "MBYTES"
+    },
+    "size": {
+     "value": "0",
+     "magnitude": "BYTES"
+    },
+    "mode": "USEMODE_ABSOLUTE",
+    "busNode": 0
+   },
+   {
+    "fname": "xSPI1",
+    "name": "hyperRAM",
+    "fformat": "FORMAT_RAW",
+    "prop": {
+     "rights": "ACC_WRITE",
+     "throughput": "MID",
+     "latency": "HIGH",
+     "byteWidth": 2,
+     "freqRatio": 5,
+     "burstMaxLength": 4294967295,
+     "burstPenalty": 0,
+     "pipelined": "PIPELINED_ON",
+     "cacheable": "CACHEABLE_ON",
+     "readPower": 380,
+     "writePower": 340,
+     "constantsPreferred": true
+    },
+    "offset": {
+     "value": "2304",
+     "magnitude": "MBYTES"
+    },
+    "size": {
+     "value": "16",
+     "magnitude": "MBYTES"
+    },
+    "mode": "USEMODE_ABSOLUTE",
+    "busNode": 0
+   },
+   {
+    "fname": "xSPI2",
+    "name": "octoFlash",
+    "fformat": "FORMAT_RAW",
+    "prop": {
+     "rights": "ACC_READ",
+     "throughput": "MID",
+     "latency": "HIGH",
+     "byteWidth": 1,
+     "freqRatio": 6,
+     "burstMaxLength": 4294967295,
+     "burstPenalty": 0,
+     "pipelined": "PIPELINED_ON",
+     "cacheable": "CACHEABLE_ON",
+     "readPower": 110,
+     "writePower": 400,
+     "constantsPreferred": true
+    },
+    "offset": {
+     "value": "1824",
+     "magnitude": "MBYTES"
+    },
+    "size": {
+     "value": "61",
+     "magnitude": "MBYTES"
+    },
+    "mode": "USEMODE_ABSOLUTE",
+    "busNode": 0
+   },
+   {
+    "fname": "params",
+    "name": "ec params pool",
+    "fformat": "FORMAT_C",
+    "prop": {
+     "rights": "ACC_READ",
+     "throughput": "LOW",
+     "latency": "HIGH",
+     "byteWidth": 2,
+     "freqRatio": 1,
+     "burstMaxLength": 4294967295,
+     "burstPenalty": 0,
+     "pipelined": "PIPELINED_ON",
+     "cacheable": "CACHEABLE_OFF",
+     "readPower": 0,
+     "writePower": 0,
+     "constantsPreferred": false
+    },
+    "offset": {
+     "value": "0",
+     "magnitude": "BYTES"
+    },
+    "size": {
+     "value": "9223372036854775776",
+     "magnitude": "BYTES"
+    },
+    "mode": "USEMODE_RELATIVE",
+    "busNode": 0
+   }
+  ],
+  "cacheinfo": [
+   {
+    "nlines": 512,
+    "linesize": 64,
+    "associativity": 8,
+    "bypassEnable": 0,
+    "prop": {
+     "rights": "ACC_WRITE",
+     "throughput": "MID",
+     "latency": "MID",
+     "byteWidth": 8,
+     "freqRatio": 2.5,
+     "burstMaxLength": 4294967295,
+     "burstPenalty": 0,
+     "pipelined": "PIPELINED_ON",
+     "cacheable": "CACHEABLE_OFF",
+     "readPower": 13.584,
+     "writePower": 12.645,
+     "constantsPreferred": false
+    }
+   }
+  ]
+ }
+}
+
