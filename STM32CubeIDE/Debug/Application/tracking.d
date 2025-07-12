@@ -33,7 +33,7 @@ Application/tracking.o: \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h \
- ../../Inc/app_config.h
+ ../../Inc/app_config.h ../../Inc/app_constants.h
 ../../Inc/tracking.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/pd_pp_output_if.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h:
@@ -68,3 +68,4 @@ Application/tracking.o: \
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h:
 ../../Inc/app_config.h:
+../../Inc/app_constants.h:

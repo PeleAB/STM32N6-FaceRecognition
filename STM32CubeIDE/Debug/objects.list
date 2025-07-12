@@ -1,4 +1,5 @@
 "./Application/app_cam.o"
+"./Application/app_config_manager.o"
 "./Application/app_fuseprogramming.o"
 "./Application/app_postprocess.o"
 "./Application/app_system.o"

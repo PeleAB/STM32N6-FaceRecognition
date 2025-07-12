@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    face_detection.h
   * @author  STEdgeAI
-  * @date    2025-06-27 14:35:28
+  * @date    2025-07-12 21:06:59
   * @brief   Minimal description of the generated c-implemention of the network
   ******************************************************************************
   * @attention
@@ -20,7 +20,7 @@
 
 /******************************************************************************/
 #define LL_ATON_FACE_DETECTION_C_MODEL_NAME        "face_detection"
-#define LL_ATON_FACE_DETECTION_ORIGIN_MODEL_NAME   "centerface_1x3xHxW_integer_quant"
+#define LL_ATON_FACE_DETECTION_ORIGIN_MODEL_NAME   "centerface"
 
 /************************** USER ALLOCATED IOs ********************************/
 // No user allocated inputs

@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    face_recognition.h
   * @author  STEdgeAI
-  * @date    2025-06-25 11:42:17
+  * @date    2025-07-12 21:09:04
   * @brief   Minimal description of the generated c-implemention of the network
   ******************************************************************************
   * @attention
@@ -20,7 +20,7 @@
 
 /******************************************************************************/
 #define LL_ATON_FACE_RECOGNITION_C_MODEL_NAME        "face_recognition"
-#define LL_ATON_FACE_RECOGNITION_ORIGIN_MODEL_NAME   "mobilefacenet_fp32_PerChannel_quant_lfw_test_data_npz_1"
+#define LL_ATON_FACE_RECOGNITION_ORIGIN_MODEL_NAME   "mobilefacenet"
 
 /************************** USER ALLOCATED IOs ********************************/
 // No user allocated inputs
@@ -30,12 +30,12 @@
 #define LL_ATON_FACE_RECOGNITION_IN_NUM        (1)    // Total number of input buffers
 // Input buffer 1 -- Input_0_out_0
 #define LL_ATON_FACE_RECOGNITION_IN_1_ALIGNMENT   (32)
-#define LL_ATON_FACE_RECOGNITION_IN_1_SIZE_BYTES  (32256)
+#define LL_ATON_FACE_RECOGNITION_IN_1_SIZE_BYTES  (150528)
 
 /************************** OUTPUTS *******************************************/
 #define LL_ATON_FACE_RECOGNITION_OUT_NUM        (1)    // Total number of output buffers
-// Output buffer 1 -- Quantize_240_out_0
+// Output buffer 1 -- BatchNormalization_289_out_0
 #define LL_ATON_FACE_RECOGNITION_OUT_1_ALIGNMENT   (32)
-#define LL_ATON_FACE_RECOGNITION_OUT_1_SIZE_BYTES  (128)
+#define LL_ATON_FACE_RECOGNITION_OUT_1_SIZE_BYTES  (512)
 
 #endif /* LL_ATON_FACE_RECOGNITION_H */

@@ -134,7 +134,13 @@ Application/main.o: C:/Users/pele/Documents/GitHub/ObjectDet/Src/main.c \
  ../../Inc/app_postprocess.h ../../Inc/app_config.h ../../Inc/crop_img.h \
  ../../Inc/display_utils.h ../../Inc/app_config.h ../../Inc/tracking.h \
  ../../Inc/img_buffer.h ../../Inc/system_utils.h ../../Inc/face_utils.h \
- ../../Inc/target_embedding.h ../../Inc/tracking.h
+ ../../Inc/target_embedding.h ../../Inc/tracking.h \
+ ../../Inc/app_constants.h ../../Inc/app_config_manager.h \
+ ../../Inc/app_constants.h ../../Inc/memory_pool.h \
+ ../../Inc/app_neural_network.h ../../Inc/app_config_manager.h \
+ ../../Inc/memory_pool.h ../../Inc/enhanced_tracking.h \
+ ../../Inc/app_frame_processing.h ../../Inc/app_neural_network.h \
+ ../../Inc/enhanced_tracking.h
 ../../Middlewares/Camera_Middleware/cmw_camera.h:
 ../../Middlewares/Camera_Middleware/cmw_errno.h:
 ../../Inc/cmw_camera_conf.h:
@@ -282,3 +288,14 @@ Application/main.o: C:/Users/pele/Documents/GitHub/ObjectDet/Src/main.c \
 ../../Inc/face_utils.h:
 ../../Inc/target_embedding.h:
 ../../Inc/tracking.h:
+../../Inc/app_constants.h:
+../../Inc/app_config_manager.h:
+../../Inc/app_constants.h:
+../../Inc/memory_pool.h:
+../../Inc/app_neural_network.h:
+../../Inc/app_config_manager.h:
+../../Inc/memory_pool.h:
+../../Inc/enhanced_tracking.h:
+../../Inc/app_frame_processing.h:
+../../Inc/app_neural_network.h:
+../../Inc/enhanced_tracking.h:

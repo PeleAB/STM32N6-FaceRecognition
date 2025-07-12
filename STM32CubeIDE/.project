@@ -47,6 +47,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/app_cam.c</locationURI>
 		</link>
 		<link>
+			<name>Application/app_config_manager.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Src/app_config_manager.c</locationURI>
+		</link>
+		<link>
 			<name>Application/app_fuseprogramming.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/app_fuseprogramming.c</locationURI>

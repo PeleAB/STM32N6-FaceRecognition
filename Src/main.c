@@ -71,8 +71,8 @@ typedef enum {
 typedef struct {
     /* AI Model Buffers - kept for compatibility */
     uint8_t *nn_in;
-    int8_t  *fr_nn_in;
-    int8_t  *fr_nn_out;
+    uint8_t *fr_nn_in;
+    float32_t  *fr_nn_out;
     uint32_t fr_in_len;
     uint32_t fr_out_len;
     
@@ -378,7 +378,7 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
     }
     
     /* Prepare input for face recognition network */
-    img_rgb_to_chw_s8(fr_rgb, ctx->fr_nn_in, FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
+    img_rgb_to_chw_float_norm(fr_rgb, (float32_t*)ctx->fr_nn_in, FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
     SCB_CleanInvalidateDCache_by_Addr(ctx->fr_nn_in, ctx->fr_in_len);
 
     /* Run face recognition inference */
@@ -449,8 +449,8 @@ static int app_init(app_context_t *ctx)
     const LL_Buffer_InfoTypeDef *fr_out_info = LL_ATON_Output_Buffers_Info_face_recognition();
     
     ctx->nn_in = (uint8_t *) LL_Buffer_addr_start(&nn_in_info[0]);
-    ctx->fr_nn_in = (int8_t *) LL_Buffer_addr_start(&fr_in_info[0]);
-    ctx->fr_nn_out = (int8_t *) LL_Buffer_addr_start(&fr_out_info[0]);
+    ctx->fr_nn_in = (uint8_t *) LL_Buffer_addr_start(&fr_in_info[0]);
+    ctx->fr_nn_out = (float32_t *) LL_Buffer_addr_start(&fr_out_info[0]);
     ctx->fr_in_len = LL_Buffer_len(&fr_in_info[0]);
     ctx->fr_out_len = LL_Buffer_len(&fr_out_info[0]);
     
