@@ -82,9 +82,9 @@ void img_rgb_to_chw_float_norm(uint8_t *src_image, float32_t *dst_img,
     const uint8_t *pIn = src_image + y * src_stride;
     for (uint16_t x = 0; x < width; x++)
     {
-      dst_img[y * width + x] = (((float32_t)pIn[0])-127.5)/128.0;
-      dst_img[height * width + y * width + x] = (((float32_t)pIn[1])-127.5)/128.0;
-      dst_img[2 * height * width + y * width + x] = (((float32_t)pIn[2])-127.5)/128.0;
+      dst_img[y * width + x] = (((float32_t)pIn[0])-127.5)/127.5;
+      dst_img[height * width + y * width + x] = (((float32_t)pIn[1])-127.5)/127.5;
+      dst_img[2 * height * width + y * width + x] = (((float32_t)pIn[2])-127.5)/127.5;
       pIn += 3;
     }
   }

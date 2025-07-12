@@ -387,7 +387,7 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
 
     /* Convert output to float embedding */
     for (uint32_t i = 0; i < EMBEDDING_SIZE; i++) {
-        embedding[i] = ((float32_t)ctx->fr_nn_out[i]) / FACE_EMBEDDING_QUANTIZATION_SCALE;
+        embedding[i] = ((float32_t)ctx->fr_nn_out[i]) ;
         ctx->current_embedding[i] = embedding[i];
     }
     

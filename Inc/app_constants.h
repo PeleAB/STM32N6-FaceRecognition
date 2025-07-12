@@ -41,7 +41,7 @@
 #define NN_MAX_OUTPUT_BUFFERS               5
 
 /** @brief Face recognition input image width */
-#define FACE_RECOGNITION_WIDTH              96
+#define FACE_RECOGNITION_WIDTH              112
 
 /** @brief Face recognition input image height */
 #define FACE_RECOGNITION_HEIGHT             112

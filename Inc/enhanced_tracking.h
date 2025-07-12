@@ -32,7 +32,7 @@ extern "C" {
 /* ========================================================================= */
 /* TRACKING CONSTANTS                                                        */
 /* ========================================================================= */
-#define MAX_TRACKED_OBJECTS         16  /**< Maximum number of tracked objects */
+#define MAX_TRACKED_OBJECTS         1  /**< Maximum number of tracked objects */
 #define KALMAN_STATE_SIZE           8   /**< Kalman filter state size (x,y,w,h,vx,vy,vw,vh) */
 #define KALMAN_MEASUREMENT_SIZE     4   /**< Kalman filter measurement size (x,y,w,h) */
 #define TRACK_HISTORY_SIZE          10  /**< Track history buffer size */
