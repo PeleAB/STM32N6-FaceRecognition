@@ -93,6 +93,13 @@ typedef struct {
     bool face_detected;                     /**< Face detected in current frame */
     bool face_verified;                     /**< Face verified in current frame */
     
+    /* Multi-Frame Decision Algorithm */
+    float similarity_history[5];            /**< Last 5 similarity scores */
+    uint32_t history_index;                 /**< Current index in circular buffer */
+    uint32_t history_count;                 /**< Number of valid history entries */
+    float smoothed_similarity;              /**< Smoothed similarity score */
+    bool stable_verification;               /**< Stable verification status */
+    
     /* Face Recognition */
     float current_embedding[EMBEDDING_SIZE]; /**< Current face embedding */
     int embedding_valid;                    /**< Embedding validity flag */
@@ -129,7 +136,11 @@ static app_context_t g_app_ctx = {
     .current_similarity = 0.0f,
     .embedding_valid = 0,
     .button_press_ts = 0,
-    .prev_button_state = 0
+    .prev_button_state = 0,
+    .history_index = 0,
+    .history_count = 0,
+    .smoothed_similarity = 0.0f,
+    .stable_verification = false
 };
 
 
@@ -143,6 +154,8 @@ static void handle_user_button(app_context_t *ctx);
 static float verify_box(app_context_t *ctx, const pd_pp_box_t *box);
 static void process_frame_detections(app_context_t *ctx, pd_pp_box_t *boxes, uint32_t box_count);
 static void update_led_status(const app_context_t *ctx);
+static void update_similarity_history(app_context_t *ctx, float similarity);
+static void compute_stable_verification(app_context_t *ctx);
 static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int number_output);
 
 /* Neural Network Instance Declaration */
@@ -221,6 +234,68 @@ static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot
     (void)boot_ms;
     (void)ctx;
 #endif
+}
+
+/**
+ * @brief Update similarity history with new measurement
+ * @param ctx Application context
+ * @param similarity New similarity score to add to history
+ */
+static void update_similarity_history(app_context_t *ctx, float similarity)
+{
+    /* Add similarity to circular buffer */
+    ctx->similarity_history[ctx->history_index] = similarity;
+    ctx->history_index = (ctx->history_index + 1) % 5;
+    
+    /* Update count (max 5) */
+    if (ctx->history_count < 5) {
+        ctx->history_count++;
+    }
+}
+
+/**
+ * @brief Compute stable verification decision based on similarity history
+ * @param ctx Application context
+ */
+static void compute_stable_verification(app_context_t *ctx)
+{
+    if (ctx->history_count == 0) {
+        ctx->smoothed_similarity = 0.0f;
+        ctx->stable_verification = false;
+        return;
+    }
+    
+    /* Calculate moving average */
+    float sum = 0.0f;
+    for (uint32_t i = 0; i < ctx->history_count; i++) {
+        sum += ctx->similarity_history[i];
+    }
+    ctx->smoothed_similarity = sum / ctx->history_count;
+    
+    /* Stable verification requires:
+     * 1. At least 3 measurements
+     * 2. Average similarity above threshold
+     * 3. Low variance (consistent measurements)
+     */
+    if (ctx->history_count >= 3) {
+        /* Check if average meets threshold */
+        bool avg_above_threshold = ctx->smoothed_similarity >= FACE_SIMILARITY_THRESHOLD;
+        
+        /* Check variance for stability */
+        float variance = 0.0f;
+        for (uint32_t i = 0; i < ctx->history_count; i++) {
+            float diff = ctx->similarity_history[i] - ctx->smoothed_similarity;
+            variance += diff * diff;
+        }
+        variance /= ctx->history_count;
+        
+        /* Low variance indicates stable measurements */
+        bool stable_measurements = variance < 0.01f;  /* Max variance threshold */
+        
+        ctx->stable_verification = avg_above_threshold && stable_measurements;
+    } else {
+        ctx->stable_verification = false;
+    }
 }
 
 /**
@@ -491,31 +566,40 @@ static void process_frame_detections(app_context_t *ctx, pd_pp_box_t *boxes, uin
             float similarity = verify_box(ctx, &ctx->best_detection);
             ctx->current_similarity = similarity;
             
-            /* Update detection with similarity score */
-            ctx->best_detection.prob = similarity;
+            /* Update multi-frame decision algorithm */
+            update_similarity_history(ctx, similarity);
+            compute_stable_verification(ctx);
             
-            /* Check if face is verified */
-            if (similarity >= FACE_SIMILARITY_THRESHOLD) {
-                ctx->face_verified = true;
-            }
+            /* Use smoothed similarity for display and decisions */
+            float display_similarity = ctx->history_count >= 3 ? ctx->smoothed_similarity : similarity;
+            ctx->best_detection.prob = display_similarity;
             
-            /* Update the box in the output with the similarity score */
-            boxes[best_idx].prob = similarity;
+            /* Face verification based on stable multi-frame decision */
+            ctx->face_verified = ctx->stable_verification;
+            
+            /* Update the box in the output with the smoothed similarity score */
+            boxes[best_idx].prob = display_similarity;
+        } else {
+            /* No face recognition run - reset history for clean state */
+            ctx->history_count = 0;
+            ctx->history_index = 0;
+            ctx->smoothed_similarity = 0.0f;
+            ctx->stable_verification = false;
         }
     }
 }
 
 /**
- * @brief Update LED status based on current frame verification state
+ * @brief Update LED status based on stable verification state
  * @param ctx Application context
  */
 static void update_led_status(const app_context_t *ctx)
 {
-    if (ctx->face_verified) {
-        BSP_LED_On(LED2);   /* Green LED - face verified */
+    if (ctx->stable_verification) {
+        BSP_LED_On(LED2);   /* Green LED - stable face verification */
         BSP_LED_Off(LED1);
     } else if (ctx->face_detected) {
-        BSP_LED_On(LED1);   /* Red LED - face detected but not verified */
+        BSP_LED_On(LED1);   /* Red LED - face detected but not stably verified */
         BSP_LED_Off(LED2);
     } else {
         /* No face detected - turn off both LEDs */

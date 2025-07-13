@@ -75,9 +75,12 @@ static void DrawPDBoundingBoxes(const pd_pp_box_t *boxes, uint32_t nb,
     y0 = y0 < lcd_bg_area.Y0 + lcd_bg_area.YSize ? y0 : lcd_bg_area.Y0 + lcd_bg_area.YSize - 1;
     width  = ((x0 + width)  < lcd_bg_area.X0 + lcd_bg_area.XSize) ? width  : (lcd_bg_area.X0 + lcd_bg_area.XSize - x0 - 1);
     height = ((y0 + height) < lcd_bg_area.Y0 + lcd_bg_area.YSize) ? height : (lcd_bg_area.Y0 + lcd_bg_area.YSize - y0 - 1);
+    /* Choose color based on similarity threshold */
     uint32_t color_idx = boxes[i].prob >= SIMILARITY_COLOR_THRESHOLD ? 1 : 0;
     UTIL_LCD_DrawRect(x0, y0, width, height, colors[color_idx]);
-    //UTIL_LCDEx_PrintfAt(-x0 - width, y0, RIGHT_MODE, "%.1f%%", boxes[i].prob * 100.f);
+    
+    /* Display similarity percentage above bounding box */
+    UTIL_LCDEx_PrintfAt(x0, y0 - 15, LEFT_MODE, "%.1f%%", boxes[i].prob * 100.f);
   }
   /* Tracker-specific overlay removed - now using detection-based display */
   (void)ctx;  /* Context parameter unused in simplified version */
