@@ -59,6 +59,25 @@
 #define SIMILARITY_THRESHOLD        FACE_SIMILARITY_THRESHOLD
 #define LONG_PRESS_MS               BUTTON_LONG_PRESS_DURATION_MS
 
+/* Neural Network Context Structure */
+typedef struct {
+    /* Face Detection Network */
+    uint8_t *detection_input_buffer;
+    float32_t *detection_output_buffers[MAX_NUMBER_OUTPUT];
+    int32_t detection_output_lengths[MAX_NUMBER_OUTPUT];
+    uint32_t detection_input_length;
+    int detection_output_count;
+    
+    /* Face Recognition Network */
+    uint8_t *recognition_input_buffer;
+    float32_t *recognition_output_buffer;
+    uint32_t recognition_input_length;
+    uint32_t recognition_output_length;
+    
+    /* Network Instance References */
+    bool networks_initialized;
+} nn_context_t;
+
 /* Simplified Application State Machine - No Tracking */
 typedef enum {
     PIPE_STATE_DETECT_AND_VERIFY = 0  /* Single state: detect faces and verify immediately */
@@ -140,25 +159,6 @@ static app_context_t g_app_ctx = {
     .stable_verification = false
 };
 
-
-/* Neural Network Context Structure */
-typedef struct {
-    /* Face Detection Network */
-    uint8_t *detection_input_buffer;
-    float32_t *detection_output_buffers[MAX_NUMBER_OUTPUT];
-    int32_t detection_output_lengths[MAX_NUMBER_OUTPUT];
-    uint32_t detection_input_length;
-    int detection_output_count;
-    
-    /* Face Recognition Network */
-    uint8_t *recognition_input_buffer;
-    float32_t *recognition_output_buffer;
-    uint32_t recognition_input_length;
-    uint32_t recognition_output_length;
-    
-    /* Network Instance References */
-    bool networks_initialized;
-} nn_context_t;
 
 /* Function Prototypes */
 static int nn_init(nn_context_t *nn_ctx);
@@ -484,24 +484,7 @@ static int crop_face_region(const pixel_coords_t *coords,
     return 0;
 }
 
-/**
- * @brief Run face recognition inference on cropped face
- * @param ctx Application context
- * @param face_region Cropped face region
- * @param embedding Output embedding array
- * @return 0 on success, negative on error
- */
-static int run_face_recognition_inference(app_context_t *ctx,
-                                         const uint8_t *face_region,
-                                         float32_t *embedding)
-{
-    if (!ctx || !face_region || !embedding) {
-        return -1;
-    }
-    
-    /* Use frame processing pipeline for recognition */
-    return frame_processing_recognition_stage(&ctx->frame_ctx, 0, embedding);
-}
+/* Removed unused run_face_recognition_inference function */
 
 /**
  * @brief Calculate face similarity with target embedding
