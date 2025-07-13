@@ -29,6 +29,7 @@
 #include "main.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include "stm32n6xx_hal_rif.h"
 #include "app_system.h"
 #include "nn_runner.h"
@@ -67,14 +68,10 @@ typedef enum {
  * @brief Enhanced application context structure
  */
 typedef struct {
-    /* AI Model Buffers - kept for compatibility */
-    uint8_t *nn_in;
-    uint8_t *fr_nn_in;
-    float32_t  *fr_nn_out;
-    uint32_t fr_in_len;
-    uint32_t fr_out_len;
+    /* Centralized Neural Network Context */
+    nn_context_t nn_ctx;
     
-    /* Post-processing - kept for compatibility */
+    /* Post-processing */
     pd_model_pp_static_param_t pp_params;
     pd_postprocess_out_t pp_output;
     
@@ -144,7 +141,28 @@ static app_context_t g_app_ctx = {
 };
 
 
+/* Neural Network Context Structure */
+typedef struct {
+    /* Face Detection Network */
+    uint8_t *detection_input_buffer;
+    float32_t *detection_output_buffers[MAX_NUMBER_OUTPUT];
+    int32_t detection_output_lengths[MAX_NUMBER_OUTPUT];
+    uint32_t detection_input_length;
+    int detection_output_count;
+    
+    /* Face Recognition Network */
+    uint8_t *recognition_input_buffer;
+    float32_t *recognition_output_buffer;
+    uint32_t recognition_input_length;
+    uint32_t recognition_output_length;
+    
+    /* Network Instance References */
+    bool networks_initialized;
+} nn_context_t;
+
 /* Function Prototypes */
+static int nn_init(nn_context_t *nn_ctx);
+static void nn_cleanup(nn_context_t *nn_ctx);
 static int app_init(app_context_t *ctx);
 static int app_main_loop(app_context_t *ctx);
 static void app_input_init(uint32_t *pitch_nn);
@@ -158,8 +176,80 @@ static void update_similarity_history(app_context_t *ctx, float similarity);
 static void compute_stable_verification(app_context_t *ctx);
 static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int number_output);
 
-/* Neural Network Instance Declaration */
+/* Neural Network Instance Declarations */
+LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_detection);
 LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_recognition);
+
+/**
+ * @brief Initialize all neural networks and buffers in one place
+ * @param nn_ctx Neural network context to initialize
+ * @return 0 on success, negative on error
+ */
+static int nn_init(nn_context_t *nn_ctx)
+{
+    /* Clear context */
+    memset(nn_ctx, 0, sizeof(*nn_ctx));
+    
+    /* Initialize Face Detection Network */
+    const LL_Buffer_InfoTypeDef *detection_in_info = LL_ATON_Input_Buffers_Info_face_detection();
+    const LL_Buffer_InfoTypeDef *detection_out_info = LL_ATON_Output_Buffers_Info_face_detection();
+    
+    if (!detection_in_info || !detection_out_info) {
+        return -1; /* Failed to get buffer info */
+    }
+    
+    /* Setup detection input buffer */
+    nn_ctx->detection_input_buffer = (uint8_t *) LL_Buffer_addr_start(&detection_in_info[0]);
+    nn_ctx->detection_input_length = LL_Buffer_len(&detection_in_info[0]);
+    
+    /* Setup detection output buffers */
+    nn_ctx->detection_output_count = 0;
+    while (detection_out_info[nn_ctx->detection_output_count].name != NULL && 
+           nn_ctx->detection_output_count < MAX_NUMBER_OUTPUT) {
+        nn_ctx->detection_output_buffers[nn_ctx->detection_output_count] = 
+            (float32_t *) LL_Buffer_addr_start(&detection_out_info[nn_ctx->detection_output_count]);
+        nn_ctx->detection_output_lengths[nn_ctx->detection_output_count] = 
+            LL_Buffer_len(&detection_out_info[nn_ctx->detection_output_count]);
+        nn_ctx->detection_output_count++;
+    }
+    
+    /* Initialize Face Recognition Network */
+    const LL_Buffer_InfoTypeDef *recognition_in_info = LL_ATON_Input_Buffers_Info_face_recognition();
+    const LL_Buffer_InfoTypeDef *recognition_out_info = LL_ATON_Output_Buffers_Info_face_recognition();
+    
+    if (!recognition_in_info || !recognition_out_info) {
+        return -2; /* Failed to get face recognition buffer info */
+    }
+    
+    /* Setup recognition buffers */
+    nn_ctx->recognition_input_buffer = (uint8_t *) LL_Buffer_addr_start(&recognition_in_info[0]);
+    nn_ctx->recognition_input_length = LL_Buffer_len(&recognition_in_info[0]);
+    nn_ctx->recognition_output_buffer = (float32_t *) LL_Buffer_addr_start(&recognition_out_info[0]);
+    nn_ctx->recognition_output_length = LL_Buffer_len(&recognition_out_info[0]);
+    
+    nn_ctx->networks_initialized = true;
+    
+    printf("✅ Neural Networks Initialized Successfully:\n");
+    printf("   Face Detection: Input=%lu bytes, %d outputs\n", 
+           nn_ctx->detection_input_length, nn_ctx->detection_output_count);
+    printf("   Face Recognition: Input=%lu bytes, Output=%lu bytes\n", 
+           nn_ctx->recognition_input_length, nn_ctx->recognition_output_length);
+    
+    return 0;
+}
+
+/**
+ * @brief Clean up neural network resources
+ * @param nn_ctx Neural network context to clean up
+ */
+static void nn_cleanup(nn_context_t *nn_ctx)
+{
+    if (nn_ctx && nn_ctx->networks_initialized) {
+        /* Clean up any network-specific resources if needed */
+        memset(nn_ctx, 0, sizeof(*nn_ctx));
+        printf("🧹 Neural Networks cleaned up\n");
+    }
+}
 /* ========================================================================= */
 /* FUNCTION IMPLEMENTATIONS                                                  */
 /* ========================================================================= */
@@ -454,16 +544,19 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
     }
     
     /* Prepare input for face recognition network */
-    img_rgb_to_chw_float_norm(fr_rgb, (float32_t*)ctx->fr_nn_in, FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
-    SCB_CleanInvalidateDCache_by_Addr(ctx->fr_nn_in, ctx->fr_in_len);
+    img_rgb_to_chw_float_norm(fr_rgb, (float32_t*)ctx->nn_ctx.recognition_input_buffer, 
+                             FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
+    SCB_CleanInvalidateDCache_by_Addr(ctx->nn_ctx.recognition_input_buffer, 
+                                     ctx->nn_ctx.recognition_input_length);
 
     /* Run face recognition inference */
     RunNetworkSync(&NN_Instance_face_recognition);
-    SCB_InvalidateDCache_by_Addr(ctx->fr_nn_out, ctx->fr_out_len);
+    SCB_InvalidateDCache_by_Addr(ctx->nn_ctx.recognition_output_buffer, 
+                                ctx->nn_ctx.recognition_output_length);
 
     /* Convert output to float embedding */
     for (uint32_t i = 0; i < EMBEDDING_SIZE; i++) {
-        embedding[i] = ((float32_t)ctx->fr_nn_out[i]) ;
+        embedding[i] = ((float32_t)ctx->nn_ctx.recognition_output_buffer[i]) ;
         ctx->current_embedding[i] = embedding[i];
     }
     
@@ -517,17 +610,12 @@ static int app_init(app_context_t *ctx)
     BSP_LED_Off(LED2);
     BSP_PB_Init(BUTTON_USER1, BUTTON_MODE_GPIO);
     
-    /* Neural network initialization */
-    LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_detection);
-    const LL_Buffer_InfoTypeDef *nn_in_info = LL_ATON_Input_Buffers_Info_face_detection();
-    const LL_Buffer_InfoTypeDef *fr_in_info = LL_ATON_Input_Buffers_Info_face_recognition();
-    const LL_Buffer_InfoTypeDef *fr_out_info = LL_ATON_Output_Buffers_Info_face_recognition();
-    
-    ctx->nn_in = (uint8_t *) LL_Buffer_addr_start(&nn_in_info[0]);
-    ctx->fr_nn_in = (uint8_t *) LL_Buffer_addr_start(&fr_in_info[0]);
-    ctx->fr_nn_out = (float32_t *) LL_Buffer_addr_start(&fr_out_info[0]);
-    ctx->fr_in_len = LL_Buffer_len(&fr_in_info[0]);
-    ctx->fr_out_len = LL_Buffer_len(&fr_out_info[0]);
+    /* Initialize neural networks centrally */
+    ret = nn_init(&ctx->nn_ctx);
+    if (ret < 0) {
+        printf("❌ Neural network initialization failed: %d\n", ret);
+        return ret;
+    }
     
     /* Post-processing initialization */
     app_postprocess_init(&ctx->pp_params);
@@ -634,21 +722,11 @@ static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int numb
  */
 static int app_main_loop(app_context_t *ctx)
 {
-    LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE(face_detection);
-    const LL_Buffer_InfoTypeDef *nn_out_info = LL_ATON_Output_Buffers_Info_face_detection();
-    
-    float32_t *nn_out[MAX_NUMBER_OUTPUT];
-    int32_t nn_out_len[MAX_NUMBER_OUTPUT];
-    int number_output = 0;
-    
-    /* Count and initialize output buffers */
-    while (nn_out_info[number_output].name != NULL && number_output < MAX_NUMBER_OUTPUT) {
-        nn_out[number_output] = (float32_t *) LL_Buffer_addr_start(&nn_out_info[number_output]);
-        nn_out_len[number_output] = LL_Buffer_len(&nn_out_info[number_output]);
-        number_output++;
+    /* Verify NN context is initialized */
+    if (!ctx->nn_ctx.networks_initialized) {
+        printf("❌ Neural networks not initialized!\n");
+        return -1;
     }
-    
-    uint32_t nn_in_len = LL_Buffer_len(&LL_ATON_Input_Buffers_Info_face_detection()[0]);
     uint32_t pitch_nn = 0;
     uint32_t timestamps[3] = { 0 };
     
@@ -661,9 +739,10 @@ static int app_main_loop(app_context_t *ctx)
         }
         
         /* Prepare input for neural network */
-        img_rgb_to_chw_float(nn_rgb, (float32_t *)ctx->nn_in, NN_WIDTH * NN_BPP,
-                            NN_WIDTH, NN_HEIGHT);
-        SCB_CleanInvalidateDCache_by_Addr(ctx->nn_in, nn_in_len);
+        img_rgb_to_chw_float(nn_rgb, (float32_t *)ctx->nn_ctx.detection_input_buffer, 
+                            NN_WIDTH * NN_BPP, NN_WIDTH, NN_HEIGHT);
+        SCB_CleanInvalidateDCache_by_Addr(ctx->nn_ctx.detection_input_buffer, 
+                                         ctx->nn_ctx.detection_input_length);
         
         /* Run face detection */
         timestamps[0] = HAL_GetTick();
@@ -671,7 +750,9 @@ static int app_main_loop(app_context_t *ctx)
         LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
         
         /* Post-processing */
-        int32_t ret = app_postprocess_run((void **) nn_out, number_output, &ctx->pp_output, &ctx->pp_params);
+        int32_t ret = app_postprocess_run((void **) ctx->nn_ctx.detection_output_buffers, 
+                                         ctx->nn_ctx.detection_output_count, 
+                                         &ctx->pp_output, &ctx->pp_params);
         if (ret != 0) {
             continue;
         }
@@ -702,7 +783,9 @@ static int app_main_loop(app_context_t *ctx)
         handle_user_button(ctx);
         
         /* Clean up buffers */
-        cleanup_nn_buffers(nn_out, nn_out_len, number_output);
+        cleanup_nn_buffers(ctx->nn_ctx.detection_output_buffers, 
+                          ctx->nn_ctx.detection_output_lengths, 
+                          ctx->nn_ctx.detection_output_count);
     }
     
     return 0;
@@ -727,8 +810,11 @@ int main(void)
     
     /* Start main application loop */
     ret = app_main_loop(&g_app_ctx);
-    (void)ret; /* Suppress unused variable warning */
     
+    /* Cleanup neural networks (never reached in normal operation) */
+    nn_cleanup(&g_app_ctx.nn_ctx);
+    
+    (void)ret; /* Suppress unused variable warning */
     return 0; /* Never reached */
 }
 
