@@ -23,7 +23,7 @@
  * GIT_DESCRIPTION "atonn-v1.1.0-31-g27f5d5bc"
  *
  * Command Line options:
- * --onnx-input = "/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/stm32_output/face_recognition/mobilefacenet_OE_3_2_0.onnx"
+ * --onnx-input = "/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/stm32_output/face_recognition/mobilefacenet_real_faces_onnx_OE_3_2_0.onnx"
  * --out-dir-prefix = "/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/st_ai_ws/neural_art__face_recognition/"
  * --network-name = "face_recognition"
  * --all-buffers-info = true
@@ -33,7 +33,7 @@
  * --cache-maintenance = true
  * --enable-virtual-mem-pools = true
  * --native-float = true
- * --json-quant-file = "/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/stm32_output/face_recognition/mobilefacenet_OE_3_2_0_Q.json"
+ * --json-quant-file = "/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/stm32_output/face_recognition/mobilefacenet_real_faces_onnx_OE_3_2_0_Q.json"
  * --optimization = 3
  * --Os = true
  * --Omax-ca-pipe = 4

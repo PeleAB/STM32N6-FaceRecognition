@@ -1,5 +1,5 @@
 Application/app_fuseprogramming.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_fuseprogramming.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/app_fuseprogramming.c \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_bsec.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_def.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n6xx.h \

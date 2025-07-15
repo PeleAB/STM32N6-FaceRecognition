@@ -5,16 +5,16 @@
    {
     "name": "ST.EdgeAI.Core",
     "version": "2.1.0-20194 329b0e98d",
-    "arguments": "generate --name face_recognition --model models/mobilefacenet.onnx --target stm32n6 --st-neural-art mobilefacenet@face_recognition_config.json --input-data-type float32 --output stm32_output/face_recognition",
+    "arguments": "generate --name face_recognition --model models/mobilefacenet_real_faces_onnx.onnx --target stm32n6 --st-neural-art mobilefacenet@face_recognition_config.json --input-data-type float32 --output stm32_output/face_recognition",
     "environment": [],
     "input_model": {
-     "name": "mobilefacenet",
+     "name": "mobilefacenet_real_faces_onnx",
      "type": "onnx",
      "size": 1046400,
      "n_params": 993600,
      "model_files": [
       {
-       "name": "mobilefacenet.onnx",
+       "name": "mobilefacenet_real_faces_onnx.onnx",
        "signature": "0x37a5b97189de3272bf7e6fa09819f172"
       }
      ],
@@ -24,7 +24,7 @@
    {
     "name": "ATONN Compiler",
     "version": "1.1.0-31",
-    "arguments": " -i /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/stm32_output/face_recognition/mobilefacenet_OE_3_2_0.onnx --json-quant-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/stm32_output/face_recognition/mobilefacenet_OE_3_2_0_Q.json -g face_recognition.c --load-mdesc /home/vboxuser/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/10.1.0/Utilities/configs/stm32n6.mdesc --load-mpool /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/mempools/model2.mpool --save-mpool-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/st_ai_ws/neural_art__face_recognition/model2.mpool --out-dir-prefix /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/st_ai_ws/neural_art__face_recognition/ -O3 --all-buffers-info --mvei --cache-maintenance --Oalt-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os --enable-epoch-controller --output-info-file c_info.json --network-name face_recognition",
+    "arguments": " -i /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/stm32_output/face_recognition/mobilefacenet_real_faces_onnx_OE_3_2_0.onnx --json-quant-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/stm32_output/face_recognition/mobilefacenet_real_faces_onnx_OE_3_2_0_Q.json -g face_recognition.c --load-mdesc /home/vboxuser/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/10.1.0/Utilities/configs/stm32n6.mdesc --load-mpool /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/mempools/model2.mpool --save-mpool-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/st_ai_ws/neural_art__face_recognition/model2.mpool --out-dir-prefix /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/st_ai_ws/neural_art__face_recognition/ -O3 --all-buffers-info --mvei --cache-maintenance --Oalt-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os --enable-epoch-controller --output-info-file c_info.json --network-name face_recognition",
     "environment": [],
     "input_model": {
      "name": "network",
@@ -33,11 +33,11 @@
      "n_params": 0,
      "model_files": [
       {
-       "name": "mobilefacenet_OE_3_2_0.onnx",
+       "name": "mobilefacenet_real_faces_onnx_OE_3_2_0.onnx",
        "signature": "0x1d69103c8f7a18c63af9ba94c301f8c2"
       }
      ],
-     "generated_time": "2025-07-12T21:09:04+0000"
+     "generated_time": "2025-07-15T21:16:02+0000"
     }
    }
   ],
@@ -88,9 +88,9 @@
      "signature": ""
     }
    ],
-   "generated_time": "2025-07-12T21:09:04+0000"
+   "generated_time": "2025-07-15T21:16:02+0000"
   },
-  "network_signature": "0x7917fdc4dcb6735e",
+  "network_signature": "0x41be623dc065b7ee",
   "target": "",
   "test_name": ""
  },

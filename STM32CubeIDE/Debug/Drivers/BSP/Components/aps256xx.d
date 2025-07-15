@@ -1,6 +1,6 @@
 Drivers/BSP/Components/aps256xx.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/Components/aps256xx/aps256xx.c \
- C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/Components/aps256xx/aps256xx.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/BSP/Components/aps256xx/aps256xx.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/BSP/Components/aps256xx/aps256xx.h \
  ../../Inc/aps256xx_conf.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
  ../../Inc/stm32n6xx_hal_conf.h \
@@ -44,7 +44,7 @@ Drivers/BSP/Components/aps256xx.o: \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_uart_ex.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_xspi.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cacheaxi.h
-C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/Components/aps256xx/aps256xx.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/BSP/Components/aps256xx/aps256xx.h:
 ../../Inc/aps256xx_conf.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
 ../../Inc/stm32n6xx_hal_conf.h:

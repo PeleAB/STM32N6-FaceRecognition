@@ -73,8 +73,8 @@ all: main-build
 main-build: STM32N6_GettingStarted_ObjectDetection.elf secondary-outputs
 
 # Tool invocations
-STM32N6_GettingStarted_ObjectDetection.elf STM32N6_GettingStarted_ObjectDetection.map: $(OBJS) $(USER_OBJS) C:\Users\pele\Documents\GitHub\ObjectDet\STM32CubeIDE\STM32N657xx.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "STM32N6_GettingStarted_ObjectDetection.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m55 -T"C:\Users\pele\Documents\GitHub\ObjectDet\STM32CubeIDE\STM32N657xx.ld" --specs=nosys.specs -Wl,-Map="STM32N6_GettingStarted_ObjectDetection.map" -Wl,--gc-sections -static -Wl,--cmse-implib -Wl,--out-implib=./secure_nsclib.o -L../../Middlewares/AI_Runtime/Lib/GCC/ARMCortexM55 -L../../Middlewares/Camera_Middleware/ISP_Library/evision/Lib -Wl,--no-warn-rwx-segments --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+STM32N6_GettingStarted_ObjectDetection.elf STM32N6_GettingStarted_ObjectDetection.map: $(OBJS) $(USER_OBJS) /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32CubeIDE/STM32N657xx.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "STM32N6_GettingStarted_ObjectDetection.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m55 -T"/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32CubeIDE/STM32N657xx.ld" --specs=nosys.specs -Wl,-Map="STM32N6_GettingStarted_ObjectDetection.map" -Wl,--gc-sections -static -Wl,--cmse-implib -Wl,--out-implib=./secure_nsclib.o -L../../Middlewares/AI_Runtime/Lib/GCC/ARMCortexM55 -L../../Middlewares/Camera_Middleware/ISP_Library/evision/Lib -Wl,--no-warn-rwx-segments --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

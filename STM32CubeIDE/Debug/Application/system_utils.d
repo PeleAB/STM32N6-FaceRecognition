@@ -1,5 +1,5 @@
 Application/system_utils.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Src/system_utils.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/system_utils.c \
  ../../Inc/system_utils.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
  ../../Inc/stm32n6xx_hal_conf.h \

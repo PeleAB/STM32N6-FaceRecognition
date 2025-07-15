@@ -1,7 +1,7 @@
 Middlewares/Camera_Middleware/sensors/cmw_vd55g1.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/cmw_vd55g1.c \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/cmw_vd55g1.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/sensors/cmw_vd55g1.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/sensors/cmw_vd55g1.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h \
  ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_core.h \
  ../../Inc/isp_conf.h \
  ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_platform.h \
@@ -56,8 +56,8 @@ Middlewares/Camera_Middleware/sensors/cmw_vd55g1.o: \
  ../../Inc/stm32n6570_discovery_conf.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
  ../../Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/cmw_vd55g1.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/sensors/cmw_vd55g1.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h:
 ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_core.h:
 ../../Inc/isp_conf.h:
 ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_platform.h:

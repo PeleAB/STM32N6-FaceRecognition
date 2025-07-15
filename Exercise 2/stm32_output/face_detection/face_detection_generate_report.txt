@@ -1,5 +1,5 @@
 ST Edge AI Core v2.1.0-20194 329b0e98d
-Created date          : 2025-07-12 21:07:05
+Created date          : 2025-07-14 20:38:07
 Parameters            : generate --name face_detection --model models/centerface.tflite --target stm32n6 --st-neural-art centerface@face_detection_config.json --input-data-type float32 --output stm32_output/face_detection
 
 Model name - centerface

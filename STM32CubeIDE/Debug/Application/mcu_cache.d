@@ -1,6 +1,6 @@
 Application/mcu_cache.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.c \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
  ../../Inc/stm32n6xx_hal_conf.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc.h \
@@ -43,7 +43,7 @@ Application/mcu_cache.o: \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_uart_ex.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_xspi.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cacheaxi.h
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
 ../../Inc/stm32n6xx_hal_conf.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc.h:

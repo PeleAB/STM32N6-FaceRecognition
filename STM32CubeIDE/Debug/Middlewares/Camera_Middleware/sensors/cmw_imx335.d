@@ -1,7 +1,7 @@
 Middlewares/Camera_Middleware/sensors/cmw_imx335.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/cmw_imx335.c \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/cmw_imx335.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/sensors/cmw_imx335.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/sensors/cmw_imx335.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h \
  ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_core.h \
  ../../Inc/isp_conf.h \
  ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_platform.h \
@@ -91,8 +91,8 @@ Middlewares/Camera_Middleware/sensors/cmw_imx335.o: \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/cmw_imx335.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/sensors/cmw_imx335.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h:
 ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_core.h:
 ../../Inc/isp_conf.h:
 ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_platform.h:

@@ -1,5 +1,5 @@
 Application/target_embedding.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Src/target_embedding.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/target_embedding.c \
  ../../Inc/target_embedding.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h \

@@ -1,5 +1,5 @@
 Application/img_buffer.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Src/img_buffer.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/img_buffer.c \
  ../../Inc/img_buffer.h ../../Inc/app_config.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h \

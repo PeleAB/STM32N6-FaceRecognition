@@ -1,6 +1,6 @@
 Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.c \
- C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.h \
  ../../Inc/stm32n6570_discovery_conf.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
  ../../Inc/stm32n6xx_hal_conf.h \
@@ -44,10 +44,10 @@ Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.o: \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_uart_ex.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_xspi.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cacheaxi.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/rk050hr18/rk050hr18.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/rk050hr18/rk050hr18.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/Components/Common/lcd.h
-C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.h:
 ../../Inc/stm32n6570_discovery_conf.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
 ../../Inc/stm32n6xx_hal_conf.h:
@@ -91,6 +91,6 @@ C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_uart_ex.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_xspi.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cacheaxi.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/rk050hr18/rk050hr18.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/rk050hr18/rk050hr18.h:
 ../../STM32Cube_FW_N6/Drivers/BSP/Components/Common/lcd.h:

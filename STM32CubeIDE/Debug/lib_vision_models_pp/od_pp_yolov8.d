@@ -1,5 +1,5 @@
 lib_vision_models_pp/od_pp_yolov8.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_yolov8.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/od_pp_yolov8.c \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_pp_loc.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h \
@@ -34,7 +34,7 @@ lib_vision_models_pp/od_pp_yolov8.o: \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov8_pp_if.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_pp_output_if.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.h
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.h
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_pp_loc.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h:
@@ -69,4 +69,4 @@ lib_vision_models_pp/od_pp_yolov8.o: \
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov8_pp_if.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_pp_output_if.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.h:

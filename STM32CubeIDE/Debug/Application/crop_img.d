@@ -1,5 +1,5 @@
 Application/crop_img.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Src/crop_img.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/crop_img.c \
  ../../Inc/crop_img.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h \

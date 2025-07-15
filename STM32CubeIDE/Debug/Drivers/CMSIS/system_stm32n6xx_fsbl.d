@@ -1,5 +1,5 @@
 Drivers/CMSIS/system_stm32n6xx_fsbl.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/CMSIS/Device/ST/STM32N6xx/Source/Templates/system_stm32n6xx_fsbl.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/CMSIS/Device/ST/STM32N6xx/Source/Templates/system_stm32n6xx_fsbl.c \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n6xx.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n657xx.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/core_cm55.h \

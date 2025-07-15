@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    face_recognition.h
   * @author  STEdgeAI
-  * @date    2025-07-12 21:09:04
+  * @date    2025-07-15 21:16:03
   * @brief   Minimal description of the generated c-implemention of the network
   ******************************************************************************
   * @attention
@@ -20,7 +20,7 @@
 
 /******************************************************************************/
 #define LL_ATON_FACE_RECOGNITION_C_MODEL_NAME        "face_recognition"
-#define LL_ATON_FACE_RECOGNITION_ORIGIN_MODEL_NAME   "mobilefacenet"
+#define LL_ATON_FACE_RECOGNITION_ORIGIN_MODEL_NAME   "mobilefacenet_real_faces_onnx"
 
 /************************** USER ALLOCATED IOs ********************************/
 // No user allocated inputs

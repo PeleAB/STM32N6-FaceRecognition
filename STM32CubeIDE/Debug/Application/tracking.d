@@ -1,5 +1,5 @@
 Application/tracking.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Src/tracking.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/tracking.c \
  ../../Inc/tracking.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/pd_pp_output_if.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h \

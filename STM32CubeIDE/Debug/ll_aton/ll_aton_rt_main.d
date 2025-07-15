@@ -1,12 +1,12 @@
 ll_aton/ll_aton_rt_main.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rt_main.c \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_platform.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rt_main.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_platform.h \
  ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
  ../../Inc/stm32n6xx_hal_conf.h \
@@ -52,14 +52,14 @@ ll_aton/ll_aton_rt_main.o: \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cacheaxi.h \
  ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/npu_cache.h \
  ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/ATON.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rcompat.h
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_platform.h:
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rcompat.h
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_osal.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_platform.h:
 ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
 ../../Inc/stm32n6xx_hal_conf.h:
@@ -105,4 +105,4 @@ C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_a
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cacheaxi.h:
 ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/npu_cache.h:
 ../../Middlewares/AI_Runtime/Npu/Devices/STM32N6XX/ATON.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rcompat.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rcompat.h:

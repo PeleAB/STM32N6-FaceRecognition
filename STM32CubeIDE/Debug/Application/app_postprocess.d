@@ -1,5 +1,5 @@
 Application/app_postprocess.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_postprocess.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/app_postprocess.c \
  ../../Inc/app_postprocess.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov2_pp_if.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_pp_output_if.h \

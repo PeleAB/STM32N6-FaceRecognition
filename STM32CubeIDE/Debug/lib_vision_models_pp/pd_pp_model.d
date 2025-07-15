@@ -1,5 +1,5 @@
 lib_vision_models_pp/pd_pp_model.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/pd_pp_model.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/pd_pp_model.c \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/pd_model_pp_if.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/pd_pp_output_if.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h \
@@ -33,7 +33,7 @@ lib_vision_models_pp/pd_pp_model.o: \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/pd_pp_loc.h
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/pd_model_pp_if.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/pd_pp_output_if.h:
@@ -68,5 +68,5 @@ lib_vision_models_pp/pd_pp_model.o: \
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/pd_pp_loc.h:

@@ -1,5 +1,5 @@
 Application/display_utils.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Src/display_utils.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/display_utils.c \
  ../../Inc/display_utils.h ../../Inc/app_postprocess.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov2_pp_if.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_pp_output_if.h \
@@ -59,7 +59,7 @@ Application/display_utils.o: \
  ../../Inc/app_config.h ../../STM32Cube_FW_N6/Utilities/lcd/stm32_lcd.h \
  ../../STM32Cube_FW_N6/Utilities/lcd/../Fonts/fonts.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/Components/Common/lcd.h \
- ../../Inc/tracking.h ../../Inc/img_buffer.h ../../Inc/app_config.h \
+ ../../Inc/img_buffer.h ../../Inc/app_config.h \
  ../../Inc/app_postprocess.h ../../Inc/enhanced_pc_stream.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.h \
@@ -107,8 +107,7 @@ Application/display_utils.o: \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cacheaxi.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/rk050hr18/rk050hr18.h \
- ../../Inc/stm32_lcd_ex.h ../../Inc/tracking.h \
- ../../Inc/target_embedding.h
+ ../../Inc/stm32_lcd_ex.h ../../Inc/target_embedding.h
 ../../Inc/display_utils.h:
 ../../Inc/app_postprocess.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov2_pp_if.h:
@@ -170,7 +169,6 @@ Application/display_utils.o: \
 ../../STM32Cube_FW_N6/Utilities/lcd/stm32_lcd.h:
 ../../STM32Cube_FW_N6/Utilities/lcd/../Fonts/fonts.h:
 ../../STM32Cube_FW_N6/Drivers/BSP/Components/Common/lcd.h:
-../../Inc/tracking.h:
 ../../Inc/img_buffer.h:
 ../../Inc/app_config.h:
 ../../Inc/app_postprocess.h:
@@ -222,5 +220,4 @@ Application/display_utils.o: \
 ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h:
 ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/../Components/rk050hr18/rk050hr18.h:
 ../../Inc/stm32_lcd_ex.h:
-../../Inc/tracking.h:
 ../../Inc/target_embedding.h:

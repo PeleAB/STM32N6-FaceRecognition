@@ -1,5 +1,5 @@
 Application/nn_runner.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Src/nn_runner.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/nn_runner.c \
  ../../Inc/nn_runner.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_runtime.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h \

@@ -1,5 +1,5 @@
 Application/app_cam.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Src/app_cam.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/app_cam.c \
  ../../Middlewares/Camera_Middleware/cmw_camera.h \
  ../../Middlewares/Camera_Middleware/cmw_errno.h \
  ../../Inc/cmw_camera_conf.h \

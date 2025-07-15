@@ -1,2 +1,2 @@
 Application/syscalls.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Src/syscalls.c
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/syscalls.c

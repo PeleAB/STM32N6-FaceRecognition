@@ -1,5 +1,5 @@
 Application/stm32n6xx_it.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Src/stm32n6xx_it.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/stm32n6xx_it.c \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
  ../../Inc/stm32n6xx_hal_conf.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_rcc.h \

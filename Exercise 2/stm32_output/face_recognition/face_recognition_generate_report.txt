@@ -1,8 +1,8 @@
 ST Edge AI Core v2.1.0-20194 329b0e98d
-Created date          : 2025-07-12 21:09:10
-Parameters            : generate --name face_recognition --model models/mobilefacenet.onnx --target stm32n6 --st-neural-art mobilefacenet@face_recognition_config.json --input-data-type float32 --output stm32_output/face_recognition
+Created date          : 2025-07-15 21:16:09
+Parameters            : generate --name face_recognition --model models/mobilefacenet_real_faces_onnx.onnx --target stm32n6 --st-neural-art mobilefacenet@face_recognition_config.json --input-data-type float32 --output stm32_output/face_recognition
 
-Model name - mobilefacenet
+Model name - mobilefacenet_real_faces_onnx
 ------ --------------------------------------------------- ----------------------- --------------- ------------ -------------------------------- 
 m_id   layer (original)                                    oshape                  param/size              macc                     connected to 
 ------ --------------------------------------------------- ----------------------- --------------- ------------ -------------------------------- 
@@ -361,7 +361,7 @@ model: macc=237,973,824 weights=1,046,400 activations=-- io=--
 Compilation details
 ------------------------------------------------------------------------------------
 Compiler version: 1.1.0-31
-Compiler arguments:  -i /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/stm32_output/face_recognition/mobilefacenet_OE_3_2_0.onnx --json-quant-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/stm32_output/face_recognition/mobilefacenet_OE_3_2_0_Q.json -g face_recognition.c --load-mdesc /home/vboxuser/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/10.1.0/Utilities/configs/stm32n6.mdesc --load-mpool /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/mempools/model2.mpool --save-mpool-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/st_ai_ws/neural_art__face_recognition/model2.mpool --out-dir-prefix /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/st_ai_ws/neural_art__face_recognition/ -O3 --all-buffers-info --mvei --cache-maintenance --Oalt-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os --enable-epoch-controller --output-info-file c_info.json --network-name face_recognition
+Compiler arguments:  -i /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/stm32_output/face_recognition/mobilefacenet_real_faces_onnx_OE_3_2_0.onnx --json-quant-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/stm32_output/face_recognition/mobilefacenet_real_faces_onnx_OE_3_2_0_Q.json -g face_recognition.c --load-mdesc /home/vboxuser/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/10.1.0/Utilities/configs/stm32n6.mdesc --load-mpool /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/mempools/model2.mpool --save-mpool-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/st_ai_ws/neural_art__face_recognition/model2.mpool --out-dir-prefix /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercise 2/st_ai_ws/neural_art__face_recognition/ -O3 --all-buffers-info --mvei --cache-maintenance --Oalt-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os --enable-epoch-controller --output-info-file c_info.json --network-name face_recognition
 ====================================================================================
 
 Memory usage information  (input/output buffers are included in activations)

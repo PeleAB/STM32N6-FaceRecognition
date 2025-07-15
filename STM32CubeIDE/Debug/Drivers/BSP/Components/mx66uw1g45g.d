@@ -1,6 +1,6 @@
 Drivers/BSP/Components/mx66uw1g45g.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/Components/mx66uw1g45g/mx66uw1g45g.c \
- C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/Components/mx66uw1g45g/mx66uw1g45g.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/BSP/Components/mx66uw1g45g/mx66uw1g45g.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/BSP/Components/mx66uw1g45g/mx66uw1g45g.h \
  ../../Inc/mx66uw1g45g_conf.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
  ../../Inc/stm32n6xx_hal_conf.h \
@@ -44,7 +44,7 @@ Drivers/BSP/Components/mx66uw1g45g.o: \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_uart_ex.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_xspi.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_cacheaxi.h
-C:/Users/pele/Documents/GitHub/ObjectDet/STM32Cube_FW_N6/Drivers/BSP/Components/mx66uw1g45g/mx66uw1g45g.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/STM32Cube_FW_N6/Drivers/BSP/Components/mx66uw1g45g/mx66uw1g45g.h:
 ../../Inc/mx66uw1g45g_conf.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
 ../../Inc/stm32n6xx_hal_conf.h:

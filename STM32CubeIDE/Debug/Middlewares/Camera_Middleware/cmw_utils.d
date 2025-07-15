@@ -1,6 +1,6 @@
 Middlewares/Camera_Middleware/cmw_utils.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.c \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_utils.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_utils.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_dcmipp.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_def.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n6xx.h \
@@ -14,8 +14,8 @@ Middlewares/Camera_Middleware/cmw_utils.o: \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cachel1_armv7.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Device/ST/STM32N6xx/Include/system_stm32n6xx.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_camera.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_errno.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_camera.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_errno.h \
  ../../Inc/cmw_camera_conf.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
  ../../Inc/stm32n6xx_hal_conf.h \
@@ -53,7 +53,7 @@ Middlewares/Camera_Middleware/cmw_utils.o: \
  ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_core.h \
  ../../Inc/isp_conf.h \
  ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_platform.h
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_utils.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_dcmipp.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal_def.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/Device/ST/STM32N6xx/Include/stm32n6xx.h:
@@ -67,8 +67,8 @@ C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils
 ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cachel1_armv7.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/Device/ST/STM32N6xx/Include/system_stm32n6xx.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_camera.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_errno.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_camera.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_errno.h:
 ../../Inc/cmw_camera_conf.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
 ../../Inc/stm32n6xx_hal_conf.h:

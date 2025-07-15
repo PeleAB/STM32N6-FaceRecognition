@@ -1,7 +1,7 @@
 Middlewares/Camera_Middleware/cmw_camera.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_camera.c \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_camera.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_errno.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_camera.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_camera.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_errno.h \
  ../../Inc/cmw_camera_conf.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
  ../../Inc/stm32n6xx_hal_conf.h \
@@ -54,16 +54,16 @@ Middlewares/Camera_Middleware/cmw_camera.o: \
  ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_platform.h \
  ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_api.h \
  ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_core.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_io.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_utils.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_io.h \
  ../../Middlewares/Camera_Middleware/sensors/cmw_imx335.h \
  ../../Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h \
  ../../Middlewares/Camera_Middleware/cmw_errno.h \
  ../../Middlewares/Camera_Middleware/sensors/imx335/imx335.h \
  ../../Middlewares/Camera_Middleware/sensors/imx335/imx335_reg.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_camera.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_errno.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_camera.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_errno.h:
 ../../Inc/cmw_camera_conf.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
 ../../Inc/stm32n6xx_hal_conf.h:
@@ -116,8 +116,8 @@ C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_errno
 ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_platform.h:
 ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_api.h:
 ../../Middlewares/Camera_Middleware/ISP_Library/isp/Inc/isp_core.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_utils.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/Camera_Middleware/cmw_io.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_utils.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/Camera_Middleware/cmw_io.h:
 ../../Middlewares/Camera_Middleware/sensors/cmw_imx335.h:
 ../../Middlewares/Camera_Middleware/sensors/cmw_sensors_if.h:
 ../../Middlewares/Camera_Middleware/cmw_errno.h:

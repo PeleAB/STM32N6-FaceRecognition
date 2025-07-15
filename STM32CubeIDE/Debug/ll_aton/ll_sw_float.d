@@ -1,9 +1,9 @@
 ll_aton/ll_sw_float.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_float.c \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_float.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_integer.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_float.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_float.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_integer.h \
  ../../Middlewares/AI_Runtime/Inc/ai_datatypes_internal.h \
  ../../Middlewares/AI_Runtime/Inc/ai_datatypes.h \
  ../../Middlewares/AI_Runtime/Inc/ai_platform.h \
@@ -61,11 +61,11 @@ ll_aton/ll_sw_float.o: \
  ../../Middlewares/AI_Runtime/Inc/layers_resize.h \
  ../../Middlewares/AI_Runtime/Inc/layers_argminmax.h \
  ../../Middlewares/AI_Runtime/Inc/layers_wrappers.h \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_float.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_integer.h:
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_float.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_integer.h:
 ../../Middlewares/AI_Runtime/Inc/ai_datatypes_internal.h:
 ../../Middlewares/AI_Runtime/Inc/ai_datatypes.h:
 ../../Middlewares/AI_Runtime/Inc/ai_platform.h:
@@ -123,4 +123,4 @@ C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_s
 ../../Middlewares/AI_Runtime/Inc/layers_resize.h:
 ../../Middlewares/AI_Runtime/Inc/layers_argminmax.h:
 ../../Middlewares/AI_Runtime/Inc/layers_wrappers.h:
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_util.h:

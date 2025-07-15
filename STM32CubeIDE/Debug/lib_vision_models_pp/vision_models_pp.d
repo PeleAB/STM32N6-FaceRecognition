@@ -1,6 +1,6 @@
 lib_vision_models_pp/vision_models_pp.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.c \
- C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.h \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h \
@@ -32,7 +32,7 @@ lib_vision_models_pp/vision_models_pp.o: \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h
-C:/Users/pele/Documents/GitHub/ObjectDet/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.h:
+/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Middlewares/lib_vision_models_pp/lib_vision_models_pp/Src/vision_models_pp.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h:

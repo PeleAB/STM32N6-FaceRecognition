@@ -1,5 +1,5 @@
 Application/enhanced_pc_stream.o: \
- C:/Users/pele/Documents/GitHub/ObjectDet/Src/enhanced_pc_stream.c \
+ /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/enhanced_pc_stream.c \
  ../../Inc/enhanced_pc_stream.h ../../Inc/app_postprocess.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov2_pp_if.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_pp_output_if.h \
