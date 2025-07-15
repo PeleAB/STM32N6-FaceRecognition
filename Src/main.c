@@ -116,6 +116,10 @@ typedef struct {
     float smoothed_similarity;              /**< Smoothed similarity score */
     bool stable_verification;               /**< Stable verification status */
     
+    /* LED Timeout Management */
+    uint32_t last_stable_verification_ts;   /**< Timestamp of last stable verification */
+    bool led_timeout_active;                /**< LED timeout status */
+    
     /* Face Recognition */
     float current_embedding[EMBEDDING_SIZE]; /**< Current face embedding */
     int embedding_valid;                    /**< Embedding validity flag */
@@ -156,7 +160,9 @@ static app_context_t g_app_ctx = {
     .history_index = 0,
     .history_count = 0,
     .smoothed_similarity = 0.0f,
-    .stable_verification = false
+    .stable_verification = false,
+    .last_stable_verification_ts = 0,
+    .led_timeout_active = false
 };
 
 
@@ -171,7 +177,7 @@ static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot
 static void handle_user_button(app_context_t *ctx);
 static float verify_box(app_context_t *ctx, const pd_pp_box_t *box);
 static void process_frame_detections(app_context_t *ctx, pd_pp_box_t *boxes, uint32_t box_count);
-static void update_led_status(const app_context_t *ctx);
+static void update_led_status(app_context_t *ctx);
 static void update_similarity_history(app_context_t *ctx, float similarity);
 static void compute_stable_verification(app_context_t *ctx);
 static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int number_output);
@@ -661,21 +667,37 @@ static void process_frame_detections(app_context_t *ctx, pd_pp_box_t *boxes, uin
 }
 
 /**
- * @brief Update LED status based on stable verification state
+ * @brief Update LED status based on stable verification state with timeout
  * @param ctx Application context
  */
-static void update_led_status(const app_context_t *ctx)
+static void update_led_status(app_context_t *ctx)
 {
+    uint32_t current_time = HAL_GetTick();
+    
     if (ctx->stable_verification) {
         BSP_LED_On(LED2);   /* Green LED - stable face verification */
         BSP_LED_Off(LED1);
+        /* Update timestamp for stable verification */
+        ctx->last_stable_verification_ts = current_time;
+        ctx->led_timeout_active = false;
     } else if (ctx->face_detected) {
         BSP_LED_On(LED1);   /* Red LED - face detected but not stably verified */
         BSP_LED_Off(LED2);
+        ctx->led_timeout_active = false;
     } else {
-        /* No face detected - turn off both LEDs */
-        BSP_LED_Off(LED1);
-        BSP_LED_Off(LED2);
+        /* No face detected - check if we should maintain green LED due to recent verification */
+        if (ctx->last_stable_verification_ts != 0 && 
+            (current_time - ctx->last_stable_verification_ts) < FACE_UNVERIFIED_LED_TIMEOUT_MS) {
+            /* Keep green LED on for timeout period after last positive recognition */
+            BSP_LED_On(LED2);
+            BSP_LED_Off(LED1);
+            ctx->led_timeout_active = true;
+        } else {
+            /* Timeout expired or no previous verification - turn off both LEDs */
+            BSP_LED_Off(LED1);
+            BSP_LED_Off(LED2);
+            ctx->led_timeout_active = false;
+        }
     }
 }
 
