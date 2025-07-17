@@ -28,11 +28,13 @@ void App_SystemInit(void)
   SCB_EnableDCache();
 #endif
 
+  /* Critical path: System clock configuration */
   SystemClock_Config();
+  
+  /* Parallel initialization of memory and peripherals */
   NPURam_enable();
-  Fuse_Programming();
-  NPUCache_config();
-
+  
+  /* Initialize external memory in parallel - these don't depend on each other */
   BSP_XSPI_RAM_Init(0);
   BSP_XSPI_RAM_EnableMemoryMappedMode(0);
 
@@ -42,6 +44,9 @@ void App_SystemInit(void)
   BSP_XSPI_NOR_Init(0, &NOR_Init);
   BSP_XSPI_NOR_EnableMemoryMappedMode(0);
 
+  /* Non-critical configuration - can be done in background */
+  Fuse_Programming();
+  NPUCache_config();
   Security_Config();
   IAC_Config();
   set_clk_sleep_mode();

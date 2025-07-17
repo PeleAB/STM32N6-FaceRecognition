@@ -9,20 +9,22 @@ void NPURam_enable(void)
   __HAL_RCC_NPU_FORCE_RESET();
   __HAL_RCC_NPU_RELEASE_RESET();
 
-  /* Enable NPU RAMs (4x448KB) */
+  /* Enable NPU RAMs (4x448KB) in parallel - all can be done simultaneously */
   __HAL_RCC_AXISRAM3_MEM_CLK_ENABLE();
   __HAL_RCC_AXISRAM4_MEM_CLK_ENABLE();
   __HAL_RCC_AXISRAM5_MEM_CLK_ENABLE();
   __HAL_RCC_AXISRAM6_MEM_CLK_ENABLE();
   __HAL_RCC_RAMCFG_CLK_ENABLE();
+  
+  /* Initialize all SRAM configurations in sequence (required by HAL) */
   RAMCFG_HandleTypeDef hramcfg = {0};
-  hramcfg.Instance =  RAMCFG_SRAM3_AXI;
+  hramcfg.Instance = RAMCFG_SRAM3_AXI;
   HAL_RAMCFG_EnableAXISRAM(&hramcfg);
-  hramcfg.Instance =  RAMCFG_SRAM4_AXI;
+  hramcfg.Instance = RAMCFG_SRAM4_AXI;
   HAL_RAMCFG_EnableAXISRAM(&hramcfg);
-  hramcfg.Instance =  RAMCFG_SRAM5_AXI;
+  hramcfg.Instance = RAMCFG_SRAM5_AXI;
   HAL_RAMCFG_EnableAXISRAM(&hramcfg);
-  hramcfg.Instance =  RAMCFG_SRAM6_AXI;
+  hramcfg.Instance = RAMCFG_SRAM6_AXI;
   HAL_RAMCFG_EnableAXISRAM(&hramcfg);
 }
 
