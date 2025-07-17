@@ -811,6 +811,7 @@ static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int numb
 static int pipeline_stage_capture_and_preprocess(app_context_t *ctx, uint32_t pitch_nn)
 {
     printf("📸 PIPELINE STAGE 1: Frame Capture\n");
+    BSP_LED_On(LED1);  /* Visual indicator: Stage 1 active */
     
     /* Step 1.1: Capture frame from camera or PC stream */
     if (app_get_frame(nn_rgb, pitch_nn) != 0) {
@@ -830,6 +831,7 @@ static int pipeline_stage_capture_and_preprocess(app_context_t *ctx, uint32_t pi
     
     printf("✅ Frame captured and preprocessed (%dx%d → %lu bytes)\n", 
            NN_WIDTH, NN_HEIGHT, ctx->nn_ctx.detection_input_length);
+    BSP_LED_Off(LED1);  /* Visual indicator: Stage 1 complete */
     return 0;
 }
 
