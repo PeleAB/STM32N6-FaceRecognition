@@ -29,35 +29,15 @@
 #include <time.h>
 #include <sys/time.h>
 #include <sys/times.h>
-#include "stm32n6xx_hal.h"
 
 
 /* Variables */
 extern int __io_putchar(int ch) __attribute__((weak));
 extern int __io_getchar(void) __attribute__((weak));
 
+
 char *__env[1] = { 0 };
 char **environ = __env;
-
-/**
- * @brief  Redirects printf output to ITM for STM32CubeIDE SWV
- * @param  ch Character to send
- * @retval Character sent
- */
-int __io_putchar(int ch)
-{
-  /* Always enable ITM output for educational purposes */
-  if (((ITM->TCR & ITM_TCR_ITMENA_Msk) != 0UL) &&      /* ITM enabled */
-      ((ITM->TER & 1UL               ) != 0UL)   )     /* ITM Port #0 enabled */
-  {
-    while (ITM->PORT[0U].u32 == 0UL)
-    {
-      __NOP();
-    }
-    ITM->PORT[0U].u8 = (uint8_t)ch;
-  }
-  return (ch);
-}
 
 
 /* Functions */
