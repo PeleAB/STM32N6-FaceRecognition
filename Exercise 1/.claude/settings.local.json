@@ -1,8 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python3:*)",
-      "Bash(git add:*)"
+      "Bash(find:*)"
     ],
     "deny": []
   }
