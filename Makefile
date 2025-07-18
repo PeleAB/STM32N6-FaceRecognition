@@ -88,16 +88,8 @@ C_SOURCES += Src/display_utils.c
 C_SOURCES += Src/system_utils.c
 C_SOURCES += Src/enhanced_pc_stream.c
 
-# Student mode conditional compilation
-ifeq ($(STUDENT_MODE), 1)
-C_SOURCES += Student/crop_img_student.c
-C_SOURCES += Student/face_utils_student.c
-C_SOURCES += Student/target_embedding_student.c
-else
-C_SOURCES += Src/crop_img.c
 C_SOURCES += Src/face_utils.c
 C_SOURCES += Src/target_embedding.c
-endif
 C_SOURCES += Middlewares/Camera_Middleware/ISP_Library/isp/Src/isp_algo.c
 C_SOURCES += Middlewares/Camera_Middleware/ISP_Library/isp/Src/isp_cmd_parser.c
 C_SOURCES += Middlewares/Camera_Middleware/ISP_Library/isp/Src/isp_core.c
@@ -180,7 +172,6 @@ C_INCLUDES += -IMiddlewares/Camera_Middleware/sensors/vd55g1
 C_INCLUDES += -IMiddlewares/Camera_Middleware/sensors/vd6g
 
 C_INCLUDES += -IInc
-C_INCLUDES += -IStudent
 C_INCLUDES += -IMiddlewares/lib_vision_models_pp/lib_vision_models_pp/Inc
 C_INCLUDES += -IMiddlewares/AI_Runtime/Npu/ll_aton
 C_INCLUDES += -ISTM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc

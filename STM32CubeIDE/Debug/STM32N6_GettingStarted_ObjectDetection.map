@@ -10577,7 +10577,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x10 ./Middlewares/Camera_Middleware/sensors/cmw_vd66gy.o
  .debug_macro   0x00000000       0xfa ./Middlewares/Camera_Middleware/sensors/cmw_vd66gy.o
  .debug_line    0x00000000     0x159b ./Middlewares/Camera_Middleware/sensors/cmw_vd66gy.o
- .debug_str     0x00000000   0x2ba217 ./Middlewares/Camera_Middleware/sensors/cmw_vd66gy.o
+ .debug_str     0x00000000   0x2ba216 ./Middlewares/Camera_Middleware/sensors/cmw_vd66gy.o
  .comment       0x00000000       0x44 ./Middlewares/Camera_Middleware/sensors/cmw_vd66gy.o
  .debug_frame   0x00000000      0x4e8 ./Middlewares/Camera_Middleware/sensors/cmw_vd66gy.o
  .ARM.attributes
@@ -24020,73 +24020,73 @@ LOAD /home/vboxuser/st/stm32cubeide_1.18.1/plugins/com.st.stm32cube.ide.mcu.exte
  .debug_line    0x00059f83     0x1743 ./ll_aton/ll_sw_integer.o
  .debug_line    0x0005b6c6       0x7e ./startup_stm32n657xx_fsbl.o
 
-.debug_str      0x00000000   0x3c0b38
- .debug_str     0x00000000   0x3c0b38 ./Application/app_cam.o
-                             0x2b7eaf (size before relaxing)
- .debug_str     0x003c0b38     0x852c ./Application/app_config_manager.o
- .debug_str     0x003c0b38   0x1a49b0 ./Application/app_fuseprogramming.o
- .debug_str     0x003c0b38    0xa7d5d ./Application/app_postprocess.o
- .debug_str     0x003c0b38   0x2bb4a4 ./Application/app_system.o
- .debug_str     0x003c0b38    0xa5e35 ./Application/crop_img.o
- .debug_str     0x003c0b38   0x2b841f ./Application/display_utils.o
- .debug_str     0x003c0b38   0x2b8dd1 ./Application/enhanced_pc_stream.o
- .debug_str     0x003c0b38   0x2eb8bb ./Application/face_detection.o
- .debug_str     0x003c0b38   0x2eafad ./Application/face_recognition.o
- .debug_str     0x003c0b38    0xa5cdd ./Application/face_utils.o
- .debug_str     0x003c0b38    0xa5ca5 ./Application/img_buffer.o
- .debug_str     0x003c0b38   0x38c789 ./Application/main.o
- .debug_str     0x003c0b38   0x218795 ./Application/mcu_cache.o
- .debug_str     0x003c0b38   0x2e5355 ./Application/nn_runner.o
- .debug_str     0x003c0b38   0x2186d1 ./Application/npu_cache.o
- .debug_str     0x003c0b38     0x859e ./Application/stm32_lcd_ex.o
- .debug_str     0x003c0b38   0x21bc99 ./Application/stm32n6xx_it.o
- .debug_str     0x003c0b38     0x9d4d ./Application/syscalls.o
- .debug_str     0x003c0b38   0x21b689 ./Application/system_utils.o
- .debug_str     0x003c0b38    0xa5d59 ./Application/target_embedding.o
- .debug_str     0x003c0b38   0x2199d9 ./Drivers/BSP/Components/aps256xx.o
- .debug_str     0x003c0b38   0x21a83a ./Drivers/BSP/Components/mx66uw1g45g.o
- .debug_str     0x003c0b38   0x21bc48 ./Drivers/BSP/STM32N6570-DK/stm32n6570_discovery.o
- .debug_str     0x003c0b38   0x21a772 ./Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_bus.o
- .debug_str     0x003c0b38   0x21c5a6 ./Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.o
- .debug_str     0x003c0b38   0x21df2a ./Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_xspi.o
- .debug_str     0x003c0b38   0x18c1fc ./Drivers/CMSIS/system_stm32n6xx_fsbl.o
- .debug_str     0x003c0b38   0x21ac9d ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal.o
- .debug_str     0x003c0b38   0x218c13 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_bsec.o
- .debug_str     0x003c0b38   0x218d0e ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_cacheaxi.o
- .debug_str     0x003c0b38   0x219670 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_cortex.o
- .debug_str     0x003c0b38   0x2186ea ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_crc.o
- .debug_str     0x003c0b38   0x218690 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_crc_ex.o
- .debug_str     0x003c0b38   0x21b41c ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_dcmipp.o
- .debug_str     0x003c0b38   0x2195be ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_dma2d.o
- .debug_str     0x003c0b38   0x218862 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_exti.o
- .debug_str     0x003c0b38   0x2188dc ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_gpio.o
- .debug_str     0x003c0b38   0x219a59 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_i2c.o
- .debug_str     0x003c0b38   0x218b7a ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_i2c_ex.o
- .debug_str     0x003c0b38   0x219481 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_ltdc.o
- .debug_str     0x003c0b38   0x219116 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_pwr_ex.o
- .debug_str     0x003c0b38   0x2187a0 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_ramcfg.o
- .debug_str     0x003c0b38   0x219d03 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_rcc.o
- .debug_str     0x003c0b38   0x21add7 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_rcc_ex.o
- .debug_str     0x003c0b38   0x218b15 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_rif.o
- .debug_str     0x003c0b38   0x2194ec ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_uart.o
- .debug_str     0x003c0b38   0x219f18 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_xspi.o
- .debug_str     0x003c0b38   0x21e480 ./Middlewares/Camera_Middleware/cmw_camera.o
- .debug_str     0x003c0b38   0x21ab3d ./Middlewares/Camera_Middleware/cmw_utils.o
- .debug_str     0x003c0b38   0x2b9b83 ./Middlewares/Camera_Middleware/sensors/cmw_imx335.o
- .debug_str     0x003c0b38     0x8a89 ./Middlewares/Camera_Middleware/sensors/drivers/imx335.o
- .debug_str     0x003c0b38     0x4ef5 ./Middlewares/Camera_Middleware/sensors/drivers/imx335_reg.o
- .debug_str     0x003c0b38   0x21bcba ./Middlewares/ISP_Library/isp_algo.o
- .debug_str     0x003c0b38   0x21abd0 ./Middlewares/ISP_Library/isp_core.o
- .debug_str     0x003c0b38   0x21c55a ./Middlewares/ISP_Library/isp_services.o
- .debug_str     0x003c0b38     0x55d2 ./Utilities/lcd/stm32_lcd.o
- .debug_str     0x003c0b38    0xa5d3f ./lib_vision_models_pp/pd_pp_model.o
- .debug_str     0x003c0b38   0x2e699b ./ll_aton/ll_aton.o
- .debug_str     0x003c0b38   0x2e7820 ./ll_aton/ll_aton_lib.o
- .debug_str     0x003c0b38   0x2e7ab8 ./ll_aton/ll_aton_runtime.o
- .debug_str     0x003c0b38     0x837c ./ll_aton/ll_aton_util.o
- .debug_str     0x003c0b38    0x192a2 ./ll_aton/ll_sw_float.o
- .debug_str     0x003c0b38    0x18ad7 ./ll_aton/ll_sw_integer.o
- .debug_str     0x003c0b38       0xf1 ./startup_stm32n657xx_fsbl.o
+.debug_str      0x00000000   0x3c0b37
+ .debug_str     0x00000000   0x3c0b37 ./Application/app_cam.o
+                             0x2b7eae (size before relaxing)
+ .debug_str     0x003c0b37     0x852c ./Application/app_config_manager.o
+ .debug_str     0x003c0b37   0x1a49b0 ./Application/app_fuseprogramming.o
+ .debug_str     0x003c0b37    0xa7d5c ./Application/app_postprocess.o
+ .debug_str     0x003c0b37   0x2bb4a3 ./Application/app_system.o
+ .debug_str     0x003c0b37    0xa5e34 ./Application/crop_img.o
+ .debug_str     0x003c0b37   0x2b841e ./Application/display_utils.o
+ .debug_str     0x003c0b37   0x2b8dd0 ./Application/enhanced_pc_stream.o
+ .debug_str     0x003c0b37   0x2eb8bb ./Application/face_detection.o
+ .debug_str     0x003c0b37   0x2eafad ./Application/face_recognition.o
+ .debug_str     0x003c0b37    0xa5cdc ./Application/face_utils.o
+ .debug_str     0x003c0b37    0xa5ca4 ./Application/img_buffer.o
+ .debug_str     0x003c0b37   0x38c788 ./Application/main.o
+ .debug_str     0x003c0b37   0x218795 ./Application/mcu_cache.o
+ .debug_str     0x003c0b37   0x2e5355 ./Application/nn_runner.o
+ .debug_str     0x003c0b37   0x2186d1 ./Application/npu_cache.o
+ .debug_str     0x003c0b37     0x859e ./Application/stm32_lcd_ex.o
+ .debug_str     0x003c0b37   0x21bc99 ./Application/stm32n6xx_it.o
+ .debug_str     0x003c0b37     0x9d4d ./Application/syscalls.o
+ .debug_str     0x003c0b37   0x21b689 ./Application/system_utils.o
+ .debug_str     0x003c0b37    0xa5d58 ./Application/target_embedding.o
+ .debug_str     0x003c0b37   0x2199d9 ./Drivers/BSP/Components/aps256xx.o
+ .debug_str     0x003c0b37   0x21a83a ./Drivers/BSP/Components/mx66uw1g45g.o
+ .debug_str     0x003c0b37   0x21bc48 ./Drivers/BSP/STM32N6570-DK/stm32n6570_discovery.o
+ .debug_str     0x003c0b37   0x21a772 ./Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_bus.o
+ .debug_str     0x003c0b37   0x21c5a6 ./Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.o
+ .debug_str     0x003c0b37   0x21df2a ./Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_xspi.o
+ .debug_str     0x003c0b37   0x18c1fc ./Drivers/CMSIS/system_stm32n6xx_fsbl.o
+ .debug_str     0x003c0b37   0x21ac9d ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal.o
+ .debug_str     0x003c0b37   0x218c13 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_bsec.o
+ .debug_str     0x003c0b37   0x218d0e ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_cacheaxi.o
+ .debug_str     0x003c0b37   0x219670 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_cortex.o
+ .debug_str     0x003c0b37   0x2186ea ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_crc.o
+ .debug_str     0x003c0b37   0x218690 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_crc_ex.o
+ .debug_str     0x003c0b37   0x21b41c ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_dcmipp.o
+ .debug_str     0x003c0b37   0x2195be ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_dma2d.o
+ .debug_str     0x003c0b37   0x218862 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_exti.o
+ .debug_str     0x003c0b37   0x2188dc ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_gpio.o
+ .debug_str     0x003c0b37   0x219a59 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_i2c.o
+ .debug_str     0x003c0b37   0x218b7a ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_i2c_ex.o
+ .debug_str     0x003c0b37   0x219481 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_ltdc.o
+ .debug_str     0x003c0b37   0x219116 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_pwr_ex.o
+ .debug_str     0x003c0b37   0x2187a0 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_ramcfg.o
+ .debug_str     0x003c0b37   0x219d03 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_rcc.o
+ .debug_str     0x003c0b37   0x21add7 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_rcc_ex.o
+ .debug_str     0x003c0b37   0x218b15 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_rif.o
+ .debug_str     0x003c0b37   0x2194ec ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_uart.o
+ .debug_str     0x003c0b37   0x219f18 ./Drivers/STM32N6xx_HAL_Driver/stm32n6xx_hal_xspi.o
+ .debug_str     0x003c0b37   0x21e480 ./Middlewares/Camera_Middleware/cmw_camera.o
+ .debug_str     0x003c0b37   0x21ab3d ./Middlewares/Camera_Middleware/cmw_utils.o
+ .debug_str     0x003c0b37   0x2b9b82 ./Middlewares/Camera_Middleware/sensors/cmw_imx335.o
+ .debug_str     0x003c0b37     0x8a89 ./Middlewares/Camera_Middleware/sensors/drivers/imx335.o
+ .debug_str     0x003c0b37     0x4ef5 ./Middlewares/Camera_Middleware/sensors/drivers/imx335_reg.o
+ .debug_str     0x003c0b37   0x21bcba ./Middlewares/ISP_Library/isp_algo.o
+ .debug_str     0x003c0b37   0x21abd0 ./Middlewares/ISP_Library/isp_core.o
+ .debug_str     0x003c0b37   0x21c55a ./Middlewares/ISP_Library/isp_services.o
+ .debug_str     0x003c0b37     0x55d2 ./Utilities/lcd/stm32_lcd.o
+ .debug_str     0x003c0b37    0xa5d3f ./lib_vision_models_pp/pd_pp_model.o
+ .debug_str     0x003c0b37   0x2e699b ./ll_aton/ll_aton.o
+ .debug_str     0x003c0b37   0x2e7820 ./ll_aton/ll_aton_lib.o
+ .debug_str     0x003c0b37   0x2e7ab8 ./ll_aton/ll_aton_runtime.o
+ .debug_str     0x003c0b37     0x837c ./ll_aton/ll_aton_util.o
+ .debug_str     0x003c0b37    0x192a2 ./ll_aton/ll_sw_float.o
+ .debug_str     0x003c0b37    0x18ad7 ./ll_aton/ll_sw_integer.o
+ .debug_str     0x003c0b37       0xf1 ./startup_stm32n657xx_fsbl.o
 
 .comment        0x00000000       0x86
  .comment       0x00000000       0x86 ./Application/app_cam.o

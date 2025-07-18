@@ -4,21 +4,17 @@
 #include "arm_math.h"
 #include "app_config.h"
 
-#ifdef STUDENT_MODE
-#include "../Student/target_embedding_student.h"
-#else
-/* Instructor implementation functions */
-
+/* Target embedding constants */
 #define EMBEDDING_SIZE 128
 #define EMBEDDING_BANK_SIZE 10
 
+/* Global target embedding */
 extern float target_embedding[EMBEDDING_SIZE];
 
+/* Target embedding function prototypes */
 void embeddings_bank_init(void);
 int  embeddings_bank_add(const float *embedding);
 void embeddings_bank_reset(void);
 int  embeddings_bank_count(void);
-
-#endif /* STUDENT_MODE */
 
 #endif /* TARGET_EMBEDDING_H */

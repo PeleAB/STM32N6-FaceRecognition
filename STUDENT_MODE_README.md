@@ -1,25 +1,20 @@
 # Student Mode Implementation
 
-This directory contains student implementation stub files for the EdgeAI Workshop embedded project.
+This project includes a student mode system that allows students to implement key computer vision and AI algorithms while learning embedded programming.
 
-## Overview
+## How Student Mode Works
 
-When `STUDENT_MODE` is enabled, the build system uses the student implementation files instead of the complete instructor implementations. This allows students to:
+The student mode uses conditional compilation (`#ifdef STUDENT_MODE`) to switch between:
+- **Student implementations**: Stub functions with detailed TODO comments and implementation hints
+- **Instructor implementations**: Complete, working functions
 
-- Learn key computer vision and AI algorithms by implementing them
-- Understand mathematical concepts like cosine similarity, IoU, and image processing
-- Practice embedded programming in C
-- Build working knowledge of face detection and recognition systems
+## Files with Student Mode
 
-## Files
-
-### 1. Image Processing (`crop_img_student.c/.h`)
+### 1. Image Processing (`Src/crop_img.c`)
 Functions to implement:
 - `img_crop()` - Basic image cropping
-- `img_rgb_to_hwc_float()` - RGB to HWC float conversion
 - `img_rgb_to_chw_float()` - RGB to CHW float conversion
 - `img_rgb_to_chw_float_norm()` - RGB to CHW with normalization
-- `img_rgb_to_chw_s8()` - RGB to CHW signed 8-bit
 - `img_crop_resize()` - Crop and resize with nearest neighbor
 - `img_crop_align()` - Advanced: Face alignment with rotation (optional)
 - `img_crop_align565_to_888()` - Advanced: RGB565 to RGB888 conversion (optional)
@@ -27,14 +22,14 @@ Functions to implement:
 **Difficulty**: Beginner to Advanced  
 **Key concepts**: Image formats, memory layouts, mathematical transformations
 
-### 2. Face Recognition Utils (`face_utils_student.c/.h`)
+### 2. Face Recognition Utils (`Src/face_utils.c`)
 Functions to implement:
 - `embedding_cosine_similarity()` - Calculate cosine similarity between face embeddings
 
 **Difficulty**: Beginner  
 **Key concepts**: Vector mathematics, cosine similarity, face recognition
 
-### 3. Embedding Management (`target_embedding_student.c/.h`)
+### 3. Embedding Management (`Src/target_embedding.c`)
 Functions to implement:
 - `embeddings_bank_init()` - Initialize embedding bank
 - `embeddings_bank_add()` - Add normalized embedding to bank
@@ -55,6 +50,7 @@ In `Inc/app_config.h`, ensure this line is uncommented:
 
 ### 2. Build with Student Mode
 ```bash
+make clean
 make STUDENT_MODE=1
 ```
 
@@ -66,15 +62,16 @@ Comment out the define in `Inc/app_config.h`:
 
 Or build without the flag:
 ```bash
+make clean
 make STUDENT_MODE=0
 ```
 
 ## Implementation Guidelines
 
 ### Start with Easy Functions
-1. Begin with `face_utils_student.c` - single function, clear mathematical formula
-2. Move to `target_embedding_student.c` - vector operations and averaging
-3. Try basic image processing in `crop_img_student.c`
+1. Begin with `face_utils.c` - single function, clear mathematical formula
+2. Move to `target_embedding.c` - vector operations and averaging
+3. Try basic image processing in `crop_img.c`
 
 ### Debugging Tips
 - Use printf statements for debugging (ITM printf is available)
@@ -83,7 +80,7 @@ make STUDENT_MODE=0
 - Verify mathematical operations step by step
 
 ### Key Constants
-Available in `app_constants.h`:
+Available in `Inc/target_embedding.h`:
 - `EMBEDDING_SIZE` - Size of face embedding vectors (128)
 - `EMBEDDING_BANK_SIZE` - Maximum embeddings in bank (10)
 
@@ -94,16 +91,26 @@ When correctly implemented, the system will:
 2. Recognize faces by comparing embeddings
 3. Display results on LCD and stream to PC
 
-## Testing
+## Implementation Structure
 
-The workshop includes test images and scenarios to verify your implementations work correctly with the complete face detection and recognition pipeline.
-
-## Help
-
-Each stub file includes:
+Each function includes:
 - Detailed TODO comments explaining the algorithm
 - Step-by-step implementation hints
 - Mathematical formulas and concepts
 - Parameter explanations
+- Unused parameter warnings to avoid compiler warnings
+
+## Testing
+
+The workshop includes test images and scenarios to verify your implementations work correctly with the complete face detection and recognition pipeline.
+
+## Educational Benefits
+
+This approach allows students to:
+- Learn by implementing algorithms rather than just reading code
+- Understand mathematical concepts through practical application
+- Practice embedded programming in C
+- Build working knowledge of computer vision systems
+- Experience the complete development cycle from stub to working code
 
 Good luck with your implementations!
