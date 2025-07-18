@@ -35,24 +35,7 @@ void img_crop(uint8_t *src_image, uint8_t *dst_img, const uint32_t src_stride,
   }
 }
 
-void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
-                          const uint32_t src_stride, const uint16_t width,
-                          const uint16_t height)
-{
-  /* HWC layout: iterate over each pixel and convert to float */
-  for (uint16_t y = 0; y < height; y++)
-  {
-    const uint8_t *pIn = src_image + y * src_stride;
-    for (uint16_t x = 0; x < width; x++)
-    {
-      for (uint16_t c = 0; c < 3; c++)
-      {
-        dst_img[(y * width + x) * 3 + c] = (float32_t)pIn[c];
-      }
-      pIn += 3;
-    }
-  }
-}
+
 
 void img_rgb_to_chw_float(uint8_t *src_image, float32_t *dst_img,
                           const uint32_t src_stride, const uint16_t width,
@@ -86,33 +69,6 @@ void img_rgb_to_chw_float_norm(uint8_t *src_image, float32_t *dst_img,
       dst_img[height * width + y * width + x] = (((float32_t)pIn[1])-127.5)/127.5;
       dst_img[2 * height * width + y * width + x] = (((float32_t)pIn[2])-127.5)/127.5;
       pIn += 3;
-    }
-  }
-}
-
-void img_rgb_to_hwc_float2(uint8_t *src_image, float32_t *dst_img,
-                          const uint32_t src_stride, const uint16_t width,
-                          const uint16_t height)
-{
-  for (uint32_t i = 0; i < ((uint32_t)width * height * 3); i++)
-  {
-    (void)src_image; (void)src_stride; /* unused */
-    dst_img[i] = 0.0f;
-  }
-}
-
-void img_rgb_to_chw_s8(uint8_t *src_image, int8_t *dst_img,
-                       const uint32_t src_stride, const uint16_t width,
-                       const uint16_t height)
-{
-  for (uint16_t y = 0; y < height; y++)
-  {
-    for (uint16_t x = 0; x < width; x++)
-    {
-      const uint8_t *pIn = src_image + y * src_stride + x * 3;
-      dst_img[y * width + x] = (int8_t)((int)pIn[0] - 128);
-      dst_img[height * width + y * width + x] = (int8_t)((int)pIn[1] - 128);
-      dst_img[2 * height * width + y * width + x] = (int8_t)((int)pIn[2] - 128);
     }
   }
 }

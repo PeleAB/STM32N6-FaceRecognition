@@ -15,6 +15,7 @@
  *
  ******************************************************************************
  */
+#include "app_config.h"
 #include "cmw_camera.h"
 #include "stm32n6570_discovery_bus.h"
 #include "stm32n6570_discovery_lcd.h"
@@ -34,7 +35,7 @@
 #include "app_system.h"
 #include "nn_runner.h"
 #include "enhanced_pc_stream.h"
-#include "app_config.h"
+
 #include "crop_img.h"
 #include "display_utils.h"
 #include "img_buffer.h"
@@ -45,7 +46,6 @@
 #include "app_config_manager.h"
 #include "memory_pool.h"
 #include "app_neural_network.h"
-#include "enhanced_tracking.h"
 #include "app_frame_processing.h"
 
 /* Legacy compatibility - constants moved to app_constants.h */

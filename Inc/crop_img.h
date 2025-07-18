@@ -18,15 +18,17 @@
 #ifndef CROP_IMG
 #define CROP_IMG
 #include "arm_math.h"
+#include "app_config.h"
+
+#ifdef STUDENT_MODE
+#include "../Student/crop_img_student.h"
+#else
+/* Instructor implementation functions */
 
 
 void img_crop(uint8_t *src_image, uint8_t *dst_img, const uint32_t src_stride,
               const uint16_t dst_width, const uint16_t dst_height,
               const uint16_t bpp);
-
-void img_rgb_to_hwc_float(uint8_t *src_image, float32_t *dst_img,
-                          const uint32_t src_stride, const uint16_t width,
-                          const uint16_t height);
 
 void img_rgb_to_chw_float(uint8_t *src_image, float32_t *dst_img,
                           const uint32_t src_stride, const uint16_t width,
@@ -35,20 +37,6 @@ void img_rgb_to_chw_float(uint8_t *src_image, float32_t *dst_img,
 void img_rgb_to_chw_float_norm(uint8_t *src_image, float32_t *dst_img,
                           const uint32_t src_stride, const uint16_t width,
                           const uint16_t height);
-
-void img_rgb_to_hwc_float2(uint8_t *src_image, float32_t *dst_img,
-                          const uint32_t src_stride, const uint16_t width,
-                          const uint16_t height);
-
-void img_rgb_to_chw_s8(uint8_t *src_image, int8_t *dst_img,
-                       const uint32_t src_stride, const uint16_t width,
-                       const uint16_t height);
-
-void img_crop_resize(uint8_t *src_image, uint8_t *dst_img,
-                     const uint16_t src_width, const uint16_t src_height,
-                     const uint16_t dst_width, const uint16_t dst_height,
-                     const uint16_t bpp, int x0, int y0,
-                     int crop_width, int crop_height);
 
 void img_crop_align(uint8_t *src_image, uint8_t *dst_img,
                     const uint16_t src_width, const uint16_t src_height,
@@ -65,4 +53,6 @@ void img_crop_align565_to_888(uint8_t *src_image, uint16_t src_stride,
                               float width, float height, float left_eye_x,
                               float left_eye_y, float right_eye_x, float right_eye_y);
 
-#endif
+#endif /* STUDENT_MODE */
+
+#endif /* CROP_IMG */

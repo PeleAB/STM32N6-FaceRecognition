@@ -1,5 +1,37 @@
 Application/main.o: \
  /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Src/main.c \
+ ../../Inc/app_config.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_gcc.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_memory.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/none.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/utils.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/basic_math_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_memory.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/none.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/utils.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/interpolation_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/bayes_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/statistics_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/basic_math_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/fast_math_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/matrix_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/complex_math_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/statistics_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/controller_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/distance_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/svm_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/svm_defines.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/fast_math_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/transform_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/complex_math_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h \
+ ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h \
  ../../Middlewares/Camera_Middleware/cmw_camera.h \
  ../../Middlewares/Camera_Middleware/cmw_errno.h \
  ../../Inc/cmw_camera_conf.h \
@@ -12,7 +44,6 @@ Application/main.o: \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/core_cm55.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_version.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_gcc.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/mpu_armv8.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/pmu_armv8.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cachel1_armv7.h \
@@ -67,36 +98,6 @@ Application/main.o: \
  ../../Inc/app_postprocess.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov2_pp_if.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_pp_output_if.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_memory.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/none.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/utils.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/basic_math_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_memory.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/none.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/utils.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/interpolation_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/bayes_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/statistics_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/basic_math_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/fast_math_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/matrix_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/complex_math_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/statistics_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/controller_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/distance_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/svm_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/svm_defines.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/fast_math_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/transform_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/complex_math_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h \
- ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov5_pp_if.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov8_pp_if.h \
  ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_st_yolox_pp_if.h \
@@ -132,15 +133,48 @@ Application/main.o: \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_rcompat.h \
  ../../Inc/app_cam.h ../../Inc/main.h ../../Inc/app_system.h \
  ../../Inc/nn_runner.h ../../Inc/enhanced_pc_stream.h \
- ../../Inc/app_postprocess.h ../../Inc/app_config.h ../../Inc/crop_img.h \
- ../../Inc/display_utils.h ../../Inc/app_config.h ../../Inc/img_buffer.h \
- ../../Inc/system_utils.h ../../Inc/face_utils.h \
- ../../Inc/target_embedding.h ../../Inc/app_constants.h \
- ../../Inc/app_config_manager.h ../../Inc/app_constants.h \
- ../../Inc/memory_pool.h ../../Inc/app_neural_network.h \
- ../../Inc/app_config_manager.h ../../Inc/memory_pool.h \
- ../../Inc/enhanced_tracking.h ../../Inc/app_frame_processing.h \
- ../../Inc/app_neural_network.h ../../Inc/enhanced_tracking.h
+ ../../Inc/app_postprocess.h ../../Inc/crop_img.h ../../Inc/app_config.h \
+ ../../Inc/../Student/crop_img_student.h ../../Inc/display_utils.h \
+ ../../Inc/img_buffer.h ../../Inc/system_utils.h ../../Inc/face_utils.h \
+ ../../Inc/../Student/face_utils_student.h ../../Inc/target_embedding.h \
+ ../../Inc/../Student/target_embedding_student.h \
+ ../../Inc/app_constants.h ../../Inc/app_config_manager.h \
+ ../../Inc/app_constants.h ../../Inc/memory_pool.h \
+ ../../Inc/app_neural_network.h ../../Inc/app_config_manager.h \
+ ../../Inc/memory_pool.h ../../Inc/app_frame_processing.h \
+ ../../Inc/app_neural_network.h
+../../Inc/app_config.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_gcc.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_memory.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/none.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/utils.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/basic_math_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_memory.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/none.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/utils.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/interpolation_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/bayes_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/statistics_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/basic_math_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/fast_math_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/matrix_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/complex_math_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/statistics_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/controller_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/distance_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/svm_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/svm_defines.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/fast_math_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/transform_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/complex_math_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h:
+../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h:
 ../../Middlewares/Camera_Middleware/cmw_camera.h:
 ../../Middlewares/Camera_Middleware/cmw_errno.h:
 ../../Inc/cmw_camera_conf.h:
@@ -153,7 +187,6 @@ Application/main.o: \
 ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/core_cm55.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_version.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_gcc.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/mpu_armv8.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/pmu_armv8.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cachel1_armv7.h:
@@ -209,36 +242,6 @@ Application/main.o: \
 ../../Inc/app_postprocess.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov2_pp_if.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_pp_output_if.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/Include/cmsis_compiler.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_memory.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/none.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/utils.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/basic_math_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_memory.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/none.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/utils.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/interpolation_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/bayes_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/statistics_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/basic_math_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/fast_math_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/matrix_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/complex_math_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/statistics_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/controller_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/distance_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/svm_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/svm_defines.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/fast_math_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/transform_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/complex_math_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h:
-../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov5_pp_if.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_yolov8_pp_if.h:
 ../../Middlewares/lib_vision_models_pp/lib_vision_models_pp/Inc/od_st_yolox_pp_if.h:
@@ -278,14 +281,16 @@ Application/main.o: \
 ../../Inc/nn_runner.h:
 ../../Inc/enhanced_pc_stream.h:
 ../../Inc/app_postprocess.h:
-../../Inc/app_config.h:
 ../../Inc/crop_img.h:
-../../Inc/display_utils.h:
 ../../Inc/app_config.h:
+../../Inc/../Student/crop_img_student.h:
+../../Inc/display_utils.h:
 ../../Inc/img_buffer.h:
 ../../Inc/system_utils.h:
 ../../Inc/face_utils.h:
+../../Inc/../Student/face_utils_student.h:
 ../../Inc/target_embedding.h:
+../../Inc/../Student/target_embedding_student.h:
 ../../Inc/app_constants.h:
 ../../Inc/app_config_manager.h:
 ../../Inc/app_constants.h:
@@ -293,7 +298,5 @@ Application/main.o: \
 ../../Inc/app_neural_network.h:
 ../../Inc/app_config_manager.h:
 ../../Inc/memory_pool.h:
-../../Inc/enhanced_tracking.h:
 ../../Inc/app_frame_processing.h:
 ../../Inc/app_neural_network.h:
-../../Inc/enhanced_tracking.h:

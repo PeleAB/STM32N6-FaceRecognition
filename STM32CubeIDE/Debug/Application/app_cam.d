@@ -83,7 +83,8 @@ Application/app_cam.o: \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h \
- ../../Inc/crop_img.h
+ ../../Inc/crop_img.h ../../Inc/app_config.h \
+ ../../Inc/../Student/crop_img_student.h
 ../../Middlewares/Camera_Middleware/cmw_camera.h:
 ../../Middlewares/Camera_Middleware/cmw_errno.h:
 ../../Inc/cmw_camera_conf.h:
@@ -169,3 +170,5 @@ Application/app_cam.o: \
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h:
 ../../Inc/crop_img.h:
+../../Inc/app_config.h:
+../../Inc/../Student/crop_img_student.h:

@@ -23,6 +23,14 @@
 
 #define USE_DCACHE
 
+/* ========================================================================= */
+/* STUDENT MODE CONFIGURATION                                                */
+/* ========================================================================= */
+/* Enable STUDENT_MODE to use student implementation stub files.            */
+/* Comment out this define to use complete instructor implementations.      */
+/* ========================================================================= */
+#define STUDENT_MODE 1
+
 
 /*Defines: CMW_MIRRORFLIP_NONE; CMW_MIRRORFLIP_FLIP; CMW_MIRRORFLIP_MIRROR; CMW_MIRRORFLIP_FLIP_MIRROR;*/
 #define CAMERA_FLIP CMW_MIRRORFLIP_NONE

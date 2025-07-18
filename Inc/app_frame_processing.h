@@ -24,7 +24,6 @@
 #include "app_constants.h"
 #include "app_config_manager.h"
 #include "app_neural_network.h"
-#include "enhanced_tracking.h"
 #include "memory_pool.h"
 
 #ifdef __cplusplus
@@ -43,8 +42,6 @@ typedef struct {
     face_detection_nn_t face_detection;      /**< Face detection network */
     face_recognition_nn_t face_recognition;  /**< Face recognition network */
     
-    /* Tracking context */
-    enhanced_tracker_t tracker;              /**< Enhanced multi-object tracker */
     
     /* Memory management */
     memory_pool_t memory_pool;               /**< Memory pool manager */
