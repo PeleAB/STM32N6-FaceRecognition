@@ -151,87 +151,21 @@ uint8_t dcmipp_out_nn[DCMIPP_OUT_NN_BUFF_LEN];  /* Camera output buffer */
 /* ========================================================================= */
 /* DUMMY INPUT BUFFER FOR TESTING                                           */
 /* ========================================================================= */
-/* This provides a constant test image that students can use to verify      */
-/* their implementations produce the expected output at each stage.         */
+/* This provides a real test image (trump2.jpg) that students can use to    */
+/* verify their implementations produce the expected output at each stage.   */
 /* ========================================================================= */
 
-/**
- * @brief Initialize dummy input buffer with test pattern
- * @note This creates a synthetic test image for debugging
- */
-static void init_dummy_input_buffer(void)
-{
-    printf("🎯 Initializing dummy input buffer for testing...\n");
-    
-    /* Create a simple test pattern */
-    for (int y = 0; y < NN_HEIGHT; y++) {
-        for (int x = 0; x < NN_WIDTH; x++) {
-            uint8_t *pixel = &nn_rgb[(y * NN_WIDTH + x) * NN_BPP];
-            
-            if (y < 32) {
-                /* Sky/background area - light blue */
-                pixel[0] = 135; /* R */
-                pixel[1] = 206; /* G */
-                pixel[2] = 235; /* B */
-            } else if (y < 96) {
-                /* Face area - create a simple face pattern */
-                int center_x = NN_WIDTH / 2;
-                int center_y = NN_HEIGHT / 2;
-                int dist_from_center = abs(x - center_x) + abs(y - center_y);
-                
-                if (dist_from_center < 20) {
-                    /* Center face area - skin tone */
-                    pixel[0] = 255; /* R */
-                    pixel[1] = 219; /* G */
-                    pixel[2] = 172; /* B */
-                } else if (dist_from_center < 35) {
-                    /* Outer face area - slightly darker skin */
-                    pixel[0] = 240; /* R */
-                    pixel[1] = 200; /* G */
-                    pixel[2] = 160; /* B */
-                } else {
-                    /* Hair/background around face */
-                    pixel[0] = 139; /* R */
-                    pixel[1] = 69;  /* G */
-                    pixel[2] = 19;  /* B */
-                }
-                
-                /* Add simple eyes */
-                if (y > 55 && y < 65) {
-                    if ((x > 45 && x < 55) || (x > 75 && x < 85)) {
-                        pixel[0] = 0;   /* R - black eyes */
-                        pixel[1] = 0;   /* G */
-                        pixel[2] = 0;   /* B */
-                    }
-                }
-                
-                /* Add simple mouth */
-                if (y > 75 && y < 80 && x > 55 && x < 75) {
-                    pixel[0] = 220; /* R - pink mouth */
-                    pixel[1] = 20;  /* G */
-                    pixel[2] = 60;  /* B */
-                }
-            } else {
-                /* Neck/lower background - darker */
-                pixel[0] = 101; /* R */
-                pixel[1] = 67;  /* G */
-                pixel[2] = 33;  /* B */
-            }
-        }
-    }
-    
-    printf("✅ Dummy input buffer initialized with test pattern\n");
-}
+#include "trump2_buffer.h"
 
 /**
  * @brief Load dummy input buffer into nn_rgb
- * @note This overrides the camera/PC stream input with test data
+ * @note This overrides the camera/PC stream input with real trump2.jpg data
  */
 static void load_dummy_input_buffer(void)
 {
-    printf("🔄 Loading dummy input buffer (overriding camera input)...\n");
-    init_dummy_input_buffer();  /* Generate the test pattern directly into nn_rgb */
-    printf("✅ Dummy input loaded: %dx%d RGB image (%lu bytes)\n", 
+    printf("🔄 Loading dummy input buffer (trump2.jpg, 128x128)...\n");
+    memcpy(nn_rgb, trump2_rgb_buffer, NN_WIDTH * NN_HEIGHT * NN_BPP);
+    printf("✅ Real image loaded: %dx%d RGB image (%lu bytes)\n", 
            NN_WIDTH, NN_HEIGHT, (unsigned long)(NN_WIDTH * NN_HEIGHT * NN_BPP));
 }
 #endif /* DUMMY_INPUT_BUFFER */

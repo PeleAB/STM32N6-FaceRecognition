@@ -90,6 +90,7 @@ C_SOURCES += Src/enhanced_pc_stream.c
 
 C_SOURCES += Src/face_utils.c
 C_SOURCES += Src/target_embedding.c
+C_SOURCES += trump2_buffer.c
 C_SOURCES += Middlewares/Camera_Middleware/ISP_Library/isp/Src/isp_algo.c
 C_SOURCES += Middlewares/Camera_Middleware/ISP_Library/isp/Src/isp_cmd_parser.c
 C_SOURCES += Middlewares/Camera_Middleware/ISP_Library/isp/Src/isp_core.c

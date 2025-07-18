@@ -54,23 +54,22 @@ This ensures that:
 - The dummy data overrides the camera input before processing (Step 1.1.5)
 - Student implementations receive consistent test data (Step 1.2+)
 
-## Test Pattern Details
+## Test Image Details
 
-### Color Values
-- **Sky**: RGB(135, 206, 235) - Light blue
-- **Face Center**: RGB(255, 219, 172) - Light skin tone
-- **Face Edges**: RGB(240, 200, 160) - Darker skin tone
-- **Hair**: RGB(139, 69, 19) - Brown
-- **Eyes**: RGB(0, 0, 0) - Black
-- **Mouth**: RGB(220, 20, 60) - Pink
-- **Neck/Background**: RGB(101, 67, 33) - Dark brown
+### Real Image Data
+The system now uses actual image data from **trump2.jpg** instead of synthetic patterns:
+- **Source**: `/Exercises/SamplePics/trump2.jpg`
+- **Processing**: Resized to 128x128 pixels using high-quality Lanczos resampling
+- **Format**: RGB (3 bytes per pixel)
+- **Total Size**: 49,152 bytes (128 × 128 × 3)
 
-### Geometric Layout
-- **Image Size**: 128x128 pixels, 3 bytes per pixel (RGB)
-- **Face Center**: (64, 64)
-- **Face Radius**: ~35 pixels from center
-- **Eyes**: Rows 55-65, columns 45-55 and 75-85
-- **Mouth**: Rows 75-80, columns 55-75
+### Image Statistics
+- **Color Range**: 
+  - Red: 1-242 (mean: 126.2)
+  - Green: 0-246 (mean: 96.6)
+  - Blue: 0-250 (mean: 78.6)
+- **Content**: Real face image with natural lighting, skin tones, and features
+- **Quality**: High-quality resize maintains facial features for accurate testing
 
 ## Usage Instructions
 
@@ -83,10 +82,8 @@ This ensures that:
 When enabled, you should see console output like:
 ```
 📸 PIPELINE STAGE 1: Frame Capture
-🔄 Loading dummy input buffer (overriding camera input)...
-🎯 Initializing dummy input buffer for testing...
-✅ Dummy input buffer initialized with test pattern
-✅ Dummy input loaded: 128x128 RGB image (49152 bytes)
+🔄 Loading dummy input buffer (trump2.jpg, 128x128)...
+✅ Real image loaded: 128x128 RGB image (49152 bytes)
    🔄 Converting RGB to CHW format for neural network...
 ```
 
@@ -103,8 +100,11 @@ Future versions will include expected output data for each processing stage, all
 
 ## Implementation Files
 - **Configuration**: `Inc/app_config.h`
-- **Implementation**: `Src/main.c` (lines 149-236)
+- **Buffer Header**: `trump2_buffer.h`
+- **Buffer Data**: `trump2_buffer.c` (298KB of image data)
+- **Implementation**: `Src/main.c` (lines 150-171)
 - **Usage**: `Src/main.c` (lines 904-907)
+- **Build System**: `Makefile` (trump2_buffer.c added to C_SOURCES)
 
 ## Benefits
 - **Consistent Testing**: Same input every time
