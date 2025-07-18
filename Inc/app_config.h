@@ -29,7 +29,16 @@
 /* Enable STUDENT_MODE to use student implementation stub files.            */
 /* Comment out this define to use complete instructor implementations.      */
 /* ========================================================================= */
-#define STUDENT_MODE
+//#define STUDENT_MODE
+
+/* ========================================================================= */
+/* DUMMY INPUT BUFFER CONFIGURATION                                          */
+/* ========================================================================= */
+/* Enable DUMMY_INPUT_BUFFER to use a predefined test image for debugging.  */
+/* This overrides the camera/PC stream input with a constant test pattern.  */
+/* Useful for students to test their implementations with known input.      */
+/* ========================================================================= */
+#define DUMMY_INPUT_BUFFER
 
 
 /*Defines: CMW_MIRRORFLIP_NONE; CMW_MIRRORFLIP_FLIP; CMW_MIRRORFLIP_MIRROR; CMW_MIRRORFLIP_FLIP_MIRROR;*/

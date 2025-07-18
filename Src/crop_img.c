@@ -27,33 +27,7 @@
 /* TODO: Implement these functions according to the specifications          */
 /* ========================================================================= */
 
-/**
- * @brief Basic image cropping function
- * TODO: Implement line-by-line copying from source to destination
- * HINT: Use memcpy to copy each line, calculate proper offsets
- */
-void img_crop(uint8_t *src_image, uint8_t *dst_img, const uint32_t src_stride,
-              const uint16_t dst_width, const uint16_t dst_height,
-              const uint16_t bpp)
-{
-    /* TODO: Implement image cropping
-     * Steps:
-     * 1. Calculate destination line size: dst_width * bpp
-     * 2. For each line in destination height:
-     *    - Calculate source line offset: i * src_stride
-     *    - Use memcpy to copy dst_line_size bytes
-     *    - Advance destination pointer by dst_line_size
-     */
-    
-    (void)src_image;  // Remove unused parameter warnings
-    (void)dst_img;
-    (void)src_stride;
-    (void)dst_width;
-    (void)dst_height;
-    (void)bpp;
-    
-    // STUDENT IMPLEMENTATION GOES HERE
-}
+
 
 /**
  * @brief Convert RGB image to CHW float format
@@ -231,22 +205,6 @@ void img_crop_align565_to_888(uint8_t *src_image, uint16_t src_stride,
 /* ========================================================================= */
 /* INSTRUCTOR IMPLEMENTATION FUNCTIONS                                       */
 /* ========================================================================= */
-
-void img_crop(uint8_t *src_image, uint8_t *dst_img, const uint32_t src_stride,
-              const uint16_t dst_width, const uint16_t dst_height,
-              const uint16_t bpp)
-{
-  const uint8_t *pIn = src_image;
-  uint8_t *pOut = dst_img;
-  const uint32_t dst_line_size = (dst_width * bpp);
-
-  /* Copy line per line */
-  for (uint32_t i = 0; i < dst_height; i++)
-  {
-    memcpy(pOut, pIn + (i * src_stride), dst_line_size);
-    pOut += dst_line_size;
-  }
-}
 
 void img_rgb_to_chw_float(uint8_t *src_image, float32_t *dst_img,
                           const uint32_t src_stride, const uint16_t width,

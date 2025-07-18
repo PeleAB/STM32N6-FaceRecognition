@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include "stm32n6xx_hal_rif.h"
 #include "app_system.h"
 #include "nn_runner.h"
@@ -145,6 +146,95 @@ uint8_t fr_rgb[FR_WIDTH * FR_HEIGHT * NN_BPP];  /* 112x112x3 = 37KB */
 
 __attribute__ ((aligned (32)))
 uint8_t dcmipp_out_nn[DCMIPP_OUT_NN_BUFF_LEN];  /* Camera output buffer */
+
+#ifdef DUMMY_INPUT_BUFFER
+/* ========================================================================= */
+/* DUMMY INPUT BUFFER FOR TESTING                                           */
+/* ========================================================================= */
+/* This provides a constant test image that students can use to verify      */
+/* their implementations produce the expected output at each stage.         */
+/* ========================================================================= */
+
+/**
+ * @brief Initialize dummy input buffer with test pattern
+ * @note This creates a synthetic test image for debugging
+ */
+static void init_dummy_input_buffer(void)
+{
+    printf("🎯 Initializing dummy input buffer for testing...\n");
+    
+    /* Create a simple test pattern */
+    for (int y = 0; y < NN_HEIGHT; y++) {
+        for (int x = 0; x < NN_WIDTH; x++) {
+            uint8_t *pixel = &nn_rgb[(y * NN_WIDTH + x) * NN_BPP];
+            
+            if (y < 32) {
+                /* Sky/background area - light blue */
+                pixel[0] = 135; /* R */
+                pixel[1] = 206; /* G */
+                pixel[2] = 235; /* B */
+            } else if (y < 96) {
+                /* Face area - create a simple face pattern */
+                int center_x = NN_WIDTH / 2;
+                int center_y = NN_HEIGHT / 2;
+                int dist_from_center = abs(x - center_x) + abs(y - center_y);
+                
+                if (dist_from_center < 20) {
+                    /* Center face area - skin tone */
+                    pixel[0] = 255; /* R */
+                    pixel[1] = 219; /* G */
+                    pixel[2] = 172; /* B */
+                } else if (dist_from_center < 35) {
+                    /* Outer face area - slightly darker skin */
+                    pixel[0] = 240; /* R */
+                    pixel[1] = 200; /* G */
+                    pixel[2] = 160; /* B */
+                } else {
+                    /* Hair/background around face */
+                    pixel[0] = 139; /* R */
+                    pixel[1] = 69;  /* G */
+                    pixel[2] = 19;  /* B */
+                }
+                
+                /* Add simple eyes */
+                if (y > 55 && y < 65) {
+                    if ((x > 45 && x < 55) || (x > 75 && x < 85)) {
+                        pixel[0] = 0;   /* R - black eyes */
+                        pixel[1] = 0;   /* G */
+                        pixel[2] = 0;   /* B */
+                    }
+                }
+                
+                /* Add simple mouth */
+                if (y > 75 && y < 80 && x > 55 && x < 75) {
+                    pixel[0] = 220; /* R - pink mouth */
+                    pixel[1] = 20;  /* G */
+                    pixel[2] = 60;  /* B */
+                }
+            } else {
+                /* Neck/lower background - darker */
+                pixel[0] = 101; /* R */
+                pixel[1] = 67;  /* G */
+                pixel[2] = 33;  /* B */
+            }
+        }
+    }
+    
+    printf("✅ Dummy input buffer initialized with test pattern\n");
+}
+
+/**
+ * @brief Load dummy input buffer into nn_rgb
+ * @note This overrides the camera/PC stream input with test data
+ */
+static void load_dummy_input_buffer(void)
+{
+    printf("🔄 Loading dummy input buffer (overriding camera input)...\n");
+    init_dummy_input_buffer();  /* Generate the test pattern directly into nn_rgb */
+    printf("✅ Dummy input loaded: %dx%d RGB image (%lu bytes)\n", 
+           NN_WIDTH, NN_HEIGHT, (unsigned long)(NN_WIDTH * NN_HEIGHT * NN_BPP));
+}
+#endif /* DUMMY_INPUT_BUFFER */
 
 /* Application Context */
 static app_context_t g_app_ctx = {
@@ -330,14 +420,8 @@ static int app_get_frame(uint8_t *dest, uint32_t pitch_nn)
         /* Could add a timeout here for better responsiveness */
     }
     cameraFrameReceived = 0;
+    SCB_InvalidateDCache_by_Addr(dest, NN_WIDTH * NN_HEIGHT * NN_BPP);
 
-    /* Handle pitch conversion if necessary */
-    if (pitch_nn != (NN_WIDTH * NN_BPP)) {
-        SCB_InvalidateDCache_by_Addr(dcmipp_out_nn, sizeof(dcmipp_out_nn));
-        img_crop(dcmipp_out_nn, dest, pitch_nn, NN_WIDTH, NN_HEIGHT, NN_BPP);
-    } else {
-        SCB_InvalidateDCache_by_Addr(dest, NN_WIDTH * NN_HEIGHT * NN_BPP);
-    }
     return 0;
 #else
     return PC_STREAM_ReceiveImage(dest, NN_WIDTH * NN_HEIGHT * NN_BPP);
@@ -818,6 +902,11 @@ static int pipeline_stage_capture_and_preprocess(app_context_t *ctx, uint32_t pi
         return -1;
     }
     
+#ifdef DUMMY_INPUT_BUFFER
+    /* Step 1.1.5: Override input with dummy buffer for testing */
+    load_dummy_input_buffer();
+#endif
+    
     /* Step 1.2: Convert RGB to neural network input format */
     printf("   🔄 Converting RGB to CHW format for neural network...\n");
     img_rgb_to_chw_float(nn_rgb, (float32_t *)ctx->nn_ctx.detection_input_buffer, 
@@ -1045,9 +1134,7 @@ static int app_main_loop(app_context_t *ctx)
  */
 int main(void)
 {
-    /* Boot time measurement */
-    uint32_t boot_start = HAL_GetTick();
-    
+
     int ret = app_init(&g_app_ctx);
     if (ret < 0) {
         /* Initialization failed - handle error */
@@ -1059,7 +1146,6 @@ int main(void)
         }
     }
     
-    uint32_t boot_end = HAL_GetTick();
     //printf("⚡ Boot completed in %lu ms\n", boot_end - boot_start);
     
     /* Start main application loop */

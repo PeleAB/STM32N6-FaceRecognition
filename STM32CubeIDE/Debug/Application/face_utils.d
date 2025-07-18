@@ -32,7 +32,7 @@ Application/face_utils.o: \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/filtering_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h \
  ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h \
- ../../Inc/app_config.h ../../Inc/../Student/face_utils_student.h
+ ../../Inc/app_config.h
 ../../Inc/face_utils.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h:
@@ -66,4 +66,3 @@ Application/face_utils.o: \
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/support_functions.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/dsp/quaternion_math_functions.h:
 ../../Inc/app_config.h:
-../../Inc/../Student/face_utils_student.h:

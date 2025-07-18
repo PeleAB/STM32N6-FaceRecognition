@@ -134,16 +134,13 @@ Application/main.o: \
  ../../Inc/app_cam.h ../../Inc/main.h ../../Inc/app_config.h \
  ../../Inc/app_system.h ../../Inc/nn_runner.h \
  ../../Inc/enhanced_pc_stream.h ../../Inc/app_postprocess.h \
- ../../Inc/crop_img.h ../../Inc/../Student/crop_img_student.h \
- ../../Inc/display_utils.h ../../Inc/img_buffer.h \
+ ../../Inc/crop_img.h ../../Inc/display_utils.h ../../Inc/img_buffer.h \
  ../../Inc/system_utils.h ../../Inc/face_utils.h \
- ../../Inc/../Student/face_utils_student.h ../../Inc/target_embedding.h \
- ../../Inc/../Student/target_embedding_student.h \
- ../../Inc/app_constants.h ../../Inc/app_config_manager.h \
- ../../Inc/app_constants.h ../../Inc/memory_pool.h \
- ../../Inc/app_neural_network.h ../../Inc/app_config_manager.h \
- ../../Inc/memory_pool.h ../../Inc/app_frame_processing.h \
- ../../Inc/app_neural_network.h
+ ../../Inc/target_embedding.h ../../Inc/app_constants.h \
+ ../../Inc/app_config_manager.h ../../Inc/app_constants.h \
+ ../../Inc/memory_pool.h ../../Inc/app_neural_network.h \
+ ../../Inc/app_config_manager.h ../../Inc/memory_pool.h \
+ ../../Inc/app_frame_processing.h ../../Inc/app_neural_network.h
 ../../Inc/app_config.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math.h:
 ../../STM32Cube_FW_N6/Drivers/CMSIS/DSP/Include/arm_math_types.h:
@@ -284,14 +281,11 @@ Application/main.o: \
 ../../Inc/enhanced_pc_stream.h:
 ../../Inc/app_postprocess.h:
 ../../Inc/crop_img.h:
-../../Inc/../Student/crop_img_student.h:
 ../../Inc/display_utils.h:
 ../../Inc/img_buffer.h:
 ../../Inc/system_utils.h:
 ../../Inc/face_utils.h:
-../../Inc/../Student/face_utils_student.h:
 ../../Inc/target_embedding.h:
-../../Inc/../Student/target_embedding_student.h:
 ../../Inc/app_constants.h:
 ../../Inc/app_config_manager.h:
 ../../Inc/app_constants.h:
