@@ -62,36 +62,36 @@ def create_dual_dummy_buffers():
     nn_rgb_array = np.array(nn_rgb, dtype=np.uint8)
     
     # Generate C header file
-    print("Generating trump2_dual_buffer.h...")
-    with open("trump2_dual_buffer.h", "w") as f:
-        f.write("""#ifndef TRUMP2_DUAL_BUFFER_H
-#define TRUMP2_DUAL_BUFFER_H
+    print("Generating dummy_dual_buffer.h...")
+    with open("dummy_dual_buffer.h", "w") as f:
+        f.write("""#ifndef DUMMY_DUAL_BUFFER_H
+#define DUMMY_DUAL_BUFFER_H
 
 #include <stdint.h>
 #include "app_config.h"
 
-/* Dual dummy buffers derived from trump2.jpg */
+/* Dual dummy buffers derived from test image */
 
 /* img_buffer: 480x480 centered in 800x480 RGB565 with black padding (original camera frame) */
-extern const uint16_t trump2_img_buffer[800 * 480];
+extern const uint16_t dummy_test_img_buffer[800 * 480];
 
 /* nn_rgb: 128x128 RGB888 (neural network input) */
-extern const uint8_t trump2_nn_rgb[128 * 128 * 3];
+extern const uint8_t dummy_test_nn_rgb[128 * 128 * 3];
 
 /* Buffer sizes */
-#define TRUMP2_IMG_BUFFER_SIZE (800 * 480 * 2)
-#define TRUMP2_NN_RGB_SIZE (128 * 128 * 3)
+#define DUMMY_TEST_IMG_BUFFER_SIZE (800 * 480 * 2)
+#define DUMMY_TEST_NN_RGB_SIZE (128 * 128 * 3)
 
-#endif /* TRUMP2_DUAL_BUFFER_H */
+#endif /* DUMMY_DUAL_BUFFER_H */
 """)
     
     # Generate C source file
-    print("Generating trump2_dual_buffer.c...")
-    with open("trump2_dual_buffer.c", "w") as f:
-        f.write("""#include "trump2_dual_buffer.h"
+    print("Generating dummy_dual_buffer.c...")
+    with open("dummy_dual_buffer.c", "w") as f:
+        f.write("""#include "dummy_dual_buffer.h"
 
 /* img_buffer: 480x480 centered in 800x480 RGB565 with black padding from trump2.jpg */
-const uint16_t trump2_img_buffer[800 * 480] = {
+const uint16_t dummy_test_img_buffer[800 * 480] = {
 """)
         
         # Write img_buffer data (RGB565)
@@ -111,7 +111,7 @@ const uint16_t trump2_img_buffer[800 * 480] = {
 };
 
 /* nn_rgb: 128x128 RGB888 data from trump2.jpg */
-const uint8_t trump2_nn_rgb[128 * 128 * 3] = {
+const uint8_t dummy_test_nn_rgb[128 * 128 * 3] = {
 """)
         
         # Write nn_rgb data (RGB888)
@@ -139,9 +139,9 @@ const uint8_t trump2_nn_rgb[128 * 128 * 3] = {
     
     # Save preview images
     img_buffer_final = Image.fromarray(img_buffer_rgb, 'RGB')
-    img_buffer_final.save("trump2_800x480_centered_preview.jpg", "JPEG", quality=95)
-    nn_rgb.save("trump2_128x128_preview.jpg", "JPEG", quality=95)
-    print("📸 Preview images saved: trump2_800x480_centered_preview.jpg, trump2_128x128_preview.jpg")
+    img_buffer_final.save("dummy_test_800x480_centered_preview.jpg", "JPEG", quality=95)
+    nn_rgb.save("dummy_test_128x128_preview.jpg", "JPEG", quality=95)
+    print("📸 Preview images saved: dummy_test_800x480_centered_preview.jpg, dummy_test_128x128_preview.jpg")
 
 if __name__ == "__main__":
     create_dual_dummy_buffers()

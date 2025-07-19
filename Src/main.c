@@ -32,6 +32,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <math.h>
 #include "stm32n6xx_hal_rif.h"
 #include "app_system.h"
 #include "nn_runner.h"
@@ -77,6 +78,17 @@ typedef struct {
     bool recognition_initialized;
 } nn_context_t;
 
+/* ========================================================================= */
+/* SIMPLE TARGET DETECTION APPROACH                                        */
+/* ========================================================================= */
+
+/**
+ * @brief Pixel coordinates structure
+ */
+typedef struct {
+    float cx, cy, w, h, lx, ly, rx, ry;
+} pixel_coords_t;
+
 /* Simplified Application State Machine - No Tracking */
 typedef enum {
     PIPE_STATE_DETECT_AND_VERIFY = 0  /* Single state: detect faces and verify immediately */
@@ -108,12 +120,11 @@ typedef struct {
     bool face_detected;                     /**< Face detected in current frame */
     bool face_verified;                     /**< Face verified in current frame */
     
-    /* Multi-Frame Decision Algorithm */
-    float similarity_history[5];            /**< Last 5 similarity scores */
+    /* Simple Target Detection History */
+    bool target_detection_history[5];       /**< Last 5 frames target detection status */
     uint32_t history_index;                 /**< Current index in circular buffer */
     uint32_t history_count;                 /**< Number of valid history entries */
-    float smoothed_similarity;              /**< Smoothed similarity score */
-    bool stable_verification;               /**< Stable verification status */
+    bool target_detected;                   /**< Target detected (3+ of last 5 frames) */
     
     /* LED Timeout Management */
     uint32_t last_stable_verification_ts;   /**< Timestamp of last stable verification */
@@ -135,6 +146,10 @@ typedef struct {
 /* Global Variables */
 volatile int32_t cameraFrameReceived;
 
+/* Global variables for cropped face display */
+bool g_cropped_face_valid = false;
+float g_current_similarity = 0.0f;
+
 /* Optimized Memory Buffers - Using PSRAM for large buffers to reduce boot time */
 __attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
@@ -151,25 +166,25 @@ uint8_t dcmipp_out_nn[DCMIPP_OUT_NN_BUFF_LEN];  /* Camera output buffer */
 /* ========================================================================= */
 /* DUMMY INPUT BUFFER FOR TESTING                                           */
 /* ========================================================================= */
-/* This provides a real test image (trump2.jpg) that students can use to    */
+/* This provides a real test image that students can use to                */
 /* verify their implementations produce the expected output at each stage.   */
 /* ========================================================================= */
 
-#include "trump2_dual_buffer.h"
+#include "dummy_dual_buffer.h"
 
 /**
  * @brief Load dual dummy buffers for consistent testing
- * @note This overrides both img_buffer and nn_rgb with trump2.jpg data
+ * @note This overrides both img_buffer and nn_rgb with test image data
  *       ensuring face detection and cropping coordinates are consistent
  */
 static void load_dual_dummy_buffers(void)
 {
-    printf("🔄 Loading dual dummy buffers (trump2.jpg)...\n");
+    printf("🔄 Loading dual dummy buffers (test image)...\n");
     /* Load nn_rgb (128x128 RGB888) for neural network input */
-    memcpy(nn_rgb, trump2_nn_rgb, TRUMP2_NN_RGB_SIZE);
+    memcpy(nn_rgb, dummy_test_nn_rgb, DUMMY_TEST_NN_RGB_SIZE);
     /* Invalidate cache after loading PSRAM data */
-    SCB_InvalidateDCache_by_Addr((uint32_t*)nn_rgb, TRUMP2_NN_RGB_SIZE);
-    printf("   🧠 nn_rgb: 128x128 RGB888 (%d bytes)\n", TRUMP2_NN_RGB_SIZE);
+    SCB_InvalidateDCache_by_Addr((uint32_t*)nn_rgb, DUMMY_TEST_NN_RGB_SIZE);
+    printf("   🧠 nn_rgb: 128x128 RGB888 (%d bytes)\n", DUMMY_TEST_NN_RGB_SIZE);
     
     printf("✅ Dual dummy buffers loaded: consistent test data for detection + cropping\n");
 }
@@ -184,10 +199,10 @@ static app_context_t g_app_ctx = {
     .embedding_valid = 0,
     .button_press_ts = 0,
     .prev_button_state = 0,
+    .target_detection_history = {false},
     .history_index = 0,
     .history_count = 0,
-    .smoothed_similarity = 0.0f,
-    .stable_verification = false,
+    .target_detected = false,
     .last_stable_verification_ts = 0,
     .led_timeout_active = false
 };
@@ -208,8 +223,12 @@ static void handle_user_button(app_context_t *ctx);
 static float verify_box(app_context_t *ctx, const pd_pp_box_t *box);
 static void process_frame_detections(app_context_t *ctx, pd_pp_box_t *boxes, uint32_t box_count);
 static void update_led_status(app_context_t *ctx);
-static void update_similarity_history(app_context_t *ctx, float similarity);
-static void compute_stable_verification(app_context_t *ctx);
+static void update_target_detection_history(app_context_t *ctx, bool target_found_this_frame);
+static void compute_target_detection_status(app_context_t *ctx);
+static float run_face_recognition_on_face(app_context_t *ctx, const pd_pp_box_t *box);
+static int convert_box_coordinates(const pd_pp_box_t *box, pixel_coords_t *pixel_coords);
+static int crop_face_region(const pixel_coords_t *coords, uint8_t *output_buffer);
+static float calculate_face_similarity(const float32_t *embedding, const float32_t *target_embedding, uint32_t embedding_size);
 static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int number_output);
 
 /* Neural Network Instance Declarations */
@@ -388,14 +407,14 @@ static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot
 }
 
 /**
- * @brief Update similarity history with new measurement
+ * @brief Update target detection history with result from current frame
  * @param ctx Application context
- * @param similarity New similarity score to add to history
+ * @param target_found_this_frame True if any face above threshold was found this frame
  */
-static void update_similarity_history(app_context_t *ctx, float similarity)
+static void update_target_detection_history(app_context_t *ctx, bool target_found_this_frame)
 {
-    /* Add similarity to circular buffer */
-    ctx->similarity_history[ctx->history_index] = similarity;
+    /* Add result to circular buffer */
+    ctx->target_detection_history[ctx->history_index] = target_found_this_frame;
     ctx->history_index = (ctx->history_index + 1) % 5;
     
     /* Update count (max 5) */
@@ -405,90 +424,27 @@ static void update_similarity_history(app_context_t *ctx, float similarity)
 }
 
 /**
- * @brief Compute stable verification decision based on similarity history
+ * @brief Compute target detection status based on voting from last 5 frames
  * @param ctx Application context
  */
-static void compute_stable_verification(app_context_t *ctx)
+static void compute_target_detection_status(app_context_t *ctx)
 {
     if (ctx->history_count == 0) {
-        ctx->smoothed_similarity = 0.0f;
-        ctx->stable_verification = false;
+        ctx->target_detected = false;
         return;
     }
     
-    /* Calculate moving average */
-    float sum = 0.0f;
+    /* Count positive detections in history */
+    uint32_t positive_detections = 0;
     for (uint32_t i = 0; i < ctx->history_count; i++) {
-        sum += ctx->similarity_history[i];
-    }
-    ctx->smoothed_similarity = sum / ctx->history_count;
-    
-    /* Stable verification requires:
-     * 1. At least 3 measurements
-     * 2. Average similarity above threshold
-     * 3. Low variance (consistent measurements)
-     */
-    if (ctx->history_count >= 3) {
-        /* Check if average meets threshold */
-        bool avg_above_threshold = ctx->smoothed_similarity >= FACE_SIMILARITY_THRESHOLD;
-        
-        /* Check variance for stability */
-        float variance = 0.0f;
-        for (uint32_t i = 0; i < ctx->history_count; i++) {
-            float diff = ctx->similarity_history[i] - ctx->smoothed_similarity;
-            variance += diff * diff;
-        }
-        variance /= ctx->history_count;
-        
-        /* Low variance indicates stable measurements */
-        bool stable_measurements = variance < 0.01f;  /* Max variance threshold */
-        
-        ctx->stable_verification = avg_above_threshold && stable_measurements;
-    } else {
-        ctx->stable_verification = false;
-    }
-}
-
-/**
- * @brief Handle user button press events
- * @param ctx Application context
- */
-static void handle_user_button(app_context_t *ctx)
-{
-    int current_state = BSP_PB_GetState(BUTTON_USER1);
-    
-    /* Detect button press */
-    if (current_state && !ctx->prev_button_state) {
-        ctx->button_press_ts = HAL_GetTick();
-    }
-    /* Detect button release */
-    else if (!current_state && ctx->prev_button_state) {
-        uint32_t duration = HAL_GetTick() - ctx->button_press_ts;
-        
-        if (duration >= BUTTON_LONG_PRESS_DURATION_MS) {
-            /* Long press: reset embeddings bank */
-            embeddings_bank_reset();
-        } else if (ctx->embedding_valid) {
-            /* Short press: add current embedding */
-            embeddings_bank_add(ctx->current_embedding);
+        if (ctx->target_detection_history[i]) {
+            positive_detections++;
         }
     }
     
-    ctx->prev_button_state = current_state;
+    /* Target detected if 3+ of last 5 frames had target above threshold */
+    ctx->target_detected = (positive_detections >= 3);
 }
-
-/**
- * @brief Verify face in bounding box using face recognition
- * @param ctx Application context
- * @param box Bounding box to verify
- * @return Similarity score (0.0 to 1.0)
- */
-/**
- * @brief Pixel coordinates structure
- */
-typedef struct {
-    float cx, cy, w, h, lx, ly, rx, ry;
-} pixel_coords_t;
 
 /**
  * @brief Convert normalized coordinates to pixel coordinates
@@ -530,7 +486,7 @@ static int crop_face_region(const pixel_coords_t *coords,
     
 #if INPUT_SRC_MODE == INPUT_SRC_CAMERA
 #ifdef DUMMY_INPUT_BUFFER
-    img_crop_align565_to_888(trump2_img_buffer, lcd_bg_area.XSize, output_buffer,
+    img_crop_align565_to_888(dummy_test_img_buffer, lcd_bg_area.XSize, output_buffer,
                             lcd_bg_area.XSize, lcd_bg_area.YSize,
                             FACE_RECOGNITION_WIDTH, FACE_RECOGNITION_HEIGHT,
                             coords->cx, coords->cy, coords->w, coords->h,
@@ -554,8 +510,6 @@ static int crop_face_region(const pixel_coords_t *coords,
     return 0;
 }
 
-/* Removed unused run_face_recognition_inference function */
-
 /**
  * @brief Calculate face similarity with target embedding
  * @param embedding Current face embedding
@@ -575,16 +529,15 @@ static float calculate_face_similarity(const float32_t *embedding,
 }
 
 /**
- * @brief Verify face in bounding box using face recognition (refactored)
+ * @brief Run face recognition on a single face
  * @param ctx Application context
- * @param box Bounding box to verify
+ * @param box Bounding box of face to recognize
  * @return Similarity score (0.0 to 1.0)
  */
-static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
+static float run_face_recognition_on_face(app_context_t *ctx, const pd_pp_box_t *box)
 {
     pixel_coords_t pixel_coords;
     float32_t embedding[EMBEDDING_SIZE];
-    float similarity = 0.0f;
     
     /* Lazy initialization of face recognition network */
     if (!ctx->nn_ctx.recognition_initialized) {
@@ -598,41 +551,39 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
     if (convert_box_coordinates(box, &pixel_coords) < 0) {
         return 0.0f;
     }
-    //HINT: for dummy input the pixel_coords {cx = 245.430328, cy = 261.031219, w = 246.817184, h = 313.831696, lx = 200.154053, ly = 225.059891, rx = 297.352631, ry = 225.059891}
-
-
+    
     /* Crop face region */
     if (crop_face_region(&pixel_coords, fr_rgb) < 0) {
         return 0.0f;
     }
     
-    //HINT: for dummy input the first  elements of  fr_rgb are {216, 206, 193, 203, 194, ..}
-
-
     /* Prepare input for face recognition network */
     img_rgb_to_chw_float_norm(fr_rgb, (float32_t*)ctx->nn_ctx.recognition_input_buffer, 
                              FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
-
-    //HINT: for dummy input the first  elements of  (float32_t*)ctx->nn_ctx.recognition_input_buffer are{0.694117665, 0.592156887, 0.223529413, 0.411764711, -0.0588235296...}
-
+    
     SCB_CleanInvalidateDCache_by_Addr(ctx->nn_ctx.recognition_input_buffer, 
                                      ctx->nn_ctx.recognition_input_length);
-
+    
     /* Run face recognition inference */
     RunNetworkSync(&NN_Instance_face_recognition);
     SCB_InvalidateDCache_by_Addr(ctx->nn_ctx.recognition_output_buffer, 
                                 ctx->nn_ctx.recognition_output_length);
-
+    
     /* Convert output to float embedding */
     for (uint32_t i = 0; i < EMBEDDING_SIZE; i++) {
-        embedding[i] = ((float32_t)ctx->nn_ctx.recognition_output_buffer[i]) ;
-        ctx->current_embedding[i] = embedding[i];
+        embedding[i] = ((float32_t)ctx->nn_ctx.recognition_output_buffer[i]);
     }
-    //HINT: for dummy input the first  elements of  ctx->current_embedding are {0.306145996, 0.461111039, 0.0579051189, 0.0707361251, 0.0147502497, 0.020104384, 0.184280485, 0.555815458, 0.391634256, -0.0178385787, -0.0950614661, -0.267123342, 0.0578992069, -0.336320341, 0.0882782862, 0.303721189, 0.257354945, -0.374819815, -0.486701787, -0.187570438, 0.558155417, 0.145427525...}
-    ctx->embedding_valid = 1;
     
     /* Calculate similarity */
-    similarity = calculate_face_similarity(embedding, target_embedding, EMBEDDING_SIZE);
+    float similarity = calculate_face_similarity(embedding, target_embedding, EMBEDDING_SIZE);
+    
+    /* Store embedding in context (for button press functionality) */
+    /* The last face processed will have its embedding stored - this will be overwritten */
+    /* but the process_frame_detections will ensure best face embedding is preserved */
+    for (uint32_t i = 0; i < EMBEDDING_SIZE; i++) {
+        ctx->current_embedding[i] = embedding[i];
+    }
+    ctx->embedding_valid = 1;
     
     /* Send results via PC stream */
     Enhanced_PC_STREAM_SendFrame(fr_rgb, FACE_RECOGNITION_WIDTH, 
@@ -641,6 +592,47 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
     
     LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
     return similarity;
+}
+
+/**
+ * @brief Handle user button press events
+ * @param ctx Application context
+ */
+static void handle_user_button(app_context_t *ctx)
+{
+    int current_state = BSP_PB_GetState(BUTTON_USER1);
+    
+    /* Detect button press */
+    if (current_state && !ctx->prev_button_state) {
+        ctx->button_press_ts = HAL_GetTick();
+    }
+    /* Detect button release */
+    else if (!current_state && ctx->prev_button_state) {
+        uint32_t duration = HAL_GetTick() - ctx->button_press_ts;
+        
+        if (duration >= BUTTON_LONG_PRESS_DURATION_MS) {
+            /* Long press: reset embeddings bank */
+            embeddings_bank_reset();
+        } else if (ctx->embedding_valid) {
+            /* Short press: add current embedding */
+            embeddings_bank_add(ctx->current_embedding);
+        }
+    }
+    
+    ctx->prev_button_state = current_state;
+}
+
+
+/**
+ * @brief Legacy verify_box function - now uses run_face_recognition_on_face
+ * @param ctx Application context
+ * @param box Bounding box to verify
+ * @return Similarity score (0.0 to 1.0)
+ */
+static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
+{
+    /* Legacy function - just call the new implementation */
+    return run_face_recognition_on_face(ctx, box);
 }
 
 /**
@@ -704,63 +696,104 @@ static void process_frame_detections(app_context_t *ctx, pd_pp_box_t *boxes, uin
     ctx->face_verified = false;
     ctx->current_similarity = 0.0f;
     
-    /* Process detections if any found */
+    /* Reset global cropped face display variables */
+    g_cropped_face_valid = false;
+    g_current_similarity = 0.0f;
+    
+    bool target_found_this_frame = false;
+    float highest_similarity = 0.0f;
+    static float32_t best_embedding[EMBEDDING_SIZE];  /* Store best face embedding */
+    bool best_embedding_valid = false;
+    
+    /* Reset embedding validity at start of frame */
+    ctx->embedding_valid = 0;
+    
+    /* Run face recognition on ALL detected faces */
     if (box_count > 0) {
-        /* Find box with highest confidence */
-        uint32_t best_idx = 0;
-        for (uint32_t i = 1; i < box_count; i++) {
-            if (boxes[i].prob > boxes[best_idx].prob) {
-                best_idx = i;
+        printf("   🔍 Running face recognition on %u detected faces\n", box_count);
+        
+        for (uint32_t i = 0; i < box_count; i++) {
+            /* Only run recognition on faces with sufficient detection confidence */
+            if (boxes[i].prob >= FACE_DETECTION_CONFIDENCE_THRESHOLD) {
+                printf("   🔄 Face %u: detection=%.1f%% -> ", i + 1, boxes[i].prob * 100.0f);
+                
+                float similarity = run_face_recognition_on_face(ctx, &boxes[i]);
+                
+                /* Update the box with the recognition similarity (not detection confidence) */
+                boxes[i].prob = similarity;
+                
+                printf("recognition=%.1f%%\n", similarity * 100.0f);
+                
+                /* Check if this face is above threshold */
+                if (similarity >= FACE_SIMILARITY_THRESHOLD) {
+                    target_found_this_frame = true;
+                }
+                
+                /* Track the face with highest similarity for display */
+                if (similarity > highest_similarity) {
+                    highest_similarity = similarity;
+                    ctx->best_detection = boxes[i];
+                    ctx->current_similarity = similarity;
+                    ctx->face_detected = true;
+                    
+                    /* Store for LCD display */
+                    g_cropped_face_valid = true;
+                    g_current_similarity = similarity;
+                    
+                    /* Store best embedding (copy from current_embedding set by run_face_recognition_on_face) */
+                    for (uint32_t j = 0; j < EMBEDDING_SIZE; j++) {
+                        best_embedding[j] = ctx->current_embedding[j];
+                    }
+                    best_embedding_valid = true;
+                }
+            } else {
+                /* Face detection confidence too low - skip recognition */
+                printf("   ⚠️ Face %u: detection=%.1f%% (too low, skipping recognition)\n", 
+                       i + 1, boxes[i].prob * 100.0f);
+                /* Set very low similarity to indicate no recognition */
+                boxes[i].prob = 0.05f;
             }
         }
-        
-        ctx->best_detection = boxes[best_idx];
-        ctx->face_detected = true;
-        
-        /* Run face recognition if confidence is high enough */
-        if (ctx->best_detection.prob >= FACE_DETECTION_CONFIDENCE_THRESHOLD) {
-            float similarity = verify_box(ctx, &ctx->best_detection);
-            ctx->current_similarity = similarity;
-            
-            /* Update multi-frame decision algorithm */
-            update_similarity_history(ctx, similarity);
-            compute_stable_verification(ctx);
-            
-            /* Use smoothed similarity for display and decisions */
-            float display_similarity = ctx->history_count >= 3 ? ctx->smoothed_similarity : similarity;
-            ctx->best_detection.prob = display_similarity;
-            
-            /* Face verification based on stable multi-frame decision */
-            ctx->face_verified = ctx->stable_verification;
-            
-            /* Update the box in the output with the smoothed similarity score */
-            boxes[best_idx].prob = display_similarity;
-        } else {
-            /* No face recognition run - reset history for clean state */
-            ctx->history_count = 0;
-            ctx->history_index = 0;
-            ctx->smoothed_similarity = 0.0f;
-            ctx->stable_verification = false;
-        }
     }
+    
+    /* Update target detection history */
+    update_target_detection_history(ctx, target_found_this_frame);
+    compute_target_detection_status(ctx);
+    
+    /* Store best embedding for button press functionality */
+    if (best_embedding_valid) {
+        for (uint32_t i = 0; i < EMBEDDING_SIZE; i++) {
+            ctx->current_embedding[i] = best_embedding[i];
+        }
+        ctx->embedding_valid = 1;
+    }
+    
+    /* Set verification status based on voting */
+    ctx->face_verified = ctx->target_detected;
+    
+    printf("   🎯 Frame summary: faces=%u, target_this_frame=%s, target_detected=%s (%.1f%% best)\n",
+           box_count,
+           target_found_this_frame ? "YES" : "NO",
+           ctx->target_detected ? "YES" : "NO",
+           highest_similarity * 100.0f);
 }
 
 /**
- * @brief Update LED status based on stable verification state with timeout
+ * @brief Update LED status based on simple voting mechanism
  * @param ctx Application context
  */
 static void update_led_status(app_context_t *ctx)
 {
     uint32_t current_time = HAL_GetTick();
     
-    if (ctx->stable_verification) {
-        BSP_LED_On(LED2);   /* Green LED - stable face verification */
+    if (ctx->target_detected) {
+        BSP_LED_On(LED2);   /* Green LED - target detected (3+ of last 5 frames) */
         BSP_LED_Off(LED1);
-        /* Update timestamp for stable verification */
+        /* Update timestamp for target detection */
         ctx->last_stable_verification_ts = current_time;
         ctx->led_timeout_active = false;
     } else if (ctx->face_detected) {
-        BSP_LED_On(LED1);   /* Red LED - face detected but not stably verified */
+        BSP_LED_On(LED1);   /* Red LED - face detected but not verified */
         BSP_LED_Off(LED2);
         ctx->led_timeout_active = false;
     } else {
@@ -799,12 +832,13 @@ static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int numb
  */
 /* Removed unused helper functions to fix compilation warnings */
 
+
 /* ========================================================================= */
 /* EDUCATIONAL FACE RECOGNITION PIPELINE                                    */
 /* ========================================================================= */
 /*
  * This pipeline demonstrates a complete face detection and recognition system
- * broken down into clear, educational stages:
+ * with multi-face tracking capability, broken down into clear stages:
  *
  * 🔄 PIPELINE OVERVIEW:
  * ┌─────────────────────────────────────────────────────────────────────────┐
@@ -818,13 +852,13 @@ static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int numb
  * └─────────────────────────┬───────────────────────────────────────────────┘
  *                           │
  * ┌─────────────────────────▼───────────────────────────────────────────────┐
- * │  STAGE 3: Post-Processing                                              │
- * │  ⚙️ Convert network output → Extract face bounding boxes               │
+ * │  STAGE 3: Post-Processing & Face Tracking                             │
+ * │  ⚙️ Convert network output → Track faces → Maintain consistency        │
  * └─────────────────────────┬───────────────────────────────────────────────┘
  *                           │
  * ┌─────────────────────────▼───────────────────────────────────────────────┐
- * │  STAGE 4: Face Recognition                                             │
- * │  🔍 Crop faces → Run recognition network → Compare with stored faces   │
+ * │  STAGE 4: Face Recognition (Primary Face Only)                        │
+ * │  🔍 Crop primary face → Run recognition → Smooth similarity scores     │
  * └─────────────────────────┬───────────────────────────────────────────────┘
  *                           │
  * ┌─────────────────────────▼───────────────────────────────────────────────┐
@@ -948,18 +982,18 @@ static int pipeline_stage_face_recognition(app_context_t *ctx)
 {
     printf("🔍 PIPELINE STAGE 4: Face Recognition\n");
     
-    /* Step 4.1: Process all detected faces */
+    /* Step 4.1: Process all detected faces with recognition */
     pd_pp_box_t *boxes = (pd_pp_box_t *)ctx->pp_output.pOutData;
     process_frame_detections(ctx, boxes, ctx->pp_output.box_nb);
     
     /* Step 4.2: Log recognition results */
     if (ctx->face_detected) {
-        printf("✅ Face recognition completed: detected=%s, verified=%s, similarity=%.3f\n",
+        printf("✅ Face recognition: detected=%s, verified=%s, best_similarity=%.1f%%\n",
                ctx->face_detected ? "YES" : "NO",
                ctx->face_verified ? "YES" : "NO",
-               ctx->current_similarity);
+               ctx->current_similarity * 100.0f);
     } else {
-        printf("ℹ️ No faces detected for recognition\n");
+        printf("ℹ️ No faces above threshold detected\n");
     }
     
     return 0;

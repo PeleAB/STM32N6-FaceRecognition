@@ -162,17 +162,6 @@ static uint32_t calculate_crc32(const uint8_t *data, uint32_t length)
     return HAL_CRC_Calculate(&hcrc, (uint32_t*)data, (length+3)/4);
 }
 
-/**
- * @brief Calculate XOR checksum for robust protocol
- */
-static uint8_t robust_calculate_checksum(const uint8_t *data, uint32_t length)
-{
-    uint8_t checksum = 0;
-    for (uint32_t i = 0; i < length; i++) {
-        checksum ^= data[i];
-    }
-    return checksum;
-}
 
 /**
  * @brief Get next sequence ID for message type

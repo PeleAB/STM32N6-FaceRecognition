@@ -62,6 +62,7 @@ Application/display_utils.o: \
  ../../Inc/img_buffer.h ../../Inc/app_config.h \
  ../../Inc/app_postprocess.h ../../Inc/enhanced_pc_stream.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h \
+ ../../Inc/app_constants.h \
  ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.h \
  ../../Inc/stm32n6570_discovery_conf.h \
  ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h \
@@ -174,6 +175,7 @@ Application/display_utils.o: \
 ../../Inc/app_postprocess.h:
 ../../Inc/enhanced_pc_stream.h:
 ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_errno.h:
+../../Inc/app_constants.h:
 ../../STM32Cube_FW_N6/Drivers/BSP/STM32N6570-DK/stm32n6570_discovery_lcd.h:
 ../../Inc/stm32n6570_discovery_conf.h:
 ../../STM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc/stm32n6xx_hal.h:
