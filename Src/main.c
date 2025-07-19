@@ -155,18 +155,23 @@ uint8_t dcmipp_out_nn[DCMIPP_OUT_NN_BUFF_LEN];  /* Camera output buffer */
 /* verify their implementations produce the expected output at each stage.   */
 /* ========================================================================= */
 
-#include "trump2_buffer.h"
+#include "trump2_dual_buffer.h"
 
 /**
- * @brief Load dummy input buffer into nn_rgb
- * @note This overrides the camera/PC stream input with real trump2.jpg data
+ * @brief Load dual dummy buffers for consistent testing
+ * @note This overrides both img_buffer and nn_rgb with trump2.jpg data
+ *       ensuring face detection and cropping coordinates are consistent
  */
-static void load_dummy_input_buffer(void)
+static void load_dual_dummy_buffers(void)
 {
-    printf("🔄 Loading dummy input buffer (trump2.jpg, 128x128)...\n");
-    memcpy(nn_rgb, trump2_rgb_buffer, NN_WIDTH * NN_HEIGHT * NN_BPP);
-    printf("✅ Real image loaded: %dx%d RGB image (%lu bytes)\n", 
-           NN_WIDTH, NN_HEIGHT, (unsigned long)(NN_WIDTH * NN_HEIGHT * NN_BPP));
+    printf("🔄 Loading dual dummy buffers (trump2.jpg)...\n");
+    /* Load nn_rgb (128x128 RGB888) for neural network input */
+    memcpy(nn_rgb, trump2_nn_rgb, TRUMP2_NN_RGB_SIZE);
+    /* Invalidate cache after loading PSRAM data */
+    SCB_InvalidateDCache_by_Addr((uint32_t*)nn_rgb, TRUMP2_NN_RGB_SIZE);
+    printf("   🧠 nn_rgb: 128x128 RGB888 (%d bytes)\n", TRUMP2_NN_RGB_SIZE);
+    
+    printf("✅ Dual dummy buffers loaded: consistent test data for detection + cropping\n");
 }
 #endif /* DUMMY_INPUT_BUFFER */
 
@@ -524,11 +529,20 @@ static int crop_face_region(const pixel_coords_t *coords,
     }
     
 #if INPUT_SRC_MODE == INPUT_SRC_CAMERA
+#ifdef DUMMY_INPUT_BUFFER
+    img_crop_align565_to_888(trump2_img_buffer, lcd_bg_area.XSize, output_buffer,
+                            lcd_bg_area.XSize, lcd_bg_area.YSize,
+                            FACE_RECOGNITION_WIDTH, FACE_RECOGNITION_HEIGHT,
+                            coords->cx, coords->cy, coords->w, coords->h,
+                            coords->lx, coords->ly, coords->rx, coords->ry);
+#else
     img_crop_align565_to_888(img_buffer, lcd_bg_area.XSize, output_buffer,
                             lcd_bg_area.XSize, lcd_bg_area.YSize,
                             FACE_RECOGNITION_WIDTH, FACE_RECOGNITION_HEIGHT,
                             coords->cx, coords->cy, coords->w, coords->h, 
                             coords->lx, coords->ly, coords->rx, coords->ry);
+#endif //DUMMY_INPUT_BUFFER
+
 #else
     img_crop_align(nn_rgb, output_buffer,
                    NN_WIDTH, NN_HEIGHT,
@@ -584,15 +598,23 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
     if (convert_box_coordinates(box, &pixel_coords) < 0) {
         return 0.0f;
     }
-    
+    //HINT: for dummy input the pixel_coords {cx = 245.430328, cy = 261.031219, w = 246.817184, h = 313.831696, lx = 200.154053, ly = 225.059891, rx = 297.352631, ry = 225.059891}
+
+
     /* Crop face region */
     if (crop_face_region(&pixel_coords, fr_rgb) < 0) {
         return 0.0f;
     }
     
+    //HINT: for dummy input the first  elements of  fr_rgb are {216, 206, 193, 203, 194, ..}
+
+
     /* Prepare input for face recognition network */
     img_rgb_to_chw_float_norm(fr_rgb, (float32_t*)ctx->nn_ctx.recognition_input_buffer, 
                              FR_WIDTH * NN_BPP, FR_WIDTH, FR_HEIGHT);
+
+    //HINT: for dummy input the first  elements of  (float32_t*)ctx->nn_ctx.recognition_input_buffer are{0.694117665, 0.592156887, 0.223529413, 0.411764711, -0.0588235296...}
+
     SCB_CleanInvalidateDCache_by_Addr(ctx->nn_ctx.recognition_input_buffer, 
                                      ctx->nn_ctx.recognition_input_length);
 
@@ -606,7 +628,7 @@ static float verify_box(app_context_t *ctx, const pd_pp_box_t *box)
         embedding[i] = ((float32_t)ctx->nn_ctx.recognition_output_buffer[i]) ;
         ctx->current_embedding[i] = embedding[i];
     }
-    
+    //HINT: for dummy input the first  elements of  ctx->current_embedding are {0.306145996, 0.461111039, 0.0579051189, 0.0707361251, 0.0147502497, 0.020104384, 0.184280485, 0.555815458, 0.391634256, -0.0178385787, -0.0950614661, -0.267123342, 0.0578992069, -0.336320341, 0.0882782862, 0.303721189, 0.257354945, -0.374819815, -0.486701787, -0.187570438, 0.558155417, 0.145427525...}
     ctx->embedding_valid = 1;
     
     /* Calculate similarity */
@@ -837,8 +859,8 @@ static int pipeline_stage_capture_and_preprocess(app_context_t *ctx, uint32_t pi
     }
     
 #ifdef DUMMY_INPUT_BUFFER
-    /* Step 1.1.5: Override input with dummy buffer for testing */
-    load_dummy_input_buffer();
+    /* Step 1.1.5: Override both img_buffer and nn_rgb with dummy data for testing */
+    load_dual_dummy_buffers();
 #endif
     
     /* Step 1.2: Convert RGB to neural network input format */
@@ -846,6 +868,8 @@ static int pipeline_stage_capture_and_preprocess(app_context_t *ctx, uint32_t pi
     img_rgb_to_chw_float(nn_rgb, (float32_t *)ctx->nn_ctx.detection_input_buffer, 
                         NN_WIDTH * NN_BPP, NN_WIDTH, NN_HEIGHT);
     
+
+
     /* Step 1.3: Prepare data for neural network (cache management) */
     printf("   🧠 Preparing %lu bytes for neural network input...\n", ctx->nn_ctx.detection_input_length);
     SCB_CleanInvalidateDCache_by_Addr(ctx->nn_ctx.detection_input_buffer, 
@@ -1032,17 +1056,22 @@ static int app_main_loop(app_context_t *ctx)
         if (pipeline_stage_capture_and_preprocess(ctx, pitch_nn) != 0) {
             continue; /* Skip this frame on error */
         }
+        //HINT: for dummy input the first elements of (float32_t *)ctx->nn_ctx.detection_input_buffer should look like: {206, 209, 211, 212, 213, 213, 214, 214, 214, 214, 213 <repeats 14 times>, 212, 212, 211, 208, 207, 204, 199, 193, 189, 182, 174, 163, 151, 139, 129, 119, 110, 104, 104, 106, 108, 114, 121, 126, 132, 137, 140, 141, 147, 152, 152, 152, 153, 153, 154, 154, 154, 154, 153, 151, 152, 152, 151, 150, 149, 149, 147, 146, 142, 135, 126, 114, 107, 97, 87, 73, 60, 47, 32, 19, 12, 14, 19, 26, 32, 37, 42, 52, 60, 63, 67, 70, 70, 71, 72, 72}
 
         /* Stage 2: Face Detection Neural Network */
         if (pipeline_stage_face_detection(ctx) != 0) {
             continue; /* Skip this frame on error */
         }
         
+        //HINT: for dummy input the first elements of ctx->nn_ctx.detection_output_buffers[0] should look like: {1.89764965, 1.77754533, 1.62140954, 1.64543045, 1.68146181, 1.68146181, 1.92167056...}
+
         /* Stage 3: Post-Processing and Face Extraction */
         if (pipeline_stage_postprocessing(ctx) != 0) {
             continue; /* Skip this frame on error */
         }
         
+        //HINT: for dummy input the cctx->pp_output->pOutData.x_center = 0.5113132 ctx->pp_output->pOutData.y_center = 0.543815017
+
         /* Stage 4: Face Recognition and Verification */
         if (pipeline_stage_face_recognition(ctx) != 0) {
             continue; /* Skip this frame on error */

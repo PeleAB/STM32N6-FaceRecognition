@@ -224,8 +224,8 @@ int LL_Streng64_TensorInit(int id, const LL_Streng_TensorInitTypeDef *conf, int 
   ATON_STRENG64_CTRL_SET(id, t);
 
   // ATON_STRENG64_ADDR_SET(id, conf->addr_start.i);
-  LL_ATON_REG_WRITE_RELOC(((volatile uint32_t *)(uintptr_t)ATON_STRENG64_ADDR_ADDR(id)), conf->addr_base.i,
-                          conf->offset_start);
+  ATON_REG_WRITE_RELOC(((volatile uint32_t *)(uintptr_t)ATON_STRENG64_ADDR_ADDR(id)), conf->addr_base.i,
+                       conf->offset_start);
 
   if (conf->raw)
   {
@@ -278,8 +278,8 @@ int LL_Streng64_TensorInit(int id, const LL_Streng_TensorInitTypeDef *conf, int 
     ATON_STRENG64_LIMITEN_SET(id, t);
     // NOTE: limiter is to be set to last accessible byte address
     // ATON_STRENG64_LIMITADDR_SET(id, (conf->addr_limit.i - 1));
-    LL_ATON_REG_WRITE_RELOC(((volatile uint32_t *)(uintptr_t)ATON_STRENG64_LIMITADDR_ADDR(id)), conf->addr_base.i,
-                            conf->offset_limit - 1);
+    ATON_REG_WRITE_RELOC(((volatile uint32_t *)(uintptr_t)ATON_STRENG64_LIMITADDR_ADDR(id)), conf->addr_base.i,
+                         conf->offset_limit - 1);
   }
 
   t = ATON_STRENG64_LIMIT_SET_CNT(0, conf->frame_tot_cnt);

@@ -87,16 +87,6 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Src/enhanced_pc_stream.c</locationURI>
 		</link>
 		<link>
-			<name>Application/face_detection.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Model/face_detection.c</locationURI>
-		</link>
-		<link>
-			<name>Application/face_recognition.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Model/face_recognition.c</locationURI>
-		</link>
-		<link>
 			<name>Application/face_utils.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Src/face_utils.c</locationURI>

@@ -72,6 +72,12 @@ ai_bool core_timer_start(core_timer* t);
 AI_INTERNAL_API
 core_timer_ts core_timer_stop(core_timer* t);
 
+#if defined HAS_STM32
+void core_timer_init_(void);
+core_timer_ts core_timer_ticks_start_(void);
+core_timer_ts core_timer_ticks_(void);
+#endif
+
 AI_API_DECLARE_END
 
 #endif    /*CORE_BENCHMARK_H_*/

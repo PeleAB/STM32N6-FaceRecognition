@@ -1,5 +1,5 @@
 ST Edge AI Core v2.1.0-20194 329b0e98d
-Created date          : 2025-07-18 14:03:00
+Created date          : 2025-07-19 12:00:24
 Parameters            : generate --name face_detection --model onnx_tflite_src/centerface.tflite --target stm32n6 --st-neural-art centerface@face_detection_config.json --input-data-type float32 --output converted_models
 
 Model name - centerface
@@ -244,7 +244,7 @@ model: macc=100,287,399 weights=1,867,876 activations=-- io=--
 Compilation details
 ------------------------------------------------------------------------------------
 Compiler version: 1.1.0-31
-Compiler arguments:  -i /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/converted_models/centerface_OE_3_2_0.onnx --json-quant-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/converted_models/centerface_OE_3_2_0_Q.json -g face_detection.c --load-mdesc /home/vboxuser/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/10.1.0/Utilities/configs/stm32n6.mdesc --load-mpool /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/memory_pools/model1.mpool --save-mpool-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/st_ai_ws/neural_art__face_detection/model1.mpool --out-dir-prefix /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/st_ai_ws/neural_art__face_detection/ -O3 --all-buffers-info --mvei --cache-maintenance --Oalt-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os --enable-epoch-controller --output-info-file c_info.json --network-name face_detection
+Compiler arguments:  -i /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/converted_models/centerface_OE_3_2_0.onnx --json-quant-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/converted_models/centerface_OE_3_2_0_Q.json -g face_detection.c --load-mdesc /home/vboxuser/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/10.1.0/Utilities/configs/stm32n6.mdesc --load-mpool /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/memory_pools/model1.mpool --save-mpool-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/st_ai_ws/neural_art__face_detection/model1.mpool --out-dir-prefix /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/st_ai_ws/neural_art__face_detection/ -O0 --all-buffers-info --mvei --cache-maintenance --Oalt-sched --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os --enable-epoch-controller --output-info-file c_info.json --network-name face_detection
 ====================================================================================
 
 Memory usage information  (input/output buffers are included in activations)
@@ -267,12 +267,12 @@ Used memory ranges
 ------------------------------------------------------------------------------------
 	npuRAM4    [0x34270000 - 0x342E0000]: 0x34270000-0x34288000
 	npuRAM5    [0x342E0000 - 0x34350000]: 0x342E0000-0x34340000
-	octoFlash  [0x71000000 - 0x74D00000]: 0x71000000-0x71257790
+	octoFlash  [0x71000000 - 0x74D00000]: 0x71000000-0x71257780
 ====================================================================================
 
 Epochs details
 ------------------------------------------------------------------------------------
-Total number of epochs: 86 of which 10 implemented in software
+Total number of epochs: 81 of which 10 implemented in software
 ---
 epoch ID   HW/SW/EC Operation (SW only)
 epoch 1       EC    
@@ -334,31 +334,26 @@ epoch 56      EC
 epoch 57      EC    
 epoch 58      EC    
 epoch 59      EC    
-epoch 60      EC    
-epoch 61      EC    
-epoch 62     -SW-   (       Concat       )
-epoch 63     -SW-   (    DepthToSpace    )
-epoch 64      EC    
-epoch 65      EC    
+epoch 60     -SW-   (       Concat       )
+epoch 61     -SW-   (    DepthToSpace    )
+epoch 62      EC    
+epoch 63      EC    
+epoch 64     -SW-   (       Concat       )
+epoch 65     -SW-   (    DepthToSpace    )
 epoch 66      EC    
-epoch 67     -SW-   (       Concat       )
-epoch 68     -SW-   (    DepthToSpace    )
-epoch 69      EC    
+epoch 67      EC    
+epoch 68     -SW-   (       Concat       )
+epoch 69     -SW-   (    DepthToSpace    )
 epoch 70      EC    
 epoch 71      EC    
-epoch 72     -SW-   (       Concat       )
-epoch 73     -SW-   (    DepthToSpace    )
-epoch 74      EC    
+epoch 72      EC    
+epoch 73      EC    
+epoch 74     -SW-   (  DequantizeLinear  )
 epoch 75      EC    
-epoch 76      EC    
-epoch 77      EC    
+epoch 76     -SW-   (  DequantizeLinear  )
+epoch 77      ??    
 epoch 78      EC    
-epoch 79     -SW-   (  DequantizeLinear  )
-epoch 80      EC    
-epoch 81     -SW-   (  DequantizeLinear  )
-epoch 82      ??    
-epoch 83      EC    
-epoch 84      EC    
-epoch 85     -SW-   (  DequantizeLinear  )
-epoch 86      EC    
+epoch 79      EC    
+epoch 80     -SW-   (  DequantizeLinear  )
+epoch 81      EC    
 ====================================================================================

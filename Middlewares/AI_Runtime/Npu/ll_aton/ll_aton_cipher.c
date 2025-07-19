@@ -147,20 +147,27 @@ int LL_EpochCtrl_EncryptionInit(int id, LL_Streng_EncryptionTypedef *conf)
 
 int LL_DmaCypherInit(LL_Cypher_InitTypeDef *cypherInfo)
 {
+  uint32_t limit;
+  uint32_t lastAdd;
+
   if (cypherInfo->cypherCacheMask != 0 && cypherInfo->len > CYPHER_CACHE_SIZE)
   {
     return (-1);
-  } /* endif */
+  }
 
   LL_ATON_Init();
 
   /* Use stream engine 0 as source channel */
 
+  lastAdd = cypherInfo->srcAdd + cypherInfo->len;
+  limit = (uint32_t)cypherInfo->len + (8 - (lastAdd & 7));
+  limit += (8 - (limit & 7));
+
   LL_Streng_TensorInitTypeDef dma_in = {.dir = 0,
                                         .addr_base.i = (uint32_t)cypherInfo->srcAdd,
                                         .offset_start = 0,
                                         .offset_end = (uint32_t)cypherInfo->len,
-                                        .offset_limit = (uint32_t)cypherInfo->len,
+                                        .offset_limit = limit,
                                         .raw = 1,
                                         .frame_tot_cnt = 1,
                                         .nbits_in = 8,
@@ -169,11 +176,15 @@ int LL_DmaCypherInit(LL_Cypher_InitTypeDef *cypherInfo)
 
   /* Use stream engine 0 as destination channel */
 
+  lastAdd = cypherInfo->dstAdd + cypherInfo->len;
+  limit = (uint32_t)cypherInfo->len + (8 - (lastAdd & 7));
+  limit += (8 - (limit & 7));
+
   LL_Streng_TensorInitTypeDef dma_out = {.dir = 1,
                                          .addr_base.i = (uint32_t)cypherInfo->dstAdd,
                                          .offset_start = 0,
                                          .offset_end = (uint32_t)cypherInfo->len,
-                                         .offset_limit = (uint32_t)cypherInfo->len,
+                                         .offset_limit = limit,
                                          .raw = 1,
                                          .frame_tot_cnt = 1,
                                          .nbits_in = 8,
@@ -189,7 +200,7 @@ int LL_DmaCypherInit(LL_Cypher_InitTypeDef *cypherInfo)
   {
     dma_in.cacheable = 0;
     dma_in.cache_allocate = 0;
-  } /* endif */
+  }
 
   if (0 != (cypherInfo->cypherCacheMask & CYPHER_CACHE_DST))
   {
@@ -200,7 +211,7 @@ int LL_DmaCypherInit(LL_Cypher_InitTypeDef *cypherInfo)
   {
     dma_out.cacheable = 0;
     dma_out.cache_allocate = 0;
-  } /* endif */
+  }
 
   /* Configure stream switch */
 
@@ -228,13 +239,12 @@ int LL_DmaCypherInit(LL_Cypher_InitTypeDef *cypherInfo)
     else
     {
       return (-1);
-    } /* endif */
+    }
 
     /* Set encryption keys into Bus Interafce */
 
     LL_Busif_SetKeys(0, 0, cypherInfo->busIfKeyLsb, cypherInfo->busIfKeyMsb);
-
-  } /* endif */
+  }
 
   LL_Streng_TensorInit(CYPHER_SRC_STRENG_ID, &dma_in, 1);
   LL_Streng_TensorInit(CYPHER_DST_STRENG_ID, &dma_out, 1);

@@ -1,5 +1,4 @@
-Application/face_recognition.o: \
- /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Model/face_recognition.c \
+Application/face_recognition.o: ../Application/face_recognition.c \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_attributes.h \
@@ -65,7 +64,7 @@ Application/face_recognition.o: \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_integer.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ecloader.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ec.h \
- /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Model/face_recognition_ecblobs.h \
+ ../../Inc/face_recognition_ecblobs.h \
  ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_caches_interface.h
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_NN_interface.h:
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_config.h:
@@ -132,5 +131,5 @@ Application/face_recognition.o: \
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_sw_integer.h:
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ecloader.h:
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ec.h:
-/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Model/face_recognition_ecblobs.h:
+../../Inc/face_recognition_ecblobs.h:
 ../../Middlewares/AI_Runtime/Npu/ll_aton/ll_aton_caches_interface.h:

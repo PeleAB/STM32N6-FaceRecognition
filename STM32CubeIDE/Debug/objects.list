@@ -20,6 +20,7 @@
 "./Application/syscalls.o"
 "./Application/system_utils.o"
 "./Application/target_embedding.o"
+"./Application/trump2_dual_buffer.o"
 "./Drivers/BSP/Components/aps256xx.o"
 "./Drivers/BSP/Components/mx66uw1g45g.o"
 "./Drivers/BSP/STM32N6570-DK/stm32n6570_discovery.o"

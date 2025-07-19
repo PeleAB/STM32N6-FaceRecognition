@@ -19,6 +19,7 @@
 #include <assert.h>
 #include <math.h>
 #include <string.h>
+#include "trump2_dual_buffer.h"
 
 #ifdef STUDENT_MODE
 /* ========================================================================= */
@@ -234,9 +235,10 @@ void img_rgb_to_chw_float_norm(uint8_t *src_image, float32_t *dst_img,
     const uint8_t *pIn = src_image + y * src_stride;
     for (uint16_t x = 0; x < width; x++)
     {
-      dst_img[y * width + x] = (((float32_t)pIn[0])-127.5)/127.5;
-      dst_img[height * width + y * width + x] = (((float32_t)pIn[1])-127.5)/127.5;
-      dst_img[2 * height * width + y * width + x] = (((float32_t)pIn[2])-127.5)/127.5;
+    	for(uint8_t hidx = 0; hidx<3; hidx++)
+    	{
+    	      dst_img[hidx * height * width + y * width + x] = ((((float32_t)pIn[hidx])/255.0)-0.5)/0.5;
+    	}
       pIn += 3;
     }
   }
@@ -302,6 +304,8 @@ void img_crop_align(uint8_t *src_image, uint8_t *dst_img,
       }
     }
   }
+
+
 }
 
 void img_crop_align565_to_888(uint8_t *src_image, uint16_t src_stride,
@@ -341,6 +345,9 @@ void img_crop_align565_to_888(uint8_t *src_image, uint16_t src_stride,
       pOut[2] = (uint8_t)((px & 0x1F) << 3);
     }
   }
+#ifdef DUMMY_INPUT_BUFFER
+  memcpy(dst_img,dummy_cropped_face_rgb, dst_width*dst_height*3);
+#endif
 }
 
 #endif /* STUDENT_MODE */

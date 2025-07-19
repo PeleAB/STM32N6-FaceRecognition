@@ -90,7 +90,7 @@ C_SOURCES += Src/enhanced_pc_stream.c
 
 C_SOURCES += Src/face_utils.c
 C_SOURCES += Src/target_embedding.c
-C_SOURCES += trump2_buffer.c
+C_SOURCES += dummy_buffer/trump2_dual_buffer.c
 C_SOURCES += Middlewares/Camera_Middleware/ISP_Library/isp/Src/isp_algo.c
 C_SOURCES += Middlewares/Camera_Middleware/ISP_Library/isp/Src/isp_cmd_parser.c
 C_SOURCES += Middlewares/Camera_Middleware/ISP_Library/isp/Src/isp_core.c
@@ -173,6 +173,7 @@ C_INCLUDES += -IMiddlewares/Camera_Middleware/sensors/vd55g1
 C_INCLUDES += -IMiddlewares/Camera_Middleware/sensors/vd6g
 
 C_INCLUDES += -IInc
+C_INCLUDES += -Idummy_buffer
 C_INCLUDES += -IMiddlewares/lib_vision_models_pp/lib_vision_models_pp/Inc
 C_INCLUDES += -IMiddlewares/AI_Runtime/Npu/ll_aton
 C_INCLUDES += -ISTM32Cube_FW_N6/Drivers/STM32N6xx_HAL_Driver/Inc

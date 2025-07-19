@@ -30,11 +30,16 @@ priority of a network/inference task is not changed during the execution of an e
 static _DaoMutexNoWaitersType_ _dao_mutex; // handle for main FIFO mutex of the "deferred ATON owner" mechanism
 static _DaoWaitQueueType_ _dao_wait_queue; // semaphore for threads waiting for `_dao_mutex`
 
-static _TaskHandleType_ _current_aton_owner = _NullHandle_; // current owner of ATON
-static _PriorityType_ _current_aton_owner_orig_priority =
-    0;                                        // original priority of current ATON owner
-                                              // (assuming that `_PriorityType_` is a regular integer type)
-volatile static uint32_t _nr_dao_waiters = 0; // number of threads waiting on `_dao_wait_queue`
+#if APP_HAS_PARALLEL_NETWORKS
+
+// current owner of ATON
+static _TaskHandleType_ _current_aton_owner = _NullHandle_;
+// original priority of current ATON owner (assuming that `_PriorityType_` is a regular integer type)
+static _PriorityType_ _current_aton_owner_orig_priority = 0;
+// number of threads waiting on `_dao_wait_queue`
+volatile static uint32_t _nr_dao_waiters = 0;
+
+#endif // APP_HAS_PARALLEL_NETWORKS
 
 static _WfeSemaphoreType_ _wfe_sem;   // for WFE blocking and IRQ signalling
 static _CacheMutexType_ _cache_mutex; // for non deferred locking/unlocking (e.g. NPU/MCU cache operation protection)

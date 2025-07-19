@@ -19,6 +19,11 @@
 #ifndef __LL_ATON_STAI_INTERNAL_H
 #define __LL_ATON_STAI_INTERNAL_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 // ATON headers
 #include "ll_aton_NN_interface.h"
 #include "ll_aton_util.h"
@@ -108,54 +113,58 @@
     return current_exec_status;                                                                                        \
   } while (0)
 
-/** Functions **/
-STAI_API_DECLARE_BEGIN
+  /** Functions **/
+  STAI_API_DECLARE_BEGIN
 
-STAI_INTERNAL_ENTRY
-static inline stai_return_code __ll_aton_stai_check_context_network_handle(stai_network *network,
-                                                                           const NN_Interface_TypeDef **nn_i_ptr_ptr)
-{
-  /* check context handle */
-  if (!network)
-    return STAI_ERROR_NETWORK_INVALID_CONTEXT_HANDLE;
-
-  /* check network handle */
-  _stai_aton_context *context_ptr = (_stai_aton_context *)network;
-  const NN_Interface_TypeDef *nn_i_ptr = context_ptr->network_instance.network;
-  if (!nn_i_ptr)
+  STAI_INTERNAL_ENTRY
+  static inline stai_return_code __ll_aton_stai_check_context_network_handle(stai_network *network,
+                                                                             const NN_Interface_TypeDef **nn_i_ptr_ptr)
   {
-    __LL_ATON_STAI_SET_1ST_CTX_ERROR_AND_RETURN(context_ptr, STAI_ERROR_NETWORK_INVALID_CONTEXT_HANDLE);
+    /* check context handle */
+    if (!network)
+      return STAI_ERROR_NETWORK_INVALID_CONTEXT_HANDLE;
+
+    /* check network handle */
+    _stai_aton_context *context_ptr = (_stai_aton_context *)network;
+    const NN_Interface_TypeDef *nn_i_ptr = context_ptr->network_instance.network;
+    if (!nn_i_ptr)
+    {
+      __LL_ATON_STAI_SET_1ST_CTX_ERROR_AND_RETURN(context_ptr, STAI_ERROR_NETWORK_INVALID_CONTEXT_HANDLE);
+    }
+
+    /* save network pointer */
+    *nn_i_ptr_ptr = nn_i_ptr;
+    return STAI_SUCCESS;
   }
 
-  /* save network pointer */
-  *nn_i_ptr_ptr = nn_i_ptr;
-  return STAI_SUCCESS;
-}
+  STAI_INTERNAL_ENTRY
+  void __ll_aton_stai_init_network_instance(_stai_aton_context *nn_context);
+  STAI_INTERNAL_ENTRY
+  void __ll_aton_stai_deinit_network_instance(_stai_aton_context *nn_context);
 
-STAI_INTERNAL_ENTRY
-void __ll_aton_stai_init_network_instance(_stai_aton_context *nn_context);
-STAI_INTERNAL_ENTRY
-void __ll_aton_stai_deinit_network_instance(_stai_aton_context *nn_context);
+  STAI_INTERNAL_ENTRY
+  void __ll_aton_stai_set_execution_status(LL_ATON_RT_RetValues_t status, _stai_aton_context *nn_context);
+  STAI_INTERNAL_ENTRY
+  stai_return_code __ll_aton_stai_get_execution_status(_stai_aton_context *nn_context);
 
-STAI_INTERNAL_ENTRY
-void __ll_aton_stai_set_execution_status(LL_ATON_RT_RetValues_t status, _stai_aton_context *nn_context);
-STAI_INTERNAL_ENTRY
-stai_return_code __ll_aton_stai_get_execution_status(_stai_aton_context *nn_context);
+  STAI_INTERNAL_ENTRY
+  stai_return_code __ll_aton_stai_run(stai_network *network, const stai_run_mode mode);
 
-STAI_INTERNAL_ENTRY
-stai_return_code __ll_aton_stai_run(stai_network *network, const stai_run_mode mode);
+  STAI_INTERNAL_ENTRY
+  stai_return_code __ll_aton_stai_reset(stai_network *network);
 
-STAI_INTERNAL_ENTRY
-stai_return_code __ll_aton_stai_reset(stai_network *network);
+  STAI_INTERNAL_ENTRY
+  void _stai_aton_internal_epoch_block_callback(LL_ATON_RT_Callbacktype_t ctype, const NN_Instance_TypeDef *nn_instance,
+                                                const EpochBlock_ItemTypeDef *epoch_block);
 
-STAI_INTERNAL_ENTRY
-void _stai_aton_internal_epoch_block_callback(LL_ATON_RT_Callbacktype_t ctype, const NN_Instance_TypeDef *nn_instance,
-                                              const EpochBlock_ItemTypeDef *epoch_block);
-
-STAI_API_DECLARE_END
+  STAI_API_DECLARE_END
 
 #ifndef offsetof
 #define offsetof(st, m) ((size_t) & (((st *)0)->m))
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif // __LL_ATON_STAI_INTERNAL_H

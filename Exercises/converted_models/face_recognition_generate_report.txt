@@ -1,5 +1,5 @@
 ST Edge AI Core v2.1.0-20194 329b0e98d
-Created date          : 2025-07-18 14:03:19
+Created date          : 2025-07-19 12:00:47
 Parameters            : generate --name face_recognition --model onnx_tflite_src/mobilefacenet_int8_faces.onnx --target stm32n6 --st-neural-art mobilefacenet@face_recognition_config.json --input-data-type float32 --output converted_models
 
 Model name - mobilefacenet_int8_faces
@@ -361,7 +361,7 @@ model: macc=237,973,824 weights=1,046,400 activations=-- io=--
 Compilation details
 ------------------------------------------------------------------------------------
 Compiler version: 1.1.0-31
-Compiler arguments:  -i /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/converted_models/mobilefacenet_int8_faces_OE_3_2_0.onnx --json-quant-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/converted_models/mobilefacenet_int8_faces_OE_3_2_0_Q.json -g face_recognition.c --load-mdesc /home/vboxuser/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/10.1.0/Utilities/configs/stm32n6.mdesc --load-mpool /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/memory_pools/model2.mpool --save-mpool-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/st_ai_ws/neural_art__face_recognition/model2.mpool --out-dir-prefix /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/st_ai_ws/neural_art__face_recognition/ -O3 --all-buffers-info --mvei --cache-maintenance --Oalt-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os --enable-epoch-controller --output-info-file c_info.json --network-name face_recognition
+Compiler arguments:  -i /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/converted_models/mobilefacenet_int8_faces_OE_3_2_0.onnx --json-quant-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/converted_models/mobilefacenet_int8_faces_OE_3_2_0_Q.json -g face_recognition.c --load-mdesc /home/vboxuser/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/10.1.0/Utilities/configs/stm32n6.mdesc --load-mpool /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/memory_pools/model2.mpool --save-mpool-file /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/st_ai_ws/neural_art__face_recognition/model2.mpool --out-dir-prefix /home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/st_ai_ws/neural_art__face_recognition/ -O0 --all-buffers-info --mvei --cache-maintenance --Oalt-sched --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os --enable-epoch-controller --output-info-file c_info.json --network-name face_recognition
 ====================================================================================
 
 Memory usage information  (input/output buffers are included in activations)
@@ -393,7 +393,7 @@ Used memory ranges
 
 Epochs details
 ------------------------------------------------------------------------------------
-Total number of epochs: 170 of which 112 implemented in software
+Total number of epochs: 165 of which 112 implemented in software
 ---
 epoch ID   HW/SW/EC Operation (SW only)
 epoch 1       EC    
@@ -524,46 +524,41 @@ epoch 125    -SW-   (       PRelu        )
 epoch 126    -SW-   (   QuantizeLinear   )
 epoch 127     EC    
 epoch 128     EC    
-epoch 129     EC    
-epoch 130    -SW-   (  DequantizeLinear  )
-epoch 131    -SW-   (       PRelu        )
-epoch 132    -SW-   (   QuantizeLinear   )
-epoch 133     EC    
-epoch 134    -SW-   (  DequantizeLinear  )
-epoch 135    -SW-   (       PRelu        )
-epoch 136    -SW-   (   QuantizeLinear   )
+epoch 129    -SW-   (  DequantizeLinear  )
+epoch 130    -SW-   (       PRelu        )
+epoch 131    -SW-   (   QuantizeLinear   )
+epoch 132     EC    
+epoch 133    -SW-   (  DequantizeLinear  )
+epoch 134    -SW-   (       PRelu        )
+epoch 135    -SW-   (   QuantizeLinear   )
+epoch 136     EC    
 epoch 137     EC    
-epoch 138     EC    
-epoch 139     EC    
-epoch 140    -SW-   (  DequantizeLinear  )
-epoch 141    -SW-   (       PRelu        )
-epoch 142    -SW-   (   QuantizeLinear   )
-epoch 143     EC    
-epoch 144    -SW-   (  DequantizeLinear  )
-epoch 145    -SW-   (       PRelu        )
-epoch 146    -SW-   (   QuantizeLinear   )
-epoch 147     EC    
-epoch 148     EC    
-epoch 149     EC    
-epoch 150    -SW-   (  DequantizeLinear  )
-epoch 151    -SW-   (       PRelu        )
-epoch 152    -SW-   (   QuantizeLinear   )
-epoch 153     EC    
+epoch 138    -SW-   (  DequantizeLinear  )
+epoch 139    -SW-   (       PRelu        )
+epoch 140    -SW-   (   QuantizeLinear   )
+epoch 141     EC    
+epoch 142    -SW-   (  DequantizeLinear  )
+epoch 143    -SW-   (       PRelu        )
+epoch 144    -SW-   (   QuantizeLinear   )
+epoch 145     EC    
+epoch 146     EC    
+epoch 147    -SW-   (  DequantizeLinear  )
+epoch 148    -SW-   (       PRelu        )
+epoch 149    -SW-   (   QuantizeLinear   )
+epoch 150     EC    
+epoch 151    -SW-   (  DequantizeLinear  )
+epoch 152    -SW-   (        Conv        )
+epoch 153    -SW-   (        Cast        )
 epoch 154    -SW-   (  DequantizeLinear  )
 epoch 155    -SW-   (        Conv        )
 epoch 156    -SW-   (        Cast        )
 epoch 157    -SW-   (  DequantizeLinear  )
 epoch 158    -SW-   (        Conv        )
 epoch 159    -SW-   (        Cast        )
-epoch 160    -SW-   (  DequantizeLinear  )
-epoch 161    -SW-   (        Conv        )
-epoch 162    -SW-   (        Cast        )
-epoch 163     EC    
-epoch 164     EC    
-epoch 165     EC    
-epoch 166     EC    
-epoch 167     EC    
-epoch 168    -SW-   (  DequantizeLinear  )
-epoch 169    -SW-   (        Mul         )
-epoch 170    -SW-   (        Add         )
+epoch 160     EC    
+epoch 161     EC    
+epoch 162     EC    
+epoch 163    -SW-   (  DequantizeLinear  )
+epoch 164    -SW-   (        Mul         )
+epoch 165    -SW-   (        Add         )
 ====================================================================================

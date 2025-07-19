@@ -32,9 +32,8 @@
  * --load-mpool-file = "/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/memory_pools/model1"
  * --cache-maintenance = true
  * --enable-virtual-mem-pools = true
- * --native-float = true
  * --json-quant-file = "/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/converted_models/centerface_OE_3_2_0_Q.json"
- * --optimization = 3
+ * --optimization = 0
  * --Os = true
  * --Omax-ca-pipe = 4
  * --Ocache-opt = true
@@ -137,11 +136,11 @@ static void LL_ATON_End_EpochBlock_2(const void *epoch_block)
     .general.input.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) /* Equivalent hex address = 0x342e0000UL */,
     .general.input.format.is_signed = 0,
     /* "os" tensor-related info: */
-    .os.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455280))) /* Equivalent hex address = 0x712576f0UL */,
+    .os.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455264))) /* Equivalent hex address = 0x712576e0UL */,
     .os.format.is_signed = 1,
     .os.dim.num_elem = 1,
     /* "ozp" tensor-related info: */
-    .ozp.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455360))) /* Equivalent hex address = 0x71257740UL */,
+    .ozp.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455344))) /* Equivalent hex address = 0x71257730UL */,
     .ozp.format.is_signed = 1,
     .ozp.dim.num_elem = 1,
     /* "general.output" tensor-related info: */
@@ -179,16 +178,16 @@ static void _ec_blob_cache_start_func_3(const void *epoch_block) {
 
   /* *** MCU cache invalidate (only) operation (HW, whole range) *** */
   /*     memory pool: 1 */
-  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 125824))) */
-  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 126208))) */
-  LL_ATON_Cache_MCU_Invalidate_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 125824))) /* Equivalent hex address = 0x342feb80UL */, 384);
+  /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 125184))) */
+  /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 125568))) */
+  LL_ATON_Cache_MCU_Invalidate_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 125184))) /* Equivalent hex address = 0x342fe900UL */, 384);
 
 };
 
 
-/* scheduling epoch=62   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=60   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_62(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_60(const void *epoch_block)
 {
   /* *** MCU cache invalidate (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -203,24 +202,24 @@ static void LL_ATON_End_EpochBlock_62(const void *epoch_block)
 
 /* Unit= 27 [PROCESSOR 0] */
 /* kind=Concat node=ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626 */
-  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62__shape_1_24_4_4[] = { 1, 4, 4, 24 };
-  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62__mem_shape_L_1_24_4_4[] = { 1, 4, 4, 24 };
-  static const float ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62_Relu_255_out_0_quant_scale[] = { 0.00676214136183262 };
-  static const int16_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62_Relu_255_out_0_quant_offset[] = { -128 };
-  static const float ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62_Zero_Tensor_625_quant_scale[] = { 0.00676214136183262 };
-  static const int16_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62_Zero_Tensor_625_quant_offset[] = { -128 };
-  static const LL_Buffer_InfoTypeDef ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62[] = {
+  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60__shape_1_24_4_4[] = { 1, 4, 4, 24 };
+  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60__mem_shape_L_1_24_4_4[] = { 1, 4, 4, 24 };
+  static const float ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60_Relu_255_out_0_quant_scale[] = { 0.00676214136183262 };
+  static const int16_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60_Relu_255_out_0_quant_offset[] = { -128 };
+  static const float ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60_Zero_Tensor_625_quant_scale[] = { 0.00676214136183262 };
+  static const int16_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60_Zero_Tensor_625_quant_offset[] = { -128 };
+  static const LL_Buffer_InfoTypeDef ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60[] = {
     {
       .name = "Relu_255_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 125824,
-      .offset_end = 126208,
-      .offset_limit = 126272,
+      .offset_start = 125184,
+      .offset_end = 125568,
+      .offset_limit = 125632,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 62,
+      .epoch = 60,
       .batch = 24,
-      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62__mem_shape_L_1_24_4_4,
+      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60__mem_shape_L_1_24_4_4,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -229,22 +228,22 @@ static void LL_ATON_End_EpochBlock_62(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62__shape_1_24_4_4,
+      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60__shape_1_24_4_4,
       .per_channel = 0,
-      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62_Relu_255_out_0_quant_scale,
-      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62_Relu_255_out_0_quant_offset,
+      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60_Relu_255_out_0_quant_scale,
+      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60_Relu_255_out_0_quant_offset,
     },
     {
       .name = "Zero_Tensor_625",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2454432,
-      .offset_end = 2454816,
-      .offset_limit = 2454880,
+      .offset_start = 2454416,
+      .offset_end = 2454800,
+      .offset_limit = 2454864,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 62,
+      .epoch = 60,
       .batch = 24,
-      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62__mem_shape_L_1_24_4_4,
+      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60__mem_shape_L_1_24_4_4,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -253,22 +252,22 @@ static void LL_ATON_End_EpochBlock_62(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62__shape_1_24_4_4,
+      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60__shape_1_24_4_4,
       .per_channel = 0,
-      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62_Zero_Tensor_625_quant_scale,
-      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62_Zero_Tensor_625_quant_offset,
+      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60_Zero_Tensor_625_quant_scale,
+      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60_Zero_Tensor_625_quant_offset,
     },
     {
       .name = "Zero_Tensor_625",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2454432,
-      .offset_end = 2454816,
-      .offset_limit = 2454880,
+      .offset_start = 2454416,
+      .offset_end = 2454800,
+      .offset_limit = 2454864,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 62,
+      .epoch = 60,
       .batch = 24,
-      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62__mem_shape_L_1_24_4_4,
+      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60__mem_shape_L_1_24_4_4,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -277,22 +276,22 @@ static void LL_ATON_End_EpochBlock_62(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62__shape_1_24_4_4,
+      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60__shape_1_24_4_4,
       .per_channel = 0,
-      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62_Zero_Tensor_625_quant_scale,
-      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62_Zero_Tensor_625_quant_offset,
+      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60_Zero_Tensor_625_quant_scale,
+      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60_Zero_Tensor_625_quant_offset,
     },
     {
       .name = "Zero_Tensor_625",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2454432,
-      .offset_end = 2454816,
-      .offset_limit = 2454880,
+      .offset_start = 2454416,
+      .offset_end = 2454800,
+      .offset_limit = 2454864,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 62,
+      .epoch = 60,
       .batch = 24,
-      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62__mem_shape_L_1_24_4_4,
+      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60__mem_shape_L_1_24_4_4,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -301,21 +300,21 @@ static void LL_ATON_End_EpochBlock_62(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62__shape_1_24_4_4,
+      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60__shape_1_24_4_4,
       .per_channel = 0,
-      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62_Zero_Tensor_625_quant_scale,
-      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62_Zero_Tensor_625_quant_offset,
+      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60_Zero_Tensor_625_quant_scale,
+      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60_Zero_Tensor_625_quant_offset,
     },
     {
       .name = NULL,
     }
   };
 
-  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_62__shape_1_96_4_4[] = { 1, 4, 4, 96 };
-  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_62__mem_shape_L_1_96_4_4[] = { 1, 4, 4, 96 };
-  static const float ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_62_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_scale[] = { 0.00676214136183262 };
-  static const int16_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_62_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_offset[] = { -128 };
-  static const LL_Buffer_InfoTypeDef ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_62[] = {
+  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_60__shape_1_96_4_4[] = { 1, 4, 4, 96 };
+  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_60__mem_shape_L_1_96_4_4[] = { 1, 4, 4, 96 };
+  static const float ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_60_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_scale[] = { 0.00676214136183262 };
+  static const int16_t ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_60_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_offset[] = { -128 };
+  static const LL_Buffer_InfoTypeDef ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_60[] = {
     {
       .name = "ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
@@ -324,9 +323,9 @@ static void LL_ATON_End_EpochBlock_62(const void *epoch_block)
       .offset_limit = 124480,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 62,
+      .epoch = 60,
       .batch = 96,
-      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_62__mem_shape_L_1_96_4_4,
+      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_60__mem_shape_L_1_96_4_4,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -335,17 +334,17 @@ static void LL_ATON_End_EpochBlock_62(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_62__shape_1_96_4_4,
+      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_60__shape_1_96_4_4,
       .per_channel = 0,
-      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_62_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_scale,
-      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_62_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_offset,
+      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_60_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_scale,
+      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_60_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_offset,
     },
     {
       .name = NULL,
     }
   };
 
-  LL_ATON_LIB_Concat(ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_62, 4, ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_62, 1, 3, 9);
+  LL_ATON_LIB_Concat(ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_in_60, 4, ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_tensor_info_out_60, 1, 8, 9);
 
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -356,9 +355,9 @@ static void LL_ATON_End_EpochBlock_62(const void *epoch_block)
 }
 
 
-/* scheduling epoch=63   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=61   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_63(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_61(const void *epoch_block)
 {
   /* *** MCU cache invalidate (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -373,11 +372,11 @@ static void LL_ATON_End_EpochBlock_63(const void *epoch_block)
 
 /* Unit= 27 [PROCESSOR 0] */
 /* kind=DepthToSpace node=ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628 */
-  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_63__shape_1_96_4_4[] = { 1, 4, 4, 96 };
-  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_63__mem_shape_L_1_96_4_4[] = { 1, 4, 4, 96 };
-  static const float ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_63_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_scale[] = { 0.00676214136183262 };
-  static const int16_t ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_63_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_offset[] = { -128 };
-  static const LL_Buffer_InfoTypeDef ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_63[] = {
+  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_61__shape_1_96_4_4[] = { 1, 4, 4, 96 };
+  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_61__mem_shape_L_1_96_4_4[] = { 1, 4, 4, 96 };
+  static const float ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_61_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_scale[] = { 0.00676214136183262 };
+  static const int16_t ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_61_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_offset[] = { -128 };
+  static const LL_Buffer_InfoTypeDef ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_61[] = {
     {
       .name = "ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
@@ -386,9 +385,9 @@ static void LL_ATON_End_EpochBlock_63(const void *epoch_block)
       .offset_limit = 124480,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 63,
+      .epoch = 61,
       .batch = 96,
-      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_63__mem_shape_L_1_96_4_4,
+      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_61__mem_shape_L_1_96_4_4,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -397,21 +396,21 @@ static void LL_ATON_End_EpochBlock_63(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_63__shape_1_96_4_4,
+      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_61__shape_1_96_4_4,
       .per_channel = 0,
-      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_63_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_scale,
-      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_63_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_offset,
+      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_61_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_scale,
+      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_61_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_offset,
     },
     {
       .name = NULL,
     }
   };
 
-  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_63__shape_1_24_8_8[] = { 1, 8, 8, 24 };
-  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_63__mem_shape_L_1_24_8_8[] = { 1, 8, 8, 24 };
-  static const float ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_63_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_629_quant_scale[] = { 0.00676214136183262 };
-  static const int16_t ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_63_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_629_quant_offset[] = { -128 };
-  static const LL_Buffer_InfoTypeDef ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_63[] = {
+  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_61__shape_1_24_8_8[] = { 1, 8, 8, 24 };
+  static const uint32_t ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_61__mem_shape_L_1_24_8_8[] = { 1, 8, 8, 24 };
+  static const float ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_61_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_629_quant_scale[] = { 0.00676214136183262 };
+  static const int16_t ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_61_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_629_quant_offset[] = { -128 };
+  static const LL_Buffer_InfoTypeDef ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_61[] = {
     {
       .name = "ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_629",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
@@ -420,9 +419,9 @@ static void LL_ATON_End_EpochBlock_63(const void *epoch_block)
       .offset_limit = 126016,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 63,
+      .epoch = 61,
       .batch = 24,
-      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_63__mem_shape_L_1_24_8_8,
+      .mem_shape = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_61__mem_shape_L_1_24_8_8,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -431,17 +430,17 @@ static void LL_ATON_End_EpochBlock_63(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_63__shape_1_24_8_8,
+      .shape = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_61__shape_1_24_8_8,
       .per_channel = 0,
-      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_63_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_629_quant_scale,
-      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_63_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_629_quant_offset,
+      .scale = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_61_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_629_quant_scale,
+      .offset = ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_61_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_629_quant_offset,
     },
     {
       .name = NULL,
     }
   };
 
-  LL_ATON_LIB_DMA_DepthToSpace(ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_63, 1, ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_63, 2, 2, 0, 1);
+  LL_ATON_LIB_DMA_DepthToSpace(ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_in_61, 1, ConvTranspose_256_expanded_resize_0_resize_NN_to_expansion_dts_628_tensor_info_out_61, 2, 2, 0, 1);
 
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -452,10 +451,10 @@ static void LL_ATON_End_EpochBlock_63(const void *epoch_block)
 }
 
 
-// Epoch Controller Blob (name='_ec_blob_64') micro instructions needed
+// Epoch Controller Blob (name='_ec_blob_62') micro instructions needed
 
-// Epoch Controller Blob (name='_ec_blob_64') start function
-static void _ec_blob_cache_start_func_64(const void *epoch_block) {
+// Epoch Controller Blob (name='_ec_blob_62') start function
+static void _ec_blob_cache_start_func_62(const void *epoch_block) {
   LL_ATON_LIB_UNUSED(epoch_block);
 
   /* *** MCU cache invalidate (only) operation (HW, whole range) *** */
@@ -467,9 +466,9 @@ static void _ec_blob_cache_start_func_64(const void *epoch_block) {
 };
 
 
-/* scheduling epoch=67   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=64   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_67(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_64(const void *epoch_block)
 {
   /* *** MCU cache invalidate (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -484,13 +483,13 @@ static void LL_ATON_End_EpochBlock_67(const void *epoch_block)
 
 /* Unit= 27 [PROCESSOR 0] */
 /* kind=Concat node=ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633 */
-  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67__shape_1_24_8_8[] = { 1, 8, 8, 24 };
-  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67__mem_shape_L_1_24_8_8[] = { 1, 8, 8, 24 };
-  static const float ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67_Dequantize_261_out_0_quant_scale[] = { 0.0305094718933105 };
-  static const int16_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67_Dequantize_261_out_0_quant_offset[] = { -128 };
-  static const float ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67_Zero_Tensor_632_quant_scale[] = { 0.0305094718933105 };
-  static const int16_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67_Zero_Tensor_632_quant_offset[] = { -128 };
-  static const LL_Buffer_InfoTypeDef ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67[] = {
+  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64__shape_1_24_8_8[] = { 1, 8, 8, 24 };
+  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64__mem_shape_L_1_24_8_8[] = { 1, 8, 8, 24 };
+  static const float ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64_Dequantize_261_out_0_quant_scale[] = { 0.0305094718933105 };
+  static const int16_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64_Dequantize_261_out_0_quant_offset[] = { -128 };
+  static const float ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64_Zero_Tensor_632_quant_scale[] = { 0.0305094718933105 };
+  static const int16_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64_Zero_Tensor_632_quant_offset[] = { -128 };
+  static const LL_Buffer_InfoTypeDef ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64[] = {
     {
       .name = "Dequantize_261_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
@@ -499,9 +498,9 @@ static void LL_ATON_End_EpochBlock_67(const void *epoch_block)
       .offset_limit = 131136,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 67,
+      .epoch = 64,
       .batch = 24,
-      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67__mem_shape_L_1_24_8_8,
+      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64__mem_shape_L_1_24_8_8,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -510,10 +509,10 @@ static void LL_ATON_End_EpochBlock_67(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67__shape_1_24_8_8,
+      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64__shape_1_24_8_8,
       .per_channel = 0,
-      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67_Dequantize_261_out_0_quant_scale,
-      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67_Dequantize_261_out_0_quant_offset,
+      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64_Dequantize_261_out_0_quant_scale,
+      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64_Dequantize_261_out_0_quant_offset,
     },
     {
       .name = "Zero_Tensor_632",
@@ -523,9 +522,9 @@ static void LL_ATON_End_EpochBlock_67(const void *epoch_block)
       .offset_limit = 2450224,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 67,
+      .epoch = 64,
       .batch = 24,
-      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67__mem_shape_L_1_24_8_8,
+      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64__mem_shape_L_1_24_8_8,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -534,10 +533,10 @@ static void LL_ATON_End_EpochBlock_67(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67__shape_1_24_8_8,
+      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64__shape_1_24_8_8,
       .per_channel = 0,
-      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67_Zero_Tensor_632_quant_scale,
-      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67_Zero_Tensor_632_quant_offset,
+      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64_Zero_Tensor_632_quant_scale,
+      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64_Zero_Tensor_632_quant_offset,
     },
     {
       .name = "Zero_Tensor_632",
@@ -547,9 +546,9 @@ static void LL_ATON_End_EpochBlock_67(const void *epoch_block)
       .offset_limit = 2450224,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 67,
+      .epoch = 64,
       .batch = 24,
-      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67__mem_shape_L_1_24_8_8,
+      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64__mem_shape_L_1_24_8_8,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -558,10 +557,10 @@ static void LL_ATON_End_EpochBlock_67(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67__shape_1_24_8_8,
+      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64__shape_1_24_8_8,
       .per_channel = 0,
-      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67_Zero_Tensor_632_quant_scale,
-      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67_Zero_Tensor_632_quant_offset,
+      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64_Zero_Tensor_632_quant_scale,
+      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64_Zero_Tensor_632_quant_offset,
     },
     {
       .name = "Zero_Tensor_632",
@@ -571,9 +570,9 @@ static void LL_ATON_End_EpochBlock_67(const void *epoch_block)
       .offset_limit = 2450224,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 67,
+      .epoch = 64,
       .batch = 24,
-      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67__mem_shape_L_1_24_8_8,
+      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64__mem_shape_L_1_24_8_8,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -582,21 +581,21 @@ static void LL_ATON_End_EpochBlock_67(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67__shape_1_24_8_8,
+      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64__shape_1_24_8_8,
       .per_channel = 0,
-      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67_Zero_Tensor_632_quant_scale,
-      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67_Zero_Tensor_632_quant_offset,
+      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64_Zero_Tensor_632_quant_scale,
+      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64_Zero_Tensor_632_quant_offset,
     },
     {
       .name = NULL,
     }
   };
 
-  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_67__shape_1_96_8_8[] = { 1, 8, 8, 96 };
-  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_67__mem_shape_L_1_96_8_8[] = { 1, 8, 8, 96 };
-  static const float ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_67_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_scale[] = { 0.0305094718933105 };
-  static const int16_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_67_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_offset[] = { -128 };
-  static const LL_Buffer_InfoTypeDef ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_67[] = {
+  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_64__shape_1_96_8_8[] = { 1, 8, 8, 96 };
+  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_64__mem_shape_L_1_96_8_8[] = { 1, 8, 8, 96 };
+  static const float ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_64_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_scale[] = { 0.0305094718933105 };
+  static const int16_t ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_64_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_offset[] = { -128 };
+  static const LL_Buffer_InfoTypeDef ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_64[] = {
     {
       .name = "ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
@@ -605,9 +604,9 @@ static void LL_ATON_End_EpochBlock_67(const void *epoch_block)
       .offset_limit = 129088,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 67,
+      .epoch = 64,
       .batch = 96,
-      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_67__mem_shape_L_1_96_8_8,
+      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_64__mem_shape_L_1_96_8_8,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -616,17 +615,17 @@ static void LL_ATON_End_EpochBlock_67(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_67__shape_1_96_8_8,
+      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_64__shape_1_96_8_8,
       .per_channel = 0,
-      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_67_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_scale,
-      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_67_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_offset,
+      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_64_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_scale,
+      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_64_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_offset,
     },
     {
       .name = NULL,
     }
   };
 
-  LL_ATON_LIB_Concat(ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_67, 4, ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_67, 1, 4, 5);
+  LL_ATON_LIB_Concat(ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_in_64, 4, ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_tensor_info_out_64, 1, 1, 2);
 
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -637,9 +636,9 @@ static void LL_ATON_End_EpochBlock_67(const void *epoch_block)
 }
 
 
-/* scheduling epoch=68   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=65   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_68(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_65(const void *epoch_block)
 {
   /* *** MCU cache invalidate (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -654,11 +653,11 @@ static void LL_ATON_End_EpochBlock_68(const void *epoch_block)
 
 /* Unit= 27 [PROCESSOR 0] */
 /* kind=DepthToSpace node=ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635 */
-  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_68__shape_1_96_8_8[] = { 1, 8, 8, 96 };
-  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_68__mem_shape_L_1_96_8_8[] = { 1, 8, 8, 96 };
-  static const float ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_68_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_scale[] = { 0.0305094718933105 };
-  static const int16_t ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_68_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_offset[] = { -128 };
-  static const LL_Buffer_InfoTypeDef ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_68[] = {
+  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_65__shape_1_96_8_8[] = { 1, 8, 8, 96 };
+  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_65__mem_shape_L_1_96_8_8[] = { 1, 8, 8, 96 };
+  static const float ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_65_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_scale[] = { 0.0305094718933105 };
+  static const int16_t ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_65_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_offset[] = { -128 };
+  static const LL_Buffer_InfoTypeDef ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_65[] = {
     {
       .name = "ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
@@ -667,9 +666,9 @@ static void LL_ATON_End_EpochBlock_68(const void *epoch_block)
       .offset_limit = 129088,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 68,
+      .epoch = 65,
       .batch = 96,
-      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_68__mem_shape_L_1_96_8_8,
+      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_65__mem_shape_L_1_96_8_8,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -678,21 +677,21 @@ static void LL_ATON_End_EpochBlock_68(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_68__shape_1_96_8_8,
+      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_65__shape_1_96_8_8,
       .per_channel = 0,
-      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_68_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_scale,
-      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_68_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_offset,
+      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_65_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_scale,
+      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_65_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_offset,
     },
     {
       .name = NULL,
     }
   };
 
-  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_68__shape_1_24_16_16[] = { 1, 16, 16, 24 };
-  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_68__mem_shape_L_1_24_16_16[] = { 1, 16, 16, 24 };
-  static const float ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_68_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_636_quant_scale[] = { 0.0305094718933105 };
-  static const int16_t ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_68_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_636_quant_offset[] = { -128 };
-  static const LL_Buffer_InfoTypeDef ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_68[] = {
+  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_65__shape_1_24_16_16[] = { 1, 16, 16, 24 };
+  static const uint32_t ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_65__mem_shape_L_1_24_16_16[] = { 1, 16, 16, 24 };
+  static const float ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_65_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_636_quant_scale[] = { 0.0305094718933105 };
+  static const int16_t ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_65_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_636_quant_offset[] = { -128 };
+  static const LL_Buffer_InfoTypeDef ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_65[] = {
     {
       .name = "ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_636",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
@@ -701,9 +700,9 @@ static void LL_ATON_End_EpochBlock_68(const void *epoch_block)
       .offset_limit = 135232,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 68,
+      .epoch = 65,
       .batch = 24,
-      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_68__mem_shape_L_1_24_16_16,
+      .mem_shape = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_65__mem_shape_L_1_24_16_16,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -712,17 +711,17 @@ static void LL_ATON_End_EpochBlock_68(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_68__shape_1_24_16_16,
+      .shape = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_65__shape_1_24_16_16,
       .per_channel = 0,
-      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_68_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_636_quant_scale,
-      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_68_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_636_quant_offset,
+      .scale = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_65_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_636_quant_scale,
+      .offset = ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_65_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_636_quant_offset,
     },
     {
       .name = NULL,
     }
   };
 
-  LL_ATON_LIB_DMA_DepthToSpace(ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_68, 1, ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_68, 2, 2, 6, 7);
+  LL_ATON_LIB_DMA_DepthToSpace(ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_in_65, 1, ConvTranspose_262_expanded_resize_8_resize_NN_to_expansion_dts_635_tensor_info_out_65, 2, 2, 3, 4);
 
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -733,10 +732,10 @@ static void LL_ATON_End_EpochBlock_68(const void *epoch_block)
 }
 
 
-// Epoch Controller Blob (name='_ec_blob_69') micro instructions needed
+// Epoch Controller Blob (name='_ec_blob_66') micro instructions needed
 
-// Epoch Controller Blob (name='_ec_blob_69') start function
-static void _ec_blob_cache_start_func_69(const void *epoch_block) {
+// Epoch Controller Blob (name='_ec_blob_66') start function
+static void _ec_blob_cache_start_func_66(const void *epoch_block) {
   LL_ATON_LIB_UNUSED(epoch_block);
 
   /* *** MCU cache invalidate (only) operation (HW, whole range) *** */
@@ -748,9 +747,9 @@ static void _ec_blob_cache_start_func_69(const void *epoch_block) {
 };
 
 
-/* scheduling epoch=72   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=68   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_72(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_68(const void *epoch_block)
 {
   /* *** MCU cache invalidate (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -765,13 +764,13 @@ static void LL_ATON_End_EpochBlock_72(const void *epoch_block)
 
 /* Unit= 27 [PROCESSOR 0] */
 /* kind=Concat node=ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640 */
-  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72__shape_1_24_16_16[] = { 1, 16, 16, 24 };
-  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72__mem_shape_L_1_24_16_16[] = { 1, 16, 16, 24 };
-  static const float ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72_Dequantize_267_out_0_quant_scale[] = { 0.0368081703782082 };
-  static const int16_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72_Dequantize_267_out_0_quant_offset[] = { -128 };
-  static const float ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72_Zero_Tensor_639_quant_scale[] = { 0.0368081703782082 };
-  static const int16_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72_Zero_Tensor_639_quant_offset[] = { -128 };
-  static const LL_Buffer_InfoTypeDef ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72[] = {
+  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68__shape_1_24_16_16[] = { 1, 16, 16, 24 };
+  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68__mem_shape_L_1_24_16_16[] = { 1, 16, 16, 24 };
+  static const float ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68_Dequantize_267_out_0_quant_scale[] = { 0.0368081703782082 };
+  static const int16_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68_Dequantize_267_out_0_quant_offset[] = { -128 };
+  static const float ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68_Zero_Tensor_639_quant_scale[] = { 0.0368081703782082 };
+  static const int16_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68_Zero_Tensor_639_quant_offset[] = { -128 };
+  static const LL_Buffer_InfoTypeDef ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68[] = {
     {
       .name = "Dequantize_267_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
@@ -780,9 +779,9 @@ static void LL_ATON_End_EpochBlock_72(const void *epoch_block)
       .offset_limit = 129088,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 72,
+      .epoch = 68,
       .batch = 24,
-      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72__mem_shape_L_1_24_16_16,
+      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68__mem_shape_L_1_24_16_16,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -791,10 +790,10 @@ static void LL_ATON_End_EpochBlock_72(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72__shape_1_24_16_16,
+      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68__shape_1_24_16_16,
       .per_channel = 0,
-      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72_Dequantize_267_out_0_quant_scale,
-      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72_Dequantize_267_out_0_quant_offset,
+      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68_Dequantize_267_out_0_quant_scale,
+      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68_Dequantize_267_out_0_quant_offset,
     },
     {
       .name = "Zero_Tensor_639",
@@ -804,9 +803,9 @@ static void LL_ATON_End_EpochBlock_72(const void *epoch_block)
       .offset_limit = 2374768,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 72,
+      .epoch = 68,
       .batch = 24,
-      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72__mem_shape_L_1_24_16_16,
+      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68__mem_shape_L_1_24_16_16,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -815,10 +814,10 @@ static void LL_ATON_End_EpochBlock_72(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72__shape_1_24_16_16,
+      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68__shape_1_24_16_16,
       .per_channel = 0,
-      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72_Zero_Tensor_639_quant_scale,
-      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72_Zero_Tensor_639_quant_offset,
+      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68_Zero_Tensor_639_quant_scale,
+      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68_Zero_Tensor_639_quant_offset,
     },
     {
       .name = "Zero_Tensor_639",
@@ -828,9 +827,9 @@ static void LL_ATON_End_EpochBlock_72(const void *epoch_block)
       .offset_limit = 2374768,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 72,
+      .epoch = 68,
       .batch = 24,
-      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72__mem_shape_L_1_24_16_16,
+      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68__mem_shape_L_1_24_16_16,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -839,10 +838,10 @@ static void LL_ATON_End_EpochBlock_72(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72__shape_1_24_16_16,
+      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68__shape_1_24_16_16,
       .per_channel = 0,
-      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72_Zero_Tensor_639_quant_scale,
-      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72_Zero_Tensor_639_quant_offset,
+      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68_Zero_Tensor_639_quant_scale,
+      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68_Zero_Tensor_639_quant_offset,
     },
     {
       .name = "Zero_Tensor_639",
@@ -852,9 +851,9 @@ static void LL_ATON_End_EpochBlock_72(const void *epoch_block)
       .offset_limit = 2374768,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 72,
+      .epoch = 68,
       .batch = 24,
-      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72__mem_shape_L_1_24_16_16,
+      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68__mem_shape_L_1_24_16_16,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -863,21 +862,21 @@ static void LL_ATON_End_EpochBlock_72(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72__shape_1_24_16_16,
+      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68__shape_1_24_16_16,
       .per_channel = 0,
-      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72_Zero_Tensor_639_quant_scale,
-      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72_Zero_Tensor_639_quant_offset,
+      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68_Zero_Tensor_639_quant_scale,
+      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68_Zero_Tensor_639_quant_offset,
     },
     {
       .name = NULL,
     }
   };
 
-  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_72__shape_1_96_16_16[] = { 1, 16, 16, 96 };
-  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_72__mem_shape_L_1_96_16_16[] = { 1, 16, 16, 96 };
-  static const float ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_72_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_scale[] = { 0.0368081703782082 };
-  static const int16_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_72_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_offset[] = { -128 };
-  static const LL_Buffer_InfoTypeDef ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_72[] = {
+  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_68__shape_1_96_16_16[] = { 1, 16, 16, 96 };
+  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_68__mem_shape_L_1_96_16_16[] = { 1, 16, 16, 96 };
+  static const float ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_68_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_scale[] = { 0.0368081703782082 };
+  static const int16_t ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_68_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_offset[] = { -128 };
+  static const LL_Buffer_InfoTypeDef ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_68[] = {
     {
       .name = "ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
@@ -886,9 +885,9 @@ static void LL_ATON_End_EpochBlock_72(const void *epoch_block)
       .offset_limit = 245824,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 72,
+      .epoch = 68,
       .batch = 96,
-      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_72__mem_shape_L_1_96_16_16,
+      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_68__mem_shape_L_1_96_16_16,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -897,17 +896,17 @@ static void LL_ATON_End_EpochBlock_72(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_72__shape_1_96_16_16,
+      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_68__shape_1_96_16_16,
       .per_channel = 0,
-      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_72_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_scale,
-      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_72_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_offset,
+      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_68_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_scale,
+      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_68_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_offset,
     },
     {
       .name = NULL,
     }
   };
 
-  LL_ATON_LIB_Concat(ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_72, 4, ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_72, 1, 1, 2);
+  LL_ATON_LIB_Concat(ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_in_68, 4, ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_tensor_info_out_68, 1, 4, 0);
 
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -918,9 +917,9 @@ static void LL_ATON_End_EpochBlock_72(const void *epoch_block)
 }
 
 
-/* scheduling epoch=73   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=69   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_73(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_69(const void *epoch_block)
 {
   /* *** MCU cache invalidate (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -935,11 +934,11 @@ static void LL_ATON_End_EpochBlock_73(const void *epoch_block)
 
 /* Unit= 27 [PROCESSOR 0] */
 /* kind=DepthToSpace node=ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642 */
-  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_73__shape_1_96_16_16[] = { 1, 16, 16, 96 };
-  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_73__mem_shape_L_1_96_16_16[] = { 1, 16, 16, 96 };
-  static const float ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_73_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_scale[] = { 0.0368081703782082 };
-  static const int16_t ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_73_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_offset[] = { -128 };
-  static const LL_Buffer_InfoTypeDef ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_73[] = {
+  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_69__shape_1_96_16_16[] = { 1, 16, 16, 96 };
+  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_69__mem_shape_L_1_96_16_16[] = { 1, 16, 16, 96 };
+  static const float ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_69_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_scale[] = { 0.0368081703782082 };
+  static const int16_t ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_69_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_offset[] = { -128 };
+  static const LL_Buffer_InfoTypeDef ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_69[] = {
     {
       .name = "ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
@@ -948,9 +947,9 @@ static void LL_ATON_End_EpochBlock_73(const void *epoch_block)
       .offset_limit = 245824,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 73,
+      .epoch = 69,
       .batch = 96,
-      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_73__mem_shape_L_1_96_16_16,
+      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_69__mem_shape_L_1_96_16_16,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -959,21 +958,21 @@ static void LL_ATON_End_EpochBlock_73(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_73__shape_1_96_16_16,
+      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_69__shape_1_96_16_16,
       .per_channel = 0,
-      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_73_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_scale,
-      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_73_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_offset,
+      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_69_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_scale,
+      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_69_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_offset,
     },
     {
       .name = NULL,
     }
   };
 
-  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_73__shape_1_24_32_32[] = { 1, 32, 32, 24 };
-  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_73__mem_shape_L_1_24_32_32[] = { 1, 32, 32, 24 };
-  static const float ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_73_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_643_quant_scale[] = { 0.0368081703782082 };
-  static const int16_t ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_73_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_643_quant_offset[] = { -128 };
-  static const LL_Buffer_InfoTypeDef ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_73[] = {
+  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_69__shape_1_24_32_32[] = { 1, 32, 32, 24 };
+  static const uint32_t ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_69__mem_shape_L_1_24_32_32[] = { 1, 32, 32, 24 };
+  static const float ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_69_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_643_quant_scale[] = { 0.0368081703782082 };
+  static const int16_t ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_69_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_643_quant_offset[] = { -128 };
+  static const LL_Buffer_InfoTypeDef ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_69[] = {
     {
       .name = "ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_643",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
@@ -982,9 +981,9 @@ static void LL_ATON_End_EpochBlock_73(const void *epoch_block)
       .offset_limit = 270400,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 73,
+      .epoch = 69,
       .batch = 24,
-      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_73__mem_shape_L_1_24_32_32,
+      .mem_shape = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_69__mem_shape_L_1_24_32_32,
       .mem_ndims = 4,
       .chpos = CHPos_Last,
       .Qm = 7,
@@ -993,17 +992,17 @@ static void LL_ATON_End_EpochBlock_73(const void *epoch_block)
       .type = DataType_INT8,
       .nbits = 8,
       .ndims = 4,
-      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_73__shape_1_24_32_32,
+      .shape = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_69__shape_1_24_32_32,
       .per_channel = 0,
-      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_73_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_643_quant_scale,
-      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_73_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_643_quant_offset,
+      .scale = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_69_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_643_quant_scale,
+      .offset = ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_69_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_643_quant_offset,
     },
     {
       .name = NULL,
     }
   };
 
-  LL_ATON_LIB_DMA_DepthToSpace(ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_73, 1, ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_73, 2, 2, 3, 8);
+  LL_ATON_LIB_DMA_DepthToSpace(ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_in_69, 1, ConvTranspose_268_expanded_resize_16_resize_NN_to_expansion_dts_642_tensor_info_out_69, 2, 2, 5, 6);
 
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
@@ -1014,10 +1013,10 @@ static void LL_ATON_End_EpochBlock_73(const void *epoch_block)
 }
 
 
-// Epoch Controller Blob (name='_ec_blob_74') micro instructions needed
+// Epoch Controller Blob (name='_ec_blob_70') micro instructions needed
 
-// Epoch Controller Blob (name='_ec_blob_74') start function
-static void _ec_blob_cache_start_func_74(const void *epoch_block) {
+// Epoch Controller Blob (name='_ec_blob_70') start function
+static void _ec_blob_cache_start_func_70(const void *epoch_block) {
   LL_ATON_LIB_UNUSED(epoch_block);
 
   /* *** MCU cache invalidate (only) operation (HW, whole range) *** */
@@ -1029,9 +1028,9 @@ static void _ec_blob_cache_start_func_74(const void *epoch_block) {
 };
 
 
-/* scheduling epoch=79   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=74   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_79(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_74(const void *epoch_block)
 {
   LL_ATON_LIB_UNUSED(epoch_block);
 
@@ -1052,11 +1051,11 @@ static void LL_ATON_End_EpochBlock_79(const void *epoch_block)
     .general.input.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 139264))) /* Equivalent hex address = 0x34302000UL */,
     .general.input.format.is_signed = 1,
     /* "is" tensor-related info: */
-    .is.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455296))) /* Equivalent hex address = 0x71257700UL */,
+    .is.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455280))) /* Equivalent hex address = 0x712576f0UL */,
     .is.format.is_signed = 1,
     .is.dim.num_elem = 1,
     /* "izp" tensor-related info: */
-    .izp.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455376))) /* Equivalent hex address = 0x71257750UL */,
+    .izp.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455360))) /* Equivalent hex address = 0x71257740UL */,
     .izp.format.is_signed = 1,
     .izp.dim.num_elem = 1,
     /* "general.output" tensor-related info: */
@@ -1086,10 +1085,10 @@ static void LL_ATON_End_EpochBlock_79(const void *epoch_block)
 }
 
 
-// Epoch Controller Blob (name='_ec_blob_80') micro instructions needed
+// Epoch Controller Blob (name='_ec_blob_75') micro instructions needed
 
-// Epoch Controller Blob (name='_ec_blob_80') start function
-static void _ec_blob_cache_start_func_80(const void *epoch_block) {
+// Epoch Controller Blob (name='_ec_blob_75') start function
+static void _ec_blob_cache_start_func_75(const void *epoch_block) {
   LL_ATON_LIB_UNUSED(epoch_block);
 
   /* *** MCU cache invalidate (only) operation (HW, whole range) *** */
@@ -1101,9 +1100,9 @@ static void _ec_blob_cache_start_func_80(const void *epoch_block) {
 };
 
 
-/* scheduling epoch=81   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=76   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_81(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_76(const void *epoch_block)
 {
   LL_ATON_LIB_UNUSED(epoch_block);
 
@@ -1124,11 +1123,11 @@ static void LL_ATON_End_EpochBlock_81(const void *epoch_block)
     .general.input.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 65536))) /* Equivalent hex address = 0x342f0000UL */,
     .general.input.format.is_signed = 1,
     /* "is" tensor-related info: */
-    .is.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455312))) /* Equivalent hex address = 0x71257710UL */,
+    .is.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455296))) /* Equivalent hex address = 0x71257700UL */,
     .is.format.is_signed = 1,
     .is.dim.num_elem = 1,
     /* "izp" tensor-related info: */
-    .izp.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455392))) /* Equivalent hex address = 0x71257760UL */,
+    .izp.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455376))) /* Equivalent hex address = 0x71257750UL */,
     .izp.format.is_signed = 1,
     .izp.dim.num_elem = 1,
     /* "general.output" tensor-related info: */
@@ -1158,9 +1157,9 @@ static void LL_ATON_End_EpochBlock_81(const void *epoch_block)
 }
 
 
-/* scheduling epoch=82   nodes=2   ------------------------------------------------------------------- */
+/* scheduling epoch=77   nodes=2   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_82(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_77(const void *epoch_block)
 {
   LL_ATON_LIB_UNUSED(epoch_block);
 
@@ -1181,11 +1180,11 @@ static void LL_ATON_End_EpochBlock_82(const void *epoch_block)
     .general.input.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 67584))) /* Equivalent hex address = 0x342f0800UL */,
     .general.input.format.is_signed = 1,
     /* "is" tensor-related info: */
-    .is.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455328))) /* Equivalent hex address = 0x71257720UL */,
+    .is.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455312))) /* Equivalent hex address = 0x71257710UL */,
     .is.format.is_signed = 1,
     .is.dim.num_elem = 1,
     /* "izp" tensor-related info: */
-    .izp.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455408))) /* Equivalent hex address = 0x71257770UL */,
+    .izp.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455392))) /* Equivalent hex address = 0x71257760UL */,
     .izp.format.is_signed = 1,
     .izp.dim.num_elem = 1,
     /* "general.output" tensor-related info: */
@@ -1215,10 +1214,10 @@ static void LL_ATON_End_EpochBlock_82(const void *epoch_block)
 }
 
 
-// Epoch Controller Blob (name='_ec_blob_83') micro instructions needed
+// Epoch Controller Blob (name='_ec_blob_78') micro instructions needed
 
-// Epoch Controller Blob (name='_ec_blob_83') start function
-static void _ec_blob_cache_start_func_83(const void *epoch_block) {
+// Epoch Controller Blob (name='_ec_blob_78') start function
+static void _ec_blob_cache_start_func_78(const void *epoch_block) {
   LL_ATON_LIB_UNUSED(epoch_block);
 
   /* *** MCU cache invalidate (only) operation (HW, whole range) *** */
@@ -1230,9 +1229,9 @@ static void _ec_blob_cache_start_func_83(const void *epoch_block) {
 };
 
 
-/* scheduling epoch=85   nodes=1   ------------------------------------------------------------------- */
+/* scheduling epoch=80   nodes=1   ------------------------------------------------------------------- */
 
-static void LL_ATON_End_EpochBlock_85(const void *epoch_block)
+static void LL_ATON_End_EpochBlock_80(const void *epoch_block)
 {
   LL_ATON_LIB_UNUSED(epoch_block);
 
@@ -1253,11 +1252,11 @@ static void LL_ATON_End_EpochBlock_85(const void *epoch_block)
     .general.input.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 45056))) /* Equivalent hex address = 0x342eb000UL */,
     .general.input.format.is_signed = 1,
     /* "is" tensor-related info: */
-    .is.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455344))) /* Equivalent hex address = 0x71257730UL */,
+    .is.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455328))) /* Equivalent hex address = 0x71257720UL */,
     .is.format.is_signed = 1,
     .is.dim.num_elem = 1,
     /* "izp" tensor-related info: */
-    .izp.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455424))) /* Equivalent hex address = 0x71257780UL */,
+    .izp.mem.start_offset = ((unsigned char *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x71000000UL + 2455408))) /* Equivalent hex address = 0x71257770UL */,
     .izp.format.is_signed = 1,
     .izp.dim.num_elem = 1,
     /* "general.output" tensor-related info: */
@@ -1287,7 +1286,7 @@ static void LL_ATON_End_EpochBlock_85(const void *epoch_block)
 }
 
 
-// Epoch Controller Blob (name='_ec_blob_86') micro instructions needed
+// Epoch Controller Blob (name='_ec_blob_81') micro instructions needed
 
 
 /* scheduling DONE                 ------------------------------------------------------------------- */
@@ -1328,17 +1327,31 @@ const EpochBlock_ItemTypeDef *LL_ATON_EpochBlockItems_face_detection(void) {
       .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
 #ifdef LL_ATON_EB_DBG_INFO
       .epoch_num = 3,
+      .last_epoch_num = 59,
+#endif // LL_ATON_EB_DBG_INFO
+    },
+    {
+      .start_epoch_block = NULL,
+      .end_epoch_block = LL_ATON_End_EpochBlock_60,
+      .wait_mask = 0x00000000,
+      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
+#ifdef LL_ATON_EB_DBG_INFO
+      .epoch_num = 60,
+      .last_epoch_num = 60,
+      .in_streng_mask = 0x00000000,
+      .out_streng_mask = 0x00000000,
+      .estimated_npu_cycles = 0,
+      .estimated_tot_cycles = 0,
+#endif // LL_ATON_EB_DBG_INFO
+    },
+    {
+      .start_epoch_block = NULL,
+      .end_epoch_block = LL_ATON_End_EpochBlock_61,
+      .wait_mask = 0x00000000,
+      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
+#ifdef LL_ATON_EB_DBG_INFO
+      .epoch_num = 61,
       .last_epoch_num = 61,
-#endif // LL_ATON_EB_DBG_INFO
-    },
-    {
-      .start_epoch_block = NULL,
-      .end_epoch_block = LL_ATON_End_EpochBlock_62,
-      .wait_mask = 0x00000000,
-      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
-#ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 62,
-      .last_epoch_num = 62,
       .in_streng_mask = 0x00000000,
       .out_streng_mask = 0x00000000,
       .estimated_npu_cycles = 0,
@@ -1346,42 +1359,53 @@ const EpochBlock_ItemTypeDef *LL_ATON_EpochBlockItems_face_detection(void) {
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
-      .start_epoch_block = NULL,
-      .end_epoch_block = LL_ATON_End_EpochBlock_63,
-      .wait_mask = 0x00000000,
-      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
-#ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 63,
-      .last_epoch_num = 63,
-      .in_streng_mask = 0x00000000,
-      .out_streng_mask = 0x00000000,
-      .estimated_npu_cycles = 0,
-      .estimated_tot_cycles = 0,
-#endif // LL_ATON_EB_DBG_INFO
-    },
-    {
-      .start_epoch_block = _ec_blob_cache_start_func_64,
+      .start_epoch_block = _ec_blob_cache_start_func_62,
       .end_epoch_block = NULL,
-      .blob_address = (uintptr_t)(_ec_blob_64),
+      .blob_address = (uintptr_t)(_ec_blob_62),
       .wait_mask = 0,
       .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
 #ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 64,
-      .last_epoch_num = 66,
+      .epoch_num = 62,
+      .last_epoch_num = 63,
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
       .start_epoch_block = NULL,
-      .end_epoch_block = LL_ATON_End_EpochBlock_67,
+      .end_epoch_block = LL_ATON_End_EpochBlock_64,
       .wait_mask = 0x00000000,
       .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
 #ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 67,
-      .last_epoch_num = 67,
+      .epoch_num = 64,
+      .last_epoch_num = 64,
       .in_streng_mask = 0x00000000,
       .out_streng_mask = 0x00000000,
       .estimated_npu_cycles = 0,
       .estimated_tot_cycles = 0,
+#endif // LL_ATON_EB_DBG_INFO
+    },
+    {
+      .start_epoch_block = NULL,
+      .end_epoch_block = LL_ATON_End_EpochBlock_65,
+      .wait_mask = 0x00000000,
+      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
+#ifdef LL_ATON_EB_DBG_INFO
+      .epoch_num = 65,
+      .last_epoch_num = 65,
+      .in_streng_mask = 0x00000000,
+      .out_streng_mask = 0x00000000,
+      .estimated_npu_cycles = 0,
+      .estimated_tot_cycles = 0,
+#endif // LL_ATON_EB_DBG_INFO
+    },
+    {
+      .start_epoch_block = _ec_blob_cache_start_func_66,
+      .end_epoch_block = NULL,
+      .blob_address = (uintptr_t)(_ec_blob_66),
+      .wait_mask = 0,
+      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
+#ifdef LL_ATON_EB_DBG_INFO
+      .epoch_num = 66,
+      .last_epoch_num = 67,
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
@@ -1399,24 +1423,13 @@ const EpochBlock_ItemTypeDef *LL_ATON_EpochBlockItems_face_detection(void) {
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
-      .start_epoch_block = _ec_blob_cache_start_func_69,
-      .end_epoch_block = NULL,
-      .blob_address = (uintptr_t)(_ec_blob_69),
-      .wait_mask = 0,
-      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
+      .start_epoch_block = NULL,
+      .end_epoch_block = LL_ATON_End_EpochBlock_69,
+      .wait_mask = 0x00000000,
+      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
 #ifdef LL_ATON_EB_DBG_INFO
       .epoch_num = 69,
-      .last_epoch_num = 71,
-#endif // LL_ATON_EB_DBG_INFO
-    },
-    {
-      .start_epoch_block = NULL,
-      .end_epoch_block = LL_ATON_End_EpochBlock_72,
-      .wait_mask = 0x00000000,
-      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
-#ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 72,
-      .last_epoch_num = 72,
+      .last_epoch_num = 69,
       .in_streng_mask = 0x00000000,
       .out_streng_mask = 0x00000000,
       .estimated_npu_cycles = 0,
@@ -1424,38 +1437,24 @@ const EpochBlock_ItemTypeDef *LL_ATON_EpochBlockItems_face_detection(void) {
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
-      .start_epoch_block = NULL,
-      .end_epoch_block = LL_ATON_End_EpochBlock_73,
-      .wait_mask = 0x00000000,
-      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_hybrid,
-#ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 73,
-      .last_epoch_num = 73,
-      .in_streng_mask = 0x00000000,
-      .out_streng_mask = 0x00000000,
-      .estimated_npu_cycles = 0,
-      .estimated_tot_cycles = 0,
-#endif // LL_ATON_EB_DBG_INFO
-    },
-    {
-      .start_epoch_block = _ec_blob_cache_start_func_74,
+      .start_epoch_block = _ec_blob_cache_start_func_70,
       .end_epoch_block = NULL,
-      .blob_address = (uintptr_t)(_ec_blob_74),
+      .blob_address = (uintptr_t)(_ec_blob_70),
       .wait_mask = 0,
       .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
 #ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 74,
-      .last_epoch_num = 78,
+      .epoch_num = 70,
+      .last_epoch_num = 73,
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
       .start_epoch_block = NULL,
-      .end_epoch_block = LL_ATON_End_EpochBlock_79,
+      .end_epoch_block = LL_ATON_End_EpochBlock_74,
       .wait_mask = 0x00000000,
       .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_pure_sw,
 #ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 79,
-      .last_epoch_num = 79,
+      .epoch_num = 74,
+      .last_epoch_num = 74,
       .in_streng_mask = 0x00000000,
       .out_streng_mask = 0x00000000,
       .estimated_npu_cycles = 0,
@@ -1463,78 +1462,78 @@ const EpochBlock_ItemTypeDef *LL_ATON_EpochBlockItems_face_detection(void) {
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
-      .start_epoch_block = _ec_blob_cache_start_func_80,
+      .start_epoch_block = _ec_blob_cache_start_func_75,
       .end_epoch_block = NULL,
-      .blob_address = (uintptr_t)(_ec_blob_80),
+      .blob_address = (uintptr_t)(_ec_blob_75),
       .wait_mask = 0,
       .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
+#ifdef LL_ATON_EB_DBG_INFO
+      .epoch_num = 75,
+      .last_epoch_num = 75,
+#endif // LL_ATON_EB_DBG_INFO
+    },
+    {
+      .start_epoch_block = NULL,
+      .end_epoch_block = LL_ATON_End_EpochBlock_76,
+      .wait_mask = 0x00000000,
+      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_pure_sw,
+#ifdef LL_ATON_EB_DBG_INFO
+      .epoch_num = 76,
+      .last_epoch_num = 76,
+      .in_streng_mask = 0x00000000,
+      .out_streng_mask = 0x00000000,
+      .estimated_npu_cycles = 0,
+      .estimated_tot_cycles = 0,
+#endif // LL_ATON_EB_DBG_INFO
+    },
+    {
+      .start_epoch_block = NULL,
+      .end_epoch_block = LL_ATON_End_EpochBlock_77,
+      .wait_mask = 0x00000000,
+      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_pure_sw,
+#ifdef LL_ATON_EB_DBG_INFO
+      .epoch_num = 77,
+      .last_epoch_num = 77,
+      .in_streng_mask = 0x00000000,
+      .out_streng_mask = 0x00000000,
+      .estimated_npu_cycles = 0,
+      .estimated_tot_cycles = 0,
+#endif // LL_ATON_EB_DBG_INFO
+    },
+    {
+      .start_epoch_block = _ec_blob_cache_start_func_78,
+      .end_epoch_block = NULL,
+      .blob_address = (uintptr_t)(_ec_blob_78),
+      .wait_mask = 0,
+      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
+#ifdef LL_ATON_EB_DBG_INFO
+      .epoch_num = 78,
+      .last_epoch_num = 79,
+#endif // LL_ATON_EB_DBG_INFO
+    },
+    {
+      .start_epoch_block = NULL,
+      .end_epoch_block = LL_ATON_End_EpochBlock_80,
+      .wait_mask = 0x00000000,
+      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_pure_sw,
 #ifdef LL_ATON_EB_DBG_INFO
       .epoch_num = 80,
       .last_epoch_num = 80,
+      .in_streng_mask = 0x00000000,
+      .out_streng_mask = 0x00000000,
+      .estimated_npu_cycles = 0,
+      .estimated_tot_cycles = 0,
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
       .start_epoch_block = NULL,
-      .end_epoch_block = LL_ATON_End_EpochBlock_81,
-      .wait_mask = 0x00000000,
-      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_pure_sw,
+      .end_epoch_block = NULL,
+      .blob_address = (uintptr_t)(_ec_blob_81),
+      .wait_mask = 0,
+      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
 #ifdef LL_ATON_EB_DBG_INFO
       .epoch_num = 81,
-      .last_epoch_num = 81,
-      .in_streng_mask = 0x00000000,
-      .out_streng_mask = 0x00000000,
-      .estimated_npu_cycles = 0,
-      .estimated_tot_cycles = 0,
-#endif // LL_ATON_EB_DBG_INFO
-    },
-    {
-      .start_epoch_block = NULL,
-      .end_epoch_block = LL_ATON_End_EpochBlock_82,
-      .wait_mask = 0x00000000,
-      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_pure_sw,
-#ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 82,
       .last_epoch_num = 82,
-      .in_streng_mask = 0x00000000,
-      .out_streng_mask = 0x00000000,
-      .estimated_npu_cycles = 0,
-      .estimated_tot_cycles = 0,
-#endif // LL_ATON_EB_DBG_INFO
-    },
-    {
-      .start_epoch_block = _ec_blob_cache_start_func_83,
-      .end_epoch_block = NULL,
-      .blob_address = (uintptr_t)(_ec_blob_83),
-      .wait_mask = 0,
-      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
-#ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 83,
-      .last_epoch_num = 84,
-#endif // LL_ATON_EB_DBG_INFO
-    },
-    {
-      .start_epoch_block = NULL,
-      .end_epoch_block = LL_ATON_End_EpochBlock_85,
-      .wait_mask = 0x00000000,
-      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_pure_sw,
-#ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 85,
-      .last_epoch_num = 85,
-      .in_streng_mask = 0x00000000,
-      .out_streng_mask = 0x00000000,
-      .estimated_npu_cycles = 0,
-      .estimated_tot_cycles = 0,
-#endif // LL_ATON_EB_DBG_INFO
-    },
-    {
-      .start_epoch_block = NULL,
-      .end_epoch_block = NULL,
-      .blob_address = (uintptr_t)(_ec_blob_86),
-      .wait_mask = 0,
-      .flags = EpochBlock_Flags_epoch_start | EpochBlock_Flags_epoch_end | EpochBlock_Flags_blob | EpochBlock_Flags_pure_hw,
-#ifdef LL_ATON_EB_DBG_INFO
-      .epoch_num = 86,
-      .last_epoch_num = 87,
 #endif // LL_ATON_EB_DBG_INFO
     },
     {
@@ -1558,7 +1557,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
   static const float buff_info_Conv2D_6_weights_quant_scale[] = { 3.90725763281807e-05, 1.21580451377667e-05, 2.68383028014796e-05, 3.24126121995505e-05, 4.57292626379058e-05, 4.07484512834344e-05, 3.90823661291506e-05, 4.21307195210829e-05, 3.51010811527885e-08, 3.53917384927627e-05, 2.89129616248829e-06, 1.27974617569748e-08, 3.85434577765409e-06, 7.58465379391282e-09, 1.78092996065971e-05, 1.63780805451097e-05, 2.24395480472594e-05, 4.68377447759849e-06, 3.93700805290109e-09, 2.614770346554e-05, 3.93700805290109e-09, 6.90187953296117e-05, 0.000160904455697164, 2.50577656402129e-08, 3.65102750947699e-05, 2.14450228668284e-05, 3.93700805290109e-09, 1.10173106193656e-08, 5.66648159292527e-05, 5.26914436704828e-06, 3.64072984666564e-05, 6.45139621724411e-08 };
   static const int16_t buff_info_Conv2D_6_weights_quant_offset[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
   static const uint32_t buff_info__shape_16_32_1_1[] = { 16, 1, 1, 32 };
-  static const uint32_t buff_info__mem_shape_F_16_32_1_1[] = { 16, 32, 1, 1 };
+  static const uint32_t buff_info__mem_shape_M_16_32_1_1[] = { 16, 2, 1, 1, 16 };
   static const float buff_info_Conv2D_15_weights_quant_scale[] = { 0.00733989104628563, 0.00462674628943205, 0.00686989352107048, 0.00534058641642332, 0.00863973889499903, 0.00586225092411041, 0.00546987866982818, 0.00610541179776192, 0.00680056074634194, 0.00895462650805712, 0.00943103712052107, 0.00599174946546555, 0.0080790501087904, 0.00773515645414591, 0.00610341690480709, 0.00860209576785564 };
   static const int16_t buff_info_Conv2D_15_weights_quant_offset[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
   static const uint32_t buff_info__shape_96_16_1_1[] = { 96, 1, 1, 16 };
@@ -1795,9 +1794,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Quantize_2_y_scale",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455280,
-      .offset_end = 2455284,
-      .offset_limit = 2455352,
+      .offset_start = 2455264,
+      .offset_end = 2455268,
+      .offset_limit = 2455336,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -1816,9 +1815,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Quantize_2_y_zero_point",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455360,
-      .offset_end = 2455361,
-      .offset_limit = 2455432,
+      .offset_start = 2455344,
+      .offset_end = 2455345,
+      .offset_limit = 2455416,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -1862,15 +1861,15 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
       .name = "Conv2D_15_weights",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
       .offset_start = 2453904,
-      .offset_end = 2454417,
-      .offset_limit = 2454488,
+      .offset_end = 2454416,
+      .offset_limit = 2454480,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
-      .batch = 32,
-      .mem_shape = buff_info__mem_shape_F_16_32_1_1,
-      .mem_ndims = 4,
-      .chpos = CHPos_First,
+      .batch = 16,
+      .mem_shape = buff_info__mem_shape_M_16_32_1_1,
+      .mem_ndims = 5,
+      .chpos = CHPos_Mixed,
       .Qm = 7,
       .Qn = 0,
       .Qunsigned = 0,
@@ -2773,9 +2772,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Conv2D_279_weights",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2454816,
-      .offset_end = 2455056,
-      .offset_limit = 2455120,
+      .offset_start = 2454800,
+      .offset_end = 2455040,
+      .offset_limit = 2455104,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -2797,9 +2796,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Dequantize_281_x_scale",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455296,
-      .offset_end = 2455300,
-      .offset_limit = 2455368,
+      .offset_start = 2455280,
+      .offset_end = 2455284,
+      .offset_limit = 2455352,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -2818,9 +2817,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Dequantize_281_x_zero_point",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455376,
-      .offset_end = 2455377,
-      .offset_limit = 2455448,
+      .offset_start = 2455360,
+      .offset_end = 2455361,
+      .offset_limit = 2455432,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -2839,9 +2838,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Conv2D_283_weights",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455056,
-      .offset_end = 2455104,
-      .offset_limit = 2455168,
+      .offset_start = 2455040,
+      .offset_end = 2455088,
+      .offset_limit = 2455152,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -2863,9 +2862,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Dequantize_285_x_scale",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455312,
-      .offset_end = 2455316,
-      .offset_limit = 2455384,
+      .offset_start = 2455296,
+      .offset_end = 2455300,
+      .offset_limit = 2455368,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -2884,9 +2883,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Dequantize_285_x_zero_point",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455392,
-      .offset_end = 2455393,
-      .offset_limit = 2455464,
+      .offset_start = 2455376,
+      .offset_end = 2455377,
+      .offset_limit = 2455448,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -2905,9 +2904,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Conv2D_287_weights",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455104,
-      .offset_end = 2455152,
-      .offset_limit = 2455216,
+      .offset_start = 2455088,
+      .offset_end = 2455136,
+      .offset_limit = 2455200,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -2929,9 +2928,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Dequantize_289_x_scale",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455328,
-      .offset_end = 2455332,
-      .offset_limit = 2455400,
+      .offset_start = 2455312,
+      .offset_end = 2455316,
+      .offset_limit = 2455384,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -2950,9 +2949,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Dequantize_289_x_zero_point",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455408,
-      .offset_end = 2455409,
-      .offset_limit = 2455480,
+      .offset_start = 2455392,
+      .offset_end = 2455393,
+      .offset_limit = 2455464,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -2971,9 +2970,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Conv2D_291_weights",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455248,
-      .offset_end = 2455272,
-      .offset_limit = 2455336,
+      .offset_start = 2455232,
+      .offset_end = 2455256,
+      .offset_limit = 2455320,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -2995,9 +2994,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Dequantize_296_x_scale",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455344,
-      .offset_end = 2455348,
-      .offset_limit = 2455416,
+      .offset_start = 2455328,
+      .offset_end = 2455332,
+      .offset_limit = 2455400,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -3016,9 +3015,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Dequantize_296_x_zero_point",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455424,
-      .offset_end = 2455425,
-      .offset_limit = 2455496,
+      .offset_start = 2455408,
+      .offset_end = 2455409,
+      .offset_limit = 2455480,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -4021,9 +4020,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Zero_Tensor_625",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2454432,
-      .offset_end = 2454816,
-      .offset_limit = 2454880,
+      .offset_start = 2454416,
+      .offset_end = 2454800,
+      .offset_limit = 2454864,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -4093,9 +4092,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Resize_Zeros_Crop_Pad_631_pad_kern_891",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455152,
-      .offset_end = 2455176,
-      .offset_limit = 2455240,
+      .offset_start = 2455136,
+      .offset_end = 2455160,
+      .offset_limit = 2455224,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -4114,9 +4113,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Resize_Zeros_Crop_Pad_638_pad_kern_917",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455184,
-      .offset_end = 2455208,
-      .offset_limit = 2455272,
+      .offset_start = 2455168,
+      .offset_end = 2455192,
+      .offset_limit = 2455256,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -4135,9 +4134,9 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info_face_detection(void)
     {
       .name = "Resize_Zeros_Crop_Pad_645_pad_kern_943",
       .addr_base = {(unsigned char *)(0x71000000UL) /* Equivalent hex address = 0x71000000UL */},
-      .offset_start = 2455216,
-      .offset_end = 2455240,
-      .offset_limit = 2455304,
+      .offset_start = 2455200,
+      .offset_end = 2455224,
+      .offset_limit = 2455288,
       .is_user_allocated = 0,
       .is_param = 1,
       .epoch = 0,
@@ -4179,7 +4178,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Output_Buffers_Info_face_detection(void)
       .offset_limit = 106560,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 83,
+      .epoch = 78,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_32_32_2,
       .mem_ndims = 4,
@@ -4200,7 +4199,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Output_Buffers_Info_face_detection(void)
       .offset_limit = 41024,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 80,
+      .epoch = 75,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_32_32_10,
       .mem_ndims = 4,
@@ -4221,7 +4220,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Output_Buffers_Info_face_detection(void)
       .offset_limit = 45120,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 86,
+      .epoch = 81,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_32_32_1,
       .mem_ndims = 4,
@@ -4242,7 +4241,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Output_Buffers_Info_face_detection(void)
       .offset_limit = 98368,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 82,
+      .epoch = 77,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_32_32_2,
       .mem_ndims = 4,
@@ -4412,28 +4411,24 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
   static const uint32_t buff_info__mem_shape_L_1_960_4_4[] = { 1, 4, 4, 960 };
   static const float buff_info_Conv2D_215_zero_off_out_439_quant_scale[] = { 0.0256449319422245 };
   static const int16_t buff_info_Conv2D_215_zero_off_out_439_quant_offset[] = { 0 };
-  static const float buff_info_Conv2D_215_zero_off_out_439_cp_in_57_quant_scale[] = { 0.0256449319422245 };
-  static const int16_t buff_info_Conv2D_215_zero_off_out_439_cp_in_57_quant_offset[] = { 0 };
   static const float buff_info_Conv2D_219_zero_off_out_448_quant_scale[] = { 0.0176100954413414 };
   static const int16_t buff_info_Conv2D_219_zero_off_out_448_quant_offset[] = { 0 };
   static const float buff_info_Add_222_out_0_quant_scale[] = { 0.0370957925915718 };
   static const int16_t buff_info_Add_222_out_0_quant_offset[] = { 2 };
   static const float buff_info_Conv2D_230_zero_off_out_466_quant_scale[] = { 0.0220590569078922 };
   static const int16_t buff_info_Conv2D_230_zero_off_out_466_quant_offset[] = { 0 };
-  static const float buff_info_Conv2D_230_zero_off_out_466_cp_in_58_quant_scale[] = { 0.0220590569078922 };
-  static const int16_t buff_info_Conv2D_230_zero_off_out_466_cp_in_58_quant_offset[] = { 0 };
   static const float buff_info_Conv2D_234_zero_off_out_475_quant_scale[] = { 0.0186014026403427 };
   static const int16_t buff_info_Conv2D_234_zero_off_out_475_quant_offset[] = { 0 };
   static const float buff_info_Add_237_out_0_quant_scale[] = { 0.0520837120711803 };
   static const int16_t buff_info_Add_237_out_0_quant_offset[] = { -4 };
   static const float buff_info_Conv2D_245_zero_off_out_493_quant_scale[] = { 0.0189914051443338 };
   static const int16_t buff_info_Conv2D_245_zero_off_out_493_quant_offset[] = { 0 };
-  static const float buff_info_Conv2D_245_zero_off_out_493_cp_in_59_quant_scale[] = { 0.0189914051443338 };
-  static const int16_t buff_info_Conv2D_245_zero_off_out_493_cp_in_59_quant_offset[] = { 0 };
   static const float buff_info_Conv2D_249_zero_off_out_502_quant_scale[] = { 0.0130695616826415 };
   static const int16_t buff_info_Conv2D_249_zero_off_out_502_quant_offset[] = { 0 };
   static const uint32_t buff_info__shape_1_320_4_4[] = { 1, 4, 4, 320 };
   static const uint32_t buff_info__mem_shape_M_1_320_4_4[] = { 1, 16, 4, 4, 20 };
+  static const float buff_info_Conv2D_249_off_bias_out_508_quant_scale[] = { 0.00999183114618063 };
+  static const int16_t buff_info_Conv2D_249_off_bias_out_508_quant_offset[] = { 7 };
   static const uint32_t buff_info__shape_1_24_4_4[] = { 1, 4, 4, 24 };
   static const uint32_t buff_info__mem_shape_L_1_24_4_4[] = { 1, 4, 4, 24 };
   static const float buff_info_Relu_255_out_0_quant_scale[] = { 0.00676214136183262 };
@@ -4444,7 +4439,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
   static const int16_t buff_info_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_627_quant_offset[] = { -128 };
   static const float buff_info_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_629_quant_scale[] = { 0.00676214136183262 };
   static const int16_t buff_info_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_629_quant_offset[] = { -128 };
-  static const uint32_t buff_info__mem_shape_F_1_24_8_8[] = { 1, 24, 8, 8 };
   static const uint32_t buff_info__shape_1_24_7_7[] = { 1, 7, 7, 24 };
   static const uint32_t buff_info__mem_shape_L_1_24_7_7[] = { 1, 7, 7, 24 };
   static const float buff_info_ConvTranspose_256_expanded_conv_6_zero_off_out_520_quant_scale[] = { 0.00676214136183262 };
@@ -4456,7 +4450,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
   static const int16_t buff_info_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_634_quant_offset[] = { -128 };
   static const float buff_info_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_636_quant_scale[] = { 0.0305094718933105 };
   static const int16_t buff_info_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_636_quant_offset[] = { -128 };
-  static const uint32_t buff_info__mem_shape_F_1_24_16_16[] = { 1, 24, 16, 16 };
   static const uint32_t buff_info__shape_1_24_15_15[] = { 1, 15, 15, 24 };
   static const uint32_t buff_info__mem_shape_L_1_24_15_15[] = { 1, 15, 15, 24 };
   static const float buff_info_ConvTranspose_262_expanded_conv_14_zero_off_out_529_quant_scale[] = { 0.0305094718933105 };
@@ -4469,7 +4462,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
   static const int16_t buff_info_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_641_quant_offset[] = { -128 };
   static const float buff_info_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_643_quant_scale[] = { 0.0368081703782082 };
   static const int16_t buff_info_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_643_quant_offset[] = { -128 };
-  static const uint32_t buff_info__mem_shape_F_1_24_32_32[] = { 1, 24, 32, 32 };
   static const uint32_t buff_info__shape_1_24_31_31[] = { 1, 31, 31, 24 };
   static const uint32_t buff_info__mem_shape_L_1_24_31_31[] = { 1, 31, 31, 24 };
   static const float buff_info_ConvTranspose_268_expanded_conv_22_zero_off_out_538_quant_scale[] = { 0.0368081703782082 };
@@ -5526,7 +5518,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_Conv2D_173_zero_off_out_358_quant_offset,
     },
     {
-      .name = "Conv2D_173_out_0_cp_in_33_cp_in_34",
+      .name = "Conv2D_173_out_0_cp_in_34_cp_in_35",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 79872,
       .offset_end = 82944,
@@ -5619,7 +5611,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_Conv2D_188_zero_off_out_385_quant_offset,
     },
     {
-      .name = "Conv2D_188_out_0_cp_in_38_cp_in_39",
+      .name = "Conv2D_188_out_0_cp_in_39_cp_in_40",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 79872,
       .offset_end = 82944,
@@ -5664,7 +5656,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_Add_191_out_0_quant_offset,
     },
     {
-      .name = "Conv2D_198_out_0_cp_in_40_cp_in_41_cp_in_42",
+      .name = "Conv2D_198_out_0_cp_in_41_cp_in_42_cp_in_43",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 0,
       .offset_end = 73728,
@@ -5781,7 +5773,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_Conv2D_207_zero_off_out_421_quant_offset,
     },
     {
-      .name = "Conv2D_207_out_0",
+      .name = "Conv2D_207_out_0_cp_in_47_cp_in_48",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 123648,
       .offset_end = 124288,
@@ -5826,7 +5818,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_Conv2D_207_off_bias_out_427_quant_offset,
     },
     {
-      .name = "Conv2D_210_out_0",
+      .name = "Conv2D_210_out_0_cp_in_49_cp_in_50_cp_in_51",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 122880,
       .offset_end = 123648,
@@ -5871,7 +5863,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_Conv2D_215_zero_off_out_439_quant_offset,
     },
     {
-      .name = "Conv2D_215_zero_off_out_439_cp_in_57",
+      .name = "Conv2D_219_zero_off_out_448",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 236544,
       .offset_end = 251904,
@@ -5879,30 +5871,6 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .is_user_allocated = 0,
       .is_param = 0,
       .epoch = 51,
-      .batch = 8,
-      .mem_shape = buff_info__mem_shape_M_1_960_4_4,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 8,
-      .Qn = 0,
-      .Qunsigned = 1,
-      .type = DataType_UINT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_960_4_4,
-      .per_channel = 0,
-      .scale = buff_info_Conv2D_215_zero_off_out_439_cp_in_57_quant_scale,
-      .offset = buff_info_Conv2D_215_zero_off_out_439_cp_in_57_quant_offset,
-    },
-    {
-      .name = "Conv2D_219_zero_off_out_448",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 221184,
-      .offset_end = 236544,
-      .offset_limit = 236608,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 52,
       .batch = 960,
       .mem_shape = buff_info__mem_shape_L_1_960_4_4,
       .mem_ndims = 4,
@@ -5919,14 +5887,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_Conv2D_219_zero_off_out_448_quant_offset,
     },
     {
-      .name = "Conv2D_219_out_0",
+      .name = "Conv2D_219_out_0_cp_in_52_cp_in_53_cp_in_54",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 126208,
-      .offset_end = 126848,
-      .offset_limit = 126912,
+      .offset_start = 123648,
+      .offset_end = 124288,
+      .offset_limit = 124352,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 53,
+      .epoch = 52,
       .batch = 20,
       .mem_shape = buff_info__mem_shape_M_1_160_4_4,
       .mem_ndims = 5,
@@ -5942,12 +5910,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
     {
       .name = "Add_222_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 122880,
-      .offset_end = 125440,
-      .offset_limit = 125504,
+      .offset_start = 125440,
+      .offset_end = 128000,
+      .offset_limit = 128064,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 53,
+      .epoch = 52,
       .batch = 20,
       .mem_shape = buff_info__mem_shape_M_1_160_4_4,
       .mem_ndims = 5,
@@ -5964,14 +5932,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_Add_222_out_0_quant_offset,
     },
     {
-      .name = "Conv2D_225_out_0",
+      .name = "Conv2D_225_out_0_cp_in_55_cp_in_56_cp_in_57",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 125440,
-      .offset_end = 126208,
-      .offset_limit = 126272,
+      .offset_start = 122880,
+      .offset_end = 123648,
+      .offset_limit = 123712,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 54,
+      .epoch = 53,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_M_1_960_4_4,
       .mem_ndims = 5,
@@ -5992,7 +5960,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 236608,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 54,
+      .epoch = 53,
       .batch = 960,
       .mem_shape = buff_info__mem_shape_L_1_960_4_4,
       .mem_ndims = 4,
@@ -6009,38 +5977,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_Conv2D_230_zero_off_out_466_quant_offset,
     },
     {
-      .name = "Conv2D_230_zero_off_out_466_cp_in_58",
+      .name = "Conv2D_234_zero_off_out_475",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 236544,
       .offset_end = 251904,
       .offset_limit = 251968,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 55,
-      .batch = 8,
-      .mem_shape = buff_info__mem_shape_M_1_960_4_4,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 8,
-      .Qn = 0,
-      .Qunsigned = 1,
-      .type = DataType_UINT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_960_4_4,
-      .per_channel = 0,
-      .scale = buff_info_Conv2D_230_zero_off_out_466_cp_in_58_quant_scale,
-      .offset = buff_info_Conv2D_230_zero_off_out_466_cp_in_58_quant_offset,
-    },
-    {
-      .name = "Conv2D_234_zero_off_out_475",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 221184,
-      .offset_end = 236544,
-      .offset_limit = 236608,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 56,
+      .epoch = 54,
       .batch = 960,
       .mem_shape = buff_info__mem_shape_L_1_960_4_4,
       .mem_ndims = 4,
@@ -6057,14 +6001,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_Conv2D_234_zero_off_out_475_quant_offset,
     },
     {
-      .name = "Conv2D_234_out_0",
+      .name = "Conv2D_234_out_0_cp_in_58_cp_in_59_cp_in_60",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 129536,
       .offset_end = 130176,
       .offset_limit = 130240,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 57,
+      .epoch = 55,
       .batch = 20,
       .mem_shape = buff_info__mem_shape_M_1_160_4_4,
       .mem_ndims = 5,
@@ -6080,12 +6024,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
     {
       .name = "Add_237_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 125440,
-      .offset_end = 128000,
-      .offset_limit = 128064,
+      .offset_start = 122880,
+      .offset_end = 125440,
+      .offset_limit = 125504,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 57,
+      .epoch = 55,
       .batch = 20,
       .mem_shape = buff_info__mem_shape_M_1_160_4_4,
       .mem_ndims = 5,
@@ -6102,14 +6046,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_Add_237_out_0_quant_offset,
     },
     {
-      .name = "Conv2D_240_out_0",
+      .name = "Conv2D_240_out_0_cp_in_61_cp_in_62_cp_in_63",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 122880,
-      .offset_end = 123648,
-      .offset_limit = 123712,
+      .offset_start = 125440,
+      .offset_end = 126208,
+      .offset_limit = 126272,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 58,
+      .epoch = 56,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_M_1_960_4_4,
       .mem_ndims = 5,
@@ -6130,7 +6074,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 236608,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 58,
+      .epoch = 56,
       .batch = 960,
       .mem_shape = buff_info__mem_shape_L_1_960_4_4,
       .mem_ndims = 4,
@@ -6147,38 +6091,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_Conv2D_245_zero_off_out_493_quant_offset,
     },
     {
-      .name = "Conv2D_245_zero_off_out_493_cp_in_59",
+      .name = "Conv2D_249_zero_off_out_502",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 236544,
       .offset_end = 251904,
       .offset_limit = 251968,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 59,
-      .batch = 8,
-      .mem_shape = buff_info__mem_shape_M_1_960_4_4,
-      .mem_ndims = 5,
-      .chpos = CHPos_Mixed,
-      .Qm = 8,
-      .Qn = 0,
-      .Qunsigned = 1,
-      .type = DataType_UINT8,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_960_4_4,
-      .per_channel = 0,
-      .scale = buff_info_Conv2D_245_zero_off_out_493_cp_in_59_quant_scale,
-      .offset = buff_info_Conv2D_245_zero_off_out_493_cp_in_59_quant_offset,
-    },
-    {
-      .name = "Conv2D_249_zero_off_out_502",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 221184,
-      .offset_end = 236544,
-      .offset_limit = 236608,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 60,
+      .epoch = 57,
       .batch = 960,
       .mem_shape = buff_info__mem_shape_L_1_960_4_4,
       .mem_ndims = 4,
@@ -6195,14 +6115,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_Conv2D_249_zero_off_out_502_quant_offset,
     },
     {
-      .name = "Conv2D_249_out_0",
+      .name = "Conv2D_249_out_0_cp_in_64_cp_in_65_cp_in_66",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 125184,
-      .offset_end = 125824,
-      .offset_limit = 125888,
+      .offset_start = 122880,
+      .offset_end = 123520,
+      .offset_limit = 123584,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 61,
+      .epoch = 58,
       .batch = 20,
       .mem_shape = buff_info__mem_shape_M_1_320_4_4,
       .mem_ndims = 5,
@@ -6216,14 +6136,38 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .shape = buff_info__shape_1_320_4_4,
     },
     {
-      .name = "Conv2D_252_out_0",
+      .name = "Conv2D_249_off_bias_out_508",
+      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
+      .offset_start = 221184,
+      .offset_end = 226304,
+      .offset_limit = 226368,
+      .is_user_allocated = 0,
+      .is_param = 0,
+      .epoch = 58,
+      .batch = 20,
+      .mem_shape = buff_info__mem_shape_M_1_320_4_4,
+      .mem_ndims = 5,
+      .chpos = CHPos_Mixed,
+      .Qm = 7,
+      .Qn = 0,
+      .Qunsigned = 0,
+      .type = DataType_INT8,
+      .nbits = 8,
+      .ndims = 4,
+      .shape = buff_info__shape_1_320_4_4,
+      .per_channel = 0,
+      .scale = buff_info_Conv2D_249_off_bias_out_508_quant_scale,
+      .offset = buff_info_Conv2D_249_off_bias_out_508_quant_offset,
+    },
+    {
+      .name = "Conv2D_252_out_0_cp_in_67_cp_in_68_cp_in_69",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
       .offset_start = 124416,
       .offset_end = 125184,
       .offset_limit = 125248,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 61,
+      .epoch = 59,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_4_4,
       .mem_ndims = 4,
@@ -6239,12 +6183,12 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
     {
       .name = "Relu_255_out_0",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 125824,
-      .offset_end = 126208,
-      .offset_limit = 126272,
+      .offset_start = 125184,
+      .offset_end = 125568,
+      .offset_limit = 125632,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 61,
+      .epoch = 59,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_4_4,
       .mem_ndims = 4,
@@ -6268,7 +6212,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 124480,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 62,
+      .epoch = 60,
       .batch = 96,
       .mem_shape = buff_info__mem_shape_L_1_96_4_4,
       .mem_ndims = 4,
@@ -6292,7 +6236,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 126016,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 63,
+      .epoch = 61,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_8_8,
       .mem_ndims = 4,
@@ -6309,35 +6253,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_629_quant_offset,
     },
     {
-      .name = "ConvTranspose_256_expanded_resize_0_resize_NN_expansion_concat_626_out_629_cp_in_60",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 122880,
-      .offset_end = 124416,
-      .offset_limit = 124480,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 64,
-      .batch = 1,
-      .mem_shape = buff_info__mem_shape_F_1_24_8_8,
-      .mem_ndims = 4,
-      .chpos = CHPos_First,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_FXP,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_24_8_8,
-    },
-    {
       .name = "ConvTranspose_256_expanded_conv_6_zero_off_out_520",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 124416,
-      .offset_end = 125592,
-      .offset_limit = 125656,
+      .offset_start = 122880,
+      .offset_end = 124056,
+      .offset_limit = 124120,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 65,
+      .epoch = 62,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_7_7,
       .mem_ndims = 4,
@@ -6361,7 +6284,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 131136,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 66,
+      .epoch = 63,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_8_8,
       .mem_ndims = 4,
@@ -6385,7 +6308,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 129088,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 67,
+      .epoch = 64,
       .batch = 96,
       .mem_shape = buff_info__mem_shape_L_1_96_8_8,
       .mem_ndims = 4,
@@ -6409,7 +6332,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 135232,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 68,
+      .epoch = 65,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_16_16,
       .mem_ndims = 4,
@@ -6426,35 +6349,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_636_quant_offset,
     },
     {
-      .name = "ConvTranspose_262_expanded_resize_8_resize_NN_expansion_concat_633_out_636_cp_in_61",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 122880,
-      .offset_end = 129024,
-      .offset_limit = 129088,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 69,
-      .batch = 1,
-      .mem_shape = buff_info__mem_shape_F_1_24_16_16,
-      .mem_ndims = 4,
-      .chpos = CHPos_First,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_FXP,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_24_16_16,
-    },
-    {
       .name = "ConvTranspose_262_expanded_conv_14_zero_off_out_529",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 129024,
-      .offset_end = 134424,
-      .offset_limit = 134488,
+      .offset_start = 135168,
+      .offset_end = 140568,
+      .offset_limit = 140632,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 70,
+      .epoch = 66,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_15_15,
       .mem_ndims = 4,
@@ -6478,7 +6380,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 129088,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 71,
+      .epoch = 67,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_16_16,
       .mem_ndims = 4,
@@ -6502,7 +6404,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 245824,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 72,
+      .epoch = 68,
       .batch = 96,
       .mem_shape = buff_info__mem_shape_L_1_96_16_16,
       .mem_ndims = 4,
@@ -6526,7 +6428,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 270400,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 73,
+      .epoch = 69,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_32_32,
       .mem_ndims = 4,
@@ -6543,35 +6445,14 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset = buff_info_ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_643_quant_offset,
     },
     {
-      .name = "ConvTranspose_268_expanded_resize_16_resize_NN_expansion_concat_640_out_643_cp_in_62",
-      .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 221184,
-      .offset_end = 245760,
-      .offset_limit = 245824,
-      .is_user_allocated = 0,
-      .is_param = 0,
-      .epoch = 74,
-      .batch = 1,
-      .mem_shape = buff_info__mem_shape_F_1_24_32_32,
-      .mem_ndims = 4,
-      .chpos = CHPos_First,
-      .Qm = 7,
-      .Qn = 0,
-      .Qunsigned = 0,
-      .type = DataType_FXP,
-      .nbits = 8,
-      .ndims = 4,
-      .shape = buff_info__shape_1_24_32_32,
-    },
-    {
       .name = "ConvTranspose_268_expanded_conv_22_zero_off_out_538",
       .addr_base = {(unsigned char *)(0x342e0000UL) /* Equivalent hex address = 0x342e0000UL */},
-      .offset_start = 245760,
-      .offset_end = 268824,
-      .offset_limit = 268888,
+      .offset_start = 221184,
+      .offset_end = 244248,
+      .offset_limit = 244312,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 75,
+      .epoch = 70,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_31_31,
       .mem_ndims = 4,
@@ -6595,7 +6476,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 24640,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 76,
+      .epoch = 71,
       .batch = 8,
       .mem_shape = buff_info__mem_shape_M_1_24_32_32,
       .mem_ndims = 5,
@@ -6619,7 +6500,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 65600,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 77,
+      .epoch = 72,
       .batch = 8,
       .mem_shape = buff_info__mem_shape_M_1_24_32_32,
       .mem_ndims = 5,
@@ -6643,7 +6524,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 90176,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 77,
+      .epoch = 72,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_32_32,
       .mem_ndims = 4,
@@ -6667,7 +6548,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 149568,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 78,
+      .epoch = 73,
       .batch = 10,
       .mem_shape = buff_info__mem_shape_L_1_10_32_32,
       .mem_ndims = 4,
@@ -6691,7 +6572,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 114752,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 78,
+      .epoch = 73,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_32_32,
       .mem_ndims = 4,
@@ -6715,7 +6596,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 139328,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 78,
+      .epoch = 73,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_32_32,
       .mem_ndims = 4,
@@ -6739,7 +6620,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 41024,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 79,
+      .epoch = 74,
       .batch = 10,
       .mem_shape = buff_info__mem_shape_L_1_10_32_32,
       .mem_ndims = 4,
@@ -6760,7 +6641,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 67648,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 80,
+      .epoch = 75,
       .batch = 2,
       .mem_shape = buff_info__mem_shape_L_1_2_32_32,
       .mem_ndims = 4,
@@ -6784,7 +6665,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 69696,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 80,
+      .epoch = 75,
       .batch = 2,
       .mem_shape = buff_info__mem_shape_L_1_2_32_32,
       .mem_ndims = 4,
@@ -6808,7 +6689,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 98368,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 81,
+      .epoch = 76,
       .batch = 2,
       .mem_shape = buff_info__mem_shape_L_1_2_32_32,
       .mem_ndims = 4,
@@ -6829,7 +6710,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 106560,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 82,
+      .epoch = 77,
       .batch = 2,
       .mem_shape = buff_info__mem_shape_L_1_2_32_32,
       .mem_ndims = 4,
@@ -6850,7 +6731,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 90176,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 83,
+      .epoch = 78,
       .batch = 24,
       .mem_shape = buff_info__mem_shape_L_1_24_32_32,
       .mem_ndims = 4,
@@ -6874,7 +6755,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 46144,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 84,
+      .epoch = 79,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_1_32_32,
       .mem_ndims = 4,
@@ -6898,7 +6779,7 @@ const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_face_detection(void)
       .offset_limit = 45120,
       .is_user_allocated = 0,
       .is_param = 0,
-      .epoch = 85,
+      .epoch = 80,
       .batch = 1,
       .mem_shape = buff_info__mem_shape_F_1_1_32_32,
       .mem_ndims = 4,

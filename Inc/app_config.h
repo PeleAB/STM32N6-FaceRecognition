@@ -38,7 +38,7 @@
 /* This overrides the camera/PC stream input with a constant test pattern.  */
 /* Useful for students to test their implementations with known input.      */
 /* ========================================================================= */
-#define DUMMY_INPUT_BUFFER
+//#define DUMMY_INPUT_BUFFER
 
 
 /*Defines: CMW_MIRRORFLIP_NONE; CMW_MIRRORFLIP_FLIP; CMW_MIRRORFLIP_MIRROR; CMW_MIRRORFLIP_FLIP_MIRROR;*/
@@ -62,9 +62,9 @@
 /* Model Related Info */
 #define POSTPROCESS_TYPE POSTPROCESS_MPE_PD_UF
 
-#define NN_WIDTH 128
-#define NN_HEIGHT 128
-#define NN_BPP 3
+#define NN_WIDTH (128)
+#define NN_HEIGHT (128)
+#define NN_BPP (3)
 
 #define COLOR_BGR (0)
 #define COLOR_RGB (1)
