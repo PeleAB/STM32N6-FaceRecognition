@@ -1,12 +1,12 @@
-# Trump2.jpg to Dummy Input Buffer Conversion Summary
+# Test Image to Dummy Input Buffer Conversion Summary
 
 ## Overview
-Successfully converted the trump2.jpg image to a 128x128 RGB dummy input buffer for student testing and debugging.
+Successfully converted a test image to a 128x128 RGB dummy input buffer for student testing and debugging.
 
 ## Conversion Process
 
 ### 1. Source Image Analysis
-- **Original File**: `/Exercises/SamplePics/trump2.jpg`
+- **Original File**: Test image from sample dataset
 - **Original Size**: 432x432 pixels
 - **Original Format**: RGBA (with alpha channel)
 - **File Size**: 284,892 bytes
@@ -15,7 +15,7 @@ Successfully converted the trump2.jpg image to a 128x128 RGB dummy input buffer 
 1. **Format Conversion**: RGBA → RGB (removed alpha channel)
 2. **Resize**: 432x432 → 128x128 using high-quality Lanczos resampling
 3. **Data Extraction**: Convert to C array format with hex values
-4. **File Generation**: Create modular trump2_buffer.c/.h files
+4. **File Generation**: Create modular dummy_dual_buffer.c/.h files
 
 ### 3. Output Characteristics
 - **Final Size**: 128x128 pixels
@@ -28,16 +28,16 @@ Successfully converted the trump2.jpg image to a 128x128 RGB dummy input buffer 
 
 ## Generated Files
 
-### trump2_buffer.h
+### dummy_dual_buffer.h
 - Header file with buffer declaration
 - Includes necessary dependencies
 - Clean interface for main.c integration
 
-### trump2_buffer.c
+### dummy_dual_buffer.c
 - **Size**: 298KB of image data
 - **Format**: C array with hex values (0x00-0xFF)
 - **Structure**: Organized in readable rows with comments
-- **Data**: `const uint8_t trump2_rgb_buffer[NN_WIDTH * NN_HEIGHT * NN_BPP]`
+- **Data**: `const uint8_t dummy_test_nn_rgb[NN_WIDTH * NN_HEIGHT * NN_BPP]`
 
 ## Integration Results
 
@@ -59,8 +59,8 @@ static void init_dummy_input_buffer(void) {
 ```c
 // ~20 lines of simple buffer loading
 static void load_dummy_input_buffer(void) {
-    printf("🔄 Loading dummy input buffer (trump2.jpg, 128x128)...\n");
-    memcpy(nn_rgb, trump2_rgb_buffer, NN_WIDTH * NN_HEIGHT * NN_BPP);
+    printf("🔄 Loading dummy input buffer (test image, 128x128)...\n");
+    memcpy(nn_rgb, dummy_test_nn_rgb, NN_WIDTH * NN_HEIGHT * NN_BPP);
     printf("✅ Real image loaded: %dx%d RGB image (%lu bytes)\n", 
            NN_WIDTH, NN_HEIGHT, (unsigned long)(NN_WIDTH * NN_HEIGHT * NN_BPP));
 }
@@ -91,7 +91,7 @@ static void load_dummy_input_buffer(void) {
 ## Technical Implementation
 
 ### Build System Integration
-- Added `trump2_buffer.c` to Makefile
+- Added `dummy_dual_buffer.c` to Makefile
 - Proper conditional compilation with `#ifdef DUMMY_INPUT_BUFFER`
 - Clean separation of concerns (buffer data vs. application logic)
 
@@ -124,4 +124,4 @@ static void load_dummy_input_buffer(void) {
 
 ## Conclusion
 
-The conversion successfully replaced the synthetic dummy buffer with real trump2.jpg image data, providing students with a more realistic and educational testing environment. The modular design maintains code cleanliness while delivering significant educational benefits through consistent, real-world input data.
+The conversion successfully replaced the synthetic dummy buffer with real test image data, providing students with a more realistic and educational testing environment. The modular design maintains code cleanliness while delivering significant educational benefits through consistent, real-world input data.

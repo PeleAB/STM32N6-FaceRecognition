@@ -1,13 +1,56 @@
-*.cyclo
+# Build artifacts
 *.o
 *.su
 *.mk
+*.cyclo
+*.bin
+*.elf
+*.list
+*.map
+*.d
+objects.list
+
+# Python
 __pycache__/
 *.pyc
-*.cyclo
-*.su
-*.su
-*.o
-*.mk
+*.pyo
+*.pyd
+.Python
 .venv/
+venv/
+env/
+
+# IDE files
 .idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# STM32CubeIDE Debug files
+STM32CubeIDE/Debug/
+*.launch
+
+# Model files (large binary files)
+*.tflite
+*.onnx
+*.h5
+*.pb
+
+# Image files (test data)
+*.jpg
+*.jpeg
+*.png
+*.bmp
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
