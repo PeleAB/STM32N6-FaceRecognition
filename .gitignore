@@ -1,56 +1,104 @@
-# Build artifacts
+# Build directories and artifacts
+build/
+Debug/
+Release/
 *.o
 *.su
 *.mk
 *.cyclo
-*.bin
 *.elf
 *.list
 *.map
 *.d
 objects.list
 
-# Python
+# Binary files (keep important ones in specific directories)
+*.bin
+*.hex
+
+# Exception: Keep pre-built binaries where needed
+!Binary/*.bin
+!Binary/*.hex
+!Exercises/project_binaries/*.bin
+!Exercises/project_binaries/*.hex
+
+# STM32CubeIDE files
+.metadata/
+.project
+.cproject
+.settings/
+*.launch
+STM32CubeIDE/Debug/
+
+# Python environment and cache
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
+*.so
 .Python
+.env
 .venv/
 venv/
 env/
+ENV/
+env.bak/
+venv.bak/
+python_tools/__pycache__/
+python_tools/.pytest_cache/
+python_tools/dist/
+python_tools/build/
+python_tools/*.egg-info/
 
-# IDE files
+# IDE and editor files
 .idea/
 .vscode/
+*.sublime-*
 *.swp
 *.swo
 *~
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
+*/.ipynb_checkpoints/*
 
-# STM32CubeIDE Debug files
-STM32CubeIDE/Debug/
-*.launch
+# Model files (keep essential ones, ignore temporary)
+# Keep: *.tflite and *.onnx in specific directories
+# Ignore: temporary conversion files
+Exercises/conversion_workspace/*/tmp*
+Exercises/st_ai_ws/*/tmp*
+*.raw
 
-# Model files (large binary files)
-*.tflite
-*.onnx
-*.h5
-*.pb
-
-# Image files (test data)
-*.jpg
-*.jpeg
-*.png
-*.bmp
-
-# Temporary files
+# Temporary and backup files
 *.tmp
 *.temp
 *.log
+*.bak
+*.backup
+*_backup
+logs/
 
-# OS files
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+
+# Compressed files (unless specifically needed)
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Keep specific archives that are needed
+!STM32Cube_FW_N6/Utilities/PC_Software/*.zip
+
+# Keep sample images for testing
+!Exercises/SamplePics/*.jpg
+!Exercises/SamplePics/*.png
