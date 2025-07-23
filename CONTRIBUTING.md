@@ -2,18 +2,18 @@
 
 We welcome contributions from the embedded AI community! This guide will help you get started with contributing to the project.
 
-## 🤝 How to Contribute
+## How to Contribute
 
 ### Types of Contributions
 
-- **🐛 Bug Reports**: Help us identify and fix issues
-- **✨ Feature Requests**: Suggest new functionality
-- **📝 Documentation**: Improve guides and API docs
-- **🔧 Code Contributions**: Implement features and fixes
-- **🧪 Testing**: Add test cases and improve coverage
-- **🎨 Examples**: Create tutorials and demo applications
+- **Bug Reports**: Help us identify and fix issues
+- **Feature Requests**: Suggest new functionality
+- **Documentation**: Improve guides and API docs
+- **Code Contributions**: Implement features and fixes
+- **Testing**: Add test cases and improve coverage
+- **Examples**: Create tutorials and demo applications
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -48,19 +48,42 @@ We welcome contributions from the embedded AI community! This guide will help yo
    make flash  # Test on hardware
    ```
 
-## 📋 Development Guidelines
+## Development Guidelines
 
 ### Code Style
 
-#### C Code Style
+This project follows strict embedded C coding standards. See [CODING_STANDARDS.md](CODING_STANDARDS.md) for complete guidelines.
+
+#### Quick Reference
 - **Indentation**: 4 spaces (no tabs)
 - **Naming**: 
   - Functions: `snake_case`
   - Variables: `snake_case`
   - Constants: `UPPER_CASE`
   - Types: `snake_case_t`
+  - Global variables: `g_` prefix
+  - Static variables: `s_` prefix
 - **Comments**: Use `/** */` for functions, `//` for inline
 - **Line Length**: Max 100 characters
+
+#### Code Quality Tools
+Before submitting code:
+```bash
+# Install git hooks for automatic checks
+./install-git-hooks.sh
+
+# Format code
+make format
+
+# Check formatting
+make format-check
+
+# Run static analysis
+make analyze
+
+# Run all checks
+make check
+```
 
 #### Example:
 ```c
@@ -128,7 +151,7 @@ when processing images with non-standard strides.
 Fixes #456
 ```
 
-## 🐛 Reporting Issues
+## Reporting Issues
 
 ### Bug Reports
 
@@ -152,7 +175,7 @@ Use the [Feature Request Template](.github/ISSUE_TEMPLATE/feature_request.md):
 - Alternative solutions considered
 - Implementation complexity estimate
 
-## 🔧 Making Changes
+## Making Changes
 
 ### Workflow
 
@@ -250,7 +273,7 @@ Monitor key metrics:
 - **Power consumption**: Current draw measurements
 - **Accuracy**: Detection and recognition rates
 
-## 📖 Documentation
+## Documentation
 
 ### Code Documentation
 - All public functions must have Doxygen comments
@@ -268,7 +291,7 @@ Generate documentation:
 doxygen Doxyfile  # If Doxyfile exists
 ```
 
-## 🔍 Code Review Process
+## Code Review Process
 
 ### Review Criteria
 - **Functionality**: Does it work as intended?
@@ -283,7 +306,7 @@ doxygen Doxyfile  # If Doxyfile exists
 - Follow-up reviews: Within 2 business days
 - Maintainer approval required for merge
 
-## 🏷️ Release Process
+## Release Process
 
 ### Versioning
 We use [Semantic Versioning](https://semver.org/):
@@ -308,18 +331,18 @@ We use [Semantic Versioning](https://semver.org/):
 ### Maintainer Contact
 For urgent issues or private concerns, contact the maintainers directly.
 
-## 📜 License
+## License
 
 By contributing, you agree that your contributions will be licensed under the same license as the project. See [LICENSE](LICENSE) for details.
 
-## 🙏 Recognition
+## Recognition
 
 Contributors will be:
 - Listed in project documentation
 - Mentioned in release notes
 - Added to CONTRIBUTORS.md file
 
-Thank you for helping make this project better! 🚀
+Thank you for helping make this project better!
 
 ---
 

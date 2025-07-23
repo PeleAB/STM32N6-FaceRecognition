@@ -2,7 +2,7 @@
 
 This directory contains Docker configurations and convenience scripts for the STM32N6 Face Recognition System.
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Initial Setup
 ```bash
@@ -48,7 +48,7 @@ This provides:
 # Access at: http://localhost:8888
 ```
 
-## 🐳 Docker Services
+## Docker Services
 
 ### Available Services
 
@@ -80,7 +80,7 @@ docker-compose logs <service-name>
 docker-compose down
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables (.env file)
 
@@ -107,7 +107,7 @@ DOCS_PORT=8090
 | `arm-toolchain-cache` | Toolchain cache | Docker volume |
 | `pip-cache` | Python packages | Docker volume |
 
-## 🛠️ Development Workflow
+## Development Workflow
 
 ### 1. Code Development
 ```bash
@@ -143,7 +143,7 @@ docker-compose run --rm ci-cd bash
 # Inside container: run specific tests
 ```
 
-## 🔌 Hardware Connection
+## Hardware Connection
 
 ### STM32 Programming
 
@@ -178,7 +178,7 @@ sudo udevadm control --reload-rules
 sudo udevadm trigger
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -235,7 +235,7 @@ docker ps
 docker exec -it stm32n6-dev bash
 ```
 
-## 📊 Performance Tips
+## Performance Tips
 
 ### Build Optimization
 - Use `make -j$(nproc)` for parallel builds
@@ -252,7 +252,7 @@ docker exec -it stm32n6-dev bash
 - Port forwarding for web services
 - Local network access for embedded system communication
 
-## 🔒 Security Considerations
+## Security Considerations
 
 ### Container Security
 - Containers run with user privileges (non-root)
@@ -264,14 +264,14 @@ docker exec -it stm32n6-dev bash
 - Use specific image tags for production
 - Regular security updates of base images
 
-## 📚 Additional Resources
+## Additional Resources
 
 - [Docker Documentation](https://docs.docker.com/)
 - [Docker Compose Reference](https://docs.docker.com/compose/)
 - [STM32 Development with Docker](https://www.st.com/en/development-tools.html)
 - [ARM GCC Toolchain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm)
 
-## 🤝 Contributing
+## Contributing
 
 When contributing Docker improvements:
 

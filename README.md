@@ -2,7 +2,7 @@
 
 A comprehensive embedded face recognition system implementing real-time face detection and recognition on STM32N6570-DK development board using STEdgeAI.
 
-## 🎯 Features
+## Features
 
 - **Real-time Face Detection** using CenterFace neural network model
 - **Face Recognition** with MobileFaceNet embeddings and cosine similarity
@@ -13,7 +13,7 @@ A comprehensive embedded face recognition system implementing real-time face det
 - **LCD Display Output** with face detection visualization
 - **Optimized Performance** for embedded deployment
 
-## 🔧 Hardware Requirements
+## Hardware Requirements
 
 - **STM32N6570-DK** development board
 - **Camera Module** (IMX335, VD55G1, or VD66GY supported)
@@ -21,7 +21,7 @@ A comprehensive embedded face recognition system implementing real-time face det
 - **USB Connection** for programming and debugging
 - **PC** with STM32CubeIDE or ARM GCC toolchain
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -60,7 +60,7 @@ A comprehensive embedded face recognition system implementing real-time face det
    - Power on the board
    - System will start face detection automatically
 
-## 📊 System Architecture
+## System Architecture
 
 ```
 Camera → ISP → Face Detection (NPU) → Face Cropping → Face Recognition (NPU) → Display/Stream
@@ -76,7 +76,7 @@ Camera → ISP → Face Detection (NPU) → Face Cropping → Face Recognition (
 - **Embedding Management**: Multi-face tracking with similarity-based voting
 - **Communication**: UART protocol for PC interface
 
-## 🧠 AI Models
+## AI Models
 
 ### Face Detection Model
 - **Architecture**: CenterFace
@@ -92,7 +92,7 @@ Camera → ISP → Face Detection (NPU) → Face Cropping → Face Recognition (
 - **Quantization**: INT8
 - **Performance**: ~50ms inference time
 
-## 🔧 Configuration
+## Configuration
 
 ### Key Configuration Options (`Inc/app_config.h`)
 
@@ -113,7 +113,7 @@ Camera → ISP → Face Detection (NPU) → Face Cropping → Face Recognition (
 #define CAPTURE_FORMAT DCMIPP_PIXEL_PACKER_FORMAT_RGB565_1
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ├── Src/                    # Application source code
@@ -127,7 +127,7 @@ Camera → ISP → Face Detection (NPU) → Face Cropping → Face Recognition (
 └── Doc/                    # Additional documentation
 ```
 
-## 🔌 PC Interface
+## PC Interface
 
 The system supports PC connectivity for enhanced functionality:
 
@@ -144,7 +144,7 @@ python run_ui.py  # Launch GUI interface
 - **Configuration Management**
 - **Firmware Update** capabilities
 
-## ⚡ Performance
+## Performance
 
 ### Typical Performance Metrics
 - **Face Detection**: 8-10 FPS (including preprocessing)
@@ -158,7 +158,7 @@ python run_ui.py  # Launch GUI interface
 - **Memory Pool Management** for efficient allocation
 - **Cache-optimized** image processing algorithms
 
-## 🛠️ Development
+## Development
 
 ### Building from Source
 
@@ -166,6 +166,7 @@ python run_ui.py  # Launch GUI interface
    - ARM GCC toolchain (arm-none-eabi-gcc)
    - STM32CubeProgrammer
    - Make utility
+   - clang-format and clang-tidy (for code quality)
 
 2. **Configure Build:**
    ```bash
@@ -176,7 +177,22 @@ python run_ui.py  # Launch GUI interface
    make clean && make DEBUG=1
    ```
 
-3. **Custom Model Integration:**
+3. **Code Quality Checks:**
+   ```bash
+   # Format code according to standards
+   make format
+   
+   # Check code formatting
+   make format-check
+   
+   # Run static analysis
+   make analyze
+   
+   # Run all quality checks
+   make check
+   ```
+
+4. **Custom Model Integration:**
    - Replace models in `Models/` directory
    - Update model configurations in `Inc/app_config.h`
    - Rebuild and test
@@ -190,7 +206,7 @@ The codebase is designed for extensibility:
 - **Communication**: Modify `Src/enhanced_pc_stream.c`
 - **Display**: Update `Src/display_utils.c`
 
-## 🧪 Testing
+## Testing
 
 ### Hardware-in-Loop Testing
 ```bash
@@ -207,7 +223,7 @@ python -m pytest tests/
 - ITM trace support for detailed profiling
 - Memory usage analysis tools
 
-## 📖 Documentation
+## Documentation
 
 Additional documentation available:
 
@@ -215,31 +231,35 @@ Additional documentation available:
 - [Boot Process](Doc/Boot-Overview.md)
 - [Build Options](Doc/Build-Options.md)
 - [Model Deployment](Doc/Deploy-your-tflite-Model.md)
+- [Coding Standards](CODING_STANDARDS.md) - Embedded C best practices
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ### Development Workflow
 1. Fork the repository
 2. Create feature branch
-3. Implement changes with tests
-4. Submit pull request
+3. Install git hooks for code quality: `./install-git-hooks.sh`
+4. Implement changes following coding standards
+5. Run quality checks: `make check`
+6. Write tests for new functionality
+7. Submit pull request
 
-## 📄 License
+## License
 
 This project contains multiple license terms:
 - Application code: [See LICENSE](LICENSE)
 - STM32 components: ST proprietary license
 - Third-party libraries: Various (see individual components)
 
-## 🆘 Support
+## Support
 
 - **Issues**: [GitHub Issues](../../issues)
 - **Documentation**: [Project Wiki](../../wiki)
 - **Community**: [Discussions](../../discussions)
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - STMicroelectronics for STM32N6 platform and STEdgeAI
 - Original model authors (CenterFace, MobileFaceNet)
@@ -247,4 +267,4 @@ This project contains multiple license terms:
 
 ---
 
-**Built with ❤️ for the embedded AI community**
+**Built for the embedded AI community**

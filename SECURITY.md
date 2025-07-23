@@ -1,10 +1,10 @@
 # Security and Privacy Policy
 
-## 🔒 Security Overview
+## Security Overview
 
 The STM32N6 Face Recognition System processes biometric data and requires careful consideration of security and privacy implications. This document outlines security practices, privacy considerations, and vulnerability reporting procedures.
 
-## 🛡️ Security Considerations
+## Security Considerations
 
 ### Biometric Data Processing
 
@@ -39,7 +39,7 @@ This system processes sensitive biometric data (facial features). Key security c
 - **Code Signing**: Sign firmware images to prevent unauthorized modifications
 - **Memory Protection**: Utilize MPU (Memory Protection Unit) features when available
 
-## 🔐 Privacy Compliance
+## Privacy Compliance
 
 ### Regulatory Compliance
 
@@ -85,7 +85,7 @@ Users must ensure compliance with applicable privacy regulations:
 - Allow users to delete their biometric data
 - Implement granular privacy controls
 
-## 🚨 Vulnerability Reporting
+## Vulnerability Reporting
 
 ### Security Contact
 
@@ -120,7 +120,7 @@ Suggested Fix: If known
 - **Public Disclosure**: Allow reasonable time for fixes before public disclosure
 - **Credit**: Security researchers will be credited for responsible disclosure
 
-## 🔧 Security Configuration
+## Security Configuration
 
 ### Recommended Security Settings
 
@@ -179,7 +179,7 @@ def create_secure_connection():
     # Configure secure connection
 ```
 
-## 🛠️ Security Testing
+## Security Testing
 
 ### Recommended Security Tests
 
@@ -203,7 +203,7 @@ flawfinder Src/ Inc/
 valgrind --tool=memcheck ./test_application
 ```
 
-## 📋 Security Checklist
+## Security Checklist
 
 ### Pre-Deployment Checklist
 
@@ -226,7 +226,7 @@ valgrind --tool=memcheck ./test_application
 - [ ] **Regular security updates**
 - [ ] **Periodic security assessments**
 
-## 📚 Security Resources
+## Security Resources
 
 ### Standards and Guidelines
 - **ISO/IEC 30107** - Biometric presentation attack detection
@@ -244,7 +244,7 @@ valgrind --tool=memcheck ./test_application
 - Face recognition security and privacy papers
 - Attack vector analysis and countermeasures
 
-## 🔄 Updates and Maintenance
+## Updates and Maintenance
 
 This security policy is regularly reviewed and updated. Last updated: [Date]
 

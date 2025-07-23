@@ -1,0 +1,116 @@
+# STM32N6 Face Recognition System - Clang Tidy Configuration
+# Static analysis checks for embedded C code
+
+Checks: >
+  *,
+  -fuchsia-*,
+  -google-*,
+  -zircon-*,
+  -abseil-*,
+  -android-*,
+  -boost-*,
+  -darwin-*,
+  -linuxkernel-*,
+  -llvm-*,
+  -llvmlibc-*,
+  -objc-*,
+  -openmp-*,
+  -altera-unroll-loops,
+  -altera-id-dependent-backward-branch,
+  -bugprone-easily-swappable-parameters,
+  -readability-function-cognitive-complexity,
+  -readability-identifier-length,
+  -readability-magic-numbers,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cert-dcl16-c,
+  -hicpp-signed-bitwise,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
+  -concurrency-mt-unsafe,
+  -misc-unused-parameters,
+  -readability-isolate-declaration,
+  -altera-struct-pack-align,
+  -bugprone-reserved-identifier,
+  -cert-dcl37-c,
+  -cert-dcl51-cpp,
+  -cppcoreguidelines-avoid-c-arrays,
+  -hicpp-avoid-c-arrays,
+  -modernize-avoid-c-arrays,
+  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+  -hicpp-no-array-decay,
+  -readability-non-const-parameter
+
+CheckOptions:
+  - key: readability-identifier-naming.ConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.ConstantPrefix
+    value: ''
+  - key: readability-identifier-naming.EnumCase
+    value: lower_case
+  - key: readability-identifier-naming.EnumConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.FunctionCase
+    value: lower_case
+  - key: readability-identifier-naming.GlobalConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.GlobalConstantPrefix
+    value: 'g_'
+  - key: readability-identifier-naming.GlobalVariableCase
+    value: lower_case
+  - key: readability-identifier-naming.GlobalVariablePrefix
+    value: 'g_'
+  - key: readability-identifier-naming.LocalConstantCase
+    value: lower_case
+  - key: readability-identifier-naming.LocalVariableCase
+    value: lower_case
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.ParameterCase
+    value: lower_case
+  - key: readability-identifier-naming.StaticConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.StaticConstantPrefix
+    value: 's_'
+  - key: readability-identifier-naming.StaticVariableCase
+    value: lower_case
+  - key: readability-identifier-naming.StaticVariablePrefix
+    value: 's_'
+  - key: readability-identifier-naming.StructCase
+    value: lower_case
+  - key: readability-identifier-naming.StructSuffix
+    value: '_t'
+  - key: readability-identifier-naming.TypedefCase
+    value: lower_case
+  - key: readability-identifier-naming.TypedefSuffix
+    value: '_t'
+  - key: readability-identifier-naming.UnionCase
+    value: lower_case
+  - key: readability-identifier-naming.UnionSuffix
+    value: '_t'
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: bugprone-sizeof-expression.WarnOnSizeOfConstant
+    value: false
+  - key: readability-braces-around-statements.ShortStatementLines
+    value: 0
+  - key: cert-err33-c.CheckedFunctions
+    value: 'memcpy;memset;strcpy;strncpy;sprintf;snprintf'
+  - key: cppcoreguidelines-narrowing-conversions.WarnOnFloatingPointNarrowingConversion
+    value: false
+  - key: cppcoreguidelines-narrowing-conversions.WarnOnIntegerNarrowingConversion  
+    value: false
+
+HeaderFilterRegex: '(Inc/|Src/).*\.h$'
+
+AnalyzeTemporaryDtors: false
+
+FormatStyle: file
+
+# Embedded C specific considerations:
+# - Allow volatile for hardware registers
+# - Allow inline assembly blocks  
+# - Allow bit manipulation operations
+# - Allow packed structures for memory layout
+# - Allow C-style casts for hardware addresses
+# - Relaxed rules for magic numbers (hardware addresses, timeouts)
+# - Allow C arrays for embedded buffers
+# - Allow non-const parameters for hardware register access

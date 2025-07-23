@@ -219,6 +219,24 @@ LDFLAGS += -Wl,--no-warn-rwx-segments
 .PHONY: all
 all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).bin
 
+.PHONY: help
+help:
+	@echo "STM32N6 Face Recognition System - Build Targets:"
+	@echo ""
+	@echo "Build Targets:"
+	@echo "  all          - Build firmware (default)"
+	@echo "  clean        - Clean build files"
+	@echo "  flash        - Flash firmware to device"
+	@echo ""
+	@echo "Code Quality:"
+	@echo "  format       - Format all source code"
+	@echo "  format-check - Check code formatting"
+	@echo "  analyze      - Run static analysis"
+	@echo "  check        - Run all quality checks"
+	@echo "  standards-help - Show coding standards help"
+	@echo ""
+	@echo "For detailed coding guidelines, see CODING_STANDARDS.md"
+
 #######################################
 # build the application
 #######################################
@@ -276,6 +294,65 @@ flash_weights: $(MODEL_DIR)/network_data.hex
 
 $(BUILD_DIR)/$(TARGET)_sign.bin: $(BUILD_DIR)/$(TARGET).bin
 	$(SIGNER) -s -bin $< -nk -t ssbl -hv 2.3 -o $(BUILD_DIR)/$(TARGET)_sign.bin
+
+#######################################
+# coding standards
+#######################################
+
+# Source files for formatting and analysis
+C_FORMAT_SOURCES = $(shell find Src Inc -name "*.c" -o -name "*.h" 2>/dev/null)
+C_ANALYZE_SOURCES = $(shell find Src -name "*.c" 2>/dev/null)
+
+.PHONY: format
+format:
+	@echo "Formatting source code..."
+	@if command -v clang-format >/dev/null 2>&1; then \
+		clang-format -i $(C_FORMAT_SOURCES); \
+		echo "Code formatting completed"; \
+	else \
+		echo "Warning: clang-format not found. Install with: apt-get install clang-format"; \
+	fi
+
+.PHONY: format-check
+format-check:
+	@echo "Checking code formatting..."
+	@if command -v clang-format >/dev/null 2>&1; then \
+		if ! clang-format --dry-run --Werror $(C_FORMAT_SOURCES) 2>/dev/null; then \
+			echo "Code formatting check failed. Run: make format"; \
+			exit 1; \
+		else \
+			echo "Code formatting check passed"; \
+		fi \
+	else \
+		echo "Warning: clang-format not found. Skipping format check"; \
+	fi
+
+.PHONY: analyze
+analyze:
+	@echo "Running static analysis..."
+	@if command -v clang-tidy >/dev/null 2>&1; then \
+		clang-tidy $(C_ANALYZE_SOURCES) -- -I Inc/ -I Middlewares/ -I STM32Cube_FW_N6/; \
+		echo "Static analysis completed"; \
+	else \
+		echo "Warning: clang-tidy not found. Install with: apt-get install clang-tidy"; \
+	fi
+
+.PHONY: check
+check: format-check analyze
+	@echo "All coding standard checks completed"
+
+.PHONY: standards-help
+standards-help:
+	@echo "Coding Standards Targets:"
+	@echo "  format       - Format all source code using clang-format"
+	@echo "  format-check - Check if code follows formatting standards"
+	@echo "  analyze      - Run static analysis using clang-tidy"
+	@echo "  check        - Run all coding standard checks"
+	@echo ""
+	@echo "Configuration files:"
+	@echo "  .clang-format - Code formatting rules"
+	@echo "  .clang-tidy   - Static analysis rules"
+	@echo "  CODING_STANDARDS.md - Detailed coding guidelines"
 
 #######################################
 # dependencies

@@ -179,14 +179,14 @@ uint8_t dcmipp_out_nn[DCMIPP_OUT_NN_BUFF_LEN];  /* Camera output buffer */
  */
 static void load_dual_dummy_buffers(void)
 {
-    printf("🔄 Loading dual dummy buffers (test image)...\n");
+    printf("Loading dual dummy buffers (test image)...\n");
     /* Load nn_rgb (128x128 RGB888) for neural network input */
     memcpy(nn_rgb, dummy_test_nn_rgb, DUMMY_TEST_NN_RGB_SIZE);
     /* Invalidate cache after loading PSRAM data */
     SCB_InvalidateDCache_by_Addr((uint32_t*)nn_rgb, DUMMY_TEST_NN_RGB_SIZE);
-    printf("   🧠 nn_rgb: 128x128 RGB888 (%d bytes)\n", DUMMY_TEST_NN_RGB_SIZE);
+    printf("   nn_rgb: 128x128 RGB888 (%d bytes)\n", DUMMY_TEST_NN_RGB_SIZE);
     
-    printf("✅ Dual dummy buffers loaded: consistent test data for detection + cropping\n");
+    printf("Dual dummy buffers loaded: consistent test data for detection + cropping\n");
 }
 #endif /* DUMMY_INPUT_BUFFER */
 
@@ -270,7 +270,7 @@ static int nn_init_detection(nn_context_t *nn_ctx)
     
     nn_ctx->detection_initialized = true;
     
-    printf("✅ Face Detection Network Ready: %lu bytes, %d outputs\n", 
+    printf("Face Detection Network Ready: %lu bytes, %d outputs\n", 
            nn_ctx->detection_input_length, nn_ctx->detection_output_count);
     
     return 0;
@@ -303,7 +303,7 @@ static int nn_init_recognition_lazy(nn_context_t *nn_ctx)
     
     nn_ctx->recognition_initialized = true;
     
-    printf("✅ Face Recognition Network Loaded: %lu bytes → %lu bytes\n", 
+    printf("Face Recognition Network Loaded: %lu bytes -> %lu bytes\n", 
            nn_ctx->recognition_input_length, nn_ctx->recognition_output_length);
     
     return 0;
@@ -542,7 +542,7 @@ static float run_face_recognition_on_face(app_context_t *ctx, const pd_pp_box_t 
     /* Lazy initialization of face recognition network */
     if (!ctx->nn_ctx.recognition_initialized) {
         if (nn_init_recognition_lazy(&ctx->nn_ctx) < 0) {
-            printf("❌ Face recognition network lazy initialization failed\n");
+            printf("Face recognition network lazy initialization failed\n");
             return 0.0f;
         }
     }
@@ -672,7 +672,7 @@ static int app_init(app_context_t *ctx)
     /* Initialize face detection network only (lazy load face recognition) */
     ret = nn_init_detection(&ctx->nn_ctx);
     if (ret < 0) {
-        printf("❌ Face detection network initialization failed: %d\n", ret);
+        printf("Face detection network initialization failed: %d\n", ret);
         return ret;
     }
     
@@ -710,12 +710,12 @@ static void process_frame_detections(app_context_t *ctx, pd_pp_box_t *boxes, uin
     
     /* Run face recognition on ALL detected faces */
     if (box_count > 0) {
-        printf("   🔍 Running face recognition on %u detected faces\n", box_count);
+        printf("   Running face recognition on %u detected faces\n", box_count);
         
         for (uint32_t i = 0; i < box_count; i++) {
             /* Only run recognition on faces with sufficient detection confidence */
             if (boxes[i].prob >= FACE_DETECTION_CONFIDENCE_THRESHOLD) {
-                printf("   🔄 Face %u: detection=%.1f%% -> ", i + 1, boxes[i].prob * 100.0f);
+                printf("   Face %u: detection=%.1f%% -> ", i + 1, boxes[i].prob * 100.0f);
                 
                 float similarity = run_face_recognition_on_face(ctx, &boxes[i]);
                 
@@ -748,7 +748,7 @@ static void process_frame_detections(app_context_t *ctx, pd_pp_box_t *boxes, uin
                 }
             } else {
                 /* Face detection confidence too low - skip recognition */
-                printf("   ⚠️ Face %u: detection=%.1f%% (too low, skipping recognition)\n", 
+                printf("   Face %u: detection=%.1f%% (too low, skipping recognition)\n", 
                        i + 1, boxes[i].prob * 100.0f);
                 /* Set very low similarity to indicate no recognition */
                 boxes[i].prob = 0.05f;
@@ -771,7 +771,7 @@ static void process_frame_detections(app_context_t *ctx, pd_pp_box_t *boxes, uin
     /* Set verification status based on voting */
     ctx->face_verified = ctx->target_detected;
     
-    printf("   🎯 Frame summary: faces=%u, target_this_frame=%s, target_detected=%s (%.1f%% best)\n",
+    printf("   Frame summary: faces=%u, target_this_frame=%s, target_detected=%s (%.1f%% best)\n",
            box_count,
            target_found_this_frame ? "YES" : "NO",
            ctx->target_detected ? "YES" : "NO",
@@ -840,10 +840,10 @@ static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int numb
  * This pipeline demonstrates a complete face detection and recognition system
  * with multi-face tracking capability, broken down into clear stages:
  *
- * 🔄 PIPELINE OVERVIEW:
+ * PIPELINE OVERVIEW:
  * ┌─────────────────────────────────────────────────────────────────────────┐
  * │  STAGE 1: Frame Capture & Preprocessing                                │
- * │  📸 Capture frame from camera → Convert to neural network format       │
+ * |  Capture frame from camera -> Convert to neural network format       |
  * └─────────────────────────┬───────────────────────────────────────────────┘
  *                           │
  * ┌─────────────────────────▼───────────────────────────────────────────────┐
@@ -853,22 +853,22 @@ static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int numb
  *                           │
  * ┌─────────────────────────▼───────────────────────────────────────────────┐
  * │  STAGE 3: Post-Processing & Face Tracking                             │
- * │  ⚙️ Convert network output → Track faces → Maintain consistency        │
+ * |  Convert network output -> Track faces -> Maintain consistency        |
  * └─────────────────────────┬───────────────────────────────────────────────┘
  *                           │
  * ┌─────────────────────────▼───────────────────────────────────────────────┐
  * │  STAGE 4: Face Recognition (Primary Face Only)                        │
- * │  🔍 Crop primary face → Run recognition → Smooth similarity scores     │
+ * |  Crop primary face -> Run recognition -> Smooth similarity scores     |
  * └─────────────────────────┬───────────────────────────────────────────────┘
  *                           │
  * ┌─────────────────────────▼───────────────────────────────────────────────┐
  * │  STAGE 5: System Status Update                                         │
- * │  💡 Update LEDs → Handle buttons → Send communication                  │
+ * |  Update LEDs -> Handle buttons -> Send communication                  |
  * └─────────────────────────┬───────────────────────────────────────────────┘
  *                           │
  * ┌─────────────────────────▼───────────────────────────────────────────────┐
  * │  STAGE 6: Output & Metrics                                             │
- * │  📊 Display results → Calculate performance → Clean up                 │
+ * |  Display results -> Calculate performance -> Clean up                 |
  * └─────────────────────────────────────────────────────────────────────────┘
  */
 
@@ -884,11 +884,11 @@ static void cleanup_nn_buffers(float32_t **nn_out, int32_t *nn_out_len, int numb
  */
 static int pipeline_stage_capture_and_preprocess(app_context_t *ctx, uint32_t pitch_nn)
 {
-    printf("📸 PIPELINE STAGE 1: Frame Capture\n");
+    printf("PIPELINE STAGE 1: Frame Capture\n");
     
     /* Step 1.1: Capture frame from camera or PC stream */
     if (app_get_frame(nn_rgb, pitch_nn) != 0) {
-        printf("❌ Frame capture failed\n");
+        printf("Frame capture failed\n");
         return -1;
     }
     
@@ -898,7 +898,7 @@ static int pipeline_stage_capture_and_preprocess(app_context_t *ctx, uint32_t pi
 #endif
     
     /* Step 1.2: Convert RGB to neural network input format */
-    printf("   🔄 Converting RGB to CHW format for neural network...\n");
+    printf("   Converting RGB to CHW format for neural network...\n");
     img_rgb_to_chw_float(nn_rgb, (float32_t *)ctx->nn_ctx.detection_input_buffer, 
                         NN_WIDTH * NN_BPP, NN_WIDTH, NN_HEIGHT);
     
@@ -909,7 +909,7 @@ static int pipeline_stage_capture_and_preprocess(app_context_t *ctx, uint32_t pi
     SCB_CleanInvalidateDCache_by_Addr(ctx->nn_ctx.detection_input_buffer, 
                                      ctx->nn_ctx.detection_input_length);
     
-    printf("✅ Frame captured and preprocessed (%dx%d → %lu bytes)\n", 
+    printf("Frame captured and preprocessed (%dx%d -> %lu bytes)\n", 
            NN_WIDTH, NN_HEIGHT, ctx->nn_ctx.detection_input_length);
     return 0;
 }
@@ -924,7 +924,7 @@ static int pipeline_stage_face_detection(app_context_t *ctx)
     printf("🧠 PIPELINE STAGE 2: Face Detection Network\n");
     
     /* Step 2.1: Run face detection neural network */
-    printf("   🚀 Running face detection neural network inference...\n");
+    printf("   Running face detection neural network inference...\n");
     uint32_t start_time = HAL_GetTick();
     RunNetworkSync(&NN_Instance_face_detection);
     uint32_t inference_time = HAL_GetTick() - start_time;
@@ -933,7 +933,7 @@ static int pipeline_stage_face_detection(app_context_t *ctx)
     printf("   🧹 Cleaning up neural network resources...\n");
     LL_ATON_RT_DeInit_Network(&NN_Instance_face_detection);
     
-    printf("✅ Face detection completed in %lu ms (%d outputs ready)\n", 
+    printf("Face detection completed in %lu ms (%d outputs ready)\n", 
            inference_time, ctx->nn_ctx.detection_output_count);
     return 0;
 }
@@ -945,30 +945,30 @@ static int pipeline_stage_face_detection(app_context_t *ctx)
  */
 static int pipeline_stage_postprocessing(app_context_t *ctx)
 {
-    printf("⚙️ PIPELINE STAGE 3: Post-Processing\n");
+    printf("PIPELINE STAGE 3: Post-Processing\n");
     
     /* Step 3.1: Run post-processing to extract bounding boxes */
-    printf("   🔍 Processing %d neural network outputs...\n", ctx->nn_ctx.detection_output_count);
+    printf("   Processing %d neural network outputs...\n", ctx->nn_ctx.detection_output_count);
     int32_t ret = app_postprocess_run((void **) ctx->nn_ctx.detection_output_buffers, 
                                      ctx->nn_ctx.detection_output_count, 
                                      &ctx->pp_output, &ctx->pp_params);
     if (ret != 0) {
-        printf("❌ Post-processing failed\n");
+        printf("Post-processing failed\n");
         return -1;
     }
     
     /* Step 3.2: Extract detected faces */
     pd_pp_box_t *boxes = (pd_pp_box_t *)ctx->pp_output.pOutData;
-    printf("   📦 Extracted %d face bounding boxes\n", ctx->pp_output.box_nb);
+    printf("   Extracted %d face bounding boxes\n", ctx->pp_output.box_nb);
     
     /* Step 3.3: Log detection details for educational purposes */
     for (uint32_t i = 0; i < ctx->pp_output.box_nb && i < 3; i++) {
-        printf("   📍 Face %d: confidence=%.3f, center=(%.2f,%.2f), size=%.2fx%.2f\n", 
+        printf("   Face %d: confidence=%.3f, center=(%.2f,%.2f), size=%.2fx%.2f\n", 
                i + 1, boxes[i].prob, boxes[i].x_center, boxes[i].y_center, 
                boxes[i].width, boxes[i].height);
     }
     
-    printf("✅ Post-processing completed: %d faces detected\n", ctx->pp_output.box_nb);
+    printf("Post-processing completed: %d faces detected\n", ctx->pp_output.box_nb);
     
     return 0;
 }
@@ -980,7 +980,7 @@ static int pipeline_stage_postprocessing(app_context_t *ctx)
  */
 static int pipeline_stage_face_recognition(app_context_t *ctx)
 {
-    printf("🔍 PIPELINE STAGE 4: Face Recognition\n");
+    printf("PIPELINE STAGE 4: Face Recognition\n");
     
     /* Step 4.1: Process all detected faces with recognition */
     pd_pp_box_t *boxes = (pd_pp_box_t *)ctx->pp_output.pOutData;
@@ -988,7 +988,7 @@ static int pipeline_stage_face_recognition(app_context_t *ctx)
     
     /* Step 4.2: Log recognition results */
     if (ctx->face_detected) {
-        printf("✅ Face recognition: detected=%s, verified=%s, best_similarity=%.1f%%\n",
+        printf("Face recognition: detected=%s, verified=%s, best_similarity=%.1f%%\n",
                ctx->face_detected ? "YES" : "NO",
                ctx->face_verified ? "YES" : "NO",
                ctx->current_similarity * 100.0f);
@@ -1006,7 +1006,7 @@ static int pipeline_stage_face_recognition(app_context_t *ctx)
  */
 static int pipeline_stage_system_update(app_context_t *ctx)
 {
-    printf("💡 PIPELINE STAGE 5: System Status Update\n");
+    printf("PIPELINE STAGE 5: System Status Update\n");
     
     /* Step 5.1: Update LED status based on recognition results */
     update_led_status(ctx);
@@ -1017,7 +1017,7 @@ static int pipeline_stage_system_update(app_context_t *ctx)
     /* Step 5.3: Send heartbeat for PC communication */
     Enhanced_PC_STREAM_SendHeartbeat();
     
-    printf("✅ System status updated\n");
+    printf("System status updated\n");
     return 0;
 }
 
@@ -1030,7 +1030,7 @@ static int pipeline_stage_system_update(app_context_t *ctx)
  */
 static int pipeline_stage_output_and_metrics(app_context_t *ctx, uint32_t frame_start_time, uint32_t boot_time)
 {
-    printf("📊 PIPELINE STAGE 6: Output and Metrics\n");
+    printf("PIPELINE STAGE 6: Output and Metrics\n");
     
     /* Step 6.1: Calculate performance metrics */
     uint32_t frame_end_time = HAL_GetTick();
@@ -1050,7 +1050,7 @@ static int pipeline_stage_output_and_metrics(app_context_t *ctx, uint32_t frame_
                       ctx->nn_ctx.detection_output_lengths, 
                       ctx->nn_ctx.detection_output_count);
     
-    printf("✅ Frame processing completed: %.1f FPS, %lu ms total\n", 
+    printf("Frame processing completed: %.1f FPS, %lu ms total\n", 
            ctx->performance.fps, total_frame_time);
     printf("═══════════════════════════════════════════════════════════\n");
     
@@ -1066,7 +1066,7 @@ static int app_main_loop(app_context_t *ctx)
 {
     /* Verify at least detection network is initialized */
     if (!ctx->nn_ctx.detection_initialized) {
-        printf("❌ Face detection network not initialized!\n");
+        printf("Face detection network not initialized!\n");
         return -1;
     }
     
@@ -1074,17 +1074,17 @@ static int app_main_loop(app_context_t *ctx)
     uint32_t boot_time = HAL_GetTick();
     
     /* Initialize camera and display systems */
-    printf("🚀Initializing Camera and Display Systems\n");
+    printf("Initializing Camera and Display Systems\n");
     app_camera_init(&pitch_nn);
     app_display_init();
     app_input_start();
-    printf("✅ Systems initialized, starting pipeline\n");
+    printf("Systems initialized, starting pipeline\n");
     printf("═══════════════════════════════════════════════════════════\n");
     
     /* Main processing loop with clear pipeline stages */
     while (1) {
         uint32_t frame_start_time = HAL_GetTick();
-        printf("🔄 STARTING FRAME %lu PROCESSING PIPELINE\n", ctx->frame_count + 1);
+        printf("STARTING FRAME %lu PROCESSING PIPELINE\n", ctx->frame_count + 1);
 
         /* Stage 1: Frame Capture and Preprocessing */
         if (pipeline_stage_capture_and_preprocess(ctx, pitch_nn) != 0) {
@@ -1143,7 +1143,7 @@ int main(void)
         }
     }
     
-    //printf("⚡ Boot completed in %lu ms\n", boot_end - boot_start);
+    //printf("Boot completed in %lu ms\n", boot_end - boot_start);
     
     /* Start main application loop */
     ret = app_main_loop(&g_app_ctx);
