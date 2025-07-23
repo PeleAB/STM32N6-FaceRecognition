@@ -23,16 +23,16 @@
  * GIT_DESCRIPTION "atonn-v1.1.0-31-g27f5d5bc"
  *
  * Command Line options:
- * --onnx-input = "/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/converted_models/centerface_OE_3_2_0.onnx"
- * --out-dir-prefix = "/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/st_ai_ws/neural_art__face_detection/"
+ * --onnx-input = "./Exercises/converted_models/centerface_OE_3_2_0.onnx"
+ * --out-dir-prefix = "./Exercises/st_ai_ws/neural_art__face_detection/"
  * --network-name = "face_detection"
  * --all-buffers-info = true
  * --mvei = true
- * --load-mdesc-file = "/home/vboxuser/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/10.1.0/Utilities/configs/stm32n6"
- * --load-mpool-file = "/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/memory_pools/model1"
+ * --load-mdesc-file = "./STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/10.1.0/Utilities/configs/stm32n6"
+ * --load-mpool-file = "./Exercises/memory_pools/model1"
  * --cache-maintenance = true
  * --enable-virtual-mem-pools = true
- * --json-quant-file = "/home/vboxuser/Desktop/Workshop/EdgeAI_Workshop/Exercises/converted_models/centerface_OE_3_2_0_Q.json"
+ * --json-quant-file = "./Exercises/converted_models/centerface_OE_3_2_0_Q.json"
  * --optimization = 0
  * --Os = true
  * --Omax-ca-pipe = 4

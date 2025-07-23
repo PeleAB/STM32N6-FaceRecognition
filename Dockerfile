@@ -54,7 +54,7 @@ ENV PATH="/opt/arm-toolchain/bin:${PATH}"
 # Install STM32CubeProgrammer (CLI version)
 # Note: This requires manual download from ST website due to license agreement
 # Users should download and place STM32CubeProg-*.zip in the build context
-COPY stm32cubeprog*.zip /tmp/ 2>/dev/null || echo "STM32CubeProgrammer not found - manual installation required"
+COPY stm32cubeprog*.zip /tmp/
 RUN if [ -f /tmp/stm32cubeprog*.zip ]; then \
         cd /opt && \
         unzip -q /tmp/stm32cubeprog*.zip && \

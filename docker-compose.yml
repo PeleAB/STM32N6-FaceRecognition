@@ -64,7 +64,7 @@ services:
       - build-cache:/workspace/build
       - arm-toolchain-cache:/opt/arm-toolchain
     working_dir: /workspace
-    command: bash -c "make clean && make -j$(nproc)"
+    command: bash -c "make clean && make -j$$(nproc)"
 
   # CI/CD environment
   ci-cd:

@@ -96,7 +96,7 @@
 #define MP_FACE_PP_CONF_THRESHOLD (0.5f)
 
 /* Display */
-#define WELCOME_MSG_1         "centerface_float.tflite"
-#define WELCOME_MSG_2         "Model Running in STM32 MCU internal memory"
+#define WELCOME_MSG_1         "STM32N6 Face Recognition"
+#define WELCOME_MSG_2         "AI-Powered Smart Vision System"
 
 #endif

@@ -29,6 +29,18 @@ objects.list
 .settings/
 *.launch
 STM32CubeIDE/Debug/
+STM32CubeIDE/Release/
+STM32CubeIDE/**/*.d
+STM32CubeIDE/**/*.o
+STM32CubeIDE/**/*.su
+STM32CubeIDE/**/*.cyclo
+STM32CubeIDE/**/*.list
+STM32CubeIDE/**/*.map
+STM32CubeIDE/**/subdir.mk
+STM32CubeIDE/**/objects.mk
+STM32CubeIDE/**/objects.list
+STM32CubeIDE/**/sources.mk
+STM32CubeIDE/**/makefile
 
 # Python environment and cache
 __pycache__/

@@ -46,14 +46,29 @@ A comprehensive embedded face recognition system implementing real-time face det
    # File → Import → Existing Projects → Browse to project folder
    ```
 
-3. **Flash the firmware:**
-   ```bash
-   # Using pre-built binaries
-   make flash
+3. **Flash the complete system:**
    
-   # Or use STM32CubeProgrammer GUI
-   # Load: build/Project.bin at address 0x70100000
+   The STM32N6 requires flashing **four separate components** in this order:
+   
+   ```bash
+   # 1. Flash FSBL (First Stage Boot Loader) at 0x70000000
+   STM32_Programmer_CLI -c port=SWD mode=HOTPLUG -el MX66UW1G45G_STM32N6570-DK.stldr -w Binary/ai_fsbl.hex
+   
+   # 2. Flash Face Detection Model at 0x71000000
+   STM32_Programmer_CLI -c port=SWD mode=HOTPLUG -el MX66UW1G45G_STM32N6570-DK.stldr -w Binary/det_network_data.hex
+   
+   # 3. Flash Face Recognition Model at 0x72000000
+   STM32_Programmer_CLI -c port=SWD mode=HOTPLUG -el MX66UW1G45G_STM32N6570-DK.stldr -w Binary/rec_network_data.hex
+   
+   # 4. Flash signed application at 0x70100000
+   STM32_Programmer_CLI -c port=SWD mode=HOTPLUG -el MX66UW1G45G_STM32N6570-DK.stldr -w Binary/STM32N6_GettingStarted_ObjectDetection_signed.hex
    ```
+   
+   **Important Notes:**
+   - Set BOOT1 switch to **right position** (dev mode) before flashing
+   - All .hex files are pre-built and available in the `Binary/` directory
+   - The external loader `MX66UW1G45G_STM32N6570-DK.stldr` is required for external flash programming
+   - After flashing, set BOOT1 switch to **left position** (boot from flash) and power cycle
 
 4. **Connect and run:**
    - Connect camera module and LCD
@@ -149,7 +164,7 @@ python run_ui.py  # Launch GUI interface
 ### Typical Performance Metrics
 - **Face Detection**: 8-10 FPS (including preprocessing)
 - **Face Recognition**: 15-20 FPS per face
-- **Memory Usage**: ~800KB RAM, ~1.5MB Flash
+- **Memory Usage**: ~800KB RAM, ~25MB External Flash (including AI models)
 - **Power Consumption**: ~2W typical operation
 
 ### Optimization Features
@@ -231,6 +246,8 @@ Additional documentation available:
 - [Boot Process](Doc/Boot-Overview.md)
 - [Build Options](Doc/Build-Options.md)
 - [Model Deployment](Doc/Deploy-your-tflite-Model.md)
+- [Programming Guide](Doc/Program-Hex-Files-STM32CubeProgrammer.md) - Complete flashing procedure
+- [Build Setup](BUILD_SETUP.md) - Post-clone build instructions
 - [Coding Standards](CODING_STANDARDS.md) - Embedded C best practices
 
 ## Contributing
