@@ -31,8 +31,8 @@ We welcome contributions from the embedded AI community! This guide will help yo
 
 1. **Fork and Clone**:
    ```bash
-   git clone https://github.com/yourusername/EdgeAI_Workshop.git
-   cd EdgeAI_Workshop
+   git clone https://github.com/yourusername/STM32N6-FaceRecognition.git
+   cd STM32N6-FaceRecognition
    ```
 
 2. **Install Dependencies**:

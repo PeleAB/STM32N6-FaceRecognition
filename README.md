@@ -33,8 +33,8 @@ A comprehensive embedded face recognition system implementing real-time face det
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
-   cd EdgeAI_Workshop
+   git clone https://github.com/PeleAB/STM32N6-FaceRecognition.git
+   cd STM32N6-FaceRecognition
    ```
 
 2. **Build the project:**
