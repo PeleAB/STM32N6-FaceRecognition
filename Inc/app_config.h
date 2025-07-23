@@ -23,13 +23,6 @@
 
 #define USE_DCACHE
 
-/* ========================================================================= */
-/* STUDENT MODE CONFIGURATION                                                */
-/* ========================================================================= */
-/* Enable STUDENT_MODE to use student implementation stub files.            */
-/* Comment out this define to use complete instructor implementations.      */
-/* ========================================================================= */
-//#define STUDENT_MODE
 
 /* ========================================================================= */
 /* DUMMY INPUT BUFFER CONFIGURATION                                          */
