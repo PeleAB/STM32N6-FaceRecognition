@@ -1,0 +1,141 @@
+version: '3.8'
+
+services:
+  # Complete development environment
+  development:
+    build:
+      context: .
+      target: development
+      args:
+        USER_ID: ${USER_ID:-1000}
+        GROUP_ID: ${GROUP_ID:-1000}
+    container_name: stm32n6-dev
+    volumes:
+      # Mount source code (read-write)
+      - .:/workspace
+      # Mount build cache (for faster rebuilds)
+      - build-cache:/workspace/build
+      # Mount ARM toolchain cache
+      - arm-toolchain-cache:/opt/arm-toolchain
+      # Mount Python packages cache
+      - pip-cache:/home/developer/.cache/pip
+    devices:
+      # USB devices for STM32 programming (requires privileged mode)
+      - /dev/bus/usb:/dev/bus/usb
+    privileged: true  # Required for USB device access
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+      - USER_ID=${USER_ID:-1000}
+      - GROUP_ID=${GROUP_ID:-1000}
+    network_mode: host
+    stdin_open: true
+    tty: true
+    working_dir: /workspace
+    command: bash
+
+  # Python tools only (for PC interface)
+  python-tools:
+    build:
+      context: .
+      target: python-tools
+    container_name: stm32n6-python
+    volumes:
+      - ./python_tools:/app
+      - python-cache:/root/.cache/pip
+    ports:
+      - "8080:8080"  # Web interface
+      - "8081:8081"  # WebSocket
+      - "3333:3333"  # UART bridge
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+    network_mode: host
+    stdin_open: true
+    tty: true
+    command: python run_ui.py
+
+  # STM32 build environment only
+  stm32-build:
+    build:
+      context: .
+      target: stm32-dev
+    container_name: stm32n6-build
+    volumes:
+      - .:/workspace
+      - build-cache:/workspace/build
+      - arm-toolchain-cache:/opt/arm-toolchain
+    working_dir: /workspace
+    command: bash -c "make clean && make -j$(nproc)"
+
+  # CI/CD environment
+  ci-cd:
+    build:
+      context: .
+      target: ci-cd
+    container_name: stm32n6-ci
+    volumes:
+      - .:/workspace
+      - build-cache:/workspace/build
+      - ci-reports:/workspace/reports
+    working_dir: /workspace
+    command: ci-pipeline
+
+  # Jupyter notebook server (for exercises)
+  jupyter:
+    build:
+      context: .
+      target: python-tools
+    container_name: stm32n6-jupyter
+    volumes:
+      - ./Exercises:/app/notebooks
+      - ./python_tools:/app/tools
+      - jupyter-data:/root/.jupyter
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    command: >
+      bash -c "
+        pip install jupyter jupyterlab ipywidgets &&
+        jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root
+          --notebook-dir=/app/notebooks
+      "
+
+  # Documentation server
+  docs:
+    image: nginx:alpine
+    container_name: stm32n6-docs
+    volumes:
+      - ./Doc:/usr/share/nginx/html:ro
+      - ./README.md:/usr/share/nginx/html/index.md:ro
+    ports:
+      - "8090:80"
+    command: >
+      sh -c "
+        echo 'server {
+          listen 80;
+          location / {
+            root /usr/share/nginx/html;
+            index index.html index.md;
+            try_files \$$uri \$$uri/ =404;
+          }
+        }' > /etc/nginx/conf.d/default.conf &&
+        nginx -g 'daemon off;'
+      "
+
+volumes:
+  build-cache:
+    driver: local
+  arm-toolchain-cache:
+    driver: local
+  pip-cache:
+    driver: local
+  python-cache:
+    driver: local
+  ci-reports:
+    driver: local
+  jupyter-data:
+    driver: local
+
+networks:
+  default:
+    driver: bridge
