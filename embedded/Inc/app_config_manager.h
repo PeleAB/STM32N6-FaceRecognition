@@ -1,7 +1,7 @@
 /**
  ******************************************************************************
  * @file    app_config_manager.h
- * @author  Application Team
+ * @author  PeleAB
  * @brief   Configuration management system for runtime parameters
  ******************************************************************************
  * @attention

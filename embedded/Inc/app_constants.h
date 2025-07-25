@@ -1,7 +1,7 @@
 /**
  ******************************************************************************
  * @file    app_constants.h
- * @author  Application Team
+ * @author  PeleAB
  * @brief   Application constants and configuration parameters
  ******************************************************************************
  * @attention

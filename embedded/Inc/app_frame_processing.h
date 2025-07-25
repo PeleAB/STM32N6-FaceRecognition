@@ -1,7 +1,7 @@
 /**
  ******************************************************************************
  * @file    app_frame_processing.h
- * @author  Application Team
+ * @author  PeleAB
  * @brief   Frame processing module for breaking down main loop components
  ******************************************************************************
  * @attention

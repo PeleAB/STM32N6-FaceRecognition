@@ -1,7 +1,7 @@
 /**
  ******************************************************************************
  * @file    app_config_manager.c
- * @author  Application Team
+ * @author  PeleAB
  * @brief   Configuration management system implementation
  ******************************************************************************
  * @attention

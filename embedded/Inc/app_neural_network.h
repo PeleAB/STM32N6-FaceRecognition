@@ -1,7 +1,7 @@
 /**
  ******************************************************************************
  * @file    app_neural_network.h
- * @author  Application Team
+ * @author  PeleAB
  * @brief   Neural network processing module for face detection and recognition
  ******************************************************************************
  * @attention
