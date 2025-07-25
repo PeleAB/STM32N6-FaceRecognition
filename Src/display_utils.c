@@ -172,11 +172,11 @@ static void StreamOutputPd(const pd_postprocess_out_t *p_postprocess)
 #endif /* ENABLE_PC_STREAM */
 
 #ifdef ENABLE_LCD_DISPLAY
-static void PrintInfo(uint32_t nb_rois, uint32_t inference_ms, uint32_t boottime_ms)
+static void PrintInfo(uint32_t nb_rois, uint32_t total_frame_time_ms, uint32_t boottime_ms)
 {
   UTIL_LCD_SetBackColor(0x40000000);
 //  UTIL_LCDEx_PrintfAt(0, LINE(2), CENTER_MODE, "Objects %u", nb_rois);
-  UTIL_LCDEx_PrintfAt(0, LINE(20), CENTER_MODE, "Inference: %ums", inference_ms);
+  UTIL_LCDEx_PrintfAt(0, LINE(20), CENTER_MODE, "FPS: %u", 1000/total_frame_time_ms);
   UTIL_LCDEx_PrintfAt(0, LINE(21), CENTER_MODE, "Embeddings: %d/%d", embeddings_bank_count(), EMBEDDING_BANK_SIZE);
   UTIL_LCDEx_PrintfAt(0, LINE(22), CENTER_MODE, "Boot time: %ums", boottime_ms);
   UTIL_LCD_SetBackColor(0);
@@ -184,7 +184,7 @@ static void PrintInfo(uint32_t nb_rois, uint32_t inference_ms, uint32_t boottime
 }
 #endif /* ENABLE_LCD_DISPLAY */
 
-void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t inference_ms, uint32_t boottime_ts, const void *ctx)
+void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t total_frame_time_ms, uint32_t boottime_ts, const void *ctx)
 {
 #ifdef ENABLE_LCD_DISPLAY
   int ret = HAL_LTDC_SetAddress_NoReload(&hlcd_ltdc,
@@ -204,7 +204,7 @@ void Display_NetworkOutput(pd_postprocess_out_t *p_postprocess, uint32_t inferen
   StreamOutputPd(p_postprocess);
 #endif
 #ifdef ENABLE_LCD_DISPLAY
-  PrintInfo(p_postprocess->box_nb, inference_ms, boottime_ts);
+  PrintInfo(p_postprocess->box_nb, total_frame_time_ms, boottime_ts);
   ret = HAL_LTDC_ReloadLayer(&hlcd_ltdc, LTDC_RELOAD_VERTICAL_BLANKING, LTDC_LAYER_2);
   assert(ret == HAL_OK);
   lcd_fg_buffer_rd_idx = 1 - lcd_fg_buffer_rd_idx;
@@ -254,7 +254,6 @@ void Display_WelcomeScreen(void)
   if (HAL_GetTick() - t0 < 4000)
   {
     UTIL_LCD_SetBackColor(0x40000000);
-    UTIL_LCDEx_PrintfAt(0, LINE(16), CENTER_MODE, "Object detection");
     UTIL_LCDEx_PrintfAt(0, LINE(17), CENTER_MODE, WELCOME_MSG_1);
     UTIL_LCDEx_PrintfAt(0, LINE(18), CENTER_MODE, WELCOME_MSG_2);
     UTIL_LCD_SetBackColor(0);

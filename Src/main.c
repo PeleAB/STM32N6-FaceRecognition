@@ -218,7 +218,7 @@ static void app_camera_init(uint32_t *pitch_nn);
 static void app_display_init(void);
 static void app_input_start(void);
 static int  app_get_frame(uint8_t *dest, uint32_t pitch_nn);
-static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot_ms, const app_context_t *ctx);
+static void app_output(pd_postprocess_out_t *res, uint32_t total_frame_time_ms, uint32_t boot_ms, const app_context_t *ctx);
 static void handle_user_button(app_context_t *ctx);
 static float verify_box(app_context_t *ctx, const pd_pp_box_t *box);
 static void process_frame_detections(app_context_t *ctx, pd_pp_box_t *boxes, uint32_t box_count);
@@ -394,13 +394,13 @@ static int app_get_frame(uint8_t *dest, uint32_t pitch_nn)
  * @param boot_ms Boot time in milliseconds
  * @param ctx Application context with current frame results
  */
-static void app_output(pd_postprocess_out_t *res, uint32_t inf_ms, uint32_t boot_ms, const app_context_t *ctx)
+static void app_output(pd_postprocess_out_t *res, uint32_t total_frame_time_ms, uint32_t boot_ms, const app_context_t *ctx)
 {
 #if defined(ENABLE_PC_STREAM) || defined(ENABLE_LCD_DISPLAY)
-    Display_NetworkOutput(res, inf_ms, boot_ms, ctx);
+    Display_NetworkOutput(res, total_frame_time_ms, boot_ms, ctx);
 #else
     (void)res;
-    (void)inf_ms;
+    (void)total_frame_time_ms;
     (void)boot_ms;
     (void)ctx;
 #endif
@@ -1071,7 +1071,7 @@ static int app_main_loop(app_context_t *ctx)
     }
     
     uint32_t pitch_nn = 0;
-    uint32_t boot_time = HAL_GetTick();
+
     
     /* Initialize camera and display systems */
     printf("Initializing Camera and Display Systems\n");
@@ -1081,6 +1081,8 @@ static int app_main_loop(app_context_t *ctx)
     printf("Systems initialized, starting pipeline\n");
     printf("═══════════════════════════════════════════════════════════\n");
     
+    uint32_t boot_time = HAL_GetTick();
+
     /* Main processing loop with clear pipeline stages */
     while (1) {
         uint32_t frame_start_time = HAL_GetTick();
