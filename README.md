@@ -13,6 +13,31 @@ A comprehensive embedded face recognition system implementing real-time face det
 - **LCD Display Output** with face detection visualization
 - **Optimized Performance** for embedded deployment
 
+## 🚀 Quick Start
+
+### Prerequisites
+
+1. **STM32CubeIDE** - Primary development environment
+2. **STM32EdgeAI** - Model conversion tool (stedgeai)
+3. **STM32CubeProgrammer** - Firmware flashing tool
+4. **ARM GCC Toolchain** - Cross-compilation toolchain
+
+### Setup
+
+1. **Configure tool paths**
+   Edit `stm32_tools_config.json` and set the correct paths for your installation
+
+2. **Build Process**
+   ```bash
+   # Convert AI models
+   ./scripts/compile_model.sh face_detection ./input_models/centerface.tflite
+   ./scripts/compile_model.sh face_recognition ./input_models/mobilefacenet_int8_faces.onnx
+   
+   # Build in STM32CubeIDE, then sign and flash
+   ./scripts/sign_binary.sh ./embedded/STM32CubeIDE/Debug/Project.bin
+   ./scripts/flash_firmware.sh all
+   ```
+
 ## Hardware Requirements
 
 - **STM32N6570-DK** development board
@@ -21,29 +46,53 @@ A comprehensive embedded face recognition system implementing real-time face det
 - **USB Connection** for programming and debugging
 - **PC** with STM32CubeIDE or ARM GCC toolchain
 
-## Quick Start
+## 📁 Project Structure
+
+```
+STM32N6-FaceRecognition/
+├── stm32_tools_config.json          # Tool configuration
+├── scripts/                         # Build and deployment scripts
+│   ├── compile_model.sh             # AI model conversion
+│   ├── sign_binary.sh               # Binary signing
+│   └── flash_firmware.sh            # Firmware flashing
+├── input_models/                    # Input model files (.onnx, .tflite)
+├── converted_models/                # Generated model code and binaries
+└── embedded/                        # STM32 embedded project
+    ├── STM32CubeIDE/                # IDE project files
+    ├── Src/                         # Application source code
+    ├── Inc/                         # Header files
+    ├── Models/                      # Generated model C files
+    ├── Binary/                      # Final binaries for flashing
+    ├── Makefile                     # Alternative build system
+    ├── Middlewares/                 # STM32 middleware
+    └── STM32Cube_FW_N6/            # STM32 firmware library
+```
+
+## Development Workflow
 
 ### Prerequisites
 
 1. **STM32CubeIDE** (recommended) or ARM GCC toolchain
 2. **STM32CubeProgrammer** for flashing
-3. **Python 3.8+** for PC-side tools (optional)
+3. **STM32EdgeAI** for model conversion
 
 ### Build and Flash
 
-1. **Clone the repository:**
+1. **Configure and convert models:**
    ```bash
-   git clone https://github.com/PeleAB/STM32N6-FaceRecognition.git
-   cd STM32N6-FaceRecognition
+   # Configure tool paths in stm32_tools_config.json
+   # Convert AI models
+   ./scripts/compile_model.sh face_detection ./input_models/centerface.tflite
+   ./scripts/compile_model.sh face_recognition ./input_models/mobilefacenet_int8_faces.onnx
    ```
 
-2. **Build the project:**
+2. **Build the embedded project:**
    ```bash
-   # Using Makefile
-   make clean && make -j4
+   # Using Makefile (from embedded directory)
+   cd embedded && make clean && make -j$(nproc)
    
-   # Or using STM32CubeIDE
-   # File → Import → Existing Projects → Browse to project folder
+   # Or using STM32CubeIDE  
+   # Open embedded/STM32CubeIDE project, clean and rebuild
    ```
 
 3. **Flash the complete system:**

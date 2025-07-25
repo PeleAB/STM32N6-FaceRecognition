@@ -1,0 +1,61 @@
+{
+  "description": "STM32 Development Tools Configuration",
+  "version": "1.0.0",
+  "tools": {
+    "stm32cubeide": {
+      "path": "/path/to/STM32CubeIDE",
+      "description": "STM32CubeIDE installation directory",
+      "required": true,
+      "executable": "stm32cubeide"
+    },
+    "stm32edgeai": {
+      "path": "/path/to/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/10.1.0/Utilities/linux/stedgeai",
+      "description": "STM32 Edge AI tool (stedgeai) executable path",
+      "required": true,
+      "executable": "stedgeai"
+    },
+    "stm32programmer": {
+      "path": "/path/to/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin/STM32_Programmer_CLI",
+      "description": "STM32CubeProgrammer CLI tool path",
+      "required": true,
+      "executable": "STM32_Programmer_CLI"
+    },
+    "stm32signingtool": {
+      "path": "/path/to/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin/STM32_SigningTool_CLI",
+      "description": "STM32 Signing Tool CLI path",
+      "required": true,
+      "executable": "STM32_SigningTool_CLI"
+    },
+    "arm_gcc_toolchain": {
+      "path": "/path/to/arm-none-eabi-gcc",
+      "description": "ARM GCC toolchain bin directory",
+      "required": true,
+      "executable": "arm-none-eabi-gcc"
+    },
+    "external_loader": {
+      "path": "/path/to/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin/ExternalLoader/MX66UW1G45G_STM32N6570-DK.stldr",
+      "description": "External flash loader for STM32N6570-DK",
+      "required": true
+    }
+  },
+  "memory_layout": {
+    "fsbl_address": "0x70000000",
+    "application_address": "0x70100000",
+    "face_detection_model_address": "0x71000000",
+    "face_recognition_model_address": "0x72000000"
+  },
+  "model_configs": {
+    "face_detection": {
+      "output_name": "face_detection",
+      "target": "stm32n6",
+      "input_data_type": "float32",
+      "stedgeai_options": "-O0 --all-buffers-info --mvei --cache-maintenance --Oalt-sched --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os --enable-epoch-controller"
+    },
+    "face_recognition": {
+      "output_name": "face_recognition",
+      "target": "stm32n6",
+      "input_data_type": "float32",
+      "stedgeai_options": "-O0 --all-buffers-info --mvei --cache-maintenance --Oalt-sched --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os --enable-epoch-controller"
+    }
+  }
+}

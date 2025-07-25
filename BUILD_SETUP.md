@@ -24,20 +24,21 @@ rm -rf build/
    - Right-click project → Clean Project
    - Right-click project → Build Project
 
-### 3. Docker Build Setup
+### 3. STM32 Tools Configuration
 
-If using Docker development environment:
+Configure your STM32 development tools:
 
-```bash
-# Run the setup script
-./docker-scripts/setup.sh
+1. Edit `stm32_tools_config.json` and set the correct paths for:
+   - STM32CubeIDE installation
+   - STM32EdgeAI (stedgeai) tool
+   - STM32CubeProgrammer 
+   - STM32 Signing Tool
+   - ARM GCC toolchain
 
-# Start development environment
-./docker-scripts/dev.sh
-
-# Build firmware
-./docker-scripts/build.sh
-```
+2. Use the provided scripts for model compilation and firmware deployment:
+   - `./scripts/compile_model.sh` - Convert ONNX/TFLite models
+   - `./scripts/sign_binary.sh` - Sign application binaries
+   - `./scripts/flash_firmware.sh` - Flash firmware to board
 
 ### 4. Makefile Build
 
