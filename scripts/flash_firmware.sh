@@ -3,7 +3,8 @@
 # STM32N6 Firmware Flashing Script
 # Flashes FSBL, application, and AI models to STM32N6570-DK
 
-set -e
+# set -e removed to prevent early exit on warnings/non-critical errors
+set -u  # Exit on undefined variables
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
@@ -81,10 +82,12 @@ show_usage() {
     echo ""
     echo "Components:"
     echo "  fsbl               Flash FSBL (First Stage Boot Loader)"
-    echo "  application        Flash signed application firmware"  
-    echo "  face_detection     Flash face detection model"
-    echo "  face_recognition   Flash face recognition model"
-    echo "  models             Flash both AI models"
+    echo "  application        Flash signed application firmware"
+    local available_models=$(get_available_models)
+    for model_type in $available_models; do
+        echo "  $model_type        Flash $model_type model"
+    done
+    echo "  models             Flash all AI models"
     echo "  all                Flash all components (default)"
     echo ""
     echo "Options:"
@@ -105,8 +108,10 @@ show_usage() {
     echo "  3. Required files in Binary directory:"
     echo "     - ai_fsbl.hex"
     echo "     - *_signed.hex (application)"
-    echo "     - face_detection_data.hex"
-    echo "     - face_recognition_data.hex"
+    local available_models=$(get_available_models)
+    for model_type in $available_models; do
+        echo "     - ${model_type}_data.hex"
+    done
 }
 
 # Function to check prerequisites
@@ -116,9 +121,9 @@ check_prerequisites() {
     # Check if device is connected
     print_status "Checking STM32N6570-DK connection..."
     
-    local connection_test="$("$PROGRAMMER_PATH" -c port=SWD mode=HOTPLUG -el "$EXTERNAL_LOADER_PATH" --connect 2>&1 || true)"
+    local connection_test="$("$PROGRAMMER_PATH" -c port=SWD mode=HOTPLUG -el "$EXTERNAL_LOADER_PATH" 2>&1 || true)"
     
-    if echo "$connection_test" | grep -q "Error"; then
+    if echo "$connection_test" | grep -q "Error" && ! echo "$connection_test" | grep -q "Connection established"; then
         print_error "Failed to connect to STM32N6570-DK"
         print_error "Please check:"
         print_error "1. USB cable is connected"
@@ -168,11 +173,16 @@ flash_component() {
     
     print_status "Running: ${cmd[*]}"
     
-    if "${cmd[@]}" > /tmp/flash_output.log 2>&1; then
+    # Run STM32CubeProgrammer and capture exit code
+    local flash_exit_code=0
+    "${cmd[@]}" > /tmp/flash_output.log 2>&1 || flash_exit_code=$?
+    
+    # Check output for success indicators instead of relying solely on exit code
+    if [ $flash_exit_code -eq 0 ] || (grep -q "Programming Complete" /tmp/flash_output.log && ! grep -q "Error" /tmp/flash_output.log); then
         print_status "$description flashed successfully"
         return 0
     else
-        print_error "$description flashing failed"
+        print_error "$description flashing failed (exit code: $flash_exit_code)"
         print_error "STM32CubeProgrammer output:"
         cat /tmp/flash_output.log
         return 1
@@ -216,30 +226,21 @@ flash_application() {
     fi
 }
 
-# Function to flash face detection model
-flash_face_detection() {
-    local binary_dir="$1"
-    local verify_flag="$2"
-    
-    local model_file="$binary_dir/face_detection_data.hex"
-    
-    if verify_file "$model_file" "Face Detection Model"; then
-        flash_component "$model_file" "Face Detection Model" "$verify_flag"
-        return $?
-    else
-        return 1
-    fi
+# Function to get available models from config
+get_available_models() {
+    python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(' '.join(config['models'].keys()))" 2>/dev/null || echo ""
 }
 
-# Function to flash face recognition model
-flash_face_recognition() {
-    local binary_dir="$1"
-    local verify_flag="$2"
+# Function to flash a model
+flash_model() {
+    local model_type="$1"
+    local binary_dir="$2" 
+    local verify_flag="$3"
     
-    local model_file="$binary_dir/face_recognition_data.hex"
+    local model_file="$binary_dir/${model_type}_data.hex"
     
-    if verify_file "$model_file" "Face Recognition Model"; then
-        flash_component "$model_file" "Face Recognition Model" "$verify_flag"
+    if verify_file "$model_file" "$model_type Model"; then
+        flash_component "$model_file" "$model_type Model" "$verify_flag"
         return $?
     else
         return 1
@@ -269,13 +270,24 @@ reset_device() {
 show_memory_layout() {
     print_status "STM32N6 External Flash Memory Layout:"
     echo "┌─────────────────────────────────────────┐"
-    echo "│ 0x70000000 - FSBL (1MB)                │"
+    
+    # Show FSBL and Application
+    local fsbl_address=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['memory_layout']['fsbl_address'])" 2>/dev/null || echo "0x70000000")
+    local app_address=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['memory_layout']['application_address'])" 2>/dev/null || echo "0x70100000")
+    
+    echo "│ $fsbl_address - FSBL (1MB)                │"
     echo "├─────────────────────────────────────────┤"
-    echo "│ 0x70100000 - Application (8MB)         │"
-    echo "├─────────────────────────────────────────┤"
-    echo "│ 0x71000000 - Face Detection (16MB)     │"
-    echo "├─────────────────────────────────────────┤"
-    echo "│ 0x72000000 - Face Recognition (16MB)   │"
+    echo "│ $app_address - Application (8MB)         │"
+    
+    # Show models dynamically
+    local available_models=$(get_available_models)
+    for model_type in $available_models; do
+        local address=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['models']['$model_type']['address'])" 2>/dev/null || echo "N/A")
+        local model_name=$(echo "$model_type" | sed 's/_/ /g' | sed 's/\b\w/\U&/g')
+        echo "├─────────────────────────────────────────┤"
+        printf "│ %-39s │\n" "$address - $model_name (16MB)"
+    done
+    
     echo "└─────────────────────────────────────────┘"
 }
 
@@ -347,6 +359,7 @@ main() {
     # Process components
     local flash_success=true
     local components_flashed=0
+    local available_models=$(get_available_models)
     
     for component in "${components[@]}"; do
         case "$component" in
@@ -364,58 +377,65 @@ main() {
                     flash_success=false
                 fi
                 ;;
-            face_detection)
-                if flash_face_detection "$binary_dir" "$verify_flag"; then
-                    ((components_flashed++))
-                else
-                    flash_success=false
-                fi
-                ;;
-            face_recognition)
-                if flash_face_recognition "$binary_dir" "$verify_flag"; then
-                    ((components_flashed++))
-                else
-                    flash_success=false
-                fi
-                ;;
             models)
-                if flash_face_detection "$binary_dir" "$verify_flag"; then
-                    ((components_flashed++))
-                else
-                    flash_success=false
-                fi
-                if flash_face_recognition "$binary_dir" "$verify_flag"; then
-                    ((components_flashed++))
-                else
-                    flash_success=false
-                fi
+                # Flash all available models
+                for model_type in $available_models; do
+                    if flash_model "$model_type" "$binary_dir" "$verify_flag"; then
+                        ((components_flashed++))
+                    else
+                        flash_success=false
+                    fi
+                done
                 ;;
             all)
-                if flash_fsbl "$binary_dir" "$verify_flag"; then
+                # Flash FSBL first
+                local fsbl_result=0
+                flash_fsbl "$binary_dir" "$verify_flag" || fsbl_result=$?
+                if [ $fsbl_result -eq 0 ]; then
                     ((components_flashed++))
+                    print_status "✅ FSBL flashing completed"
                 else
                     flash_success=false
+                    print_error "❌ FSBL flashing failed"
                 fi
-                if flash_face_detection "$binary_dir" "$verify_flag"; then
+                
+                # Flash all models
+                for model_type in $available_models; do
+                    local model_result=0
+                    flash_model "$model_type" "$binary_dir" "$verify_flag" || model_result=$?
+                    if [ $model_result -eq 0 ]; then
+                        ((components_flashed++))
+                        print_status "✅ $model_type model flashing completed"
+                    else
+                        flash_success=false
+                        print_error "❌ $model_type model flashing failed"
+                    fi
+                done
+                
+                # Flash application last
+                local app_result=0
+                flash_application "$binary_dir" "$verify_flag" || app_result=$?
+                if [ $app_result -eq 0 ]; then
                     ((components_flashed++))
+                    print_status "✅ Application flashing completed"
                 else
                     flash_success=false
-                fi
-                if flash_face_recognition "$binary_dir" "$verify_flag"; then
-                    ((components_flashed++))
-                else
-                    flash_success=false
-                fi
-                if flash_application "$binary_dir" "$verify_flag"; then
-                    ((components_flashed++))
-                else
-                    flash_success=false
+                    print_error "❌ Application flashing failed"
                 fi
                 ;;
             *)
-                print_error "Unknown component: $component"
-                print_error "Valid components: fsbl, application, face_detection, face_recognition, models, all"
-                flash_success=false
+                # Check if it's a model type
+                if [[ " $available_models " =~ " $component " ]]; then
+                    if flash_model "$component" "$binary_dir" "$verify_flag"; then
+                        ((components_flashed++))
+                    else
+                        flash_success=false
+                    fi
+                else
+                    print_error "Unknown component: $component"
+                    print_error "Valid components: fsbl, application, $available_models, models, all"
+                    flash_success=false
+                fi
                 ;;
         esac
     done

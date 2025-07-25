@@ -40,6 +40,7 @@ load_config() {
     SIGNING_TOOL_PATH=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['tools']['stm32signingtool']['path'])" 2>/dev/null || echo "")
     ARM_OBJCOPY_PATH=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['tools']['arm_gcc_toolchain']['path'])" 2>/dev/null || echo "")
     APPLICATION_ADDRESS=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['memory_layout']['application_address'])" 2>/dev/null || echo "0x70100000")
+    DEFAULT_BINARY_PATH=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['build']['application_binary_path'])" 2>/dev/null || echo "")
     
     # Validate signing tool path
     if [ -z "$SIGNING_TOOL_PATH" ] || [ "$SIGNING_TOOL_PATH" = "/path/to/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin/STM32_SigningTool_CLI" ]; then
@@ -81,19 +82,24 @@ load_config() {
 
 # Function to show usage
 show_usage() {
-    echo "Usage: $0 [OPTIONS] <input_binary>"
+    echo "Usage: $0 [OPTIONS] [input_binary]"
     echo ""
     echo "Arguments:"
     echo "  input_binary    Path to the application binary file (.bin)"
+    echo "                  If not provided, uses path from stm32_tools_config.json"
     echo ""
     echo "Options:"
-    echo "  -o, --output    Output directory (default: ./Binary)"
+    echo "  -o, --output    Output directory (default: ./embedded/Binary)"
     echo "  -n, --name      Output filename prefix (default: derived from input)"
     echo "  -h, --help      Show this help message"
     echo ""
     echo "Examples:"
+    echo "  $0                                                              # Use configured binary path"
     echo "  $0 ./embedded/STM32CubeIDE/Debug/STM32N6_GettingStarted_ObjectDetection.bin"
     echo "  $0 -o ./build -n MyApp ./path/to/application.bin"
+    echo ""
+    echo "Configuration:"
+    echo "  Default binary path is set in stm32_tools_config.json under 'build.application_binary_path'"
     echo ""
     echo "Output:"
     echo "  - <name>_signed.bin: Signed binary file"
@@ -122,9 +128,16 @@ sign_binary() {
     
     print_status "Running: ${cmd[*]}"
     
+    # Run the signing command and capture exit code
     if "${cmd[@]}"; then
         print_status "Binary signed successfully: $signed_bin"
-        echo "$signed_bin"
+        
+        # Verify the signed binary was actually created
+        if [ ! -f "$signed_bin" ]; then
+            print_error "Signing tool claimed success but signed binary not found: $signed_bin"
+            return 1
+        fi
+        
         return 0
     else
         print_error "Binary signing failed"
@@ -142,6 +155,12 @@ convert_to_hex() {
     
     print_status "Converting to Intel HEX format"
     
+    # Verify input file exists
+    if [ ! -f "$signed_bin" ]; then
+        print_error "Signed binary file not found: $signed_bin"
+        return 1
+    fi
+    
     local cmd=(
         "$ARM_OBJCOPY"
         "-I" "binary"
@@ -153,12 +172,23 @@ convert_to_hex() {
     
     print_status "Running: ${cmd[*]}"
     
-    if "${cmd[@]}"; then
+    # Capture both stdout and stderr for objcopy
+    local temp_output=$(mktemp)
+    local exit_code=0
+    "${cmd[@]}" > "$temp_output" 2>&1 || exit_code=$?
+    
+    # Show any error output from objcopy
+    if [ -s "$temp_output" ]; then
+        print_warning "objcopy output:"
+        cat "$temp_output"
+    fi
+    rm -f "$temp_output"
+    
+    if [ "$exit_code" -eq 0 ]; then
         print_status "HEX conversion successful: $signed_hex"
-        echo "$signed_hex"
         return 0
     else
-        print_error "HEX conversion failed"
+        print_error "HEX conversion failed (exit code: $exit_code)"
         return 1
     fi
 }
@@ -224,11 +254,34 @@ main() {
         esac
     done
     
-    # Check if input binary is provided
+    # Check if input binary is provided, use default if not 
     if [ -z "$input_binary" ]; then
-        print_error "No input binary specified"
-        show_usage
-        exit 1
+        # Try to get default binary path from config
+        local default_path=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['build']['application_binary_path'])" 2>/dev/null || echo "")
+        
+        if [ -n "$default_path" ]; then
+            # Use configured path, resolve relative to project root
+            local resolved_path="$PROJECT_ROOT/$default_path"
+            
+            if [ -f "$resolved_path" ]; then
+                input_binary="$resolved_path"
+                print_status "Using configured binary path: $default_path"
+            else
+                print_error "Configured binary path does not exist: $resolved_path"
+                print_error "Please either:"
+                print_error "1. Build the application first"
+                print_error "2. Provide a binary path as argument: $0 <path_to_binary>"
+                print_error "3. Update 'build.application_binary_path' in $CONFIG_FILE"
+                exit 1
+            fi
+        else
+            print_error "No input binary specified and no default path configured"
+            print_error "Please either:"
+            print_error "1. Provide a binary path as argument: $0 <path_to_binary>"
+            print_error "2. Configure 'build.application_binary_path' in $CONFIG_FILE"
+            show_usage
+            exit 1
+        fi
     fi
     
     # Convert to absolute path
@@ -256,8 +309,8 @@ main() {
     fi
     
     # Sign the binary
-    local signed_bin
-    if signed_bin=$(sign_binary "$input_binary" "$output_dir" "$output_name"); then
+    local signed_bin="$output_dir/${output_name}_signed.bin"
+    if sign_binary "$input_binary" "$output_dir" "$output_name" > /dev/null; then
         print_status "Signing completed successfully"
     else
         print_error "Signing failed"
@@ -265,8 +318,8 @@ main() {
     fi
     
     # Convert to Intel HEX
-    local signed_hex
-    if signed_hex=$(convert_to_hex "$signed_bin" "$output_dir" "$output_name"); then
+    local signed_hex="$output_dir/${output_name}_signed.hex"
+    if convert_to_hex "$signed_bin" "$output_dir" "$output_name" > /dev/null; then
         print_status "HEX conversion completed successfully"
     else
         print_error "HEX conversion failed"

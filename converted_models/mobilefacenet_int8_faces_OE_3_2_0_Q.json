@@ -1,0 +1,7081 @@
+{
+    "version": "4.0",
+    "environment": {
+        "generated_model": {
+            "model_files": [
+                {
+                    "name": "mobilefacenet_int8_faces_OE_3_2_0.onnx",
+                    "signature": "0x1d69103c8f7a18c63af9ba94c301f8c2"
+                }
+            ],
+            "name": "network",
+            "generated_time": "2025-07-26T01:17:25+0300"
+        },
+        "tools": [
+            {
+                "name": "ST.EdgeAI.Core",
+                "version": "2.1.0-20194 329b0e98d",
+                "arguments": "generate --name face_recognition --model /home/vboxuser/development/STM32N6-FaceRecognition/input_models/mobilefacenet_int8_faces.onnx --target stm32n6 --st-neural-art face_recognition@/tmp/face_recognition_config.json --input-data-type float32 --output /home/vboxuser/development/STM32N6-FaceRecognition/converted_models",
+                "environment": [],
+                "input_model": {
+                    "model_files": [
+                        {
+                            "name": "mobilefacenet_int8_faces.onnx",
+                            "signature": "0x37a5b97189de3272bf7e6fa09819f172"
+                        }
+                    ],
+                    "name": "mobilefacenet_int8_faces",
+                    "type": "onnx",
+                    "size": 1046400,
+                    "n_params": 993600
+                }
+            }
+        ],
+        "test_name": "",
+        "network_signature": "0xb13f88a900f0d51c"
+    },
+    "model_info": {
+        "original_inputs": [
+            {
+                "name": "input",
+                "data_format": {
+                    "type": "FLOAT",
+                    "size": 32,
+                    "scale": [],
+                    "zero": [],
+                    "quantizer": "NONE"
+                },
+                "shape": [
+                    1,
+                    3,
+                    112,
+                    112
+                ],
+                "shape_map": [
+                    "BATCH",
+                    "CH",
+                    "H",
+                    "W"
+                ],
+                "c_shape_map": [
+                    "BATCH",
+                    "CH",
+                    "H",
+                    "W"
+                ]
+            }
+        ],
+        "original_outputs": [
+            {
+                "name": "output",
+                "data_format": {
+                    "type": "FLOAT",
+                    "size": 32,
+                    "scale": [],
+                    "zero": [],
+                    "quantizer": "NONE"
+                },
+                "shape": [
+                    1,
+                    128
+                ],
+                "shape_map": [
+                    "BATCH",
+                    "CH"
+                ],
+                "c_shape_map": [
+                    "BATCH",
+                    "CH"
+                ]
+            }
+        ]
+    },
+    "tensors": {
+        "Input_0_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            },
+            "data_channel_position": "CHFIRST",
+            "data_channel_batch": 1,
+            "user_allocated": false
+        },
+        "Quantize_1_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007843137718737125
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_2_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007843137718737125
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_3_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.013484287075698376
+                    ],
+                    [
+                        -11
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_3_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.004461828153580427
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_3_bias": {
+            "format": {
+                "params": [
+                    [
+                        3.4994733141502365e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_4_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.013484287075698376
+                    ],
+                    [
+                        -11
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_5_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_6_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_6_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_7_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010714871808886528
+                    ],
+                    [
+                        -46
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_8_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010714871808886528
+                    ],
+                    [
+                        -46
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_9_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.027116091921925545
+                    ],
+                    [
+                        9
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_9_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.2332417070865631
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_9_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0024991550017148256
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_10_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.027116091921925545
+                    ],
+                    [
+                        9
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_11_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_12_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_12_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_13_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01680128462612629
+                    ],
+                    [
+                        -63
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_14_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01680128462612629
+                    ],
+                    [
+                        -63
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_15_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.026162078604102135
+                    ],
+                    [
+                        17
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_15_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.01945381611585617
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_15_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.000326849112752825
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_16_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.026162078604102135
+                    ],
+                    [
+                        17
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_17_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_18_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_18_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_19_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.013704867102205753
+                    ],
+                    [
+                        -83
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_20_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.013704867102205753
+                    ],
+                    [
+                        -83
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_21_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.022819332778453827
+                    ],
+                    [
+                        -5
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_21_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.07172998040914536
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_21_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0009830498602241278
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_22_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.022819332778453827
+                    ],
+                    [
+                        -5
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_23_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_24_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_24_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_25_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.015931136906147003
+                    ],
+                    [
+                        -62
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_26_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.015931136906147003
+                    ],
+                    [
+                        -62
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_27_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0166975948959589
+                    ],
+                    [
+                        8
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_27_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.013133288361132145
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_27_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0002092282084049657
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_28_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0166975948959589
+                    ],
+                    [
+                        8
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_29_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0166975948959589
+                    ],
+                    [
+                        8
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_30_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.006778963841497898
+                    ],
+                    [
+                        16
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_30_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.0050775110721588135
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_30_bias": {
+            "format": {
+                "params": [
+                    [
+                        8.478222298435867e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_31_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.006778963841497898
+                    ],
+                    [
+                        16
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_32_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_33_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_33_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_34_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004076682962477207
+                    ],
+                    [
+                        -57
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_35_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004076682962477207
+                    ],
+                    [
+                        -57
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_36_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.012297959066927433
+                    ],
+                    [
+                        -13
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_36_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.1704006940126419
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_36_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0006946696084924042
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_37_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.012297959066927433
+                    ],
+                    [
+                        -13
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_38_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_39_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_39_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_40_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0078753512352705
+                    ],
+                    [
+                        -92
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_41_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0078753512352705
+                    ],
+                    [
+                        -92
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_42_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01010375376790762
+                    ],
+                    [
+                        -12
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_42_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.011441836133599281
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_42_bias": {
+            "format": {
+                "params": [
+                    [
+                        9.010847861645743e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_43_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01010375376790762
+                    ],
+                    [
+                        -12
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_44_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01010375376790762
+                    ],
+                    [
+                        -12
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Add_45_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.018241262063384056
+                    ],
+                    [
+                        -7
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_46_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.018241262063384056
+                    ],
+                    [
+                        -7
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_47_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.018241262063384056
+                    ],
+                    [
+                        -7
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_48_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007443015929311514
+                    ],
+                    [
+                        -5
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_48_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.005418594926595688
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_48_bias": {
+            "format": {
+                "params": [
+                    [
+                        9.884200699161738e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_49_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007443015929311514
+                    ],
+                    [
+                        -5
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_50_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_51_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_51_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_52_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004609059542417526
+                    ],
+                    [
+                        -87
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_53_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004609059542417526
+                    ],
+                    [
+                        -87
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_54_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01787072978913784
+                    ],
+                    [
+                        20
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_54_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.16732154786586761
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_54_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0007711949874646962
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_55_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01787072978913784
+                    ],
+                    [
+                        20
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_56_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_57_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_57_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_58_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.008849743753671646
+                    ],
+                    [
+                        -89
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_59_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.008849743753671646
+                    ],
+                    [
+                        -89
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_60_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.009133639745414257
+                    ],
+                    [
+                        5
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_60_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.013329943642020226
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_60_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.00011796658509410918
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_61_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.009133639745414257
+                    ],
+                    [
+                        5
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_62_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.009133639745414257
+                    ],
+                    [
+                        5
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Add_63_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01794246770441532
+                    ],
+                    [
+                        -6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_64_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01794246770441532
+                    ],
+                    [
+                        -6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_65_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01794246770441532
+                    ],
+                    [
+                        -6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_66_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0064856610260903835
+                    ],
+                    [
+                        23
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_66_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.004673636518418789
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_66_bias": {
+            "format": {
+                "params": [
+                    [
+                        8.385657565668225e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_67_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0064856610260903835
+                    ],
+                    [
+                        23
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_68_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_69_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_69_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_70_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0034389891661703587
+                    ],
+                    [
+                        -69
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_71_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0034389891661703587
+                    ],
+                    [
+                        -69
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_72_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.020313851535320282
+                    ],
+                    [
+                        21
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_72_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.13344363868236542
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_72_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.000458911235909909
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_73_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.020313851535320282
+                    ],
+                    [
+                        21
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_74_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_75_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_75_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_76_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.009076842106878757
+                    ],
+                    [
+                        -110
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_77_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.009076842106878757
+                    ],
+                    [
+                        -110
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_78_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01803927682340145
+                    ],
+                    [
+                        9
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_78_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.01953694596886635
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_78_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0001773337717168033
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_79_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01803927682340145
+                    ],
+                    [
+                        9
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_80_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01803927682340145
+                    ],
+                    [
+                        9
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Add_81_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.021410059183835983
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_82_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.021410059183835983
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_83_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.021410059183835983
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_84_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007429731544107199
+                    ],
+                    [
+                        3
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_84_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.003039674134925008
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_84_bias": {
+            "format": {
+                "params": [
+                    [
+                        6.507960642920807e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_85_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007429731544107199
+                    ],
+                    [
+                        3
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_86_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_87_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_87_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_88_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004422393161803484
+                    ],
+                    [
+                        -81
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_89_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004422393161803484
+                    ],
+                    [
+                        -81
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_90_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.017431318759918213
+                    ],
+                    [
+                        -10
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_90_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.19119296967983246
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_90_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0008455304778181016
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_91_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.017431318759918213
+                    ],
+                    [
+                        -10
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_92_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_93_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_93_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_94_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010702666826546192
+                    ],
+                    [
+                        -96
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_95_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010702666826546192
+                    ],
+                    [
+                        -96
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_96_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.024118632078170776
+                    ],
+                    [
+                        42
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_96_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.033959146589040756
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_96_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.00036345343687571585
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_97_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.024118632078170776
+                    ],
+                    [
+                        42
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_98_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.024118632078170776
+                    ],
+                    [
+                        42
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Add_99_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.03413800895214081
+                    ],
+                    [
+                        25
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_100_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.03413800895214081
+                    ],
+                    [
+                        25
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_101_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.03413800895214081
+                    ],
+                    [
+                        25
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_102_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.009223077446222305
+                    ],
+                    [
+                        27
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_102_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.005584230180829763
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_102_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.00019063449872191995
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_103_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.009223077446222305
+                    ],
+                    [
+                        27
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_104_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_105_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_105_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_106_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004322906490415335
+                    ],
+                    [
+                        -85
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_107_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004322906490415335
+                    ],
+                    [
+                        -85
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_108_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01466493308544159
+                    ],
+                    [
+                        28
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_108_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.08749756217002869
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_108_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.00037824377068318427
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_109_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.01466493308544159
+                    ],
+                    [
+                        28
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_110_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_111_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_111_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_112_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.008690984919667244
+                    ],
+                    [
+                        -40
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_113_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.008690984919667244
+                    ],
+                    [
+                        -40
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_114_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010660473257303238
+                    ],
+                    [
+                        -10
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_114_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.009117537178099155
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_114_bias": {
+            "format": {
+                "params": [
+                    [
+                        7.924038072815165e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_115_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010660473257303238
+                    ],
+                    [
+                        -10
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_116_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010660473257303238
+                    ],
+                    [
+                        -10
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_117_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004360062535852194
+                    ],
+                    [
+                        10
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_117_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.0023803645744919777
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_117_bias": {
+            "format": {
+                "params": [
+                    [
+                        2.5375813493155874e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_118_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004360062535852194
+                    ],
+                    [
+                        10
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_119_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_120_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_120_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_121_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0024971652310341597
+                    ],
+                    [
+                        -78
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_122_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0024971652310341597
+                    ],
+                    [
+                        -78
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_123_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007469554897397757
+                    ],
+                    [
+                        15
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_123_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.1365036964416504
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_123_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0003408722986932844
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_124_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007469554897397757
+                    ],
+                    [
+                        15
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_125_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_126_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_126_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_127_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.003621398936957121
+                    ],
+                    [
+                        -104
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_128_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.003621398936957121
+                    ],
+                    [
+                        -104
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_129_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.005619128700345755
+                    ],
+                    [
+                        3
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_129_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.012613970786333084
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_129_bias": {
+            "format": {
+                "params": [
+                    [
+                        4.568021904560737e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_130_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.005619128700345755
+                    ],
+                    [
+                        3
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_131_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.005619128700345755
+                    ],
+                    [
+                        3
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Add_132_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010880936868488789
+                    ],
+                    [
+                        -13
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_133_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010880936868488789
+                    ],
+                    [
+                        -13
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_134_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010880936868488789
+                    ],
+                    [
+                        -13
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_135_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004297994542866945
+                    ],
+                    [
+                        25
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_135_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.002853176323696971
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_135_bias": {
+            "format": {
+                "params": [
+                    [
+                        3.104523057118058e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_136_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004297994542866945
+                    ],
+                    [
+                        25
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_137_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_138_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_138_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_139_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.002146689686924219
+                    ],
+                    [
+                        -78
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_140_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.002146689686924219
+                    ],
+                    [
+                        -78
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_141_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010274224914610386
+                    ],
+                    [
+                        34
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_141_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.1413058191537857
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_141_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0003033397370018065
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_142_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010274224914610386
+                    ],
+                    [
+                        34
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_143_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_144_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_144_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_145_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004087671637535095
+                    ],
+                    [
+                        -107
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_146_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004087671637535095
+                    ],
+                    [
+                        -107
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_147_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0055722021497786045
+                    ],
+                    [
+                        -7
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_147_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.01759428344666958
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_147_bias": {
+            "format": {
+                "params": [
+                    [
+                        7.191965414676815e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_148_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0055722021497786045
+                    ],
+                    [
+                        -7
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_149_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0055722021497786045
+                    ],
+                    [
+                        -7
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Add_150_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.011005889624357224
+                    ],
+                    [
+                        -13
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_151_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.011005889624357224
+                    ],
+                    [
+                        -13
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_152_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.011005889624357224
+                    ],
+                    [
+                        -13
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_153_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0036634383723139763
+                    ],
+                    [
+                        18
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_153_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.0039055352099239826
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_153_bias": {
+            "format": {
+                "params": [
+                    [
+                        4.298389103496447e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_154_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0036634383723139763
+                    ],
+                    [
+                        18
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_155_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_156_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_156_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_157_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.001971418969333172
+                    ],
+                    [
+                        -75
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_158_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.001971418969333172
+                    ],
+                    [
+                        -75
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_159_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.008074047975242138
+                    ],
+                    [
+                        22
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_159_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.15591172873973846
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_159_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0003073673287872225
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_160_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.008074047975242138
+                    ],
+                    [
+                        22
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_161_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_162_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_162_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_163_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0035682274028658867
+                    ],
+                    [
+                        -110
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_164_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0035682274028658867
+                    ],
+                    [
+                        -110
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_165_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.008333838544785976
+                    ],
+                    [
+                        -13
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_165_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.015961144119501114
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_165_bias": {
+            "format": {
+                "params": [
+                    [
+                        5.695299114449881e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_166_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.008333838544785976
+                    ],
+                    [
+                        -13
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_167_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.008333838544785976
+                    ],
+                    [
+                        -13
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Add_168_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010865683667361736
+                    ],
+                    [
+                        -9
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_169_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010865683667361736
+                    ],
+                    [
+                        -9
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_170_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010865683667361736
+                    ],
+                    [
+                        -9
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_171_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004264601971954107
+                    ],
+                    [
+                        1
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_171_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.002745739184319973
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_171_bias": {
+            "format": {
+                "params": [
+                    [
+                        2.9834332963218912e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_172_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004264601971954107
+                    ],
+                    [
+                        1
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_173_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_174_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_174_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_175_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0024223749060183764
+                    ],
+                    [
+                        -95
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_176_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0024223749060183764
+                    ],
+                    [
+                        -95
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_177_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.011745070107281208
+                    ],
+                    [
+                        25
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_177_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.11791868507862091
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_177_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0002856432693079114
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_178_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.011745070107281208
+                    ],
+                    [
+                        25
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_179_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_180_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_180_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_181_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.005559058394283056
+                    ],
+                    [
+                        -88
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_182_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.005559058394283056
+                    ],
+                    [
+                        -88
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_183_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.008379303850233555
+                    ],
+                    [
+                        15
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_183_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.021917732432484627
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_183_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.00012184195657027885
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_184_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.008379303850233555
+                    ],
+                    [
+                        15
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_185_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.008379303850233555
+                    ],
+                    [
+                        15
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Add_186_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.012066007591784
+                    ],
+                    [
+                        3
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_187_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.012066007591784
+                    ],
+                    [
+                        3
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_188_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.012066007591784
+                    ],
+                    [
+                        3
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_189_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.003867377992719412
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_189_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.0024199874605983496
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_189_bias": {
+            "format": {
+                "params": [
+                    [
+                        2.9199587515904568e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_190_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.003867377992719412
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_191_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_192_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_192_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_193_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.002412262139841914
+                    ],
+                    [
+                        -67
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_194_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.002412262139841914
+                    ],
+                    [
+                        -67
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_195_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.009815208613872528
+                    ],
+                    [
+                        3
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_195_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.13654932379722595
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_195_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0003293927584309131
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_196_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.009815208613872528
+                    ],
+                    [
+                        3
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_197_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_198_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_198_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_199_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.005772170145064592
+                    ],
+                    [
+                        -83
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_200_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.005772170145064592
+                    ],
+                    [
+                        -83
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_201_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.013452727347612381
+                    ],
+                    [
+                        43
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_201_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.023183293640613556
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_201_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.00013381791359279305
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_202_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.013452727347612381
+                    ],
+                    [
+                        43
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_203_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.013452727347612381
+                    ],
+                    [
+                        43
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Add_204_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.014968586154282093
+                    ],
+                    [
+                        10
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_205_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.014968586154282093
+                    ],
+                    [
+                        10
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_206_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.014968586154282093
+                    ],
+                    [
+                        10
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_207_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004123620688915253
+                    ],
+                    [
+                        4
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_207_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.0021244685631245375
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_207_bias": {
+            "format": {
+                "params": [
+                    [
+                        3.180028943461366e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_208_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004123620688915253
+                    ],
+                    [
+                        4
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_209_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_210_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_210_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_211_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.002447376726195216
+                    ],
+                    [
+                        -80
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_212_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.002447376726195216
+                    ],
+                    [
+                        -80
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_213_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.011623662896454334
+                    ],
+                    [
+                        5
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_213_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.1718461811542511
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_213_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0004205723525956273
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_214_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.011623662896454334
+                    ],
+                    [
+                        5
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_215_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_216_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_216_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_217_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.006594937760382891
+                    ],
+                    [
+                        -89
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_218_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.006594937760382891
+                    ],
+                    [
+                        -89
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_219_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.019198069348931313
+                    ],
+                    [
+                        -17
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_219_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.023611772805452347
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_219_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.00015571816766168922
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_220_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.019198069348931313
+                    ],
+                    [
+                        -17
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_221_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.019198069348931313
+                    ],
+                    [
+                        -17
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Add_222_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.025135813280940056
+                    ],
+                    [
+                        10
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_223_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.025135813280940056
+                    ],
+                    [
+                        10
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_224_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.025135813280940056
+                    ],
+                    [
+                        10
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_225_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.005000967998057604
+                    ],
+                    [
+                        9
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_225_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.0024289933498948812
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_225_bias": {
+            "format": {
+                "params": [
+                    [
+                        6.105472130002454e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_226_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.005000967998057604
+                    ],
+                    [
+                        9
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_227_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_228_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_228_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_229_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0027479317504912615
+                    ],
+                    [
+                        -89
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_230_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0027479317504912615
+                    ],
+                    [
+                        -89
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_231_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.011283287778496742
+                    ],
+                    [
+                        15
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_231_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.09480692446231842
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_231_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0002605229674372822
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_232_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.011283287778496742
+                    ],
+                    [
+                        15
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_233_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_234_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_234_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_235_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.006877233274281025
+                    ],
+                    [
+                        -56
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_236_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.006877233274281025
+                    ],
+                    [
+                        -56
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_237_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.00730226282030344
+                    ],
+                    [
+                        -4
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_237_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.012004964053630829
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_237_bias": {
+            "format": {
+                "params": [
+                    [
+                        8.2560938608367e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_238_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.00730226282030344
+                    ],
+                    [
+                        -4
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_239_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.00730226282030344
+                    ],
+                    [
+                        -4
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_240_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.003128807293251157
+                    ],
+                    [
+                        -9
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_240_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.007137863431125879
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_240_bias": {
+            "format": {
+                "params": [
+                    [
+                        5.2122555644018576e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_241_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.003128807293251157
+                    ],
+                    [
+                        -9
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_242_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_243_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_243_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_244_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0019594994373619556
+                    ],
+                    [
+                        -90
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_245_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0019594994373619556
+                    ],
+                    [
+                        -90
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_246_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.006946498993784189
+                    ],
+                    [
+                        28
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_246_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.11871109902858734
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_246_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.00023261432943399996
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_247_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.006946498993784189
+                    ],
+                    [
+                        28
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_248_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_249_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_249_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_250_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0030947227496653795
+                    ],
+                    [
+                        -96
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_251_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0030947227496653795
+                    ],
+                    [
+                        -96
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_252_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007569074630737305
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_252_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.021784160286188126
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_252_bias": {
+            "format": {
+                "params": [
+                    [
+                        6.741593824699521e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_253_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007569074630737305
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_254_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007569074630737305
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Add_255_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007788670249283314
+                    ],
+                    [
+                        -3
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_256_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007788670249283314
+                    ],
+                    [
+                        -3
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_257_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.007788670249283314
+                    ],
+                    [
+                        -3
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_258_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.003467721864581108
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_258_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.005567462183535099
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_258_bias": {
+            "format": {
+                "params": [
+                    [
+                        4.336312849773094e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_259_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.003467721864581108
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_260_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_261_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_261_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_262_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0022418538574129343
+                    ],
+                    [
+                        -61
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_263_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0022418538574129343
+                    ],
+                    [
+                        -61
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_264_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.012376558966934681
+                    ],
+                    [
+                        34
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_264_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.12126071006059647
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_264_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.00027184878126718104
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_265_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.012376558966934681
+                    ],
+                    [
+                        34
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_266_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_267_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_267_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_268_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.005079695489257574
+                    ],
+                    [
+                        -101
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_269_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.005079695489257574
+                    ],
+                    [
+                        -101
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_270_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0075967879965901375
+                    ],
+                    [
+                        2
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_270_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.025264425203204155
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_270_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.00012833558139391243
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_271_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0075967879965901375
+                    ],
+                    [
+                        2
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_272_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0075967879965901375
+                    ],
+                    [
+                        2
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Add_273_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010415086522698402
+                    ],
+                    [
+                        -23
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_274_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010415086522698402
+                    ],
+                    [
+                        -23
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_275_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.010415086522698402
+                    ],
+                    [
+                        -23
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_276_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.005730271805077791
+                    ],
+                    [
+                        23
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_276_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.005402968730777502
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_276_bias": {
+            "format": {
+                "params": [
+                    [
+                        5.627238715533167e-05
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_277_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.005730271805077791
+                    ],
+                    [
+                        23
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_278_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_279_alpha": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "PReLU_279_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Quantize_280_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0028717578388750553
+                    ],
+                    [
+                        -104
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_281_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0028717578388750553
+                    ],
+                    [
+                        -104
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_282_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004879825282841921
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_282_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.33640256524086
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_282_bias": {
+            "format": {
+                "params": [
+                    [
+                        0.0009660667274147272
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_283_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004879825282841921
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_284_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004879825282841921
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Reshape_285_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.004879825282841921
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Gemm_286_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0028260296676307917
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Gemm_286_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.004392612259835005
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Gemm_286_bias": {
+            "format": {
+                "params": [
+                    [
+                        1.0
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S32"
+            }
+        },
+        "Quantize_287_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0028260296676307917
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_288_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "BatchNormalization_289_scale": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "BatchNormalization_289_bias": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "BatchNormalization_289_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            },
+            "data_channel_position": "CHFIRST",
+            "data_channel_batch": 1,
+            "user_allocated": false
+        }
+    },
+    "nodes": {
+        "Dequantize_2": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_3": {
+            "names": [
+                "_conv1_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_4": {
+            "names": [
+                "_conv1_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_5": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_6": {
+            "names": [
+                "_conv1_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_7": {
+            "names": [
+                "_conv1_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_8": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_9": {
+            "names": [
+                "_conv2_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_10": {
+            "names": [
+                "_conv2_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_11": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_12": {
+            "names": [
+                "_conv2_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_13": {
+            "names": [
+                "_conv2_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_14": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_15": {
+            "names": [
+                "_conv_23_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_16": {
+            "names": [
+                "_conv_23_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_17": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_18": {
+            "names": [
+                "_conv_23_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_19": {
+            "names": [
+                "_conv_23_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_20": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_21": {
+            "names": [
+                "_conv_23_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_22": {
+            "names": [
+                "_conv_23_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_23": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_24": {
+            "names": [
+                "_conv_23_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_25": {
+            "names": [
+                "_conv_23_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_26": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_27": {
+            "names": [
+                "_conv_23_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_28": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_29": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_30": {
+            "names": [
+                "_conv_3_model_model_0_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_31": {
+            "names": [
+                "_conv_3_model_model_0_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_32": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_33": {
+            "names": [
+                "_conv_3_model_model_0_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_34": {
+            "names": [
+                "_conv_3_model_model_0_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_35": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_36": {
+            "names": [
+                "_conv_3_model_model_0_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_37": {
+            "names": [
+                "_conv_3_model_model_0_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_38": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_39": {
+            "names": [
+                "_conv_3_model_model_0_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_40": {
+            "names": [
+                "_conv_3_model_model_0_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_41": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_42": {
+            "names": [
+                "_conv_3_model_model_0_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_43": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_44": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Add_45": {
+            "names": [
+                "_conv_3_model_model_0_Add_output_0_quantized"
+            ]
+        },
+        "Quantize_46": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_47": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_48": {
+            "names": [
+                "_conv_3_model_model_1_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_49": {
+            "names": [
+                "_conv_3_model_model_1_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_50": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_51": {
+            "names": [
+                "_conv_3_model_model_1_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_52": {
+            "names": [
+                "_conv_3_model_model_1_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_53": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_54": {
+            "names": [
+                "_conv_3_model_model_1_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_55": {
+            "names": [
+                "_conv_3_model_model_1_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_56": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_57": {
+            "names": [
+                "_conv_3_model_model_1_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_58": {
+            "names": [
+                "_conv_3_model_model_1_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_59": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_60": {
+            "names": [
+                "_conv_3_model_model_1_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_61": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_62": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Add_63": {
+            "names": [
+                "_conv_3_model_model_1_Add_output_0_quantized"
+            ]
+        },
+        "Quantize_64": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_65": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_66": {
+            "names": [
+                "_conv_3_model_model_2_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_67": {
+            "names": [
+                "_conv_3_model_model_2_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_68": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_69": {
+            "names": [
+                "_conv_3_model_model_2_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_70": {
+            "names": [
+                "_conv_3_model_model_2_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_71": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_72": {
+            "names": [
+                "_conv_3_model_model_2_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_73": {
+            "names": [
+                "_conv_3_model_model_2_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_74": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_75": {
+            "names": [
+                "_conv_3_model_model_2_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_76": {
+            "names": [
+                "_conv_3_model_model_2_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_77": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_78": {
+            "names": [
+                "_conv_3_model_model_2_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_79": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_80": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Add_81": {
+            "names": [
+                "_conv_3_model_model_2_Add_output_0_quantized"
+            ]
+        },
+        "Quantize_82": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_83": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_84": {
+            "names": [
+                "_conv_3_model_model_3_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_85": {
+            "names": [
+                "_conv_3_model_model_3_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_86": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_87": {
+            "names": [
+                "_conv_3_model_model_3_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_88": {
+            "names": [
+                "_conv_3_model_model_3_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_89": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_90": {
+            "names": [
+                "_conv_3_model_model_3_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_91": {
+            "names": [
+                "_conv_3_model_model_3_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_92": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_93": {
+            "names": [
+                "_conv_3_model_model_3_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_94": {
+            "names": [
+                "_conv_3_model_model_3_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_95": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_96": {
+            "names": [
+                "_conv_3_model_model_3_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_97": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_98": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Add_99": {
+            "names": [
+                "_conv_3_model_model_3_Add_output_0_quantized"
+            ]
+        },
+        "Quantize_100": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_101": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_102": {
+            "names": [
+                "_conv_34_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_103": {
+            "names": [
+                "_conv_34_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_104": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_105": {
+            "names": [
+                "_conv_34_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_106": {
+            "names": [
+                "_conv_34_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_107": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_108": {
+            "names": [
+                "_conv_34_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_109": {
+            "names": [
+                "_conv_34_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_110": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_111": {
+            "names": [
+                "_conv_34_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_112": {
+            "names": [
+                "_conv_34_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_113": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_114": {
+            "names": [
+                "_conv_34_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_115": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_116": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_117": {
+            "names": [
+                "_conv_4_model_model_0_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_118": {
+            "names": [
+                "_conv_4_model_model_0_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_119": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_120": {
+            "names": [
+                "_conv_4_model_model_0_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_121": {
+            "names": [
+                "_conv_4_model_model_0_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_122": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_123": {
+            "names": [
+                "_conv_4_model_model_0_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_124": {
+            "names": [
+                "_conv_4_model_model_0_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_125": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_126": {
+            "names": [
+                "_conv_4_model_model_0_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_127": {
+            "names": [
+                "_conv_4_model_model_0_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_128": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_129": {
+            "names": [
+                "_conv_4_model_model_0_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_130": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_131": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Add_132": {
+            "names": [
+                "_conv_4_model_model_0_Add_output_0_quantized"
+            ]
+        },
+        "Quantize_133": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_134": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_135": {
+            "names": [
+                "_conv_4_model_model_1_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_136": {
+            "names": [
+                "_conv_4_model_model_1_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_137": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_138": {
+            "names": [
+                "_conv_4_model_model_1_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_139": {
+            "names": [
+                "_conv_4_model_model_1_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_140": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_141": {
+            "names": [
+                "_conv_4_model_model_1_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_142": {
+            "names": [
+                "_conv_4_model_model_1_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_143": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_144": {
+            "names": [
+                "_conv_4_model_model_1_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_145": {
+            "names": [
+                "_conv_4_model_model_1_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_146": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_147": {
+            "names": [
+                "_conv_4_model_model_1_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_148": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_149": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Add_150": {
+            "names": [
+                "_conv_4_model_model_1_Add_output_0_quantized"
+            ]
+        },
+        "Quantize_151": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_152": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_153": {
+            "names": [
+                "_conv_4_model_model_2_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_154": {
+            "names": [
+                "_conv_4_model_model_2_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_155": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_156": {
+            "names": [
+                "_conv_4_model_model_2_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_157": {
+            "names": [
+                "_conv_4_model_model_2_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_158": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_159": {
+            "names": [
+                "_conv_4_model_model_2_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_160": {
+            "names": [
+                "_conv_4_model_model_2_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_161": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_162": {
+            "names": [
+                "_conv_4_model_model_2_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_163": {
+            "names": [
+                "_conv_4_model_model_2_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_164": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_165": {
+            "names": [
+                "_conv_4_model_model_2_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_166": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_167": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Add_168": {
+            "names": [
+                "_conv_4_model_model_2_Add_output_0_quantized"
+            ]
+        },
+        "Quantize_169": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_170": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_171": {
+            "names": [
+                "_conv_4_model_model_3_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_172": {
+            "names": [
+                "_conv_4_model_model_3_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_173": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_174": {
+            "names": [
+                "_conv_4_model_model_3_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_175": {
+            "names": [
+                "_conv_4_model_model_3_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_176": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_177": {
+            "names": [
+                "_conv_4_model_model_3_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_178": {
+            "names": [
+                "_conv_4_model_model_3_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_179": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_180": {
+            "names": [
+                "_conv_4_model_model_3_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_181": {
+            "names": [
+                "_conv_4_model_model_3_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_182": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_183": {
+            "names": [
+                "_conv_4_model_model_3_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_184": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_185": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Add_186": {
+            "names": [
+                "_conv_4_model_model_3_Add_output_0_quantized"
+            ]
+        },
+        "Quantize_187": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_188": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_189": {
+            "names": [
+                "_conv_4_model_model_4_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_190": {
+            "names": [
+                "_conv_4_model_model_4_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_191": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_192": {
+            "names": [
+                "_conv_4_model_model_4_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_193": {
+            "names": [
+                "_conv_4_model_model_4_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_194": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_195": {
+            "names": [
+                "_conv_4_model_model_4_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_196": {
+            "names": [
+                "_conv_4_model_model_4_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_197": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_198": {
+            "names": [
+                "_conv_4_model_model_4_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_199": {
+            "names": [
+                "_conv_4_model_model_4_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_200": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_201": {
+            "names": [
+                "_conv_4_model_model_4_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_202": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_203": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Add_204": {
+            "names": [
+                "_conv_4_model_model_4_Add_output_0_quantized"
+            ]
+        },
+        "Quantize_205": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_206": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_207": {
+            "names": [
+                "_conv_4_model_model_5_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_208": {
+            "names": [
+                "_conv_4_model_model_5_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_209": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_210": {
+            "names": [
+                "_conv_4_model_model_5_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_211": {
+            "names": [
+                "_conv_4_model_model_5_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_212": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_213": {
+            "names": [
+                "_conv_4_model_model_5_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_214": {
+            "names": [
+                "_conv_4_model_model_5_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_215": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_216": {
+            "names": [
+                "_conv_4_model_model_5_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_217": {
+            "names": [
+                "_conv_4_model_model_5_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_218": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_219": {
+            "names": [
+                "_conv_4_model_model_5_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_220": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_221": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Add_222": {
+            "names": [
+                "_conv_4_model_model_5_Add_output_0_quantized"
+            ]
+        },
+        "Quantize_223": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_224": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_225": {
+            "names": [
+                "_conv_45_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_226": {
+            "names": [
+                "_conv_45_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_227": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_228": {
+            "names": [
+                "_conv_45_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_229": {
+            "names": [
+                "_conv_45_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_230": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_231": {
+            "names": [
+                "_conv_45_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_232": {
+            "names": [
+                "_conv_45_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_233": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_234": {
+            "names": [
+                "_conv_45_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_235": {
+            "names": [
+                "_conv_45_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_236": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_237": {
+            "names": [
+                "_conv_45_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_238": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_239": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_240": {
+            "names": [
+                "_conv_5_model_model_0_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_241": {
+            "names": [
+                "_conv_5_model_model_0_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_242": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_243": {
+            "names": [
+                "_conv_5_model_model_0_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_244": {
+            "names": [
+                "_conv_5_model_model_0_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_245": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_246": {
+            "names": [
+                "_conv_5_model_model_0_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_247": {
+            "names": [
+                "_conv_5_model_model_0_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_248": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_249": {
+            "names": [
+                "_conv_5_model_model_0_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_250": {
+            "names": [
+                "_conv_5_model_model_0_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_251": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_252": {
+            "names": [
+                "_conv_5_model_model_0_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_253": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_254": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Add_255": {
+            "names": [
+                "_conv_5_model_model_0_Add_output_0_quantized"
+            ]
+        },
+        "Quantize_256": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_257": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_258": {
+            "names": [
+                "_conv_5_model_model_1_conv_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_259": {
+            "names": [
+                "_conv_5_model_model_1_conv_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_260": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_261": {
+            "names": [
+                "_conv_5_model_model_1_conv_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_262": {
+            "names": [
+                "_conv_5_model_model_1_conv_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_263": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_264": {
+            "names": [
+                "_conv_5_model_model_1_conv_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_265": {
+            "names": [
+                "_conv_5_model_model_1_conv_dw_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_266": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_267": {
+            "names": [
+                "_conv_5_model_model_1_conv_dw_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_268": {
+            "names": [
+                "_conv_5_model_model_1_conv_dw_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_269": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_270": {
+            "names": [
+                "_conv_5_model_model_1_project_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_271": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_272": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Add_273": {
+            "names": [
+                "_conv_5_model_model_1_Add_output_0_quantized"
+            ]
+        },
+        "Quantize_274": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_275": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_276": {
+            "names": [
+                "_conv_6_sep_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_277": {
+            "names": [
+                "_conv_6_sep_conv_Conv_output_0"
+            ]
+        },
+        "Dequantize_278": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "PReLU_279": {
+            "names": [
+                "_conv_6_sep_prelu_PRelu_output_0"
+            ]
+        },
+        "Quantize_280": {
+            "names": [
+                "_conv_6_sep_prelu_PRelu_output_0_quantized"
+            ]
+        },
+        "Dequantize_281": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Conv2D_282": {
+            "names": [
+                "_output_layer_conv_6_dw_conv_Conv_output_0_quantized"
+            ]
+        },
+        "Quantize_283": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_284": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Reshape_285": {
+            "names": [
+                "_output_layer_conv_6_flatten_Reshape_output_0_quantized",
+                "_output_layer_conv_6_flatten_Concat_output_0",
+                "_output_layer_conv_6_flatten_Unsqueeze_output_0",
+                "_output_layer_conv_6_flatten_Gather_output_0",
+                "_output_layer_conv_6_flatten_Shape_output_0"
+            ]
+        },
+        "Gemm_286": {
+            "names": [
+                "_output_layer_linear_MatMul_output_0_quantized"
+            ]
+        },
+        "Quantize_287": {
+            "names": [
+                "_output_layer_linear_MatMul_output_0"
+            ]
+        },
+        "Dequantize_288": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "BatchNormalization_289": {
+            "names": [
+                "output"
+            ]
+        }
+    }
+}

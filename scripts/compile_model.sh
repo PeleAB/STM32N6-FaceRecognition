@@ -83,7 +83,7 @@ generate_memory_pool() {
     local mpool_file="$2"
     
     # Get memory address for this model type
-    local address=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['memory_layout']['${model_type}_model_address'])")
+    local address=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['models']['$model_type']['address'])")
     
     print_status "Generating memory pool for $model_type at address $address"
     
@@ -196,7 +196,7 @@ create_neural_art_config() {
     generate_memory_pool "$model_type" "$mpool_file"
     
     # Get model configuration from main config
-    local options=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['model_configs']['$model_type']['stedgeai_options'])")
+    local options=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['models']['$model_type']['stedgeai_options'])")
     
     cat > "$config_file" << EOF
 {
@@ -227,9 +227,9 @@ convert_model() {
     create_neural_art_config "$model_type" "$config_file"
     
     # Get model configuration
-    local output_name=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['model_configs']['$model_type']['output_name'])")
-    local target=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['model_configs']['$model_type']['target'])")
-    local input_data_type=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['model_configs']['$model_type']['input_data_type'])")
+    local output_name=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['models']['$model_type']['name'])")
+    local target=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['models']['$model_type']['target'])")
+    local input_data_type=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['models']['$model_type']['input_data_type'])")
     
     print_status "Converting $model_type model: $(basename "$model_file")"
     print_status "Output directory: $output_dir"
@@ -249,8 +249,26 @@ convert_model() {
     
     print_status "Running: ${cmd[*]}"
     
-    if "${cmd[@]}"; then
-        print_status "Model conversion successful"
+    # Run STM32EdgeAI and capture output and exit code
+    local conversion_exit_code=0
+    "${cmd[@]}" || conversion_exit_code=$?
+    
+    # Check if essential files were generated despite any warnings/errors
+    local essential_files_exist=true
+    for pattern in "${model_type}*.c" "${model_type}*.h"; do
+        if ! ls "$output_dir"/$pattern 1> /dev/null 2>&1; then
+            essential_files_exist=false
+            break
+        fi
+    done
+    
+    if [ "$essential_files_exist" = "true" ]; then
+        if [ "$conversion_exit_code" -eq 0 ]; then
+            print_status "Model conversion successful"
+        else
+            print_warning "Model conversion completed with warnings (exit code: $conversion_exit_code)"
+            print_status "Essential files were generated, continuing..."
+        fi
         
         # Clean up temp config and memory pool files
         rm -f "$config_file"
@@ -258,7 +276,8 @@ convert_model() {
         
         return 0
     else
-        print_error "Model conversion failed"
+        print_error "Model conversion failed - essential files not generated"
+        print_error "Exit code: $conversion_exit_code"
         rm -f "$config_file"
         rm -f "/tmp/${model_type}.mpool"
         return 1
@@ -299,7 +318,7 @@ organize_output_files() {
         print_status "Copied binary: $(basename "$binary_file") to binaries/${model_type}_data.bin"
         
         # Get memory address for this model type
-        local address=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['memory_layout']['${model_type}_model_address'])")
+        local address=$(python3 -c "import json; config=json.load(open('$CONFIG_FILE')); print(config['models']['$model_type']['address'])")
         
         # Convert to Intel HEX format
         if command -v arm-none-eabi-objcopy &> /dev/null; then
@@ -324,9 +343,13 @@ copy_to_project() {
     local model_type="$1"
     local output_dir="$PROJECT_ROOT/converted_models"
     
+    # Ensure target directories exist
+    local models_dir="$PROJECT_ROOT/embedded/Models"
+    local binary_dir="$PROJECT_ROOT/embedded/Binary"
+    mkdir -p "$models_dir" "$binary_dir"
+    
     # Copy generated C files to embedded Models directory
     local code_dir="$output_dir/code"  
-    local models_dir="$PROJECT_ROOT/embedded/Models"
     
     if [ -d "$code_dir" ]; then
         for file in "$code_dir"/${model_type}*.c "$code_dir"/${model_type}*.h; do
@@ -339,7 +362,6 @@ copy_to_project() {
     
     # Copy HEX file to embedded Binary directory
     local binaries_dir="$output_dir/binaries"
-    local binary_dir="$PROJECT_ROOT/embedded/Binary"
     local hex_file="$binaries_dir/${model_type}_data.hex"
     
     if [ -f "$hex_file" ]; then
@@ -389,8 +411,8 @@ main() {
         print_status "Model compilation completed successfully!"
         print_status "Next steps:"
         print_status "1. Build your STM32CubeIDE project in embedded/STM32CubeIDE/"
-        print_status "2. Use scripts/sign_binary.sh to sign the application" 
-        print_status "3. Use scripts/flash_firmware.sh to flash all components"
+        print_status "2. Sign the application: ./scripts/sign_binary.sh (uses configured path)" 
+        print_status "3. Flash firmware: ./scripts/flash_firmware.sh all"
     else
         print_error "Model compilation failed!"
         exit 1

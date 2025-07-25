@@ -40,22 +40,29 @@
   },
   "memory_layout": {
     "fsbl_address": "0x70000000",
-    "application_address": "0x70100000",
-    "face_detection_model_address": "0x71000000",
-    "face_recognition_model_address": "0x72000000"
+    "application_address": "0x70100000"
   },
-  "model_configs": {
-    "face_detection": {
-      "output_name": "face_detection",
+  "build": {
+    "application_binary_path": "./embedded/STM32CubeIDE/Debug/STM32N6_FaceRecognition.bin",
+    "description": "Default path to application binary for signing"
+  },
+  "models": {
+      "face_recognition": {
+      "name": "face_recognition", 
+      "filename": "mobilefacenet_int8_faces.onnx",
+      "address": "0x72000000",
       "target": "stm32n6",
       "input_data_type": "float32",
       "stedgeai_options": "-O0 --all-buffers-info --mvei --cache-maintenance --Oalt-sched --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os --enable-epoch-controller"
     },
-    "face_recognition": {
-      "output_name": "face_recognition",
+    "face_detection": {
+      "name": "face_detection",
+      "filename": "centerface.tflite",
+      "address": "0x71000000",
       "target": "stm32n6",
       "input_data_type": "float32",
       "stedgeai_options": "-O0 --all-buffers-info --mvei --cache-maintenance --Oalt-sched --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os --enable-epoch-controller"
     }
+
   }
 }

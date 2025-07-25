@@ -1,9 +1,0 @@
-{
-    "Globals": {},
-    "Profiles": {
-        "mobilefacenet": {
-            "memory_pool": "./memory_pools/model2.mpool",
-            "options": "-O0 --all-buffers-info --mvei --cache-maintenance --Oalt-sched --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os --enable-epoch-controller"
-        }
-    }
-}
