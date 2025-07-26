@@ -86,7 +86,7 @@ C_SOURCES += Src/app_cam.c
 C_SOURCES += Src/img_buffer.c
 C_SOURCES += Src/display_utils.c
 C_SOURCES += Src/system_utils.c
-C_SOURCES += Src/enhanced_pc_stream.c
+C_SOURCES += Src/serial_pc_stream.c
 
 C_SOURCES += Src/face_utils.c
 C_SOURCES += Src/target_embedding.c

@@ -36,7 +36,7 @@
 #include "stm32n6xx_hal_rif.h"
 #include "app_system.h"
 #include "nn_runner.h"
-#include "enhanced_pc_stream.h"
+#include "serial_pc_stream.h"
 
 #include "crop_img.h"
 #include "display_utils.h"
@@ -586,9 +586,9 @@ static float run_face_recognition_on_face(app_context_t *ctx, const pd_pp_box_t 
     ctx->embedding_valid = 1;
     
     /* Send results via PC stream */
-    Enhanced_PC_STREAM_SendFrame(fr_rgb, FACE_RECOGNITION_WIDTH, 
+    Serial_PC_STREAM_SendFrame(fr_rgb, FACE_RECOGNITION_WIDTH, 
                                 FACE_RECOGNITION_HEIGHT, NN_BPP, "ALN", NULL, NULL);
-    Enhanced_PC_STREAM_SendEmbedding(embedding, EMBEDDING_SIZE);
+    Serial_PC_STREAM_SendEmbedding(embedding, EMBEDDING_SIZE);
     
     LL_ATON_RT_DeInit_Network(&NN_Instance_face_recognition);
     return similarity;
@@ -677,7 +677,7 @@ static int app_init(app_context_t *ctx)
     }
     
     /* Background initialization - can be done while other systems start */
-    Enhanced_PC_STREAM_Init();
+    Serial_PC_STREAM_Init();
     app_postprocess_init(&ctx->pp_params);
     
     return 0;
@@ -1015,7 +1015,7 @@ static int pipeline_stage_system_update(app_context_t *ctx)
     handle_user_button(ctx);
     
     /* Step 5.3: Send heartbeat for PC communication */
-    Enhanced_PC_STREAM_SendHeartbeat();
+    Serial_PC_STREAM_SendHeartbeat();
     
     printf("System status updated\n");
     return 0;
@@ -1146,6 +1146,7 @@ int main(void)
     }
     
     //printf("Boot completed in %lu ms\n", boot_end - boot_start);
+    
     
     /* Start main application loop */
     ret = app_main_loop(&g_app_ctx);

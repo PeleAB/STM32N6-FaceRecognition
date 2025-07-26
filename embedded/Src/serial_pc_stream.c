@@ -1,11 +1,11 @@
 /**
  ******************************************************************************
- * @file    enhanced_pc_stream.c
- * @brief   Enhanced PC streaming with robust 4-byte header protocol
+ * @file    serial_pc_stream.c
+ * @brief   Serial protocol for PC streaming with robust 4-byte header framing
  ******************************************************************************
  */
 
-#include "enhanced_pc_stream.h"
+#include "serial_pc_stream.h"
 #include "stm32n6570_discovery.h"
 #include "stm32n6570_discovery_conf.h"
 #include "stm32n6xx_hal_uart.h"
@@ -64,13 +64,15 @@ typedef struct __attribute__((packed)) {
 } robust_message_header_t;
 
 /**
- * @brief Frame data payload format for raw grayscale frames
+ * @brief Frame data payload format for raw grayscale and JPEG frames
  */
 typedef struct __attribute__((packed)) {
-    char frame_type[4];         /* Frame type: "JPG", "ALN", etc. */
+    char frame_type[4];         /* Frame type: "JPG", "RAW", "ALN", etc. */
     uint32_t width;             /* Frame width */
     uint32_t height;            /* Frame height */
-    /* Raw grayscale image data follows (1 byte per pixel) */
+    uint32_t data_size;         /* Size of image data (raw bytes or JPEG compressed) */
+    uint32_t compression_ratio; /* Compression ratio x100 (for JPEG), 100 for raw */
+    /* Image data follows (raw grayscale or JPEG compressed) */
 } robust_frame_data_t;
 
 /**
@@ -120,6 +122,10 @@ static uint8_t temp_buffer[64 * 1024];
 __attribute__ ((section (".psram_bss")))
 __attribute__((aligned (32)))
 static uint8_t stream_buffer[320 * 240];  // Raw grayscale frame buffer
+
+__attribute__ ((section (".psram_bss")))
+__attribute__((aligned (32)))
+static uint8_t jpeg_output_buffer[32 * 1024];  // JPEG compressed output buffer
 
 /* ========================================================================= */
 /* UTILITY FUNCTIONS                                                         */
@@ -300,7 +306,7 @@ static bool robust_send_message(robust_message_type_t message_type,
 /**
  * @brief Initialize enhanced PC streaming protocol
  */
-void Enhanced_PC_STREAM_Init(void)
+void Serial_PC_STREAM_Init(void)
 {
     if (g_protocol_ctx.initialized) {
         return;
@@ -318,25 +324,26 @@ void Enhanced_PC_STREAM_Init(void)
         return;
     }
     
+    
     // Clear statistics
     memset(&g_protocol_ctx.stats, 0, sizeof(g_protocol_ctx.stats));
     memset(g_protocol_ctx.sequence_counters, 0, sizeof(g_protocol_ctx.sequence_counters));
     
     g_protocol_ctx.initialized = true;
     
-    printf("Enhanced PC streaming initialized with CRC32 validation\n");
+    printf("Serial PC streaming initialized with CRC32 validation\n");
     
     // Send initialization heartbeat
-    Enhanced_PC_STREAM_SendHeartbeat();
+    Serial_PC_STREAM_SendHeartbeat();
 }
 
 /**
- * @brief Send frame with enhanced protocol as raw grayscale data
+ * @brief Send frame with enhanced protocol - supports both JPEG and raw modes
  */
-bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height,
-                                 uint32_t bpp, const char *tag,
-                                 const pd_postprocess_out_t *detections,
-                                 const performance_metrics_t *performance)
+bool Serial_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height,
+                               uint32_t bpp, const char *tag,
+                               const pd_postprocess_out_t *detections,
+                               const performance_metrics_t *performance)
 {
     if (!frame || !tag) {
         return false;
@@ -352,7 +359,7 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
     if (output_width > 320) output_width = 320;   // Max width limit
     if (output_height > 240) output_height = 240; // Max height limit
     
-    // Convert to grayscale and send raw data
+    // Convert to grayscale
     for (uint32_t y = 0; y < output_height; y++) {
         const uint8_t *line = frame + (y * scale_factor) * width * bpp;
         for (uint32_t x = 0; x < output_width; x++) {
@@ -375,33 +382,40 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
         .height = output_height
     };
     
-    // Copy frame type (preserve original tag for different frame types)
-    strncpy(frame_data.frame_type, tag, 3);
-    frame_data.frame_type[3] = '\0';
+    // Use raw grayscale data only (JPEG compression removed)
+    uint32_t data_size = output_width * output_height;
+    const uint8_t *image_data = stream_buffer;
+    uint32_t compression_ratio = 100;  // No compression
     
-    // Calculate total payload size using raw grayscale data
-    uint32_t raw_data_size = output_width * output_height; // 1 byte per pixel
-    uint32_t total_size = sizeof(robust_frame_data_t) + raw_data_size;
+    // Use RAW format for all frames
+    strncpy(frame_data.frame_type, "RAW", 3);
+    
+    frame_data.frame_type[3] = '\0';
+    frame_data.data_size = data_size;
+    frame_data.compression_ratio = compression_ratio;
+    
+    // Calculate total payload size
+    uint32_t total_size = sizeof(robust_frame_data_t) + data_size;
     
     if (total_size > ROBUST_MAX_PAYLOAD_SIZE - ROBUST_MSG_HEADER_SIZE) {
         g_protocol_ctx.stats.crc_errors++; // Reuse for send errors
         return false;
     }
     
-    // Build payload directly in temp_buffer with raw grayscale data
+    // Build payload in temp_buffer
     memcpy(temp_buffer, &frame_data, sizeof(robust_frame_data_t));
-    memcpy(temp_buffer + sizeof(robust_frame_data_t), stream_buffer, raw_data_size);
+    memcpy(temp_buffer + sizeof(robust_frame_data_t), image_data, data_size);
     
     bool frame_sent = robust_send_message(ROBUST_MSG_FRAME_DATA, temp_buffer, total_size);
     
     // Send performance metrics if available
     if (performance) {
-        Enhanced_PC_STREAM_SendPerformanceMetrics(performance);
+        Serial_PC_STREAM_SendPerformanceMetrics(performance);
     }
     
     // Send detections if available
     if (detections && detections->box_nb > 0) {
-        Enhanced_PC_STREAM_SendDetections(0, detections);  // Frame ID = 0 for now
+        Serial_PC_STREAM_SendDetections(0, detections);  // Frame ID = 0 for now
     }
     
     return frame_sent;
@@ -410,7 +424,7 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
 /**
  * @brief Send embedding data with metadata
  */
-bool Enhanced_PC_STREAM_SendEmbedding(const float *embedding, uint32_t size)
+bool Serial_PC_STREAM_SendEmbedding(const float *embedding, uint32_t size)
 {
     if (!embedding || size == 0 || size > 1024) {
         return false;
@@ -443,7 +457,7 @@ bool Enhanced_PC_STREAM_SendEmbedding(const float *embedding, uint32_t size)
 /**
  * @brief Send detection results with robust protocol
  */
-bool Enhanced_PC_STREAM_SendDetections(uint32_t frame_id, const pd_postprocess_out_t *detections)
+bool Serial_PC_STREAM_SendDetections(uint32_t frame_id, const pd_postprocess_out_t *detections)
 {
     if (!detections || detections->box_nb == 0) {
         return false;
@@ -498,7 +512,7 @@ bool Enhanced_PC_STREAM_SendDetections(uint32_t frame_id, const pd_postprocess_o
 /**
  * @brief Send performance metrics
  */
-bool Enhanced_PC_STREAM_SendPerformanceMetrics(const performance_metrics_t *metrics)
+bool Serial_PC_STREAM_SendPerformanceMetrics(const performance_metrics_t *metrics)
 {
     if (!metrics) {
         return false;
@@ -512,7 +526,7 @@ bool Enhanced_PC_STREAM_SendPerformanceMetrics(const performance_metrics_t *metr
 /**
  * @brief Send periodic heartbeat packet
  */
-void Enhanced_PC_STREAM_SendHeartbeat(void)
+void Serial_PC_STREAM_SendHeartbeat(void)
 {
     uint32_t timestamp = HAL_GetTick();
     robust_send_message(ROBUST_MSG_HEARTBEAT, (const uint8_t*)&timestamp, sizeof(timestamp));
@@ -522,7 +536,7 @@ void Enhanced_PC_STREAM_SendHeartbeat(void)
 /**
  * @brief Get protocol statistics
  */
-void Enhanced_PC_STREAM_GetStats(protocol_stats_t *stats)
+void Serial_PC_STREAM_GetStats(protocol_stats_t *stats)
 {
     if (stats) {
         memcpy(stats, &g_protocol_ctx.stats, sizeof(protocol_stats_t));
@@ -530,12 +544,25 @@ void Enhanced_PC_STREAM_GetStats(protocol_stats_t *stats)
 }
 
 /**
+ * @brief Get compression statistics (JPEG compression removed)
+ */
+void Serial_PC_STREAM_GetJPEGStats(uint32_t *total_frames, 
+                                   uint32_t *total_time_ms,
+                                   float *average_compression_ratio)
+{
+    // JPEG compression removed - return default values
+    if (total_frames) *total_frames = 0;
+    if (total_time_ms) *total_time_ms = 0;
+    if (average_compression_ratio) *average_compression_ratio = 1.0f;
+}
+
+/**
  * @brief Legacy compatibility function for existing code
  */
-void Enhanced_PC_STREAM_SendFrameEx(const uint8_t *frame, uint32_t width, uint32_t height,
-                                   uint32_t bpp, const char *tag)
+void Serial_PC_STREAM_SendFrameEx(const uint8_t *frame, uint32_t width, uint32_t height,
+                                  uint32_t bpp, const char *tag)
 {
-    Enhanced_PC_STREAM_SendFrame(frame, width, height, bpp, tag, NULL, NULL);
+    Serial_PC_STREAM_SendFrame(frame, width, height, bpp, tag, NULL, NULL);
 }
 
 #endif /* USE_BSP_COM_FEATURE */

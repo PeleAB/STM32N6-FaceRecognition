@@ -162,3 +162,42 @@ void EXTI13_IRQHandler(void)
 {
   BSP_PB_IRQHandler(BUTTON_USER1);
 }
+
+/**
+  * @brief  This function handles JPEG interrupt request.
+  * @param  None
+  * @retval None
+  * @note   JPEG compression removed - handler disabled
+  */
+void JPEG_IRQHandler(void)
+{
+  /* JPEG compression removed - no action needed */
+}
+
+/**
+  * @brief  This function handles HPDMA1 Channel0 interrupt request.
+  * @param  None
+  * @retval None
+  * @note   JPEG DMA removed - only handles general DMA
+  */
+void HPDMA1_Channel0_IRQHandler(void)
+{
+  extern DMA_HandleTypeDef handle_HPDMA1_Channel0;
+
+  /* Handle general DMA channel only */
+ //HAL_DMA_IRQHandler(&handle_HPDMA1_Channel0);
+}
+
+/**
+  * @brief  This function handles HPDMA1 Channel1 interrupt request.
+  * @param  None
+  * @retval None
+  * @note   JPEG DMA removed - only handles general DMA
+  */
+void HPDMA1_Channel1_IRQHandler(void)
+{
+  extern DMA_HandleTypeDef handle_HPDMA1_Channel1;
+
+  /* Handle general DMA channel only */
+  //HAL_DMA_IRQHandler(&handle_HPDMA1_Channel1);
+}

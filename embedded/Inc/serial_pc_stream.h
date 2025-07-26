@@ -1,12 +1,12 @@
 /**
  ******************************************************************************
- * @file    enhanced_pc_stream.h
- * @brief   Enhanced PC streaming with robust protocol and modern features
+ * @file    serial_pc_stream.h
+ * @brief   Serial protocol for PC streaming with error detection and framing
  ******************************************************************************
  */
 
-#ifndef ENHANCED_PC_STREAM_H
-#define ENHANCED_PC_STREAM_H
+#ifndef SERIAL_PC_STREAM_H
+#define SERIAL_PC_STREAM_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -53,7 +53,7 @@ typedef struct {
 /**
  * @brief Initialize enhanced PC streaming protocol
  */
-void Enhanced_PC_STREAM_Init(void);
+void Serial_PC_STREAM_Init(void);
 
 /**
  * @brief Send frame with enhanced protocol including metadata
@@ -61,15 +61,15 @@ void Enhanced_PC_STREAM_Init(void);
  * @param width Frame width in pixels
  * @param height Frame height in pixels
  * @param bpp Bytes per pixel (2 for RGB565, 3 for RGB888)
- * @param tag Frame type tag ("JPG" or "ALN")
+ * @param tag Frame type tag ("RAW" or "ALN")
  * @param detections Optional detection results
  * @param performance Optional performance metrics
  * @return true if successful, false otherwise
  */
-bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height,
-                                 uint32_t bpp, const char *tag,
-                                 const pd_postprocess_out_t *detections,
-                                 const performance_metrics_t *performance);
+bool Serial_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t height,
+                                uint32_t bpp, const char *tag,
+                                const pd_postprocess_out_t *detections,
+                                const performance_metrics_t *performance);
 
 /**
  * @brief Send embedding data with metadata
@@ -77,7 +77,7 @@ bool Enhanced_PC_STREAM_SendFrame(const uint8_t *frame, uint32_t width, uint32_t
  * @param size Number of elements in embedding
  * @return true if successful, false otherwise
  */
-bool Enhanced_PC_STREAM_SendEmbedding(const float *embedding, uint32_t size);
+bool Serial_PC_STREAM_SendEmbedding(const float *embedding, uint32_t size);
 
 /**
  * @brief Send detection results with robust protocol
@@ -85,25 +85,35 @@ bool Enhanced_PC_STREAM_SendEmbedding(const float *embedding, uint32_t size);
  * @param detections Detection results
  * @return true if successful, false otherwise
  */
-bool Enhanced_PC_STREAM_SendDetections(uint32_t frame_id, const pd_postprocess_out_t *detections);
+bool Serial_PC_STREAM_SendDetections(uint32_t frame_id, const pd_postprocess_out_t *detections);
 
 /**
  * @brief Send performance metrics
  * @param metrics Pointer to performance metrics structure
  * @return true if successful, false otherwise
  */
-bool Enhanced_PC_STREAM_SendPerformanceMetrics(const performance_metrics_t *metrics);
+bool Serial_PC_STREAM_SendPerformanceMetrics(const performance_metrics_t *metrics);
 
 /**
  * @brief Send periodic heartbeat packet
  */
-void Enhanced_PC_STREAM_SendHeartbeat(void);
+void Serial_PC_STREAM_SendHeartbeat(void);
 
 /**
  * @brief Get protocol statistics
  * @param stats Pointer to statistics structure to fill
  */
-void Enhanced_PC_STREAM_GetStats(protocol_stats_t *stats);
+void Serial_PC_STREAM_GetStats(protocol_stats_t *stats);
+
+/**
+ * @brief Get compression statistics (JPEG compression removed)
+ * @param total_frames Pointer to store total frames (always 0)
+ * @param total_time_ms Pointer to store total encoding time (always 0)
+ * @param average_compression_ratio Pointer to store compression ratio (always 1.0)
+ */
+void Serial_PC_STREAM_GetJPEGStats(uint32_t *total_frames, 
+                                   uint32_t *total_time_ms,
+                                   float *average_compression_ratio);
 
 /**
  * @brief Legacy compatibility function for existing code
@@ -113,19 +123,19 @@ void Enhanced_PC_STREAM_GetStats(protocol_stats_t *stats);
  * @param bpp Bytes per pixel
  * @param tag Frame type tag
  */
-void Enhanced_PC_STREAM_SendFrameEx(const uint8_t *frame, uint32_t width, uint32_t height,
-                                   uint32_t bpp, const char *tag);
+void Serial_PC_STREAM_SendFrameEx(const uint8_t *frame, uint32_t width, uint32_t height,
+                                  uint32_t bpp, const char *tag);
 
 /* ========================================================================= */
 /* LEGACY COMPATIBILITY MACROS                                              */
 /* ========================================================================= */
 
 /* Map old function names to new enhanced versions for backward compatibility */
-#define PC_STREAM_Init()                    Enhanced_PC_STREAM_Init()
-#define PC_STREAM_SendFrameEx(f,w,h,b,t)   Enhanced_PC_STREAM_SendFrameEx(f,w,h,b,t)
+#define PC_STREAM_Init()                    Serial_PC_STREAM_Init()
+#define PC_STREAM_SendFrameEx(f,w,h,b,t)   Serial_PC_STREAM_SendFrameEx(f,w,h,b,t)
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* ENHANCED_PC_STREAM_H */
+#endif /* SERIAL_PC_STREAM_H */

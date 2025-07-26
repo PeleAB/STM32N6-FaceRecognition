@@ -267,7 +267,7 @@ The codebase is designed for extensibility:
 
 - **Image Processing**: Extend `Src/crop_img.c`
 - **AI Models**: Add models to `Models/` directory
-- **Communication**: Modify `Src/enhanced_pc_stream.c`
+- **Communication**: Modify `Src/serial_pc_stream.c`
 - **Display**: Update `Src/display_utils.c`
 
 ## Testing

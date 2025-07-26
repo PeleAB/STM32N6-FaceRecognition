@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Robust Binary Protocol for STM32N6 Object Detection
+Serial Protocol for STM32N6 Face Recognition
 Implements reliable message framing with checksums and buffering
 """
 
@@ -9,7 +9,6 @@ import time
 import logging
 import threading
 import queue
-import zlib
 from collections import deque
 from enum import IntEnum
 from typing import Optional, Tuple, List, Dict, Any, Callable
@@ -51,7 +50,6 @@ def calculate_checksum(data: bytes) -> int:
         checksum ^= byte
     return checksum & 0xFF
 
-
 class Crc32:
     crc_table = {}
 
@@ -63,10 +61,8 @@ class Crc32:
                 c = (c << 1) ^ _poly if (c & 0x80000000) else c << 1
             self.crc_table[i] = c & 0xFFFFFFFF
 
-    # Calculate CRC from input buffer
     def calculate(self, buf):
         crc = 0xFFFFFFFF
-
         i = 0
         while i < len(buf):
             b = [buf[i + 3], buf[i + 2], buf[i + 1], buf[i + 0]]
@@ -75,25 +71,11 @@ class Crc32:
                 crc = ((crc << 8) & 0xFFFFFFFF) ^ self.crc_table[(crc >> 24) ^ byte]
         return crc
 
-    # Create bytes array from integer input
-    def crc_int_to_bytes(self, i):
-        return [(i >> 24) & 0xFF, (i >> 16) & 0xFF, (i >> 8) & 0xFF, i & 0xFF]
-
-
 # Global CRC32 instance
 _stm32_crc = Crc32(0x04C11DB7)
 
 def calculate_stm32_crc32(data: bytes) -> int:
-    """Calculate CRC32 matching STM32 hardware CRC peripheral
-    
-    STM32 CRC32 configuration:
-    - Polynomial: 0x04C11DB7 (IEEE 802.3)
-    - Initial value: 0xFFFFFFFF  
-    - Input reflection: None
-    - Output reflection: None
-    - Output XOR: None
-    - Processes data in 4-byte chunks with STM32 word-based ordering
-    """
+    """Calculate CRC32 matching STM32 hardware CRC peripheral"""
     return _stm32_crc.calculate(data)
 
 def validate_crc32(payload: bytes, expected_crc32: int) -> bool:
@@ -125,22 +107,18 @@ class CircularBuffer:
         self.lock = threading.Lock()
         
     def write(self, data: bytes) -> int:
-        """Write data to buffer, returns bytes written (optimized for bulk operations)"""
+        """Write data to buffer, returns bytes written"""
         if not data:
             return 0
             
         with self.lock:
             data_len = len(data)
             
-            # Check if we can write all data without dropping
             if self.data_available + data_len <= self.size:
-                # Fast path: bulk write using slicing when possible
                 if self.write_pos + data_len <= self.size:
-                    # Single contiguous write
                     self.buffer[self.write_pos:self.write_pos + data_len] = data
                     self.write_pos = (self.write_pos + data_len) % self.size
                 else:
-                    # Split write at buffer boundary
                     first_chunk = self.size - self.write_pos
                     self.buffer[self.write_pos:] = data[:first_chunk]
                     self.buffer[:data_len - first_chunk] = data[first_chunk:]
@@ -149,19 +127,18 @@ class CircularBuffer:
                 self.data_available += data_len
                 return data_len
             else:
-                # Need to drop some old data - try to drop complete messages
+                # Drop old data if buffer full
                 space_needed = data_len
                 space_available = self.size - self.data_available
                 
                 if space_needed > space_available:
-                    # Drop old data in chunks for efficiency
                     bytes_to_drop = space_needed - space_available
-                    bytes_to_drop = min(bytes_to_drop + 1024, self.data_available)  # Drop 1KB extra
+                    bytes_to_drop = min(bytes_to_drop + 1024, self.data_available)
                     
                     self.read_pos = (self.read_pos + bytes_to_drop) % self.size
                     self.data_available -= bytes_to_drop
                 
-                # Now write the new data using fast path
+                # Write new data
                 if self.write_pos + data_len <= self.size:
                     self.buffer[self.write_pos:self.write_pos + data_len] = data
                     self.write_pos = (self.write_pos + data_len) % self.size
@@ -173,7 +150,6 @@ class CircularBuffer:
                         self.buffer[:remaining] = data[first_chunk:]
                         self.write_pos = remaining
                     else:
-                        # Truncate if still not enough space
                         remaining = self.size - self.data_available
                         self.buffer[:remaining] = data[first_chunk:first_chunk + remaining]
                         self.write_pos = remaining
@@ -183,17 +159,14 @@ class CircularBuffer:
                 return data_len
     
     def peek(self, length: int) -> Optional[bytes]:
-        """Peek at data without consuming it (optimized for bulk operations)"""
+        """Peek at data without consuming it"""
         with self.lock:
             if self.data_available < length:
                 return None
             
-            # Fast path: bulk read using slicing when possible
             if self.read_pos + length <= self.size:
-                # Single contiguous read
                 return bytes(self.buffer[self.read_pos:self.read_pos + length])
             else:
-                # Split read at buffer boundary
                 first_chunk = self.size - self.read_pos
                 result = bytearray()
                 result.extend(self.buffer[self.read_pos:])
@@ -201,18 +174,15 @@ class CircularBuffer:
                 return bytes(result)
     
     def consume(self, length: int) -> Optional[bytes]:
-        """Read and consume data from buffer (optimized for bulk operations)"""
+        """Read and consume data from buffer"""
         with self.lock:
             if self.data_available < length:
                 return None
             
-            # Fast path: bulk read using slicing
             if self.read_pos + length <= self.size:
-                # Single contiguous read
                 result = bytes(self.buffer[self.read_pos:self.read_pos + length])
                 self.read_pos = (self.read_pos + length) % self.size
             else:
-                # Split read at buffer boundary
                 first_chunk = self.size - self.read_pos
                 result = bytearray()
                 result.extend(self.buffer[self.read_pos:])
@@ -235,8 +205,8 @@ class CircularBuffer:
             self.write_pos = 0
             self.data_available = 0
 
-class RobustProtocolParser:
-    """Robust protocol parser with message framing and error recovery"""
+class SerialProtocolParser:
+    """Serial protocol parser with message framing and error recovery"""
     
     def __init__(self, buffer_size: int = ProtocolConstants.BUFFER_SIZE):
         self.buffer = CircularBuffer(buffer_size)
@@ -249,27 +219,18 @@ class RobustProtocolParser:
             'crc_errors': 0,
             'parse_errors': 0,
             'messages_dropped': 0,
-            'parse_time_ms': 0,
-            'decode_time_ms': 0,
             'throughput_mbps': 0.0,
             'last_throughput_time': time.time()
         }
         self.running = False
-        self.last_sequence_id = {}  # Track sequence per message type
-        
-        # Register default message handlers
-        self.register_handler(MessageType.FRAME_DATA, self._handle_frame_data)
-        self.register_handler(MessageType.DETECTION_RESULTS, self._handle_detection_results)
-        self.register_handler(MessageType.EMBEDDING_DATA, self._handle_embedding_data)
-        self.register_handler(MessageType.PERFORMANCE_METRICS, self._handle_performance_metrics)
-        self.register_handler(MessageType.HEARTBEAT, self._handle_heartbeat)
+        self.last_sequence_id = {}
         
     def register_handler(self, msg_type: MessageType, handler: Callable[[ProtocolMessage], None]):
         """Register a handler for a specific message type"""
         self.message_handlers[msg_type] = handler
         
     def add_data(self, data: bytes) -> int:
-        """Add incoming serial data to buffer with throughput monitoring"""
+        """Add incoming serial data to buffer"""
         if data:
             written = self.buffer.write(data)
             self.stats['bytes_received'] += len(data)
@@ -277,9 +238,9 @@ class RobustProtocolParser:
             # Update throughput statistics
             current_time = time.time()
             time_diff = current_time - self.stats['last_throughput_time']
-            if time_diff >= 1.0:  # Update every second
+            if time_diff >= 1.0:
                 bytes_per_sec = self.stats['bytes_received'] / time_diff
-                self.stats['throughput_mbps'] = (bytes_per_sec * 8) / (1024 * 1024)  # Convert to Mbps
+                self.stats['throughput_mbps'] = (bytes_per_sec * 8) / (1024 * 1024)
                 self.stats['last_throughput_time'] = current_time
             
             return written
@@ -287,8 +248,7 @@ class RobustProtocolParser:
     
     def find_sync(self) -> bool:
         """Find SOF byte in buffer and align to frame boundary"""
-        max_search = min(4096, self.buffer.available())  # Increased search window to 4KB
-        sync_errors_before = self.stats['sync_errors']
+        max_search = min(4096, self.buffer.available())
         
         for i in range(max_search):
             byte_data = self.buffer.peek(1)
@@ -296,21 +256,16 @@ class RobustProtocolParser:
                 return False
                 
             if byte_data[0] == ProtocolConstants.SOF_BYTE:
-                # Found potential SOF, verify it's a valid header before declaring success
                 if self.buffer.available() >= ProtocolConstants.HEADER_SIZE:
                     header_data = self.buffer.peek(ProtocolConstants.HEADER_SIZE)
                     if header_data and self._validate_header_quickly(header_data):
                         return True
                 else:
-                    # Not enough data for full header, but SOF found
                     return True
                     
-            # Consume invalid byte, but only count as sync error if we skipped significant data
             self.buffer.consume(1)
             
-        # Only count sync errors if we actually skipped a significant amount of data
-        bytes_skipped = self.stats['sync_errors'] - sync_errors_before + (max_search if max_search > 0 else 0)
-        if bytes_skipped > 10:  # Only count as error if we skipped more than 10 bytes
+        if max_search > 10:
             self.stats['sync_errors'] += 1
             
         return False
@@ -323,13 +278,11 @@ class RobustProtocolParser:
         try:
             sof, payload_size, header_checksum = struct.unpack('<BHB', header_data)
             
-            # Basic sanity checks
             if sof != ProtocolConstants.SOF_BYTE:
                 return False
             if payload_size > ProtocolConstants.MAX_PAYLOAD_SIZE or payload_size == 0:
                 return False
                 
-            # Quick checksum validation
             calculated_checksum = calculate_checksum(header_data[:3])
             return calculated_checksum == header_checksum
             
@@ -346,44 +299,33 @@ class RobustProtocolParser:
             return None
             
         try:
-            # Unpack: SOF(1) + PayloadSize(2) + HeaderChecksum(1)
             sof, payload_size, header_checksum = struct.unpack('<BHB', header_data)
             
-            # Validate payload size first (quick check)
             if payload_size == 0 or payload_size > ProtocolConstants.MAX_PAYLOAD_SIZE:
-                logger.debug(f"Invalid payload size: {payload_size}")
                 self.stats['parse_errors'] += 1
                 return None
             
-            # Verify header checksum (checksum of SOF + PayloadSize)
             calculated_checksum = calculate_checksum(header_data[:3])
             if calculated_checksum != header_checksum:
-                # Log more details for debugging
-                logger.debug(f"Header checksum mismatch: calc={calculated_checksum:02X} recv={header_checksum:02X}")
-                logger.debug(f"Header bytes: {' '.join(f'{b:02X}' for b in header_data)}")
                 self.stats['checksum_errors'] += 1
                 return None
                 
             return payload_size, header_checksum
             
-        except struct.error as e:
-            logger.debug(f"Struct unpack error in header: {e}")
+        except struct.error:
             self.stats['parse_errors'] += 1
             return None
     
     def parse_message(self) -> Optional[ProtocolMessage]:
         """Parse a complete message from buffer"""
-        max_attempts = 3  # Limit attempts to avoid infinite loops
+        max_attempts = 3
         
         for attempt in range(max_attempts):
-            # Find frame sync
             if not self.find_sync():
                 return None
                 
-            # Parse header
             header_info = self.parse_header()
             if not header_info:
-                # Invalid header, consume SOF and try again
                 self.buffer.consume(1)
                 if attempt == max_attempts - 1:
                     return None
@@ -391,59 +333,45 @@ class RobustProtocolParser:
                 
             payload_size, header_checksum = header_info
             
-            # Check if complete message is available (payload + CRC32)
             total_size = ProtocolConstants.HEADER_SIZE + payload_size + ProtocolConstants.CRC_SIZE
             if self.buffer.available() < total_size:
-                return None  # Wait for more data
+                return None
                 
-            # Consume header
             header_data = self.buffer.consume(ProtocolConstants.HEADER_SIZE)
             if not header_data:
                 if attempt == max_attempts - 1:
                     return None
                 continue
                 
-            # Read payload + CRC32
             payload_and_crc = self.buffer.consume(payload_size + ProtocolConstants.CRC_SIZE)
             if not payload_and_crc:
-                logger.error("Failed to read payload and CRC32 after header")
                 self.stats['parse_errors'] += 1
                 if attempt == max_attempts - 1:
                     return None
                 continue
                 
-            # Split payload and CRC32
             payload_data = payload_and_crc[:payload_size]
             crc32_bytes = payload_and_crc[payload_size:]
             
-            # Extract and validate CRC32 (calculated only on payload data, not message header)
             try:
                 received_crc32, = struct.unpack('<I', crc32_bytes)
-                # CRC32 is calculated only on payload data (after message header)
                 actual_payload = payload_data[ProtocolConstants.MSG_HEADER_SIZE:]
                 if not validate_crc32(actual_payload, received_crc32):
-                    calculated_crc32 = calculate_stm32_crc32(actual_payload)
-                    logger.debug(f"CRC32 mismatch: expected {received_crc32:08X}, calculated {calculated_crc32:08X}")
                     self.stats['crc_errors'] += 1
                     if attempt == max_attempts - 1:
                         return None
                     continue
             except struct.error:
-                logger.warning("Failed to unpack CRC32")
                 self.stats['parse_errors'] += 1
                 if attempt == max_attempts - 1:
                     return None
                 continue
                 
-            # Successfully read complete message, break out of retry loop
             break
         else:
-            # All attempts failed
             return None
             
-        # Parse message header within payload
         if len(payload_data) < ProtocolConstants.MSG_HEADER_SIZE:
-            logger.warning(f"Payload too small for message header: {len(payload_data)}")
             self.stats['parse_errors'] += 1
             return None
             
@@ -453,40 +381,32 @@ class RobustProtocolParser:
                 payload_data[:ProtocolConstants.MSG_HEADER_SIZE]
             )
             
-            # Validate message type
             try:
                 msg_type = MessageType(msg_type_int)
             except ValueError:
-                logger.warning(f"Unknown message type: {msg_type_int}")
                 self.stats['parse_errors'] += 1
                 return None
                 
-            # Extract message payload (after message header)
             message_payload = payload_data[ProtocolConstants.MSG_HEADER_SIZE:]
-            
-            # Create message object
             message = ProtocolMessage(msg_type, sequence_id, message_payload)
             
-            # Check for dropped messages (simple sequence check)
             last_seq = self.last_sequence_id.get(msg_type, sequence_id - 1)
-            if sequence_id != (last_seq + 1) % 65536:  # 16-bit sequence wraparound
+            if sequence_id != (last_seq + 1) % 65536:
                 dropped = (sequence_id - last_seq - 1) % 65536
-                if dropped > 0 and dropped < 1000:  # Reasonable drop count
+                if dropped > 0 and dropped < 1000:
                     self.stats['messages_dropped'] += dropped
-                    logger.debug(f"Dropped {dropped} messages of type {msg_type.name}")
                     
             self.last_sequence_id[msg_type] = sequence_id
             self.stats['messages_received'] += 1
             
             return message
             
-        except struct.error as e:
-            logger.warning(f"Error parsing message header: {e}")
+        except struct.error:
             self.stats['parse_errors'] += 1
             return None
     
     def process_messages(self, max_messages: int = 50) -> int:
-        """Process available messages, returns number processed (increased throughput)"""
+        """Process available messages, returns number processed"""
         processed = 0
         consecutive_failures = 0
         
@@ -495,12 +415,11 @@ class RobustProtocolParser:
             if not message:
                 consecutive_failures += 1
                 if consecutive_failures > 5:
-                    break  # Avoid spinning on bad data
+                    break
                 continue
                 
-            consecutive_failures = 0  # Reset on successful parse
+            consecutive_failures = 0
             
-            # Dispatch to handler
             handler = self.message_handlers.get(message.msg_type)
             if handler:
                 try:
@@ -508,8 +427,6 @@ class RobustProtocolParser:
                     processed += 1
                 except Exception as e:
                     logger.error(f"Error handling message {message.msg_type.name}: {e}")
-            else:
-                logger.debug(f"No handler for message type: {message.msg_type.name}")
                 
         return processed
     
@@ -522,91 +439,40 @@ class RobustProtocolParser:
         for key in self.stats:
             self.stats[key] = 0
         self.last_sequence_id.clear()
-    
-    # Default message handlers (can be overridden)
-    def _handle_frame_data(self, message: ProtocolMessage):
-        """Default frame data handler"""
-        logger.debug(f"Frame data received: {len(message.payload)} bytes")
-        
-    def _handle_detection_results(self, message: ProtocolMessage):
-        """Default detection results handler"""
-        logger.debug(f"Detection results received: {len(message.payload)} bytes")
-        
-    def _handle_embedding_data(self, message: ProtocolMessage):
-        """Default embedding data handler"""
-        logger.debug(f"Embedding data received: {len(message.payload)} bytes")
-        
-    def _handle_performance_metrics(self, message: ProtocolMessage):
-        """Default performance metrics handler"""
-        logger.debug(f"Performance metrics received: {len(message.payload)} bytes")
-        
-    def _handle_heartbeat(self, message: ProtocolMessage):
-        """Default heartbeat handler"""
-        logger.debug("Heartbeat received")
 
 class FrameDataParser:
     """Parser for frame data messages"""
     
     @staticmethod
-    def parse_frame(payload: bytes) -> Optional[Tuple[str, np.ndarray, int, int]]:
-        """Parse frame data payload"""
+    def parse_frame(payload: bytes) -> Optional[Tuple[str, np.ndarray, int, int, int, int]]:
+        """Parse frame data payload, returns (frame_type, image, width, height, data_size, compression_ratio)"""
         try:
-            # Frame format: FrameType(4) + Width(4) + Height(4) + ImageData(...)
-
-            if len(payload) < 12:
+            # Frame format: FrameType(4) + Width(4) + Height(4) + DataSize(4) + CompressionRatio(4) + ImageData(...)
+            if len(payload) < 20:
                 return None
                 
-            frame_type, width, height = struct.unpack('<4sII', payload[:12])
+            frame_type, width, height, data_size, compression_ratio = struct.unpack('<4sIIII', payload[:20])
             frame_type = frame_type.decode('ascii').rstrip('\x00')
             
-            image_data = payload[12:]
+            image_data = payload[20:]
             
-            # All frames are now raw grayscale data
+            # Validate data size matches what we received
+            if len(image_data) != data_size:
+                logger.warning(f"Data size mismatch: header says {data_size}, got {len(image_data)}")
+                return None
+                
+            # All frames are raw grayscale data
             if len(image_data) == width * height:
                 frame = np.frombuffer(image_data, dtype=np.uint8).reshape((height, width))
                 # Convert to 3-channel for consistency
                 frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
-                return frame_type, frame, width, height
+                return frame_type, frame, width, height, data_size, compression_ratio
             else:
                 logger.warning(f"Raw data size mismatch: expected {width * height}, got {len(image_data)}")
                 return None
                     
         except Exception as e:
             logger.error(f"Error parsing frame data: {e}")
-            
-        return None
-    
-    @staticmethod
-    def parse_frame_fast(payload: bytes) -> Optional[Tuple[str, np.ndarray, int, int]]:
-
-        """Optimized frame parsing with reduced memory allocations"""
-        try:
-            # Frame format: FrameType(4) + Width(4) + Height(4) + ImageData(...)
-            if len(payload) < 12:
-                return None
-                
-            # Fast header parsing without intermediate objects
-            frame_type = payload[:4].decode('ascii').rstrip('\x00')
-            width = struct.unpack('<I', payload[4:8])[0]
-            height = struct.unpack('<I', payload[8:12])[0]
-
-            # Direct slice for image data (no copy)
-            image_data = payload[12:]
-            
-            # All frames are now raw grayscale data
-            if len(image_data) == width * height:
-                frame = np.frombuffer(image_data, dtype=np.uint8).reshape((height, width))
-                # Convert to 3-channel for consistency
-                frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
-                return frame_type, frame, width, height
-            else:
-                logger.warning(f"Raw data size mismatch: expected {width * height}, got {len(image_data)}")
-                return None
-                    
-        except Exception as e:
-            logger.error(f"Error parsing frame data (fast): {e}")
-            # Fallback to regular parsing
-            return FrameDataParser.parse_frame(payload)
             
         return None
 
@@ -617,29 +483,26 @@ class DetectionDataParser:
     def parse_detections(payload: bytes) -> Optional[Tuple[int, List[Tuple]]]:
         """Parse detection results payload"""
         try:
-            # Detection format: FrameId(4) + DetectionCount(4) + Detections(...)
             if len(payload) < 8:
                 return None
                 
             frame_id, detection_count = struct.unpack('<II', payload[:8])
             
-            if detection_count > 100:  # Sanity check
+            if detection_count > 100:
                 return None
                 
             detections = []
             offset = 8
             
-            # Each detection: Class(4) + X(4) + Y(4) + W(4) + H(4) + Confidence(4) + KeypointCount(4) + Keypoints(...)
             for _ in range(detection_count):
-                if offset + 28 > len(payload):  # Minimum detection size
+                if offset + 28 > len(payload):
                     break
                     
                 class_id, x, y, w, h, confidence, kp_count = struct.unpack('<IfffffI', payload[offset:offset+28])
                 offset += 28
                 
-                # Read keypoints
                 keypoints = []
-                kp_size = kp_count * 8  # 2 floats per keypoint
+                kp_size = kp_count * 8
                 if offset + kp_size <= len(payload):
                     kp_data = struct.unpack(f'<{kp_count * 2}f', payload[offset:offset+kp_size])
                     keypoints = list(kp_data)
@@ -661,16 +524,15 @@ class EmbeddingDataParser:
     def parse_embedding(payload: bytes) -> Optional[List[float]]:
         """Parse embedding data payload"""
         try:
-            # Embedding format: EmbeddingSize(4) + EmbeddingData(...)
             if len(payload) < 4:
                 return None
                 
             embedding_size = struct.unpack('<I', payload[:4])[0]
             
-            if embedding_size > 1024:  # Sanity check
+            if embedding_size > 1024:
                 return None
                 
-            expected_bytes = embedding_size * 4  # 4 bytes per float
+            expected_bytes = embedding_size * 4
             if len(payload) < 4 + expected_bytes:
                 return None
                 
@@ -681,41 +543,3 @@ class EmbeddingDataParser:
             logger.error(f"Error parsing embedding data: {e}")
             
         return None
-
-# Test function
-def test_protocol():
-    """Test the robust protocol implementation"""
-    parser = RobustProtocolParser()
-    
-    # Test message creation
-    def create_test_message(msg_type: MessageType, payload: bytes, sequence_id: int = 0) -> bytes:
-        """Create a test message with proper framing"""
-        # Create message header
-        msg_header = struct.pack(ProtocolConstants.MSG_HEADER_FORMAT, msg_type.value, sequence_id)
-        full_payload = msg_header + payload
-        
-        # Create frame header
-        payload_size = len(full_payload)
-        header_data = struct.pack('<BH', ProtocolConstants.SOF_BYTE, payload_size)
-        header_checksum = calculate_checksum(header_data)
-        
-        # Complete frame
-        frame = struct.pack('<BHB', ProtocolConstants.SOF_BYTE, payload_size, header_checksum) + full_payload
-        return frame
-    
-    # Test data
-    test_payload = b"Hello, World!"
-    test_frame = create_test_message(MessageType.DEBUG_INFO, test_payload, 123)
-    
-    # Add data to parser
-    parser.add_data(test_frame)
-    
-    # Process messages
-    processed = parser.process_messages()
-    print(f"Processed {processed} messages")
-    print(f"Stats: {parser.get_stats()}")
-
-if __name__ == "__main__":
-    # Run test
-    logging.basicConfig(level=logging.DEBUG)
-    test_protocol()

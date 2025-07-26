@@ -1,42 +1,94 @@
 #!/usr/bin/env python3
 """
-UI Launcher - Start the working UI for STM32N6 Object Detection
+Launcher script for STM32N6 Face Recognition UI
 """
 
 import sys
-import os
+import subprocess
+import pkg_resources
 from pathlib import Path
 
+def check_requirements():
+    """Check if required packages are installed"""
+    requirements_file = Path(__file__).parent / "requirements.txt"
+    
+    if not requirements_file.exists():
+        print("Requirements file not found!")
+        return False
+    
+    try:
+        with open(requirements_file, 'r') as f:
+            requirements = []
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    # Extract package name (before >= or ==)
+                    package = line.split('>=')[0].split('==')[0]
+                    requirements.append(package)
+        
+        missing = []
+        for requirement in requirements:
+            try:
+                pkg_resources.get_distribution(requirement)
+            except pkg_resources.DistributionNotFound:
+                missing.append(requirement)
+        
+        if missing:
+            print("Missing required packages:")
+            for pkg in missing:
+                print(f"  - {pkg}")
+            print(f"\\nInstall with: pip install -r {requirements_file}")
+            return False
+        
+        return True
+        
+    except Exception as e:
+        print(f"Error checking requirements: {e}")
+        return False
+
 def main():
-    print("STM32N6 Object Detection - UI Launcher")
+    """Main launcher"""
+    print("STM32N6 Face Recognition UI Launcher")
     print("=" * 40)
     
-    # Change to the python_tools directory
-    script_dir = Path(__file__).parent
-    os.chdir(script_dir)
+    # Check if we're in a virtual environment
+    venv_path = Path(__file__).parent / "venv"
+    in_venv = hasattr(sys, 'real_prefix') or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix)
     
-    # Try to import and run the basic UI
+    if not in_venv and venv_path.exists():
+        print("Virtual environment detected but not activated.")
+        print("Please run:")
+        print("  source venv/bin/activate && python run_ui.py")
+        print("Or use:")
+        print("  ./activate_and_run.sh")
+        sys.exit(1)
+    
+    # Check requirements
+    if not check_requirements():
+        print("\\nMissing requirements detected.")
+        if venv_path.exists():
+            print("Try: source venv/bin/activate && pip install -r requirements.txt")
+        else:
+            print("Try: python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt")
+        sys.exit(1)
+    
+    print("All requirements satisfied!")
+    print("Starting Face Recognition UI...")
+    
     try:
-        print("Starting Basic UI (minimal dependencies)...")
-        from basic_ui import main as basic_main
-        basic_main()
-    except Exception as e:
-        print(f"Failed to start Basic UI: {e}")
+        # Import and run the UI
+        from face_recognition_ui import main as run_ui
+        run_ui()
         
-        # Fallback to simple test
-        try:
-            print("Falling back to Simple UI Test...")
-            from simple_ui_test import main as test_main
-            test_main()
-        except Exception as e2:
-            print(f"All UI options failed: {e2}")
-            print("\nTroubleshooting:")
-            print("1. Make sure minimal requirements are installed:")
-            print("   pip install -r requirements_minimal.txt")
-            print("2. Check if you have display access for GUI applications")
-            return 1
-    
-    return 0
+    except ImportError as e:
+        print(f"Import error: {e}")
+        print("Make sure all required packages are installed in the virtual environment.")
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print("\\nApplication interrupted by user.")
+    except Exception as e:
+        print(f"Error running UI: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

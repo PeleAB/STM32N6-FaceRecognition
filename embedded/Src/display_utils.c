@@ -2,7 +2,7 @@
 #include "img_buffer.h"
 #include "app_config.h"
 #include "app_postprocess.h"
-#include "enhanced_pc_stream.h"
+#include "serial_pc_stream.h"
 #include "stm32n6570_discovery_errno.h"
 #include "pd_model_pp_if.h"
 #include "pd_pp_output_if.h"
@@ -167,7 +167,7 @@ static void DrawPdLandmarks(const pd_pp_box_t *boxes, uint32_t nb, uint32_t nb_k
 static void StreamOutputPd(const pd_postprocess_out_t *p_postprocess)
 {
   SCB_InvalidateDCache_by_Addr(img_buffer, sizeof(img_buffer));
-  Enhanced_PC_STREAM_SendFrame(img_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2, "RAW", p_postprocess, NULL);
+  Serial_PC_STREAM_SendFrame(img_buffer, lcd_bg_area.XSize, lcd_bg_area.YSize, 2, "JPG", p_postprocess, NULL);
 }
 #endif /* ENABLE_PC_STREAM */
 
