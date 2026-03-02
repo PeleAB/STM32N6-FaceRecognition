@@ -56,9 +56,8 @@ static void uart_rx_task(void *pvParameters) {
   sysobj_uart_msg_t msg;
 
   while (1) {
-    /* Poll with 0 timeout to avoid blocking other tasks that might need UART
-     * Transmit */
-    while (HAL_UART_Receive(&huart1, &rx_byte, 1, 0) == HAL_OK) {
+    HAL_StatusTypeDef status = HAL_UART_Receive(&huart1, &rx_byte, 1, 0);
+    if (status == HAL_OK) {
       if (g_rx_idx == 0 && rx_byte != SYSOBJ_UART_SOF) {
         continue;
       }
@@ -78,6 +77,13 @@ static void uart_rx_task(void *pvParameters) {
         } else if (g_rx_idx >= sizeof(g_rx_buffer)) {
           g_rx_idx = 0;
         }
+      }
+    } else if (status == HAL_ERROR) {
+      /* Clear error flags (ORE, NE, FE, PE) */
+      uint32_t isrflags = READ_REG(huart1.Instance->ISR);
+      if (isrflags &
+          (USART_ISR_ORE | USART_ISR_NE | USART_ISR_FE | USART_ISR_PE)) {
+        WRITE_REG(huart1.Instance->ICR, 0x3F); /* Clear all clearable flags */
       }
     }
     /* Yield to other tasks */
