@@ -56,8 +56,18 @@ static void uart_rx_task(void *pvParameters) {
   sysobj_uart_msg_t msg;
 
   while (1) {
-    HAL_StatusTypeDef status = HAL_UART_Receive(&huart1, &rx_byte, 1, 0);
-    if (status == HAL_OK) {
+    uint32_t isr = huart1.Instance->ISR;
+
+    /* Check for errors (ORE, NE, FE, PE) and clear them */
+    if (isr & (USART_ISR_ORE | USART_ISR_NE | USART_ISR_FE | USART_ISR_PE)) {
+      huart1.Instance->ICR =
+          (USART_ICR_ORECF | USART_ICR_NECF | USART_ICR_FECF | USART_ICR_PECF);
+    }
+
+    /* Check if data is available (RXNE) */
+    if (isr & USART_ISR_RXNE_RXFNE) {
+      rx_byte = (uint8_t)(huart1.Instance->RDR & 0xFFU);
+
       if (g_rx_idx == 0 && rx_byte != SYSOBJ_UART_SOF) {
         continue;
       }
@@ -78,16 +88,10 @@ static void uart_rx_task(void *pvParameters) {
           g_rx_idx = 0;
         }
       }
-    } else if (status == HAL_ERROR) {
-      /* Clear error flags (ORE, NE, FE, PE) */
-      uint32_t isrflags = READ_REG(huart1.Instance->ISR);
-      if (isrflags &
-          (USART_ISR_ORE | USART_ISR_NE | USART_ISR_FE | USART_ISR_PE)) {
-        WRITE_REG(huart1.Instance->ICR, 0x3F); /* Clear all clearable flags */
-      }
+    } else {
+      /* No data, yield for a bit */
+      vTaskDelay(pdMS_TO_TICKS(1));
     }
-    /* Yield to other tasks */
-    vTaskDelay(pdMS_TO_TICKS(1));
   }
 }
 
