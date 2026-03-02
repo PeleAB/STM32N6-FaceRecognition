@@ -19,7 +19,7 @@
 #ifndef APP_H
 #define APP_H
 
-#include "fal/fal_camera.h"
+#include "fal_camera.h"
 
 #define VENC_WIDTH CAM_GetVencWidth()
 #define VENC_HEIGHT CAM_GetVencHeight()
@@ -27,3 +27,4 @@
 void app_run(void);
 
 #endif
+

@@ -25,8 +25,8 @@
 #include "app/app.h"
 #include "app/app_config.h"
 #include "app_postprocess.h"
-#include "fal/fal_cache.h"
-#include "fal/fal_camera.h"
+#include "fal_cache.h"
+#include "fal_camera.h"
 #include "svc/app_display.h"
 #include "svc/app_stats.h"
 #include "svc/buffer_queue.h"
@@ -282,3 +282,4 @@ int CMW_CAMERA_PIPE_VsyncEventCallback(uint32_t pipe)
 
   return HAL_OK;
 }
+

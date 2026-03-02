@@ -15,7 +15,7 @@
  *
  ******************************************************************************
  */
-#include "fal/fal_encoder.h"
+#include "fal_encoder.h"
 
 #include <assert.h>
 #include <stdlib.h>
@@ -302,3 +302,4 @@ i32 EWLMallocLinear(const void *instance, u32 size, EWLLinearMem_t *info)
 
   return 0;
 }
+

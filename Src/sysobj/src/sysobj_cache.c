@@ -16,7 +16,7 @@
  ******************************************************************************
  */
 
-#include "fal/fal_cache.h"
+#include "fal_cache.h"
 
 #include <stdint.h>
 
@@ -76,3 +76,4 @@ void FAL_CacheCleanInvalidate(void *addr, size_t len)
   cache_align_region(&target, &len);
   SCB_CleanInvalidateDCache_by_Addr((void *) target, (int32_t) len);
 }
+

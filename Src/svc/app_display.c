@@ -27,7 +27,7 @@
 #include "svc/app_stats.h"
 #include "svc/draw.h"
 #include "svc/figs.h"
-#include "fal/fal_encoder.h"
+#include "fal_encoder.h"
 #include "stm32n6570_discovery.h"
 #include "stm32n6xx_hal.h"
 #include "utils.h"
@@ -377,3 +377,4 @@ void DRAW_Signal(void)
 
   portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
+

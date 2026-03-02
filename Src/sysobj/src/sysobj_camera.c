@@ -19,7 +19,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "fal/fal_camera.h"
+#include "fal_camera.h"
 #include "app/app_config.h"
 #include "utils.h"
 
@@ -248,3 +248,4 @@ int CAM_GetVencHeight(void)
 
   return venc_height;
 }
+

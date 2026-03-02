@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "fal/fal_dma2d.h"
+#include "fal_dma2d.h"
 #include "utils.h"
 
 #define MAX_LINE_CHAR 64
@@ -261,3 +261,4 @@ WEAK void DRAW_Signal()
 {
   assert_param(0);
 }
+

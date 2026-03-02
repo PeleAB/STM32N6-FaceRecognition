@@ -16,7 +16,7 @@
  ******************************************************************************
  */
 
-#include "fal/fal_dma2d.h"
+#include "fal_dma2d.h"
 
 #include "stm32n6xx_hal.h"
 
@@ -158,3 +158,4 @@ void DMA2D_IRQHandler(void)
 {
   FAL_DMA2D_IRQHandler();
 }
+
