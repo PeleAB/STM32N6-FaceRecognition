@@ -27,7 +27,7 @@
 UART_HandleTypeDef huart1;
 
 static StaticTask_t main_thread;
-static StackType_t main_thread_stack[configMINIMAL_STACK_SIZE];
+static StackType_t main_thread_stack[configMINIMAL_STACK_SIZE * 2];
 
 static int main_freertos(void);
 static void main_thread_fct(void *arg);
@@ -47,36 +47,40 @@ void sysobj_uart_handle_manage_set_led(uint8_t led_id, uint8_t state) {
   }
 }
 
+static uint8_t g_rx_buffer[SYSOBJ_UART_MAX_PAYLOAD_SIZE + 12];
+static uint16_t g_rx_idx = 0;
+
 static void uart_rx_task(void *pvParameters) {
   (void)pvParameters;
   uint8_t rx_byte;
-  uint8_t rx_buffer[SYSOBJ_UART_MAX_PAYLOAD_SIZE + 12];
-  uint16_t rx_idx = 0;
   sysobj_uart_msg_t msg;
 
   while (1) {
-    if (HAL_UART_Receive(&huart1, &rx_byte, 1, 10) == HAL_OK) {
-      if (rx_idx == 0 && rx_byte != SYSOBJ_UART_SOF) {
+    /* Poll with 0 timeout to avoid blocking other tasks that might need UART
+     * Transmit */
+    while (HAL_UART_Receive(&huart1, &rx_byte, 1, 0) == HAL_OK) {
+      if (g_rx_idx == 0 && rx_byte != SYSOBJ_UART_SOF) {
         continue;
       }
 
-      rx_buffer[rx_idx++] = rx_byte;
+      g_rx_buffer[g_rx_idx++] = rx_byte;
 
-      if (rx_idx >= 2) {
-        uint8_t payload_len = rx_buffer[1];
+      if (g_rx_idx >= 2) {
+        uint8_t payload_len = g_rx_buffer[1];
         uint16_t total_expected = 3 + payload_len + 4;
 
-        if (rx_idx >= total_expected) {
-          if (sysobj_uart_parse(rx_buffer, rx_idx, &msg) ==
+        if (g_rx_idx >= total_expected) {
+          if (sysobj_uart_parse(g_rx_buffer, g_rx_idx, &msg) ==
               SYSOBJ_UART_ERROR_NONE) {
             sysobj_uart_dispatch_msg(&msg);
           }
-          rx_idx = 0;
-        } else if (rx_idx >= sizeof(rx_buffer)) {
-          rx_idx = 0;
+          g_rx_idx = 0;
+        } else if (g_rx_idx >= sizeof(g_rx_buffer)) {
+          g_rx_idx = 0;
         }
       }
     }
+    /* Yield to other tasks */
     vTaskDelay(pdMS_TO_TICKS(1));
   }
 }
@@ -93,9 +97,9 @@ int main(void) {
 
 static int main_freertos() {
   TaskHandle_t hdl;
-  hdl =
-      xTaskCreateStatic(main_thread_fct, "main", configMINIMAL_STACK_SIZE, NULL,
-                        tskIDLE_PRIORITY + 1, main_thread_stack, &main_thread);
+  hdl = xTaskCreateStatic(
+      main_thread_fct, "main", sizeof(main_thread_stack) / sizeof(StackType_t),
+      NULL, tskIDLE_PRIORITY + 1, main_thread_stack, &main_thread);
   configASSERT(hdl != NULL);
 
   vTaskStartScheduler();
@@ -115,7 +119,8 @@ static void main_thread_fct(void *arg) {
 
   BSP_PlatformInit();
 
-  xTaskCreate(uart_rx_task, "uart_rx", configMINIMAL_STACK_SIZE, NULL,
+  /* Use larger stack for UART task just in case */
+  xTaskCreate(uart_rx_task, "uart_rx", configMINIMAL_STACK_SIZE * 2, NULL,
               tskIDLE_PRIORITY + 2, NULL);
 
   app_run();
