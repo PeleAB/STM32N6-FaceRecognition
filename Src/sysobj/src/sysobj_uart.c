@@ -4,10 +4,13 @@
  */
 
 #include "sysobj_uart.h"
+#include "stm32n6xx_hal.h"
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 
+
+extern UART_HandleTypeDef huart1;
 
 /**
  * Internal Software CRC32 Implementation
@@ -144,6 +147,26 @@ static const sysobj_uart_handler_entry_t msg_handler_table[] = {
 #define MSG_HANDLER_TABLE_SIZE                                                 \
   (sizeof(msg_handler_table) / sizeof(msg_handler_table[0]))
 
+static void sysobj_uart_send_ack(const sysobj_uart_msg_t *rx_msg) {
+  sysobj_uart_msg_t ack_msg;
+  uint8_t buffer[SYSOBJ_UART_MAX_PAYLOAD_SIZE + 12];
+  uint16_t out_len;
+
+  ack_msg.src_id = rx_msg->dst_id;
+  ack_msg.dst_id = rx_msg->src_id;
+  ack_msg.is_ack = 1;
+  ack_msg.need_ack = 0;
+  ack_msg.msg_type = rx_msg->msg_type;
+  ack_msg.msg_subtype = rx_msg->msg_subtype;
+  ack_msg.data = rx_msg->data;
+  ack_msg.data_len = rx_msg->data_len;
+
+  if (sysobj_uart_generate(&ack_msg, buffer, sizeof(buffer), &out_len) ==
+      SYSOBJ_UART_ERROR_NONE) {
+    HAL_UART_Transmit(&huart1, buffer, out_len, 100);
+  }
+}
+
 void sysobj_uart_dispatch_msg(const sysobj_uart_msg_t *msg) {
   if (msg == NULL) {
     return;
@@ -155,6 +178,7 @@ void sysobj_uart_dispatch_msg(const sysobj_uart_msg_t *msg) {
 
       if (msg_handler_table[i].handler != NULL) {
         msg_handler_table[i].handler(msg);
+        sysobj_uart_send_ack(msg);
         return; /* Message handled, exit loop */
       }
     }
