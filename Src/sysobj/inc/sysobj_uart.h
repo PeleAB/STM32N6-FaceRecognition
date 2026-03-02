@@ -9,7 +9,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -33,6 +32,10 @@ typedef enum {
   SYSOBJ_UART_MSG_TYPE_TEST = 0x02,
   SYSOBJ_UART_MSG_TYPE_CRITICAL = 0x03
 } sysobj_uart_msg_type_t;
+
+typedef enum {
+  SYSOBJ_UART_MANAGE_SUBTYPE_SET_LED = 0x01,
+} sysobj_uart_manage_subtype_t;
 
 typedef enum {
   SYSOBJ_UART_ERROR_NONE = 0,
@@ -94,6 +97,25 @@ sysobj_uart_error_t sysobj_uart_generate(const sysobj_uart_msg_t *msg,
  * @return CRC32 value.
  */
 uint32_t sysobj_uart_calculate_crc32(const uint8_t *data, uint16_t len);
+
+/**
+ * @brief Dispatch a parsed message to the appropriate handler using a lookup
+ * table.
+ *
+ * @param msg The parsed message structure.
+ */
+void sysobj_uart_dispatch_msg(const sysobj_uart_msg_t *msg);
+
+/**
+ * @brief Handler for MANAGE -> SET_LED message.
+ * Expected payload: <LED_ID, 1 byte> <STATE, 1 byte>.
+ * This is defined as a weak function in sysobj_uart.c and should be overridden
+ * by the application.
+ *
+ * @param led_id ID of the LED to set.
+ * @param state State to set the LED to (e.g., 0=off, 1=on).
+ */
+void sysobj_uart_handle_manage_set_led(uint8_t led_id, uint8_t state);
 
 #ifdef __cplusplus
 }

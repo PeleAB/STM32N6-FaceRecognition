@@ -108,6 +108,57 @@ sysobj_uart_error_t sysobj_uart_parse(const uint8_t *buffer, uint16_t len,
   return SYSOBJ_UART_ERROR_NONE;
 }
 
+/* --- Message Dispatch & Lookup Table --- */
+
+typedef void (*sysobj_uart_handler_t)(const sysobj_uart_msg_t *msg);
+
+typedef struct {
+  uint8_t msg_type;
+  uint8_t msg_subtype;
+  sysobj_uart_handler_t handler;
+} sysobj_uart_handler_entry_t;
+
+__attribute__((weak)) void sysobj_uart_handle_manage_set_led(uint8_t led_id,
+                                                             uint8_t state) {
+  /* Default weak implementation. Override in main app application code. */
+  (void)led_id;
+  (void)state;
+}
+
+static void internal_handle_manage_set_led(const sysobj_uart_msg_t *msg) {
+  if (msg->data != NULL && msg->data_len >= 2) {
+    uint8_t led_id = msg->data[0];
+    uint8_t state = msg->data[1];
+    sysobj_uart_handle_manage_set_led(led_id, state);
+  }
+}
+
+static const sysobj_uart_handler_entry_t msg_handler_table[] = {
+    {SYSOBJ_UART_MSG_TYPE_MANAGE, SYSOBJ_UART_MANAGE_SUBTYPE_SET_LED,
+     internal_handle_manage_set_led},
+    /* Add future handlers here */
+};
+
+#define MSG_HANDLER_TABLE_SIZE                                                 \
+  (sizeof(msg_handler_table) / sizeof(msg_handler_table[0]))
+
+void sysobj_uart_dispatch_msg(const sysobj_uart_msg_t *msg) {
+  if (msg == NULL) {
+    return;
+  }
+
+  for (size_t i = 0; i < MSG_HANDLER_TABLE_SIZE; i++) {
+    if (msg_handler_table[i].msg_type == msg->msg_type &&
+        msg_handler_table[i].msg_subtype == msg->msg_subtype) {
+
+      if (msg_handler_table[i].handler != NULL) {
+        msg_handler_table[i].handler(msg);
+        return; /* Message handled, exit loop */
+      }
+    }
+  }
+}
+
 sysobj_uart_error_t sysobj_uart_generate(const sysobj_uart_msg_t *msg,
                                          uint8_t *buffer,
                                          uint16_t buffer_capacity,
