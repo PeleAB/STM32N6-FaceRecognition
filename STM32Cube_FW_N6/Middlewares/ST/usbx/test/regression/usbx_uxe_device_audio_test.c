@@ -623,3 +623,4 @@ UX_DEVICE_CLASS_AUDIO20_CONTROL_GROUP   dummy_group20;
         test_control_return(0);
     }
 }
+

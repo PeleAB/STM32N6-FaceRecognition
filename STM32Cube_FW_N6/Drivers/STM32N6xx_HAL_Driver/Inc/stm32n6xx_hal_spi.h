@@ -1129,3 +1129,4 @@ uint32_t             HAL_SPI_GetError(const SPI_HandleTypeDef *hspi);
 /**
   * @}
   */
+

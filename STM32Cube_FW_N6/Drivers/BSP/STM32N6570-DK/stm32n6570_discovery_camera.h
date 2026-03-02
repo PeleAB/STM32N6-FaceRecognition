@@ -279,3 +279,4 @@ HAL_StatusTypeDef MX_DCMIPP_ClockConfig(DCMIPP_HandleTypeDef *hdcmipp);
 #endif
 
 #endif /* STM32N6570_DISCOVERY_CAMERA_H */
+

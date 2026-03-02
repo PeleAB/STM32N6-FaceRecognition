@@ -118,3 +118,4 @@ void EncPreProcess(asicData_s * asic, preProcess_s * preProcess);
 void EncSetColorConversion(preProcess_s * preProcess, asicData_s * asic);
 
 #endif
+

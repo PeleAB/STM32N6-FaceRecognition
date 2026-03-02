@@ -157,3 +157,4 @@ void arm_offset_q31(
 /**
   @} end of BasicOffset group
  */
+

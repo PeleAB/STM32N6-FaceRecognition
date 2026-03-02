@@ -289,3 +289,4 @@ VOID ux_test_hcd_sim_host_cleanup(VOID)
 
     ux_test_port_status = UX_PS_CCS | UX_PS_DS_FS;
 }
+

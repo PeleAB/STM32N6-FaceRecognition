@@ -1535,3 +1535,4 @@ void        LL_GPIO_StructInit(LL_GPIO_InitTypeDef *GPIO_InitStruct);
 
 #endif /* STM32N6xx_LL_GPIO_H */
 
+

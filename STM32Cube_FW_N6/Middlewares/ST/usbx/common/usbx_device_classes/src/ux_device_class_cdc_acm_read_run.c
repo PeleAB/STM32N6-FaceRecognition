@@ -380,3 +380,4 @@ UINT _uxe_device_class_cdc_acm_read_run(UX_SLAVE_CLASS_CDC_ACM *cdc_acm,
 }
 
 #endif
+

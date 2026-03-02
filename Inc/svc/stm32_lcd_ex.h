@@ -37,3 +37,4 @@ void UTIL_LCDEx_PrintfAt(uint32_t x_pos, uint32_t y_pos, Text_AlignModeTypdef mo
 #endif
 
 #endif /* STM32_LCD_EX_H */
+

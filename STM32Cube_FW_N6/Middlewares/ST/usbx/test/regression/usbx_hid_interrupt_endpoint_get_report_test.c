@@ -415,3 +415,4 @@ static UINT    demo_thread_hid_callback(UX_SLAVE_CLASS_HID *class, UX_SLAVE_CLAS
 {
     return(UX_SUCCESS);
 }
+

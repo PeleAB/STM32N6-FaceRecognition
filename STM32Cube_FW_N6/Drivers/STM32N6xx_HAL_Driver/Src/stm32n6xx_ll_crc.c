@@ -101,3 +101,4 @@ ErrorStatus LL_CRC_DeInit(const CRC_TypeDef *CRCx)
   */
 
 #endif /* USE_FULL_LL_DRIVER */
+

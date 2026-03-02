@@ -223,3 +223,4 @@ UINT  _uxe_host_class_storage_media_write(UX_HOST_CLASS_STORAGE *storage, ULONG 
     /* Invoke storage media write function.  */
     return(_ux_host_class_storage_media_write(storage, sector_start, sector_count, data_pointer));
 }
+

@@ -1227,3 +1227,4 @@ UINT  _uxe_device_class_ccid_hardware_error(UX_DEVICE_CLASS_CCID *ccid, ULONG sl
 #endif
 
 #endif /* UX_DEVICE_CLASS_CCID_H */
+

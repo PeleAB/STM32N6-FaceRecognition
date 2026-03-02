@@ -156,3 +156,4 @@ void LL_RNG_StructInit(LL_RNG_InitTypeDef *RNG_InitStruct)
 
 #endif /* USE_FULL_LL_DRIVER */
 
+

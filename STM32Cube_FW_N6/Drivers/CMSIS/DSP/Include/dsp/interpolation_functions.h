@@ -317,3 +317,4 @@ q7_t arm_linear_interp_q7(
 #endif
 
 #endif /* ifndef _INTERPOLATION_FUNCTIONS_H_ */
+

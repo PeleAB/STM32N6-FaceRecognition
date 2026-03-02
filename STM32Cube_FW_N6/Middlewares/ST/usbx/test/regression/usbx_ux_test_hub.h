@@ -630,3 +630,4 @@ static void thread_entry_device(ULONG input)
     /* Call the application. */
     post_init_device();
 }
+

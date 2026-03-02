@@ -22,3 +22,4 @@ UINT _ux_test_dcd_sim_slave_function(UX_SLAVE_DCD *dcd, UINT function, VOID *par
 VOID ux_test_dcd_sim_slave_transfer_done(UX_SLAVE_TRANSFER *transfer, UINT code);
 
 #endif /* _UX_TEST_DCD_SIM_SLAVE_H */
+

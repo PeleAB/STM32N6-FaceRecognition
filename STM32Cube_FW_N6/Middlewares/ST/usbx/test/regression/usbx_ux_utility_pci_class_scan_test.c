@@ -383,3 +383,4 @@ UINT        status;
         test_control_return(0);
     }
 }
+

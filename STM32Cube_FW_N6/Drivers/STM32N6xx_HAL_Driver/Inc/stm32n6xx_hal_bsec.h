@@ -450,3 +450,4 @@ HAL_StatusTypeDef HAL_BSEC_GetNumberOfResets(BSEC_HandleTypeDef * hbsec, uint32_
 #endif
 
 #endif /* STM32N6xx_HAL_BSEC_H */
+

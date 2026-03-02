@@ -269,3 +269,4 @@ UINT  _uxe_device_class_hid_event_get(UX_SLAVE_CLASS_HID *hid,
     /* Invoke function to get event.  */
     return(_ux_device_class_hid_event_get(hid, hid_event));
 }
+

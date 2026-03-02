@@ -874,3 +874,4 @@ typedef struct
 #endif /* __cplusplus */
 
 #endif /* STM32N6xx_HAL_DMA_EX_H */
+

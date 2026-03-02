@@ -226,3 +226,4 @@ evision_return_t evision_api_st_ae_process(evision_st_ae_process_t* const self, 
 /* Exported variables --------------------------------------------------------*/
 
 #endif /* EVISION_API_ST_AE_H_ */
+

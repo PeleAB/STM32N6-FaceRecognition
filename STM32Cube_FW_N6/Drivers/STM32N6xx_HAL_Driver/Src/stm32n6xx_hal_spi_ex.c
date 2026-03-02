@@ -225,3 +225,4 @@ HAL_StatusTypeDef HAL_SPIEx_ConfigureUnderrun(SPI_HandleTypeDef *hspi, uint32_t 
 /**
   * @}
   */
+

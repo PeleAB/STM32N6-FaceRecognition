@@ -3068,3 +3068,4 @@ void H264AccessUnitDelimiter(stream_s *b, u32 byte_stream, u32 primary_pic_type)
     COMMENT("primary_pic_type");
     H264RbspTrailingBits(b);
 }
+

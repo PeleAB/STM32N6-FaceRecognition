@@ -43,3 +43,4 @@ target_sources(arm_matrix_example PRIVATE math_helper.c arm_matrix_example_f32.c
 
 target_link_libraries(arm_matrix_example PRIVATE CMSISDSP)
 
+

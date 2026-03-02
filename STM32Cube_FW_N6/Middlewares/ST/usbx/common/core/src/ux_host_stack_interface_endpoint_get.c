@@ -187,3 +187,4 @@ UINT  _uxe_host_stack_interface_endpoint_get(UX_INTERFACE *interface_ptr, UINT e
     /* Invoke endpoint get function.  */
     return(_ux_host_stack_interface_endpoint_get(interface_ptr, endpoint_index, endpoint));
 }
+

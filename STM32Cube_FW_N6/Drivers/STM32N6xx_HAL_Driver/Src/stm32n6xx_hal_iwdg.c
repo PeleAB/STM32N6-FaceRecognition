@@ -507,3 +507,4 @@ __weak void HAL_IWDG_EarlyWakeupCallback(IWDG_HandleTypeDef *hiwdg)
 /**
   * @}
   */
+

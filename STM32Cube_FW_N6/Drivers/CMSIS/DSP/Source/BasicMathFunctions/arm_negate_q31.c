@@ -176,3 +176,4 @@ void arm_negate_q31(
 /**
   @} end of BasicNegate group
  */
+

@@ -529,3 +529,4 @@ UINT  _uxe_device_stack_initialize(UCHAR * device_framework_high_speed, ULONG de
                                        language_id_framework, language_id_framework_length,
                                        ux_system_slave_change_function));
 }
+

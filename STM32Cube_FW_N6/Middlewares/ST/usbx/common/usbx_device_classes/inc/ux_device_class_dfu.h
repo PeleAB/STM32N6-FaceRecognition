@@ -278,3 +278,4 @@ UINT  _uxe_device_class_dfu_initialize(UX_SLAVE_CLASS_COMMAND *command);
 #endif 
 
 #endif /* UX_DEVICE_CLASS_DFU_H */
+

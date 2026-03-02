@@ -51,3 +51,4 @@
 #include "lite_pool_is8os8.h"
 
 #endif /* LITE_OPERATORS_H */
+

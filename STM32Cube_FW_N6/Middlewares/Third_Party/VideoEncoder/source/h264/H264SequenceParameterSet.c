@@ -871,3 +871,4 @@ void H264SpsSetVuiPictStructPresentFlag(sps_s * sps, u32 flag)
 {
     sps->vui.pictStructPresentFlag = flag;
 }
+

@@ -245,3 +245,4 @@ forward_lite_dw_1xN_sssa8_ch(const ai_i8 *Im_in,
 
 
 #endif    /*LITE_DW_H*/
+

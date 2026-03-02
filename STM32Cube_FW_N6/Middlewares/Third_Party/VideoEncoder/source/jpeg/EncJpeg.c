@@ -824,3 +824,4 @@ void EncJpegSOSHeader(stream_s * stream, jpegData_s * data)
     EncJpegHeaderPutBits(stream, 0, 4);
     COMMENT("Al");
 }
+

@@ -574,3 +574,4 @@ HAL_MDIOS_StateTypeDef HAL_MDIOS_GetState(const MDIOS_HandleTypeDef *hmdios);
 #endif
 
 #endif /* STM32N6xx_HAL_MDIOS_H */
+

@@ -234,3 +234,4 @@ HAL_SDRAM_StateTypeDef  HAL_SDRAM_GetState(const SDRAM_HandleTypeDef *hsdram);
 #endif
 
 #endif /* STM32N6xx_HAL_SDRAM_H */
+

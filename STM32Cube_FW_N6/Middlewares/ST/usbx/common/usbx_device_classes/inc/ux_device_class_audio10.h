@@ -440,3 +440,4 @@ UINT _uxe_device_class_audio10_control_process(UX_DEVICE_CLASS_AUDIO *audio,
 #endif 
 
 #endif /* ifndef UX_DEVICE_CLASS_AUDIO10_H */
+

@@ -1319,3 +1319,4 @@ uint32_t SDMMC_DMALinkedList_DisableCircularMode(SDMMC_DMALinkedListTypeDef *pLi
 #endif
 
 #endif /* STM32N6xx_LL_SDMMC_H */
+

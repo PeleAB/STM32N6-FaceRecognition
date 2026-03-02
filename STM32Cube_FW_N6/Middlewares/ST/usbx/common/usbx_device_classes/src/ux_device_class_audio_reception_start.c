@@ -171,3 +171,4 @@ UINT _uxe_device_class_audio_reception_start(UX_DEVICE_CLASS_AUDIO_STREAM *strea
     /* Start reception.  */
     return(_ux_device_class_audio_reception_start(stream));
 }
+

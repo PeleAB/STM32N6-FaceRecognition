@@ -216,3 +216,4 @@ UINT  _uxe_host_class_audio_stop(UX_HOST_CLASS_AUDIO *audio)
     /* Invoke audio stop function.  */
     return(_ux_host_class_audio_stop(audio));
 }
+

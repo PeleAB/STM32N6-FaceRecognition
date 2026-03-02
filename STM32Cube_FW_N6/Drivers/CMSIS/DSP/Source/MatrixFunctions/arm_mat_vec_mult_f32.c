@@ -397,3 +397,4 @@ void arm_mat_vec_mult_f32(const arm_matrix_instance_f32 *pSrcMat, const float32_
 /**
  * @} end of MatrixMult group
  */
+

@@ -65,3 +65,4 @@ UINT  _ux_host_class_dummy_abort(UX_HOST_CLASS_DUMMY *dummy,
 
 
 #endif
+

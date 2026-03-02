@@ -188,3 +188,4 @@ UX_HOST_CLASS                       *class_inst;
     return(UX_HOST_CLASS_MEMORY_ERROR);
 #endif /* !defined(UX_HOST_CLASS_STORAGE_NO_FILEX) */
 }
+

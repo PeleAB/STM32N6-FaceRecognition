@@ -109,3 +109,4 @@ UINT   string_length;
     return;
 }
 
+

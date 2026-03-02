@@ -16,10 +16,10 @@ Directory layout (created, content to be migrated incrementally)
 
 Current-to-target mapping (proposed)
 - `Src/main.c`: move clock/security/cache/console setup into `bsp/platform_*.c`; keep RTOS entry/orchestration in `app/main_thread.c`.
-- `Src/fal/fal_camera.c`: hardware config wrapper over HAL (formerly `Src/app_cam.c`), sensor profile handling will move to `svc/camera_service.c`.
+- `Src/fal/sysobj_camera.c`: hardware config wrapper over HAL (formerly `Src/app_cam.c`), sensor profile handling will move to `svc/camera_service.c`.
 - `Src/app_pipeline.c`: move buffer queue to `svc/bqueue.c`, pipeline coordination/tasks to `app/pipeline_orchestrator.c`, and ISR callbacks to an event path that returns buffers via the service.
 - `Src/app_display.c`: split into `svc/overlay_renderer.c`, `svc/encoder_service.c`, `svc/uvc_sink.c`; DMA2D locking moves to `fal/dma2d_hal.c`.
-- `Src/fal/fal_encoder.c`: HAL wrapper for encoder (was `Src/app_enc.c`); a service should wrap it with policy (GOP, bitrate) and keyframe control.
+- `Src/fal/sysobj_encoder.c`: HAL wrapper for encoder (was `Src/app_enc.c`); a service should wrap it with policy (GOP, bitrate) and keyframe control.
 - `Src/app_stats.c`: `svc/stats_service.c` with optional sinks (console/overlay).
 - `Src/svc/buffer_queue.c`: shared utility (formerly `Src/app_bqueue.c`).
 - `Src/utils.c`: NN runtime helper → `svc/nn_service.c` or `fal/nn_hal.c` (depending on HAL coupling).
@@ -30,3 +30,6 @@ Migration steps
 2) Move low-level init from `main.c` into `bsp` and expose a `platform_init()` used by the app entry.
 3) Extract FAL wrappers (camera/encoder/DMA2D/cache) without changing behavior; then layer services on top.
 4) Shift pipeline orchestration into `app` once services exist; remove direct HAL calls from app/service code paths.
+
+
+

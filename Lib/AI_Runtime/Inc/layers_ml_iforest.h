@@ -73,3 +73,4 @@ void forward_iforest(ai_layer *pLayer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_IFOREST_H*/
+

@@ -160,3 +160,4 @@ void arm_offset_q7(
 /**
   @} end of BasicOffset group
  */
+

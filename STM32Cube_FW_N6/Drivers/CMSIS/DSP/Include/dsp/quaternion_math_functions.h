@@ -157,3 +157,4 @@ void arm_rotation2quaternion_f32(const float32_t *pInputRotations,
 #endif
 
 #endif /* ifndef _QUATERNION_MATH_FUNCTIONS_H_ */
+

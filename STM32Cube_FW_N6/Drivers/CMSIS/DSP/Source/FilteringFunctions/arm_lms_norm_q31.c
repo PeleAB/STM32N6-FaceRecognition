@@ -309,3 +309,4 @@ void arm_lms_norm_q31(
 /**
   @} end of LMS_NORM group
  */
+

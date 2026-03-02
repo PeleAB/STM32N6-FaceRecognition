@@ -185,3 +185,4 @@ uint32_t OS_Tick_GetOverflow (void) {
   cntp_ctl.w = PL1_GetControl();
   return (cntp_ctl.b.ISTATUS);
 }
+

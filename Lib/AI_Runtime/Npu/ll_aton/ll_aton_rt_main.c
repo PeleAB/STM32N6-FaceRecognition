@@ -71,3 +71,4 @@ void LL_ATON_RT_Main(NN_Instance_TypeDef *network_instance)
 
   /*** End of user de-initialization code ***/
 }
+

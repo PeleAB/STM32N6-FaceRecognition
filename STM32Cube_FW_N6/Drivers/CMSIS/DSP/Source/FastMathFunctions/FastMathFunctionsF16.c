@@ -30,3 +30,4 @@
 #include "arm_vlog_f16.c"
 #include "arm_vinverse_f16.c"
 #include "arm_atan2_f16.c"
+

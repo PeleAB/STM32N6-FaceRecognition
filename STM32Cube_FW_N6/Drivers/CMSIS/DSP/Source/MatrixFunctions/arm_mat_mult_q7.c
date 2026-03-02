@@ -676,3 +676,4 @@ arm_status arm_mat_mult_q7(const arm_matrix_instance_q7 *pSrcA, const arm_matrix
 /**
   @} end of MatrixMult group
  */
+

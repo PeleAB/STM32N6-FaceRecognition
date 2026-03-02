@@ -423,3 +423,4 @@ ErrorStatus I3C_TgtTimingComputation(const I3C_TgtTimingTypeDef *pInputTiming,
 /**
   * @}
   */
+

@@ -323,3 +323,4 @@ __STATIC_INLINE void arm_bitreversal_16_outpl_mve(void *pDst, void *pSrc, uint32
 
 
 #endif /* _ARM_VEC_FFT_H_ */
+

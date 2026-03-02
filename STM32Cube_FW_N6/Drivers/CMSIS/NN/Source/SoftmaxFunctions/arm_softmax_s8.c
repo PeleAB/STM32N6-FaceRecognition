@@ -213,3 +213,4 @@ void arm_softmax_s8(const int8_t *input,
 /**
  * @} end of Softmax group
  */
+

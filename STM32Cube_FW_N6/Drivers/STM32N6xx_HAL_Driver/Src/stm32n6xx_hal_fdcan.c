@@ -6255,3 +6255,4 @@ static void FDCAN_CopyMessageToRAM(const FDCAN_HandleTypeDef *hfdcan, const FDCA
   */
 
 #endif /* FDCAN1 */
+

@@ -63,3 +63,4 @@ void arm_relu6_s8(q7_t *data, uint16_t size)
 /**
  * @} end of Acti group
  */
+

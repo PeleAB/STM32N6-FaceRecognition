@@ -219,3 +219,4 @@ void arm_absmin_no_idx_q31(
 /**
   @} end of AbsMin group
  */
+

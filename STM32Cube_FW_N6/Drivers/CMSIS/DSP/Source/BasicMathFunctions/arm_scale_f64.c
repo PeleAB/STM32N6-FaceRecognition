@@ -73,3 +73,4 @@ void arm_scale_f64(
 /**
   @} end of BasicScale group
  */
+

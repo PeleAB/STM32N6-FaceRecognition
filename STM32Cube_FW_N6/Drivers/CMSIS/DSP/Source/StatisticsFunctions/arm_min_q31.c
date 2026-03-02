@@ -201,3 +201,4 @@ void arm_min_q31(
 /**
   @} end of Min group
  */
+

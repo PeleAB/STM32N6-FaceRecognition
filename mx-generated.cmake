@@ -30,9 +30,9 @@ set(APP_SOURCES
     ${PROJECT_ROOT}/Src/main.c
     ${PROJECT_ROOT}/Src/app/app.c
     ${PROJECT_ROOT}/Src/svc/buffer_queue.c
-    ${PROJECT_ROOT}/Src/sysobj/src/fal_camera.c
+    ${PROJECT_ROOT}/Src/sysobj/src/sysobj_camera.c
     ${PROJECT_ROOT}/Src/svc/app_display.c
-    ${PROJECT_ROOT}/Src/sysobj/src/fal_encoder.c
+    ${PROJECT_ROOT}/Src/sysobj/src/sysobj_encoder.c
     ${PROJECT_ROOT}/Src/bsp/fuse_programming.c
     ${PROJECT_ROOT}/Src/app/app_pipeline.c
     ${PROJECT_ROOT}/Src/bsp/platform.c
@@ -43,8 +43,8 @@ set(APP_SOURCES
     ${PROJECT_ROOT}/Src/svc/draw.c
     ${PROJECT_ROOT}/Src/bsp/stm32n6xx_it.c
     ${PROJECT_ROOT}/Src/svc/stm32_lcd_ex.c
-    ${PROJECT_ROOT}/Src/sysobj/src/fal_cache.c
-    ${PROJECT_ROOT}/Src/sysobj/src/fal_dma2d.c
+    ${PROJECT_ROOT}/Src/sysobj/src/sysobj_cache.c
+    ${PROJECT_ROOT}/Src/sysobj/src/sysobj_dma2d.c
     ${PROJECT_ROOT}/Model/network.c
     ${PROJECT_ROOT}/Gcc/Src/console.c
     ${PROJECT_ROOT}/Gcc/Src/freertos_libc.c
@@ -311,3 +311,6 @@ add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
         ${PROJECT_BINARY_DIR}/Project_sign.bin
     COMMENT "Generating bin/hex artifacts"
 )
+
+
+

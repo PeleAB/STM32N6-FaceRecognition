@@ -751,3 +751,4 @@ __STATIC_INLINE q15x8_t FAST_VSQRT_Q15(q15x8_t vecIn)
 #endif
 
 #endif
+

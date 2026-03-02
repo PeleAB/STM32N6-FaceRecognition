@@ -108,3 +108,4 @@ arm_status arm_mfcc_init_f16(
 /**
   @} end of MFCC group
  */
+

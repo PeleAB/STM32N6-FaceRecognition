@@ -1064,3 +1064,4 @@ uint32_t FMC_SDRAM_GetModeStatus(const FMC_SDRAM_TypeDef *Device, uint32_t Bank)
 /**
   * @}
   */
+

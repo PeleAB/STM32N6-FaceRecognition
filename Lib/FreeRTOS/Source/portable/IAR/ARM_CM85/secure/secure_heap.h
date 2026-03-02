@@ -64,3 +64,4 @@ size_t xPortGetFreeHeapSize( void );
 size_t xPortGetMinimumEverFreeHeapSize( void );
 
 #endif /* __SECURE_HEAP_H__ */
+

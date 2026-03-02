@@ -127,3 +127,4 @@ UCHAR                                  *buffer = (UCHAR *)&status;
         test_control_return(0);
     }
 }
+

@@ -333,3 +333,4 @@ int32_t arm_convolve_s8_get_buffer_size(const cmsis_nn_dims *input_dims, const c
 /**
  * @} end of NNConv group
  */
+

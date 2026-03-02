@@ -355,3 +355,4 @@ UINT  _uxe_system_initialize(VOID *regular_memory_pool_start, ULONG regular_memo
     return(_ux_system_initialize(regular_memory_pool_start, regular_memory_size,
                                  cache_safe_memory_pool_start, cache_safe_memory_size));
 }
+

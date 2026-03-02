@@ -68,3 +68,4 @@ float32_t arm_hamming_distance(const uint32_t *pA, const uint32_t *pB, uint32_t 
 /**
  * @} end of BoolDist group
  */
+

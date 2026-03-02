@@ -1037,3 +1037,4 @@ const arm_sort_instance_f32 * S,
 /**
   @} end of Sorting group
  */
+

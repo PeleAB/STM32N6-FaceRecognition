@@ -175,3 +175,4 @@ float16_t arm_jensenshannon_distance_f16(const float16_t *pA,const float16_t *pB
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

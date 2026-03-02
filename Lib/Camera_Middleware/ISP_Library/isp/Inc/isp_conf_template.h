@@ -26,3 +26,4 @@
 #define ISP_MW_SW_AWB_ALGO_SUPPORT
 
 #endif /* __ISP_CONF_H */
+

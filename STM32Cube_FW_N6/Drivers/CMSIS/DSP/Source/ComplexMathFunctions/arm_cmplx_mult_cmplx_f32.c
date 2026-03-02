@@ -303,3 +303,4 @@ void arm_cmplx_mult_cmplx_f32(
 /**
   @} end of CmplxByCmplxMult group
  */
+

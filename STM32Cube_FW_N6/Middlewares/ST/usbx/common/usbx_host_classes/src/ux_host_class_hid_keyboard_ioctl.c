@@ -174,3 +174,4 @@ UINT _uxe_host_class_hid_keyboard_ioctl(UX_HOST_CLASS_HID_KEYBOARD *keyboard_ins
     /* Invoke report ID get function.  */
     return(_ux_host_class_hid_keyboard_ioctl(keyboard_instance, ioctl_function, parameter));
 }
+

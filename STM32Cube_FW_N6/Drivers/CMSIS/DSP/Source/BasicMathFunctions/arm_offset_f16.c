@@ -168,3 +168,4 @@ void arm_offset_f16(
 /**
   @} end of BasicOffset group
  */
+

@@ -1194,3 +1194,4 @@ static void FillTriangle(Triangle_Positions_t *Positions, uint32_t Color)
 /**
   * @}
   */
+

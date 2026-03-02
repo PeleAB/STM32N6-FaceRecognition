@@ -608,3 +608,4 @@ HAL_StatusTypeDef USB_DeActivateRemoteWakeup(const USB_OTG_GlobalTypeDef *USBx);
 #endif /* __cplusplus */
 
 #endif /* STM32N6xx_LL_USB_H */
+

@@ -212,3 +212,4 @@ void arm_var_q31(
 /**
   @} end of variance group
  */
+

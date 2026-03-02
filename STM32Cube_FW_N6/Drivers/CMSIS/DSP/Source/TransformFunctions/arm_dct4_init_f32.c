@@ -128,3 +128,4 @@ arm_status arm_dct4_init_f32(
 /**
   @} end of DCT4_IDCT4 group
  */
+

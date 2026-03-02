@@ -334,3 +334,4 @@ arm_status arm_depthwise_conv_u8_basic_ver1(const uint8_t *input,
 /**
  * @} end of NNConv group
  */
+

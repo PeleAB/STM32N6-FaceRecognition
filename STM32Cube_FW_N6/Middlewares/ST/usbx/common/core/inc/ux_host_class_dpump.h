@@ -116,3 +116,4 @@ UINT    _ux_host_class_dpump_ioctl(UX_HOST_CLASS_DPUMP *dpump, ULONG ioctl_funct
 #endif
 
 #endif
+

@@ -192,3 +192,4 @@ void arm_cmplx_mult_real_f16(
  */
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
+

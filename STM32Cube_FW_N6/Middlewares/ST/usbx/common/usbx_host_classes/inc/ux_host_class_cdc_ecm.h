@@ -350,3 +350,4 @@ UINT  _ux_host_class_cdc_ecm_mac_address_get(UX_HOST_CLASS_CDC_ECM *cdc_ecm);
 #endif 
 
 #endif
+

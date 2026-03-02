@@ -47,3 +47,4 @@ Licensed Microcontrollers and Microprocessors:
 	STM32U3 Series
 
 	STM32N6 Series
+

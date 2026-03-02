@@ -162,3 +162,4 @@ UINT  _uxe_host_class_hid_mouse_position_get(UX_HOST_CLASS_HID_MOUSE *mouse_inst
     return(_ux_host_class_hid_mouse_position_get(mouse_instance,
                                         mouse_x_position, mouse_y_position));
 }
+

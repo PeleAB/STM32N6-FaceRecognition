@@ -1142,3 +1142,4 @@ ai_bool ai_platform_observer_unregister_s(ai_handle network,
 AI_API_DECLARE_END
 
 #endif /*AI_PLATFORM_INTERFACE_H*/
+

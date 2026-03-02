@@ -179,3 +179,4 @@ void arm_quaternion2rotation_f32(const float32_t *pInputQuaternions,
 /**
   @} end of QuatRot group
  */
+

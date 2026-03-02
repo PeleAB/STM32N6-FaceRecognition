@@ -203,3 +203,4 @@ UINT            status;
     return(status);
 #endif /* !defined(UX_HOST_CLASS_STORAGE_NO_FILEX) */
 }
+

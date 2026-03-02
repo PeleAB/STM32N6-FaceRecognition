@@ -105,3 +105,4 @@ typedef struct
 #endif
 
 #endif /* ifndef _INTERPOLATION_FUNCTIONS_F16_H_ */
+

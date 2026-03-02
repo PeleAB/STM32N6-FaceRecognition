@@ -209,3 +209,4 @@ u32 EncJpegHdr(stream_s * stream, jpegData_s * data);
 /*void EncJpegImageEndReplaceRst(stream_s * stream, jpegData_s * data);*/
 
 #endif
+

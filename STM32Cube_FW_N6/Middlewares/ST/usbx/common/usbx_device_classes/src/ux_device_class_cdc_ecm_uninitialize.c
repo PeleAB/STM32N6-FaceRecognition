@@ -150,3 +150,4 @@ UX_SLAVE_CLASS                          *class_ptr;
     /* Return completion status.  */
     return(UX_SUCCESS);
 }
+

@@ -209,3 +209,4 @@ arm_status arm_nn_vec_mat_mult_t_s16(const q15_t *lhs,
 /**
  * @} end of NNBasicMath group
  */
+

@@ -284,3 +284,4 @@ UINT  _uxe_host_class_cdc_acm_read (UX_HOST_CLASS_CDC_ACM *cdc_acm, UCHAR *data_
     /* Invoke CDC ACM read function.  */
     return(_ux_host_class_cdc_acm_read(cdc_acm, data_pointer, requested_length, actual_length));
 }
+

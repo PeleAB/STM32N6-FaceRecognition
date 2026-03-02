@@ -169,3 +169,4 @@ arm_status arm_mat_trans_q7(const arm_matrix_instance_q7 *pSrc, arm_matrix_insta
 /**
   @} end of MatrixTrans group
  */
+

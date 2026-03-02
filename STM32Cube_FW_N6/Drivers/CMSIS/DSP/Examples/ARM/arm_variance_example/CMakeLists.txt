@@ -43,3 +43,4 @@ target_sources(arm_variance_example PRIVATE arm_variance_example_f32.c)
 
 target_link_libraries(arm_variance_example PRIVATE CMSISDSP)
 
+

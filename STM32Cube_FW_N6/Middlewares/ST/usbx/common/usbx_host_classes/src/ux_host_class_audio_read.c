@@ -198,3 +198,4 @@ UINT  _uxe_host_class_audio_read(UX_HOST_CLASS_AUDIO *audio, UX_HOST_CLASS_AUDIO
     /* Invoke audio read function.  */
     return(_ux_host_class_audio_read(audio, audio_transfer_request));
 }
+

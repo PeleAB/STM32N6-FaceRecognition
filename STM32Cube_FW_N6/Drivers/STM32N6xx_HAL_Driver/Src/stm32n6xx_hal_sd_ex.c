@@ -393,3 +393,4 @@ HAL_StatusTypeDef HAL_SDEx_DMALinkedList_WriteBlocks(SD_HandleTypeDef *hsd,
 /**
   * @}
   */
+

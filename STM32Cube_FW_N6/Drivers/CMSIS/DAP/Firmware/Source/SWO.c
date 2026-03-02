@@ -796,3 +796,4 @@ __NO_RETURN void SWO_Thread (void *argument) {
 
 
 #endif  /* ((SWO_UART != 0) || (SWO_MANCHESTER != 0)) */
+

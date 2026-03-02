@@ -394,3 +394,4 @@ void HAL_RAMCFG_DisableAXISRAM(const RAMCFG_HandleTypeDef *hramcfg);
 #endif
 
 #endif /* STM32N6xx_HAL_RAMCFG_H */
+

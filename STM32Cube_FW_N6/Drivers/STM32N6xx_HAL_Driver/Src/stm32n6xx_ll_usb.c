@@ -2322,3 +2322,4 @@ HAL_StatusTypeDef USB_DeActivateRemoteWakeup(const USB_OTG_GlobalTypeDef *USBx)
 /**
   * @}
   */
+

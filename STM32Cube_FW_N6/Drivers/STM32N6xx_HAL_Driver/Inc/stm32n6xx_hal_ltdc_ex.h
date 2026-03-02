@@ -81,3 +81,4 @@ HAL_StatusTypeDef HAL_LTDCEx_StructInitFromAdaptedCommandConfig(LTDC_HandleTypeD
 #endif
 
 #endif /* STM32N6xx_HAL_LTDC_EX_H */
+

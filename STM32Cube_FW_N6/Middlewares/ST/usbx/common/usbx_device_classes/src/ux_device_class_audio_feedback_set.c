@@ -167,3 +167,4 @@ UINT _uxe_device_class_audio_feedback_set(UX_DEVICE_CLASS_AUDIO_STREAM *stream,
     /* Get feedback.  */
     return(_ux_device_class_audio_feedback_set(stream, encoded_feedback));
 }
+

@@ -132,3 +132,4 @@ void arm_clip_q15(const q15_t * pSrc,
 /**
   @} end of BasicClip group
  */
+

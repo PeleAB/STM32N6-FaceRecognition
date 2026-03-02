@@ -223,3 +223,4 @@ UINT  _uxe_host_class_gser_command(UX_HOST_CLASS_GSER *gser, ULONG interface_ind
     return(_ux_host_class_gser_command(gser, interface_index,
                                     command, value, data_buffer, data_length));
 }
+

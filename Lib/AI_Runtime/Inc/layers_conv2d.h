@@ -739,3 +739,4 @@ void forward_dense_integer_UAUA_ch(ai_layer *pLayer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_CONV2D_H*/
+

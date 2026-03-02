@@ -1650,3 +1650,4 @@ __asm uint32_t prvPortGetIPSR( void )
 
 #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 /*-----------------------------------------------------------*/
+

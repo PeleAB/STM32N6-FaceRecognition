@@ -169,3 +169,4 @@ UINT _uxe_device_class_audio_write_frame_get(UX_DEVICE_CLASS_AUDIO_STREAM *strea
     /* Get frame buffer and length.  */
     return(_ux_device_class_audio_write_frame_get(stream, frame, length));
 }
+

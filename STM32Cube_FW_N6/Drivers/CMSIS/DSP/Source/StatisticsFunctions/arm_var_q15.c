@@ -228,3 +228,4 @@ void arm_var_q15(
 /**
   @} end of variance group
  */
+

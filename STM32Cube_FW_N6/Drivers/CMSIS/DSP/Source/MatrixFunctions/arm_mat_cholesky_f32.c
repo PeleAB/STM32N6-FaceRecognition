@@ -436,3 +436,4 @@ arm_status arm_mat_cholesky_f32(
 /**
   @} end of MatrixChol group
  */
+

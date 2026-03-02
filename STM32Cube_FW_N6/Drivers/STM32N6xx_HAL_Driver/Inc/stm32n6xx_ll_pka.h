@@ -599,3 +599,4 @@ void LL_PKA_StructInit(LL_PKA_InitTypeDef *PKA_InitStruct);
 #endif
 
 #endif /* STM32N6xx_LL_PKA_H */
+

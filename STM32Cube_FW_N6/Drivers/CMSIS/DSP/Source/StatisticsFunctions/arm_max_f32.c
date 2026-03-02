@@ -363,3 +363,4 @@ void arm_max_f32(
 /**
   @} end of Max group
  */
+

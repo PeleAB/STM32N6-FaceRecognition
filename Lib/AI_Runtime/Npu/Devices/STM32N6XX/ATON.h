@@ -100291,3 +100291,4 @@ static inline uint32_t ATON_DEBUG_TRACE_EVENT_15_CNT_Set_CNT(uint32_t reg, uint3
 #endif
 
 #endif    // #ifndef ATON_H
+

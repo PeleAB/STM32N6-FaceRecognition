@@ -38,3 +38,4 @@ typedef uint32_t ECAddr;
 typedef uint32_t ECFileEntry;
 
 #endif // #ifndef __EC_H
+

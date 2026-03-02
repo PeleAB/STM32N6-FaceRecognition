@@ -97,3 +97,4 @@ float16_t arm_correlation_distance_f16(float16_t *pA,float16_t *pB, uint32_t blo
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

@@ -248,3 +248,4 @@ ULONG                       physical_address_lsw;
     }
 #endif
 }
+

@@ -549,3 +549,4 @@ void FUNC(EXT)(const uint32_t *pA
 /**
  * @} end of DISTANCEF group
  */
+

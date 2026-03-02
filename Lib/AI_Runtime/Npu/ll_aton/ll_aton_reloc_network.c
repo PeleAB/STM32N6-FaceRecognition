@@ -1370,3 +1370,4 @@ void *ll_aton_reloc_get_output(const NN_Instance_TypeDef *nn_inst, uint32_t num)
 }
 
 #endif /* defined(LL_ATON_RT_RELOC) */
+

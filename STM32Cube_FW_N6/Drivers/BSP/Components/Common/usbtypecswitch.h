@@ -110,3 +110,4 @@ typedef struct
 #endif
 
 #endif /* __USBTYPECSWITCH_H */
+

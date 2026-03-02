@@ -107,3 +107,4 @@ void H264UpdatePictureBufferForSvct(picBuffer *picBuffer, u32 frameNumBits, i32 
 void H264PictureBufferSetRefForSvct(picBuffer *picBuffer, asicData_s *asic, u32 frameNumBits);
 
 #endif
+

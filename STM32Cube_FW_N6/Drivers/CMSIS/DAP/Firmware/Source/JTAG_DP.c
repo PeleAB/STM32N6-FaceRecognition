@@ -368,3 +368,4 @@ uint8_t  JTAG_Transfer(uint32_t request, uint32_t *data) {
 
 
 #endif  /* (DAP_JTAG != 0) */
+

@@ -805,3 +805,4 @@ UINT _uxe_host_class_audio_raw_sampling_parse(UX_HOST_CLASS_AUDIO *audio,
     /* Invoke sampling characteristics parse function.  */
     return(_ux_host_class_audio_raw_sampling_parse(audio, parse_function, arg));
 }
+

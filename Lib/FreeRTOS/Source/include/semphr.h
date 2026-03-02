@@ -1212,3 +1212,4 @@ typedef QueueHandle_t SemaphoreHandle_t;
 #endif /* configSUPPORT_STATIC_ALLOCATION */
 
 #endif /* SEMAPHORE_H */
+

@@ -483,3 +483,4 @@ HAL_StatusTypeDef MX_XSPI_RAM_Init(XSPI_HandleTypeDef *hxspi, MX_XSPI_InitTypeDe
 #endif
 
 #endif /* STM32N6570_DISCOVERY_XSPI_H */
+

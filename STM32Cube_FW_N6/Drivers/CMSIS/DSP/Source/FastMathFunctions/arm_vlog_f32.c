@@ -117,3 +117,4 @@ void arm_vlog_f32(
 /**
   @} end of vlog group
  */
+

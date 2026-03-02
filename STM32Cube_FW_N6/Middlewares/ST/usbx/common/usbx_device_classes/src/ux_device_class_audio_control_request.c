@@ -105,3 +105,4 @@ UX_DEVICE_CLASS_AUDIO         *audio;
     /* Not handled.  */
     return(UX_ERROR);
 }
+

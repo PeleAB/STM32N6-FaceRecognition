@@ -1005,3 +1005,4 @@ ULONG dfu_status, dfu_polltimeout;
     *(buffer + UX_SLAVE_CLASS_DFU_GET_STATUS_STRING) = 0;
 }
 #endif
+

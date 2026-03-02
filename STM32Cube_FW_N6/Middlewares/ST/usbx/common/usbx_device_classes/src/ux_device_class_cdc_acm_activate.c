@@ -110,3 +110,4 @@ UX_SLAVE_CLASS_CDC_ACM                  *cdc_acm;
     return(UX_SUCCESS);
 }
 
+

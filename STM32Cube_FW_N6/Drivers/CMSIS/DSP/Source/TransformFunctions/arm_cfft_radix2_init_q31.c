@@ -189,3 +189,4 @@ arm_status arm_cfft_radix2_init_q31(
 /**
   @} end of ComplexFFT group
  */
+

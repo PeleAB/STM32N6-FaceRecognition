@@ -168,3 +168,4 @@ LAYER_ENTRY(GRU, LAYER_STATEFUL_ID(3), gru, forward_gru, init_gru, destroy_gru)
 #undef LAYER_ENTRY
 #undef LAYER_ID
 #undef LAYER_STATEFUL_ID
+

@@ -108,3 +108,4 @@ arm_status arm_divide_q15(q15_t numerator,
 /**
   @} end of divide group
  */
+

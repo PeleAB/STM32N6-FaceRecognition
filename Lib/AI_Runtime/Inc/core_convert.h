@@ -157,3 +157,4 @@ void core_shape_to_stride(ai_stride* out, const ai_shape* in);
 
 
 #endif    /*CORE_CONVERT_H*/
+

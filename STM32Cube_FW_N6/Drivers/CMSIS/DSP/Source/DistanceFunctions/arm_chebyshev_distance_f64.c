@@ -74,3 +74,4 @@ float64_t arm_chebyshev_distance_f64(const float64_t *pA,const float64_t *pB, ui
 /**
  * @} end of Chebyshev group
  */
+

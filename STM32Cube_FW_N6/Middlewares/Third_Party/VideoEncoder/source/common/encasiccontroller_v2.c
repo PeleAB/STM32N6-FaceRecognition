@@ -371,3 +371,4 @@ i32 EncAsicCheckStatus_V2(asicData_s * asic)
 
     return ret;
 }
+

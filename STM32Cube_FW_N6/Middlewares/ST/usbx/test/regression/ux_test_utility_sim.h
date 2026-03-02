@@ -69,3 +69,4 @@ VOID ux_test_utility_sim_mem_alloc_fail_all_stop(VOID);
 VOID ux_test_utility_sim_cleanup(VOID);
 
 #endif /* _UX_TEST_UTILITY_SIM_H */
+

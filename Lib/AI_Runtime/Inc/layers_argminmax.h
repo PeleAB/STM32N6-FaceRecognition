@@ -47,3 +47,4 @@ void forward_argmin_is8(ai_layer* layer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_ARGMINMAX_H*/
+

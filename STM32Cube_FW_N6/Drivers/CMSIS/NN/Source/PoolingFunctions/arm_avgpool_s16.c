@@ -126,3 +126,4 @@ int32_t arm_avgpool_s16_get_buffer_size(const int output_x, const int ch_src)
 /**
  * @} end of Pooling group
  */
+

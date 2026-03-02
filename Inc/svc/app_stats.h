@@ -61,3 +61,4 @@ void app_stats_cpuload_update(void);
 void app_stats_cpuload_get(float *cpu_load_last, float *cpu_load_last_second, float *cpu_load_last_five_seconds);
 
 #endif
+

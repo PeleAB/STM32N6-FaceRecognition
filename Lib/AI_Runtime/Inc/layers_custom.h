@@ -39,3 +39,4 @@ typedef ai_layer_stateful ai_layer_custom;
 AI_API_DECLARE_END
 
 #endif /* LAYERS_CUSTOM_H */
+

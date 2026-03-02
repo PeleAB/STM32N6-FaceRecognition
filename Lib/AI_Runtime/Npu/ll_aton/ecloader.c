@@ -925,3 +925,4 @@ bool ec_patch_by_id(const ECFileEntry *patch_table_ptr, ECInstr *blob, const cha
 
   return false;
 }
+

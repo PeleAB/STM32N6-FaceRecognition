@@ -198,3 +198,4 @@ uint32_t TZ_StoreContext_S (TZ_MemoryId_t id) {
 
   return 1U;    // Success
 }
+

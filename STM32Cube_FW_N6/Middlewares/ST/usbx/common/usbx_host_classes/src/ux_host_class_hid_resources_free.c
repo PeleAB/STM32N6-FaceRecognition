@@ -78,3 +78,4 @@ UINT  _ux_host_class_hid_resources_free(UX_HOST_CLASS_HID *hid)
     return(UX_SUCCESS);
 }
 
+

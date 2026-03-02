@@ -1171,3 +1171,4 @@ HAL_StatusTypeDef HAL_DMA_GetIsolationAttributes(DMA_HandleTypeDef const *const 
 #endif
 
 #endif /* STM32N6xx_HAL_DMA_H */
+

@@ -270,3 +270,4 @@ UINT  _uxe_host_class_gser_write(UX_HOST_CLASS_GSER *gser,
     /* Invoke GSER write function.  */
     return(_ux_host_class_gser_write(gser, interface_index, data_pointer, requested_length, actual_length));
 }
+

@@ -319,3 +319,4 @@ UINT    _uxe_host_class_gser_reception_start (UX_HOST_CLASS_GSER *gser,
 #endif 
 
 #endif
+

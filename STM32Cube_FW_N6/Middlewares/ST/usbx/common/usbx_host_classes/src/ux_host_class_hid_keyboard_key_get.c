@@ -175,3 +175,4 @@ UINT  _uxe_host_class_hid_keyboard_key_get(UX_HOST_CLASS_HID_KEYBOARD *keyboard_
     /* Invoke key get function.  */
     return(_ux_host_class_hid_keyboard_key_get(keyboard_instance, keyboard_key, keyboard_state));
 }
+

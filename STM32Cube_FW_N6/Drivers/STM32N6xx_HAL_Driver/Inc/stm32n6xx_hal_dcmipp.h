@@ -2488,3 +2488,4 @@ uint32_t HAL_DCMIPP_GetError(const DCMIPP_HandleTypeDef *hdcmipp);
 
 #endif /* __STM32N6xx_HAL_DCMIPP_H */
 
+

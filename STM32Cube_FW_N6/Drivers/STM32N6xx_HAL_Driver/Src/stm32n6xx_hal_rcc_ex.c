@@ -5923,3 +5923,4 @@ static uint32_t RCCEx_GetXSPICLKFreq(uint32_t XSPIxSource)
 /**
   * @}
   */
+

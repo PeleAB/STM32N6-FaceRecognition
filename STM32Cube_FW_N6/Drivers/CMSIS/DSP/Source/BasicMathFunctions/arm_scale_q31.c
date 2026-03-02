@@ -242,3 +242,4 @@ void arm_scale_q31(
 /**
   @} end of BasicScale group
  */
+

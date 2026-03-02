@@ -244,3 +244,4 @@ UINT  _uxe_host_stack_device_configuration_deactivate(UX_DEVICE *device)
     /* Invoke configuration deactivate function.  */
     return(_ux_host_stack_device_configuration_deactivate(device));
 }
+

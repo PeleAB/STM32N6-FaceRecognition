@@ -157,3 +157,4 @@ void arm_mfcc_f32(
 /**
   @} end of MFCC group
  */
+

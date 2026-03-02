@@ -650,3 +650,4 @@ uint32_t UART_Transfer (const uint8_t *request, uint8_t *response) {
 }
 
 #endif /* DAP_UART */
+

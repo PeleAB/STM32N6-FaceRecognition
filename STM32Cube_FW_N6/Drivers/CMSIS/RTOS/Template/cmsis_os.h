@@ -696,3 +696,4 @@ osStatus osMailFree (osMailQId queue_id, void *mail);
 #endif
  
 #endif  // _CMSIS_OS_H
+

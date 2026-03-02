@@ -366,3 +366,4 @@ VOID *pointer;
         test_control_return(0);
     }
 }
+

@@ -640,3 +640,4 @@ ULONG                   endpoint_address;
     storage -> ux_host_class_storage_trans_stage |= UX_HOST_CLASS_STORAGE_STAGE_EP_RESET;
 }
 #endif
+

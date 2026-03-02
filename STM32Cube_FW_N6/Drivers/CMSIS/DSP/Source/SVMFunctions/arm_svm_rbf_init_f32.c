@@ -89,3 +89,4 @@ void arm_svm_rbf_init_f32(arm_svm_rbf_instance_f32 *S,
 /**
  * @} end of rbfsvm group
  */
+

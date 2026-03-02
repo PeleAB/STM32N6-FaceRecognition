@@ -107,3 +107,4 @@ UX_TRANSFER *transfer;
       ed -> ux_stm32_ed_data = UX_NULL;
     }
 }
+

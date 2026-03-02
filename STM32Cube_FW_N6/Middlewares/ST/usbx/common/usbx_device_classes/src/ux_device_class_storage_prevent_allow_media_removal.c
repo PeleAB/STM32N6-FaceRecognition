@@ -95,3 +95,4 @@ UINT  _ux_device_class_storage_prevent_allow_media_removal(UX_SLAVE_CLASS_STORAG
     return(UX_SUCCESS);
 }
     
+

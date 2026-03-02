@@ -3650,3 +3650,4 @@ static void ETH_InitCallbacksToDefault(ETH_HandleTypeDef *heth)
 /**
   * @}
   */
+

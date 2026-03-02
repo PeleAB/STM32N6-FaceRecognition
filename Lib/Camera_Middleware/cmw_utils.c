@@ -142,3 +142,4 @@ static void CMW_UTILS_get_scale_configs(CMW_DCMIPP_Conf_t *p_conf, float ratio_w
   CMW_UTILS_get_down_config(ratio_width, ratio_height, p_conf->output_width, p_conf->output_height, down);
 }
 
+

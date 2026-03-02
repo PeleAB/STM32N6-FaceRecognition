@@ -169,3 +169,4 @@ void arm_sub_f16(
 /**
   @} end of BasicSub group
  */
+

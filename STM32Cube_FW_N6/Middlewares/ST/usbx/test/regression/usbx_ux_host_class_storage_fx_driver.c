@@ -334,3 +334,4 @@ UX_HOST_CLASS_STORAGE_MEDIA     *storage_media;
     _ux_host_class_storage_media_unlock(storage_media);
 }
 #endif
+

@@ -149,3 +149,4 @@ UINT  _uxe_host_class_hid_mouse_wheel_get(UX_HOST_CLASS_HID_MOUSE *mouse_instanc
     /* Invoke mouse wheel get function.  */
     return(_ux_host_class_hid_mouse_wheel_get(mouse_instance, mouse_wheel_movement));
 }
+

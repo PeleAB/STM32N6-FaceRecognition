@@ -108,3 +108,4 @@ int32_t od_fd_blazeface_pp_process_int8(od_fd_blazeface_pp_in_t *pInput,
 #endif
 
 #endif      /* __OD_FD_BLAZEFACE_PP_IF_H__  */
+

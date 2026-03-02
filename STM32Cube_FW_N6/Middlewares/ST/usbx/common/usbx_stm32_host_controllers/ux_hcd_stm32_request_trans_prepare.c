@@ -109,3 +109,4 @@ UINT  _ux_hcd_stm32_request_trans_prepare(UX_HCD_STM32 *hcd_stm32, UX_HCD_STM32_
     /* Done.  */
     return(UX_SUCCESS);
 }
+

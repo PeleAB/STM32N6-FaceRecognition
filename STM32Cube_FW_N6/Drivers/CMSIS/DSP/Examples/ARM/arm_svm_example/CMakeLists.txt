@@ -43,3 +43,4 @@ target_sources(arm_svm_example PRIVATE arm_svm_example_f32.c)
 
 target_link_libraries(arm_svm_example PRIVATE CMSISDSP)
 
+

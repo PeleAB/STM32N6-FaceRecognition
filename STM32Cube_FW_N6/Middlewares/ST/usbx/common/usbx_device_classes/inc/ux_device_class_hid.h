@@ -495,3 +495,4 @@ UINT  _uxe_device_class_hid_receiver_event_free(UX_SLAVE_CLASS_HID *hid);
 #endif
 
 #endif
+

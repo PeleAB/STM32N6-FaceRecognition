@@ -43,3 +43,4 @@ target_sources(arm_fft_bin_example PRIVATE arm_fft_bin_data.c arm_fft_bin_exampl
 
 target_link_libraries(arm_fft_bin_example PRIVATE CMSISDSP)
 
+

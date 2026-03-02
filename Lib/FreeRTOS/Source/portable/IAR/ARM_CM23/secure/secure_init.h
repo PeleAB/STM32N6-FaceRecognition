@@ -52,3 +52,4 @@ void SecureInit_DePrioritizeNSExceptions( void );
 void SecureInit_EnableNSFPUAccess( void );
 
 #endif /* __SECURE_INIT_H__ */
+

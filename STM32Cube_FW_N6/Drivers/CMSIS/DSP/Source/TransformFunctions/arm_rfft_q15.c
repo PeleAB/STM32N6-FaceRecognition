@@ -524,3 +524,4 @@ void arm_split_rifft_q15(
 
 }
 #endif /* defined(ARM_MATH_MVEI) */
+

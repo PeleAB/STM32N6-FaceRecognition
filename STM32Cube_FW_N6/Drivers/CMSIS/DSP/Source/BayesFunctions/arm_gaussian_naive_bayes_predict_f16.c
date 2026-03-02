@@ -205,3 +205,4 @@ uint32_t arm_gaussian_naive_bayes_predict_f16(const arm_gaussian_naive_bayes_ins
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

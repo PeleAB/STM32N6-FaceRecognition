@@ -195,3 +195,4 @@ UINT _uxe_device_class_audio_sample_read16(UX_DEVICE_CLASS_AUDIO_STREAM *stream,
     /* Read 16-bit sample.  */
     return(_ux_device_class_audio_sample_read16(stream, buffer));
 }
+

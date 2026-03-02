@@ -32,3 +32,4 @@ void Run_Inference(NN_Instance_TypeDef *network_instance)
 
   LL_ATON_RT_Reset_Network(network_instance);
 }
+

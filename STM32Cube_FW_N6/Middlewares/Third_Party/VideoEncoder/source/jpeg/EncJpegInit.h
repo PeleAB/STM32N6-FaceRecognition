@@ -79,3 +79,4 @@ JpegEncRet JpegInit(const JpegEncCfg * pEncCfg, jpegInstance_s ** instAddr);
 void JpegShutdown(jpegInstance_s * data);
 
 #endif
+

@@ -164,3 +164,4 @@ UINT  _uxe_host_stack_class_instance_get(UX_HOST_CLASS *host_class, UINT class_i
     /* Invoke class instance get function.  */
     return(_ux_host_stack_class_instance_get(host_class, class_index, class_instance));
 }
+

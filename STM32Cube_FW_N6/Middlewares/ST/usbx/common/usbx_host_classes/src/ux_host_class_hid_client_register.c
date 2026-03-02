@@ -238,3 +238,4 @@ UINT  _uxe_host_class_hid_client_register(UCHAR *hid_client_name,
     /* Invoke client register function.  */
     return(_ux_host_class_hid_client_register(hid_client_name, hid_client_handler));
 }
+

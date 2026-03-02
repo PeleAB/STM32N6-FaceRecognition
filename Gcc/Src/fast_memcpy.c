@@ -47,3 +47,4 @@ void __attribute__ ((__optimize__ ("-fno-tree-loop-distribute-patterns"))) *memc
 
   return dest;
 }
+

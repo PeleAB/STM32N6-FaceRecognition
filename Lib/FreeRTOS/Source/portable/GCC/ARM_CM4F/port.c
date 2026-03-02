@@ -855,3 +855,4 @@ static void vPortEnableVFP( void )
     }
 
 #endif /* configASSERT_DEFINED */
+

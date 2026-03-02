@@ -69,3 +69,4 @@ void forward_lite_dense_is1of32wf32_bn(
 );
 
 #endif    /* LITE_DENSE_IS1_H */
+

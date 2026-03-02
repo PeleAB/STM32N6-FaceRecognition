@@ -68,3 +68,4 @@ float64_t arm_cosine_distance_f64(const float64_t *pA,const float64_t *pB, uint3
 /**
  * @} end of CosineDist group
  */
+

@@ -896,3 +896,4 @@ UX_SLAVE_CLASS_CDC_ACM  *cdc_acm = UX_NULL;
         tx_thread_relinquish();
     }
 }
+

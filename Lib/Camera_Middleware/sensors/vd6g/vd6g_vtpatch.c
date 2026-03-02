@@ -1422,3 +1422,4 @@ struct vtram_area vtpatch_desc[] = {
 };
 
 int vtpatch_area_nb = ARRAY_SIZE(vtpatch_desc);
+

@@ -933,3 +933,4 @@ uint32_t               HAL_USART_GetError(const USART_HandleTypeDef *husart);
 
 #endif /* STM32N6xx_HAL_USART_H */
 
+

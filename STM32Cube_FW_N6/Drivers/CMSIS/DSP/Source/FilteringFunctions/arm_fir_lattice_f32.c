@@ -451,3 +451,4 @@ void arm_fir_lattice_f32(
 /**
   @} end of FIR_Lattice group
  */
+

@@ -7584,3 +7584,4 @@ void        LL_ADC_INJ_StructInit(LL_ADC_INJ_InitTypeDef *pADC_InjInitStruct);
 #endif
 
 #endif /* STM32N6xx_LL_ADC_H */
+

@@ -682,3 +682,4 @@ UINT    _uxe_device_class_storage_initialize(UX_SLAVE_CLASS_COMMAND *command);
 #endif 
 
 #endif
+

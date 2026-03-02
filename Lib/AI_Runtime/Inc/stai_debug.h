@@ -63,3 +63,4 @@ const char* stai_get_format_name(const stai_format fmt);
 STAI_API_DECLARE_END
 
 #endif    /* STAI_DEBUG_H */
+

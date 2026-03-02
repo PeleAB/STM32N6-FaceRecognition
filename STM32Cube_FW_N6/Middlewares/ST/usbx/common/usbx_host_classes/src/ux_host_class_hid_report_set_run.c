@@ -296,3 +296,4 @@ UINT  _uxe_host_class_hid_report_set_run(UX_HOST_CLASS_HID *hid, UX_HOST_CLASS_H
     return(_ux_host_class_hid_report_set(hid, client_report));
 }
 #endif
+

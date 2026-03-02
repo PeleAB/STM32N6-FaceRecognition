@@ -471,3 +471,4 @@ UX_HOST_CLASS_HID_FIELD                 *field;
     /* Return completion status.  */
     return(status);
 }
+

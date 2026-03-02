@@ -426,3 +426,4 @@ UINT  _uxe_host_class_cdc_acm_write_with_callback(UX_HOST_CLASS_CDC_ACM *cdc_acm
 #endif
 
 #endif
+

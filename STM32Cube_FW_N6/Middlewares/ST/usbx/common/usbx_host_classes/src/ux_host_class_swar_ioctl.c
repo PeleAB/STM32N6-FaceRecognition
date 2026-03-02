@@ -180,3 +180,4 @@ UINT  _uxe_host_class_swar_ioctl(UX_HOST_CLASS_SWAR *swar, ULONG ioctl_function,
     /* Invoke SWAR ioctl function.  */
     return(_ux_host_class_swar_ioctl(swar, ioctl_function, parameter));
 }
+

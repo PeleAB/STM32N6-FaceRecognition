@@ -93,3 +93,4 @@ UX_DEVICE_CLASS_CCID_SLOT       *ccid_slot;
     /* Return transfer status.  */
     return(UX_SUCCESS);
 }
+

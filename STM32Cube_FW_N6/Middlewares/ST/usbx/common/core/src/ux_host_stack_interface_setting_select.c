@@ -265,3 +265,4 @@ UINT  _uxe_host_stack_interface_setting_select(UX_INTERFACE *interface_ptr)
     /* Invoke interface setting select function.  */
     return(_ux_host_stack_interface_setting_select(interface_ptr));
 }
+

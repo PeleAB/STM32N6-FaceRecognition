@@ -8,3 +8,4 @@ The example is available for different targets:
   Cortex-M55 with double precision FPU, Integer + Floating Point MVE
 
 The example is configured for Models Debugger
+

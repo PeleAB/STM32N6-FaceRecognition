@@ -25,8 +25,8 @@
 #include "app/app.h"
 #include "app/app_config.h"
 #include "app_postprocess.h"
-#include "fal_cache.h"
-#include "fal_camera.h"
+#include "sysobj_cache.h"
+#include "sysobj_camera.h"
 #include "svc/app_display.h"
 #include "svc/app_stats.h"
 #include "svc/buffer_queue.h"
@@ -151,7 +151,7 @@ static void nn_thread_fct(void *arg)
 
     total_ts = HAL_GetTick();
     ts = HAL_GetTick();
-    FAL_CacheInvalidate(output_buffer, nn_out_len);
+    SYSOBJ_CacheInvalidate(output_buffer, nn_out_len);
     ret = nn_service_prepare_io(capture_buffer_local, nn_in_len, output_buffer, nn_out_len);
     assert(ret == NN_SERVICE_OK);
     Run_Inference(nn_model->instance);
@@ -282,4 +282,7 @@ int CMW_CAMERA_PIPE_VsyncEventCallback(uint32_t pipe)
 
   return HAL_OK;
 }
+
+
+
 

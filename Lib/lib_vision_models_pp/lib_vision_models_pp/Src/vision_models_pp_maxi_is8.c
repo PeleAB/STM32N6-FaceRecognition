@@ -339,3 +339,4 @@ void vision_models_maxi_tr_p_is8ou32(int8_t *arr, uint32_t len_arr, uint32_t off
 #endif
 }
 
+

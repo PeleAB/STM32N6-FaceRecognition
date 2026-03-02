@@ -52,3 +52,4 @@ target_sources(CMSISDSPMatrix PRIVATE arm_mat_init_f16.c)
 target_sources(CMSISDSPMatrix PRIVATE arm_mat_cholesky_f16.c)
 
 endif()
+

@@ -135,3 +135,4 @@ int8_t *arm_nn_mat_mul_core_4x_s8(const int32_t row_elements,
 /**
  * @} end of NNBasicMath group
  */
+

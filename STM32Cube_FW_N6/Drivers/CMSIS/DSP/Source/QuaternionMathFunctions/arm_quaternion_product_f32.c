@@ -147,3 +147,4 @@ void arm_quaternion_product_f32(const float32_t *qa,
 /**
   @} end of QuatProdVect group
  */
+

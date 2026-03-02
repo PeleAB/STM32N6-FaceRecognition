@@ -1,4 +1,4 @@
-﻿#include "ux_test.h"
+#include "ux_test.h"
 #include "ux_test_hcd_sim_host.h"
 #include "ux_test_dcd_sim_slave.h"
 
@@ -1836,3 +1836,4 @@ UX_TRANSFER     *transfer = &endpoint->ux_endpoint_transfer_request;
         *actual_length = transfer->ux_transfer_request_actual_length;
     return(status);
 }
+

@@ -196,3 +196,4 @@ void arm_abs_f16(
 /**
   @} end of BasicAbs group
  */
+

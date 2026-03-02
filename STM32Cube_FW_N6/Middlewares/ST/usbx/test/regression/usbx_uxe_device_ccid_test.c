@@ -243,3 +243,4 @@ UX_DEVICE_CLASS_CCID_PARAMETER          device_ccid_parameter;
         test_control_return(0);
     }
 }
+

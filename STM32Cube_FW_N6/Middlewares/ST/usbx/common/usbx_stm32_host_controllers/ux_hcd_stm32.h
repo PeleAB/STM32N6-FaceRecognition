@@ -179,3 +179,4 @@ UINT                _ux_hcd_stm32_transfer_abort(UX_HCD_STM32 *hcd_stm32, UX_TRA
 
 #endif
 
+

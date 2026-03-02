@@ -200,3 +200,4 @@ arm_status arm_mat_trans_f16(
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

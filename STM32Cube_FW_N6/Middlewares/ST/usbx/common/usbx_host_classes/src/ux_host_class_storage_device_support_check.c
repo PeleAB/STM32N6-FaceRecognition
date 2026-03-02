@@ -150,3 +150,4 @@ UINT  _ux_host_class_storage_device_support_check(UX_HOST_CLASS_STORAGE *storage
         return(UX_HOST_CLASS_PROTOCOL_ERROR);
     }
 }
+

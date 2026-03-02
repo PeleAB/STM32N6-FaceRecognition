@@ -9839,3 +9839,4 @@ static void I3C_TreatErrorCallback(I3C_HandleTypeDef *hi3c)
 /**
   * @}
   */
+

@@ -382,3 +382,4 @@ int32_t MX66UW1G45G_ReleasePowerDown(XSPI_HandleTypeDef *Ctx, MX66UW1G45G_Interf
 /**
   * @}
   */
+

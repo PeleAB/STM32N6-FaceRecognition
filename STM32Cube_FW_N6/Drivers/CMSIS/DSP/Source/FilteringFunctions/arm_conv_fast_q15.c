@@ -661,3 +661,4 @@ void arm_conv_fast_q15(
 /**
   @} end of Conv group
  */
+

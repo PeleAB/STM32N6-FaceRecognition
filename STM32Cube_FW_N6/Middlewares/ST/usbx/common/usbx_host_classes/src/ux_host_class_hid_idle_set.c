@@ -199,3 +199,4 @@ UINT  _uxe_host_class_hid_idle_set(UX_HOST_CLASS_HID *hid, USHORT idle_time, USH
     /* Invoke IDLE set function.  */
     return(_ux_host_class_hid_idle_set(hid, idle_time, report_id));
 }
+

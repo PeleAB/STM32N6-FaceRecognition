@@ -782,3 +782,4 @@ arm_status arm_mat_mult_opt_q31(
 /**
   @} end of MatrixMult group
  */
+

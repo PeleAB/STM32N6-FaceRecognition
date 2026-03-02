@@ -103,3 +103,4 @@ arm_status arm_elementwise_add_s16(const int16_t *input_1_vect,
 /**
  * @} end of BasicMath group
  */
+

@@ -283,3 +283,4 @@ void jpegSetNewFrame(jpegInstance_s * inst)
     regs->mbWrPtr = inst->inputLineBuf.wrCnt;  /* MB write pointer. */
     regs->mbRrPtr = 0;  /* clear the MB read pointer. */
 }
+

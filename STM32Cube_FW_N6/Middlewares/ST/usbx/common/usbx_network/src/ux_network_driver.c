@@ -1006,3 +1006,4 @@ USB_NETWORK_DEVICE_TYPE *usb_network_device_ptr = (USB_NETWORK_DEVICE_TYPE*)ux_n
 
 }
 #endif
+

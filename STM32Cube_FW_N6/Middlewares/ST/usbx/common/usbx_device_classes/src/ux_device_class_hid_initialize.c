@@ -433,3 +433,4 @@ UX_SLAVE_CLASS_HID_PARAMETER            *hid_parameter;
     /* Invoke initialize function.  */
     return(_ux_device_class_hid_initialize(command));
 }
+

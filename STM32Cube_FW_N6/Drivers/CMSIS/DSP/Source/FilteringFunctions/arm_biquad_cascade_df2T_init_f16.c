@@ -112,3 +112,4 @@ void arm_biquad_cascade_df2T_init_f16(
  */
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
+

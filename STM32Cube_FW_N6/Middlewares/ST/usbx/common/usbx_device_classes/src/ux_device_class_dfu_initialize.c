@@ -311,3 +311,4 @@ UX_SLAVE_CLASS_DFU_PARAMETER            *dfu_parameter;
 
     return _ux_device_class_dfu_initialize(command);
 }
+

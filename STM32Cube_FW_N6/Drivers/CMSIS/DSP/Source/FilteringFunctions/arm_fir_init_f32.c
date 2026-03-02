@@ -97,3 +97,4 @@ void arm_fir_init_f32(
 /**
   @} end of FIR group
  */
+

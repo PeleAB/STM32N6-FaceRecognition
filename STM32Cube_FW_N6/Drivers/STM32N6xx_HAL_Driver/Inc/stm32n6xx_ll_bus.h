@@ -3960,3 +3960,4 @@ __STATIC_INLINE void LL_MISC_DisableClockLowPower(uint32_t Misc)
 #endif
 
 #endif /* STM32N6xx_LL_BUS_H */
+

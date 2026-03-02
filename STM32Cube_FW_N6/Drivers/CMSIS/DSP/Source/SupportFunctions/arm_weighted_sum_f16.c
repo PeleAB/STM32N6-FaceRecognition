@@ -144,3 +144,4 @@ float16_t arm_weighted_sum_f16(const float16_t *in, const float16_t *weigths, ui
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

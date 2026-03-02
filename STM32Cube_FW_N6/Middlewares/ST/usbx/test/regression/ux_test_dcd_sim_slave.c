@@ -263,3 +263,4 @@ UX_DCD_SIM_SLAVE_ED *slave_ed = (UX_DCD_SIM_SLAVE_ED *)endpoint -> ux_slave_endp
     slave_ed -> ux_sim_slave_ed_status |= UX_DCD_SIM_SLAVE_ED_STATUS_DONE;
     _ux_device_semaphore_put(&transfer -> ux_slave_transfer_request_semaphore);
 }
+

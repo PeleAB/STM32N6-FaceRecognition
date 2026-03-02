@@ -317,3 +317,4 @@ void H264RbspTrailingBits(stream_s * stream)
 
     return;
 }
+

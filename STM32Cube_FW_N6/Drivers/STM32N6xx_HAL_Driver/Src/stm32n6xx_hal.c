@@ -2103,3 +2103,4 @@ uint32_t HAL_SYSCFG_GetAddressWritePostingBuffer(void)
 /**
   * @}
   */
+

@@ -198,3 +198,4 @@ uint32_t nn_service_count(void)
 {
   return nn_ctx.count;
 }
+

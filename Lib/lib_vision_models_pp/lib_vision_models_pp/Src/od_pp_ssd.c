@@ -607,3 +607,4 @@ int32_t od_ssd_pp_process_int8(od_ssd_pp_in_centroid_t *pInput,
 
   return (error);
 }
+

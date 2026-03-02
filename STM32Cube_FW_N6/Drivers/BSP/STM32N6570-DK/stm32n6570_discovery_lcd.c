@@ -1542,3 +1542,4 @@ static void DMA2D_MspDeInit(DMA2D_HandleTypeDef *hdma2d)
   * @}
   */
 
+

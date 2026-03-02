@@ -127,3 +127,4 @@ HAL_StatusTypeDef HAL_CRYPEx_WrapKey(CRYP_HandleTypeDef *hcryp, uint32_t *Input,
 #endif
 
 #endif /* STM32N6xx_HAL_CRYP_EX_H */
+

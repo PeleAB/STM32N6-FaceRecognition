@@ -91,3 +91,4 @@ typedef enum
 jpegEncodeFrame_e EncJpegCodeFrame(jpegInstance_s * inst);
 
 #endif
+

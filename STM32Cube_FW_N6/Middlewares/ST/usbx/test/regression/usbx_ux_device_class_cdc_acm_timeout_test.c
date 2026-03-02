@@ -841,3 +841,4 @@ ULONG actual_length;
         test_slave_state = 0;
     }
 }
+

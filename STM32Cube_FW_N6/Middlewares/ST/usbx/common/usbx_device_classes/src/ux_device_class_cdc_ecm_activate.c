@@ -295,3 +295,4 @@ ULONG                       physical_address_lsw;
     return(UX_SUCCESS);
 #endif
 }
+

@@ -138,3 +138,4 @@ float16_t arm_entropy_f16(const float16_t * pSrcA,uint32_t blockSize)
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

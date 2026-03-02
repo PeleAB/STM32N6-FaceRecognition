@@ -675,3 +675,4 @@ UINT                            max_get_report_attempts = 5;
     printf("SUCCESS!\n");
     test_control_return(0);
 }
+

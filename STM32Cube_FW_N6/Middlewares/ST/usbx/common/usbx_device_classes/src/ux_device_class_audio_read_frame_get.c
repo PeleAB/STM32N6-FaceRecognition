@@ -168,3 +168,4 @@ UINT _uxe_device_class_audio_read_frame_get(UX_DEVICE_CLASS_AUDIO_STREAM *stream
     /* Get frame access buffer.  */
     return(_ux_device_class_audio_read_frame_get(stream, frame_data, frame_length));
 }
+

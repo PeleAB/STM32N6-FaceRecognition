@@ -83,3 +83,4 @@ void arm_nn_accumulate_q7_to_q15(q15_t *pDst, const q7_t *pSrc, uint32_t length)
 /**
  * @} end of NNBasicMath group
  */
+

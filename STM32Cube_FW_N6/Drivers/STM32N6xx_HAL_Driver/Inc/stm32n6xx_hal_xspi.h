@@ -1315,3 +1315,4 @@ HAL_StatusTypeDef     HAL_XSPI_SetDelayValue(XSPI_HandleTypeDef *hxspi, const XS
 #endif
 
 #endif /* STM32N6xx_HAL_XSPI_H */
+

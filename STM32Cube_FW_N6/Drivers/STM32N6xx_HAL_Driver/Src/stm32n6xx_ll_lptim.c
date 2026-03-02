@@ -204,3 +204,4 @@ ErrorStatus LL_LPTIM_Init(LPTIM_TypeDef *LPTIMx, const LL_LPTIM_InitTypeDef *LPT
   */
 
 #endif /* USE_FULL_LL_DRIVER */
+

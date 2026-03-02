@@ -4283,3 +4283,4 @@ static uint32_t JPEG_GetQuality(const JPEG_HandleTypeDef *hjpeg)
   * @}
   */
 
+

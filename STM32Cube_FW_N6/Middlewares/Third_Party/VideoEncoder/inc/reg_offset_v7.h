@@ -333,3 +333,4 @@
 #define BASE_HEncRegisterMax 0x7c8U
 
 #endif /* __HENC_REGISTER_OFFSET_H__ */
+

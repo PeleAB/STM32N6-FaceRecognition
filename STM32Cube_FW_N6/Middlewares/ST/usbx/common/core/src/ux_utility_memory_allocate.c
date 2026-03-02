@@ -351,3 +351,4 @@ UINT                index;
 
     return(work_ptr);
 }
+

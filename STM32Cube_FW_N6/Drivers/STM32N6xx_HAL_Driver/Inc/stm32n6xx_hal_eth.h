@@ -2100,3 +2100,4 @@ uint32_t             HAL_ETH_GetTxBuffersNumber(const ETH_HandleTypeDef *heth);
 #endif
 
 #endif /* STM32N6xx_HAL_ETH_H */
+

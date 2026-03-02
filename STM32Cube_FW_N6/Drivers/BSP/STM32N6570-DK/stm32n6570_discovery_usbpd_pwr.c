@@ -1870,3 +1870,4 @@ static int32_t PWR_TCPP0203_ConvertADCDataToCurrent(uint32_t ADCData, uint32_t G
   * @}
   */
 
+

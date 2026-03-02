@@ -231,3 +231,4 @@ arm_status arm_mat_trans_q15(
 /**
   @} end of MatrixTrans group
  */
+

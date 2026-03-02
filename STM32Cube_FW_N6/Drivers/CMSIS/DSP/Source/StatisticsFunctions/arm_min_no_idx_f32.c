@@ -136,3 +136,4 @@ void arm_min_no_idx_f32(
 /**
   @} end of Min group
  */
+

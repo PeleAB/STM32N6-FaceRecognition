@@ -228,3 +228,4 @@ void arm_bitreversal_q15(
       pBitRevTab += bitRevFactor;
    }
 }
+

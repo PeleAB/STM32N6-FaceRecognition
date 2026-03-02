@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "fal_dma2d.h"
+#include "sysobj_dma2d.h"
 #include "utils.h"
 
 #define MAX_LINE_CHAR 64
@@ -42,7 +42,7 @@ static void draw_dma2d_error_cb(void *ctx)
 static void draw_copy_argb_hw(uint8_t *p_dst, int dst_width, int dst_height, uint8_t *p_src, int src_width,
                               int src_height, int x_offset, int y_offset)
 {
-  fal_dma2d_blend_t cfg = {
+  SYSOBJ_dma2d_blend_t cfg = {
     .dst = p_dst,
     .dst_width = (uint32_t) dst_width,
     .dst_height = (uint32_t) dst_height,
@@ -58,7 +58,7 @@ static void draw_copy_argb_hw(uint8_t *p_dst, int dst_width, int dst_height, uin
   int ret;
 
   DRAW_HwLock(NULL);
-  ret = FAL_DMA2D_Blend(&cfg);
+  ret = SYSOBJ_DMA2D_Blend(&cfg);
   assert(ret == 0);
 
   DRAW_Wfe();
@@ -68,7 +68,7 @@ static void draw_copy_argb_hw(uint8_t *p_dst, int dst_width, int dst_height, uin
 static void draw_fill_argb_hw(uint8_t *p_dst, int dst_width, int dst_height, int src_width, int src_height,
                               int x_offset, int y_offset, uint32_t color)
 {
-  fal_dma2d_fill_t cfg = {
+  SYSOBJ_dma2d_fill_t cfg = {
     .dst = p_dst,
     .dst_width = (uint32_t) dst_width,
     .dst_height = (uint32_t) dst_height,
@@ -84,7 +84,7 @@ static void draw_fill_argb_hw(uint8_t *p_dst, int dst_width, int dst_height, int
   int ret;
 
   DRAW_HwLock(NULL);
-  ret = FAL_DMA2D_Fill(&cfg);
+  ret = SYSOBJ_DMA2D_Fill(&cfg);
   assert(ret == 0);
 
   DRAW_Wfe();
@@ -261,4 +261,7 @@ WEAK void DRAW_Signal()
 {
   assert_param(0);
 }
+
+
+
 

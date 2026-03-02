@@ -345,3 +345,4 @@ arm_status arm_depthwise_conv_s8(const cmsis_nn_context *ctx,
 /**
  * @} end of NNConv group
  */
+

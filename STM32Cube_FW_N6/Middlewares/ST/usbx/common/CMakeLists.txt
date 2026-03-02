@@ -4,3 +4,4 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/usbx_host_classes)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/usbx_host_controllers)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/usbx_network)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/usbx_pictbridge)
+

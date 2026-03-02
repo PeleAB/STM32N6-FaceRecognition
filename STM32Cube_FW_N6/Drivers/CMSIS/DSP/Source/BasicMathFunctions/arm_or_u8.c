@@ -126,3 +126,4 @@ void arm_or_u8(
 /**
   @} end of Or group
  */
+

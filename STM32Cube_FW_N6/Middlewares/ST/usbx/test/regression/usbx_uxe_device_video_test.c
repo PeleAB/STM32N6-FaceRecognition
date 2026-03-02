@@ -614,3 +614,4 @@ UCHAR **dummy_payload = &payload_data;
         test_control_return(0);
     }
 }
+

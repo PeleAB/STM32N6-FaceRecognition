@@ -169,3 +169,4 @@ void arm_negate_q7(
 /**
   @} end of BasicNegate group
  */
+

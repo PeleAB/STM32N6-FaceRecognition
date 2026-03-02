@@ -49,3 +49,4 @@ void arm_vlog_f64(
       blkCnt--;
    }
 }
+

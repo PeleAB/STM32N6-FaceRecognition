@@ -304,3 +304,4 @@ USB_NETWORK_DEVICE_TYPE         *ux_nx_device;
     }
 }
 #endif
+

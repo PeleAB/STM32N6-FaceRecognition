@@ -245,3 +245,4 @@ UX_PICTBRIDGE_PRINTINFO     *printinfo;
     return(UX_SUCCESS);    
 }
 
+

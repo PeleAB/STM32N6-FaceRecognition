@@ -179,3 +179,4 @@ void arm_quick_sort_f32(
 /**
   @} end of Sorting group
  */
+

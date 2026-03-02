@@ -417,3 +417,4 @@ UX_HOST_CLASS_HID_REPORT_GET_ID report_id;
     printf("SUCCESS!\n");
     test_control_return(0);
 }
+

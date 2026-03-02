@@ -95,3 +95,4 @@ void arm_vexp_f32(
       blkCnt--;
    }
 }
+

@@ -85,3 +85,4 @@ UINT  _ux_pictbridge_xml_function_root_output(UX_PICTBRIDGE *pictbridge, UCHAR *
     return(UX_SUCCESS);
 }
 
+

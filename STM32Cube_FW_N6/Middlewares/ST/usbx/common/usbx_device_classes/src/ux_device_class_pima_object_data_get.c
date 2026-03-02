@@ -295,3 +295,4 @@ ULONG                       object_length_received;
     /* Return completion status.  */
     return(status);
 }
+

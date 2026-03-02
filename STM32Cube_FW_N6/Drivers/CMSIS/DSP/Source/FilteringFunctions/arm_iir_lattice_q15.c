@@ -394,3 +394,4 @@ void arm_iir_lattice_q15(
 /**
   @} end of IIR_Lattice group
  */
+

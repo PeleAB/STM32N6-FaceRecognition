@@ -378,3 +378,4 @@ uint32_t              HAL_NAND_Read_Status(const NAND_HandleTypeDef *hnand);
 #endif
 
 #endif /* STM32N6xx_HAL_NAND_H */
+

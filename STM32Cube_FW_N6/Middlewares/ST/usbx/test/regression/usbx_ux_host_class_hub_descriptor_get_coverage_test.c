@@ -88,3 +88,4 @@ UX_ENDPOINT             *control_endpoint;
     test_control_return(0);
     return;
 }
+

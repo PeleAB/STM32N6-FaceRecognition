@@ -139,3 +139,4 @@ void arm_nn_softmax_common_s8(const int8_t *input,
 /**
  * @} end of NNBasicMath group
  */
+

@@ -82,3 +82,4 @@ q15_t arm_cos_q15(
 /**
   @} end of cos group
  */
+

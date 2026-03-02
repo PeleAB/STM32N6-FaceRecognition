@@ -385,3 +385,4 @@ UINT _ux_device_class_hub_entry(UX_SLAVE_CLASS_COMMAND *command)
     }
     return(UX_SUCCESS);
 }
+

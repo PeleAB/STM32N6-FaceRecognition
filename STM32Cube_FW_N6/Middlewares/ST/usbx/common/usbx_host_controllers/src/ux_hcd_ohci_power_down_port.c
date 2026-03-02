@@ -82,3 +82,4 @@ UINT  _ux_hcd_ohci_power_down_port(UX_HCD_OHCI *hcd_ohci, ULONG port_index)
     return(UX_FUNCTION_NOT_SUPPORTED);  
 }
 
+

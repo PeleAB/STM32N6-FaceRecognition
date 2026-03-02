@@ -672,3 +672,4 @@ void ISP_OutputMeta(ISP_HandleTypeDef *hIsp)
            hIsp->MainPipe_FrameCount, Meta.averageL, Meta.exposureTarget, Meta.gain, Meta.exposure, Meta.colorTemp);
   }
 }
+

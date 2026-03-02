@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file    fal_encoder.h
+ * @file    sysobj_encoder.h
  * @author  GPM Application Team
  *
  ******************************************************************************
@@ -15,8 +15,8 @@
  *
  ******************************************************************************
  */
-#ifndef FAL_ENCODER_H
-#define FAL_ENCODER_H
+#ifndef SYSOBJ_ENCODER_H
+#define SYSOBJ_ENCODER_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -32,3 +32,6 @@ void ENC_DeInit(void);
 int ENC_EncodeFrame(uint8_t *p_in, uint8_t *p_out, size_t out_len, int is_intra_force);
 
 #endif
+
+
+

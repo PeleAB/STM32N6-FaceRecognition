@@ -144,3 +144,4 @@ u32 H264SpsGetVuiHrdBitRate(sps_s * sps);
 u32 H264SpsGetVuiHrdCpbSize(sps_s * sps);
 
 #endif
+

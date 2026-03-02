@@ -161,3 +161,4 @@ UINT  _uxe_host_class_gser_reception_stop (UX_HOST_CLASS_GSER *gser,
     /* Invoke CDC ACM reception stop function.  */
     return(_ux_host_class_gser_reception_stop(gser, gser_reception));
 }
+

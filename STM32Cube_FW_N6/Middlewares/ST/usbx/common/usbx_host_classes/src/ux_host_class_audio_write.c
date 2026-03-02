@@ -194,3 +194,4 @@ UINT  _uxe_host_class_audio_write(UX_HOST_CLASS_AUDIO *audio, UX_HOST_CLASS_AUDI
     /* Invoke audio write function.  */
     return(_ux_host_class_audio_write(audio, audio_transfer_request));
 }
+

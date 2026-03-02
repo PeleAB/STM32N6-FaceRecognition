@@ -155,3 +155,4 @@ UINT    _uxe_host_class_storage_media_lock(UX_HOST_CLASS_STORAGE_MEDIA *storage_
     return(_ux_host_class_storage_media_lock(storage_media, wait));
 }
 #endif
+

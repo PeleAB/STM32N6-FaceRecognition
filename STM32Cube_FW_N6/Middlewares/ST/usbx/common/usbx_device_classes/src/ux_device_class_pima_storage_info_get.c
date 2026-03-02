@@ -198,3 +198,4 @@ UCHAR                   *storage_info_pointer;
     /* Return completion status.  */
     return(status);
 }
+

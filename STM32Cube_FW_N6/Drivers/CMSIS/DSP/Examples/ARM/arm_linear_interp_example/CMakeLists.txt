@@ -43,3 +43,4 @@ target_sources(arm_linear_interp_example PRIVATE math_helper.c arm_linear_interp
 
 target_link_libraries(arm_linear_interp_example PRIVATE CMSISDSP)
 
+

@@ -190,3 +190,4 @@ void arm_copy_f32(
 /**
   @} end of BasicCopy group
  */
+

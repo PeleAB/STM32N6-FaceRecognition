@@ -208,3 +208,4 @@ void LL_I3C_StructInit(LL_I3C_InitTypeDef *I3C_InitStruct)
   */
 
 #endif /* USE_FULL_LL_DRIVER */
+

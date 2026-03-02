@@ -9,3 +9,4 @@ Responsibilities
 
 Non-goals
 - No application policy (e.g., when to encode or draw), no threading policy; those live in Services or App.
+

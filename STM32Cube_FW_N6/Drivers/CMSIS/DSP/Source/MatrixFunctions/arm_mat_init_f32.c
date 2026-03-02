@@ -74,3 +74,4 @@ void arm_mat_init_f32(
 /**
   @} end of MatrixInit group
  */
+

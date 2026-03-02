@@ -88,3 +88,4 @@ void arm_absmin_f64(
 /**
   @} end of AbsMin group
  */
+

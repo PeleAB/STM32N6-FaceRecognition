@@ -3864,3 +3864,4 @@ ULONG                               handle_index;
     return(UX_DEVICE_CLASS_PIMA_RC_INVALID_OBJECT_HANDLE);
 
 }
+

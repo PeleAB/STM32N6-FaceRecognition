@@ -324,3 +324,4 @@ evision_return_t evision_api_roi_array_delete(evision_roi_array_t* self);
 #endif
 
 #endif /* EVISION_API_UTILS_H_ */
+

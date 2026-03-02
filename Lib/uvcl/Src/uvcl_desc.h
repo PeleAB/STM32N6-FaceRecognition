@@ -41,3 +41,4 @@ int UVCL_get_serial_string_desc(void *p_dst, int dst_len);
 int UVCL_get_configuration_desc(void *p_dst, int dst_len, UVCL_DescConf *p_conf, UVCL_DescBuffer *p_buffer);
 
 #endif
+

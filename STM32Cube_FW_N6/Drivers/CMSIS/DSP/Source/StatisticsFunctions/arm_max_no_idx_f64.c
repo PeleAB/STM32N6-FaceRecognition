@@ -73,3 +73,4 @@ void arm_max_no_idx_f64(
 /**
   @} end of Max group
  */
+

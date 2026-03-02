@@ -315,3 +315,4 @@ ULONG                                           object_handles_array[32];
         test_control_return(0);
     }
 }
+

@@ -185,3 +185,4 @@ UINT _uxe_device_class_audio_frame_write(UX_DEVICE_CLASS_AUDIO_STREAM *stream, U
     /* Write to frame.  */
     return(_ux_device_class_audio_frame_write(stream, frame, length));
 }
+

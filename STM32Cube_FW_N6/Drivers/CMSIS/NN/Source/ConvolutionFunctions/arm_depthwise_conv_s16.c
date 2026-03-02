@@ -290,3 +290,4 @@ arm_status arm_depthwise_conv_s16(const cmsis_nn_context *ctx,
 /**
  * @} end of NNConv group
  */
+

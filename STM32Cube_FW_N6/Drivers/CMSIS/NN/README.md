@@ -99,3 +99,4 @@ The compiler option '-ffreestanding' should also be avoided as it enables '-fno-
 
 ## Reference
 [1] Legacy CMSIS-NN and how to use it https://developer.arm.com/solutions/machine-learning-on-arm/developer-material/how-to-guides/converting-a-neural-network-for-arm-cortex-m-with-cmsis-nn/single-page
+

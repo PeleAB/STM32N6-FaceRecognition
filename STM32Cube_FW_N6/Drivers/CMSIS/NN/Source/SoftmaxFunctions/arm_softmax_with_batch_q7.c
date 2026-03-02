@@ -72,3 +72,4 @@ void arm_softmax_with_batch_q7(const q7_t *vec_in, const uint16_t nb_batches, co
 /**
  * @} end of Softmax group
  */
+

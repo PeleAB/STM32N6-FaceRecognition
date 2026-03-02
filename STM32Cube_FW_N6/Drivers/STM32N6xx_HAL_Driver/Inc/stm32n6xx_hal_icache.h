@@ -214,3 +214,4 @@ void HAL_ICACHE_ErrorCallback(void);
 #endif
 
 #endif /* STM32N6xx_HAL_ICACHE_H */
+

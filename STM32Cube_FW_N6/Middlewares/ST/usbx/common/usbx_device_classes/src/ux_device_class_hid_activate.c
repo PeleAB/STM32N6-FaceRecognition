@@ -256,3 +256,4 @@ UCHAR                                   *pos;
     /* Return completion status.  */
     return(UX_SUCCESS);
 }
+

@@ -789,3 +789,4 @@ __STATIC_FORCEINLINE void arm_inv_clarke_q31(
 #endif
 
 #endif /* ifndef _CONTROLLER_FUNCTIONS_H_ */
+

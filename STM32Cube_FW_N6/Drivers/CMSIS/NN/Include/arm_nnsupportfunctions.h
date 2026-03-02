@@ -1184,3 +1184,4 @@ __STATIC_FORCEINLINE void arm_nn_write_q15x2_ia(q15_t **dest_q15, q31_t src_q31)
 #endif
 
 #endif
+

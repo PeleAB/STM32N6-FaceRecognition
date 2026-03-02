@@ -82,3 +82,4 @@ UINT  _ux_pictbridge_dpsclient_object_delete(UX_SLAVE_CLASS_PIMA *pima, ULONG ob
 
 }
 
+

@@ -51,3 +51,4 @@ UX_INTERFACE            *usbx_interface = &test_interface;
     test_control_return(0);
     return;
 }
+

@@ -154,3 +154,4 @@ ULONG                   total_configuration_length;
     /* Return completion status.  */
     return(status);
 }
+

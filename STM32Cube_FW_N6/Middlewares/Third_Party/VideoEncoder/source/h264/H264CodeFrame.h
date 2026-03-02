@@ -79,3 +79,4 @@ typedef enum
 h264EncodeFrame_e H264CodeFrame(h264Instance_s * inst);
 
 #endif
+

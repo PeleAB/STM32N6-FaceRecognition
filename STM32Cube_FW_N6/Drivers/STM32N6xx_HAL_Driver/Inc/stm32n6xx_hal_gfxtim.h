@@ -927,3 +927,4 @@ HAL_GFXTIM_StateTypeDef HAL_GFXTIM_GetState(const GFXTIM_HandleTypeDef *hgfxtim)
 #endif
 
 #endif /* STM32N6xx_HAL_GFXTIM_H */
+

@@ -370,3 +370,4 @@ ErrorStatus LL_PLL_ConfigSystemClock_HSE(uint32_t HSEFrequency,
 #endif
 
 #endif /* STM32N6xx_LL_UTILS_H */
+

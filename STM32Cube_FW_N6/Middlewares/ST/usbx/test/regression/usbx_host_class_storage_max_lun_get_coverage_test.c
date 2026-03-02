@@ -53,3 +53,4 @@ UINT                    status = 0;
     test_control_return(0);
     return;
 }
+

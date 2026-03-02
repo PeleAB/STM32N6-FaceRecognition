@@ -350,3 +350,4 @@ uint32_t HAL_CACHEAXI_GetError(const CACHEAXI_HandleTypeDef *hcacheaxi);
 #endif
 
 #endif /* STM32N6xx_HAL_CACHEAXI_H */
+

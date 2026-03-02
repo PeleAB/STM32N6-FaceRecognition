@@ -355,3 +355,4 @@ void BSP_PB_IRQHandler(Button_TypeDef Button);
 #endif
 
 #endif /* STM32N6570_DISCOVERY_H */
+

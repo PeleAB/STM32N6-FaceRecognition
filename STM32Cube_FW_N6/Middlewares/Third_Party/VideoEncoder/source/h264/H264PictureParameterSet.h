@@ -88,3 +88,4 @@ void H264PicParameterSetInit(pps_s * pps);
 void H264PicParameterSet(stream_s * stream, pps_s * pps);
 
 #endif
+

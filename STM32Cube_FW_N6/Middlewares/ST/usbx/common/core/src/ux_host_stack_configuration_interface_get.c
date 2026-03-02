@@ -243,3 +243,4 @@ UINT  _uxe_host_stack_configuration_interface_get(UX_CONFIGURATION *configuratio
     return(_ux_host_stack_configuration_interface_get(configuration,
                     interface_index, alternate_setting_index, ux_interface));
 }
+

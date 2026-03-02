@@ -257,3 +257,4 @@ arm_status arm_convolve_HWC_q15_fast(const q15_t *Im_in,
 /**
  * @} end of NNConv group
  */
+

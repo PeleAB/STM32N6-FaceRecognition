@@ -200,3 +200,4 @@ arm_status arm_mat_mult_f64(
 /**
  * @} end of MatrixMult group
  */
+

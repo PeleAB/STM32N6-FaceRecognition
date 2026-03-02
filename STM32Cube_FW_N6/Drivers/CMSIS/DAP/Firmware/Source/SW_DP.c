@@ -284,3 +284,4 @@ uint8_t  SWD_Transfer(uint32_t request, uint32_t *data) {
 
 
 #endif  /* (DAP_SWD != 0) */
+

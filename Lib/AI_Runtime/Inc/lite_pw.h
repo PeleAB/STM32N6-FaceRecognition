@@ -109,3 +109,4 @@ forward_lite_pw_hsp_3step_sssa8_ch(const ai_i8 *pData_in,
                          ai_i8 *pData_out);
 
 #endif    /*LITE_PW_H*/
+

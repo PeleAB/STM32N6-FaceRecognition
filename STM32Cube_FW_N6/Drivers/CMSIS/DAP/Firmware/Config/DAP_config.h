@@ -559,3 +559,4 @@ __STATIC_INLINE uint8_t RESET_TARGET (void) {
 
 
 #endif /* __DAP_CONFIG_H__ */
+

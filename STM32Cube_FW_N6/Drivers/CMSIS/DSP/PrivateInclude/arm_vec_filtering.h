@@ -1584,3 +1584,4 @@ extern "C"
 
 
 #endif /* _ARM_VEC_FILTERING_H_ */
+

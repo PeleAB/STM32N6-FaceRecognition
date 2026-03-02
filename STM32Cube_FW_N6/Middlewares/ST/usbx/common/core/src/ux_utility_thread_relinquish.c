@@ -77,3 +77,4 @@ VOID  _ux_utility_thread_relinquish(VOID)
 
 }
 #endif
+

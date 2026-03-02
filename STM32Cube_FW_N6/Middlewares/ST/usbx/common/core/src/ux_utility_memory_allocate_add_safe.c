@@ -76,3 +76,4 @@ VOID* _ux_utility_memory_allocate_add_safe(ULONG align,ULONG cache,ULONG size_ad
 {
     return UX_UTILITY_MEMORY_ALLOCATE_ADD_SAFE(align, cache, size_add_a, size_add_b);
 }
+

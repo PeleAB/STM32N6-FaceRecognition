@@ -112,3 +112,4 @@ void vPortAllocateSecureContext( uint32_t ulSecureStackSize ) __attribute__( ( n
 void vPortFreeSecureContext( uint32_t * pulTCB ) __attribute__( ( naked ) ) PRIVILEGED_FUNCTION;
 
 #endif /* __PORT_ASM_H__ */
+

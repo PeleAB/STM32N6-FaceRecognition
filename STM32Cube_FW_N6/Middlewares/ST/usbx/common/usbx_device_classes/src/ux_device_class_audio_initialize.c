@@ -567,3 +567,4 @@ ULONG                                   i;
     /* Do initialize.  */
     return(_ux_device_class_audio_initialize(command));
 }
+

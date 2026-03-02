@@ -2774,3 +2774,4 @@ static void SMBUS_ConvertOtherXferOptions(SMBUS_HandleTypeDef *hsmbus)
 /**
   * @}
   */
+

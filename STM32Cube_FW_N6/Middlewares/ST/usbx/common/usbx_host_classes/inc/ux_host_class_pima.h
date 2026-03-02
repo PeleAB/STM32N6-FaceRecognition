@@ -667,3 +667,4 @@ UINT  _uxe_host_class_pima_device_info_get(UX_HOST_CLASS_PIMA *pima,
 #endif
 
 #endif
+

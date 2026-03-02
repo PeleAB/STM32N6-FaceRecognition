@@ -186,3 +186,4 @@ ULONG                                           max_payload = 0xff;
         test_control_return(0);
     }
 }
+

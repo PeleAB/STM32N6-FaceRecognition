@@ -59,3 +59,4 @@
 ========================
 - Add STM32F4 Series to Azure RTOS licensed hardware list
 - Restore cortex_a7 port files
+

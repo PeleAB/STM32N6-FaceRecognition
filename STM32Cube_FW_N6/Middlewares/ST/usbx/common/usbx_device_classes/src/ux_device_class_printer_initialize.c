@@ -229,3 +229,4 @@ ULONG length;
 
     return (_ux_device_class_printer_initialize(command));
 }
+

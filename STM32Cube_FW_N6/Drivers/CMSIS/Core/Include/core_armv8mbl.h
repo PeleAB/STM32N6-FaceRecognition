@@ -2220,3 +2220,4 @@ __STATIC_INLINE uint32_t TZ_SysTick_Config_NS(uint32_t ticks)
 #endif /* __CORE_ARMV8MBL_H_DEPENDANT */
 
 #endif /* __CMSIS_GENERIC */
+

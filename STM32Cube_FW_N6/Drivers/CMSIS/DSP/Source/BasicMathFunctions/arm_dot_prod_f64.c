@@ -76,3 +76,4 @@ void arm_dot_prod_f64(
 /**
   @} end of BasicDotProd group
  */
+

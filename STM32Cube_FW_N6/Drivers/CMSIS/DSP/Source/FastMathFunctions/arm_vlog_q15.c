@@ -262,3 +262,4 @@ void arm_vlog_q15(
 /**
   @} end of vlog group
  */
+

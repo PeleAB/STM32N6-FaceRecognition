@@ -113,3 +113,4 @@ UX_HOST_CLASS_HID_FIELD      *hid_field;
     return(UX_SUCCESS);
 }
 
+

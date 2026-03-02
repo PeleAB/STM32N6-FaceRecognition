@@ -47,3 +47,4 @@ extern "C" {
 #endif
 
 #endif /* APS256XX_CONF_H */
+

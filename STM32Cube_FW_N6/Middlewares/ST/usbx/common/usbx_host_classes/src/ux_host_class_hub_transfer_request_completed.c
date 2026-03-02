@@ -140,3 +140,4 @@ UX_HOST_CLASS_HUB        *hub;
     /* Return to caller.  */
     return;
 }
+

@@ -219,3 +219,4 @@ void arm_mat_init_f16(
 #endif
 
 #endif /* ifndef _MATRIX_FUNCTIONS_F16_H_ */
+

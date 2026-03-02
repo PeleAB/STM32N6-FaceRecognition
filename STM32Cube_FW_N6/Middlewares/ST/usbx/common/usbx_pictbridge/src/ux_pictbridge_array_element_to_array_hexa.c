@@ -234,3 +234,4 @@ ULONG                   *hexa_array_end = hexa_array + UX_PICTBRIDGE_MAX_DEVINFO
     return(UX_SUCCESS);    
 }
 
+

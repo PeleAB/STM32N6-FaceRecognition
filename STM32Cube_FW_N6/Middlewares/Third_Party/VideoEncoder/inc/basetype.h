@@ -123,3 +123,4 @@ typedef int16_t i16x;
 #endif
 
 #endif /* BASETYPE_H_INCLUDED */
+

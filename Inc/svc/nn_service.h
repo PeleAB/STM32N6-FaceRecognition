@@ -69,3 +69,4 @@ uint32_t nn_service_max_output_size(void);
 uint32_t nn_service_count(void);
 
 #endif /* NN_SERVICE_H */
+

@@ -339,3 +339,4 @@ void arm_correlate_opt_q15(
 /**
   @} end of Corr group
  */
+

@@ -166,3 +166,4 @@ void arm_clip_f16(const float16_t * pSrc,
 #endif
 
 #endif /* ifndef _BASIC_MATH_FUNCTIONS_F16_H_ */
+

@@ -1615,3 +1615,4 @@ void EncAsicWriteRegisterValue(const void *ewl, u32 *regMirror, regName name, u3
 #endif
 
 #endif
+

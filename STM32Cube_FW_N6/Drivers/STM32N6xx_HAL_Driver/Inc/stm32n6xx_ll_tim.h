@@ -6270,3 +6270,4 @@ ErrorStatus LL_TIM_BDTR_Init(TIM_TypeDef *TIMx, const LL_TIM_BDTR_InitTypeDef *T
 #endif
 
 #endif /* __STM32N6xx_LL_TIM_H */
+

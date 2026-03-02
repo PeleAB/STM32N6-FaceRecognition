@@ -3590,3 +3590,4 @@ __STATIC_INLINE int32_t ITM_CheckChar (void)
 #endif /* __CORE_STAR_H_DEPENDANT */
 
 #endif /* __CMSIS_GENERIC */
+

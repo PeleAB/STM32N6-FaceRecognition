@@ -59,3 +59,4 @@ void CMW_VD66GY_SetDefaultSensorValues(CMW_VD66GY_config_t *vd66gy_config);
 #endif
 
 #endif
+

@@ -161,3 +161,4 @@ UINT                    alternate_setting_found;
        not find the right video device.  */
     return(UX_HOST_CLASS_VIDEO_WRONG_TYPE);
 }
+

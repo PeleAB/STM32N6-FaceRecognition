@@ -289,3 +289,4 @@ UINT _uxe_device_class_hid_read(UX_SLAVE_CLASS_HID *hid, UCHAR *buffer,
     return(_ux_device_class_hid_read(hid, buffer, requested_length, actual_length));
 }
 #endif
+

@@ -276,3 +276,4 @@ ULONG                   endpoint_bInterval;
     /* Return successful completion.  */
     return(UX_SUCCESS);
 }
+

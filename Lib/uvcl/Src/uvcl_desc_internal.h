@@ -389,3 +389,4 @@ struct uvc_tail_conf_desc {
 };
 
 #endif
+

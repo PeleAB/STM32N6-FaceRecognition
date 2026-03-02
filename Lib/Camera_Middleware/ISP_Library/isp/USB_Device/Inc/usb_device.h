@@ -43,3 +43,4 @@ void MX_USB_DEVICE_Init(void);
 #endif
 
 #endif /* __USB_DEVICE__H */
+

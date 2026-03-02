@@ -32,3 +32,4 @@
 #include "cmsis_os2.h"
 
 #endif  // CMSIS_OS_H_
+

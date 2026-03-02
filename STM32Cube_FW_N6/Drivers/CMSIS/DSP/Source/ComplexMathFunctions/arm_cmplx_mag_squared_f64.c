@@ -74,3 +74,4 @@ void arm_cmplx_mag_squared_f64(
 /**
   @} end of cmplx_mag_squared group
  */
+

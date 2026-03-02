@@ -373,3 +373,4 @@ UINT _uxe_device_class_printer_write_run(UX_DEVICE_CLASS_PRINTER *printer, UCHAR
 }
 
 #endif
+

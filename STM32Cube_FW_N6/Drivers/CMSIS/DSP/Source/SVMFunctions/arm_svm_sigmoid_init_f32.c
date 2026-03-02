@@ -90,3 +90,4 @@ void arm_svm_sigmoid_init_f32(arm_svm_sigmoid_instance_f32 *S,
 /**
  * @} end of sigmoidsvm group
  */
+

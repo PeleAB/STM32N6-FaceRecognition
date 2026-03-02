@@ -281,3 +281,4 @@ void arm_spline_f32(
 /**
   @} end of SplineInterpolate group
  */
+

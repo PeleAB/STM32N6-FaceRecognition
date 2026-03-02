@@ -29,3 +29,4 @@ any other related purpose or function.
 By submitting Your Report, You agree that ST’s
 [Privacy Policy](https://www.st.com/content/st_com/en/common/privacy-portal.html)
 applies to all related communications.
+

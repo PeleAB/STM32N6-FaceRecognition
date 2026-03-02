@@ -251,3 +251,4 @@ UX_HOST_CLASS_HID_PARSER     *hid_parser;
     return(UX_SUCCESS);
 }
 
+

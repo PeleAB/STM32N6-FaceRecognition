@@ -112,3 +112,4 @@ void arm_quaternion_inverse_f32(const float32_t *pInputQuaternions,
 /**
   @} end of QuatInverse group
  */
+

@@ -629,3 +629,4 @@ static ErrorStatus UTILS_EnablePLL1AndSwitchSystem(uint32_t CPU_Frequency,
 /**
   * @}
   */
+

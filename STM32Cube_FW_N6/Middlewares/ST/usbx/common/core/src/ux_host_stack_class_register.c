@@ -225,3 +225,4 @@ UINT  _uxe_host_stack_class_register(UCHAR *class_name,
     /* Invoke class register function.  */
     return(_ux_host_stack_class_register(class_name, class_entry_function));
 }
+

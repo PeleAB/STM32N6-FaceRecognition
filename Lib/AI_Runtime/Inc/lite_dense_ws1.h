@@ -169,3 +169,4 @@ void forward_lite_dense_if32of32ws1_bn(
   const ai_u32 n_channel_in, const ai_u32 n_channel_out);
 
 #endif    /* LITE_DENSE_IS1WS1_H */
+

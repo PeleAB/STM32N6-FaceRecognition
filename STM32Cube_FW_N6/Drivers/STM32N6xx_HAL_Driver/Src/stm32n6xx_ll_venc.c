@@ -146,3 +146,4 @@ void LL_VENC_DeInit(void)
 /**
   * @}
   */
+

@@ -167,3 +167,4 @@ void arm_add_f16(
 /**
   @} end of BasicAdd group
  */
+

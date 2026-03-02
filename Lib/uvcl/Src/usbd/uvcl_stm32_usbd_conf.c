@@ -223,3 +223,4 @@ void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *p_hpcd)
 {
   USBD_LL_DevDisconnected(p_hpcd->pData);
 }
+

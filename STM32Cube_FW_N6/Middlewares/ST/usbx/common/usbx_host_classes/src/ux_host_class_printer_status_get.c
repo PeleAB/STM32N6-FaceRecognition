@@ -258,3 +258,4 @@ UINT  _uxe_host_class_printer_status_get(UX_HOST_CLASS_PRINTER *printer, ULONG *
     /* Call the actual printer status get function.  */
     return(_ux_host_class_printer_status_get(printer, printer_status));
 }
+

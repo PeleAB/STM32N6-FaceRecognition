@@ -104,3 +104,4 @@ void H264RecoveryPointSei(stream_s * sp, sei_s * sei);
 void H264ScalabilityInfoSei(stream_s * sp, i32 svctLevel, i32 frameRate);
 
 #endif
+

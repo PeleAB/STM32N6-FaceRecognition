@@ -93,3 +93,4 @@ UX_DCD_STM32            *dcd_stm32;
     HAL_PCD_IRQHandler(dcd_stm32 -> pcd_handle);
 
 }
+

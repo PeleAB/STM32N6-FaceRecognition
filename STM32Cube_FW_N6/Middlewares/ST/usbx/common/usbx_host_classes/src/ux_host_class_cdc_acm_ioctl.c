@@ -394,3 +394,4 @@ UINT  _uxe_host_class_cdc_acm_ioctl(UX_HOST_CLASS_CDC_ACM *cdc_acm, ULONG ioctl_
     return(_ux_host_class_cdc_acm_ioctl(cdc_acm, ioctl_function, parameter));
 
 }
+

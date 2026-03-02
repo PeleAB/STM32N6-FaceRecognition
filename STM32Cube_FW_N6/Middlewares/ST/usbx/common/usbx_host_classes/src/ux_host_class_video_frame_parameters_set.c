@@ -370,3 +370,4 @@ UINT  _uxe_host_class_video_frame_parameters_set(UX_HOST_CLASS_VIDEO *video, ULO
     /* Call the actual video frame parameters set function.  */
     return(_ux_host_class_video_frame_parameters_set(video, frame_format, width, height, frame_interval));
 }
+

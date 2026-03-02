@@ -72,3 +72,4 @@ void arm_mat_init_f16(
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

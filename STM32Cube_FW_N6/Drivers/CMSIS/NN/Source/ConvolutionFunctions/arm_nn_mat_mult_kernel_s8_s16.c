@@ -243,3 +243,4 @@ q7_t *arm_nn_mat_mult_kernel_s8_s16(const q7_t *input_a,
     return NULL;
 #endif
 }
+

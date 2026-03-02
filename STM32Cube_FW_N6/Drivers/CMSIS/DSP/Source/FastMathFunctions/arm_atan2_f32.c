@@ -181,3 +181,4 @@ arm_status arm_atan2_f32(float32_t y,float32_t x,float32_t *result)
 /**
   @} end of atan2 group
  */
+

@@ -681,3 +681,4 @@ HAL_StatusTypeDef HAL_PWR_GetConfigAttributes(uint32_t Item, uint32_t *pAttribut
 
 #endif /* STM32N6xx_HAL_PWR_H */
 
+

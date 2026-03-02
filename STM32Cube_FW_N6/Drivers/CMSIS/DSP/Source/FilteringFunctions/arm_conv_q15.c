@@ -856,3 +856,4 @@ void arm_conv_q15(
 /**
   @} end of Conv group
  */
+

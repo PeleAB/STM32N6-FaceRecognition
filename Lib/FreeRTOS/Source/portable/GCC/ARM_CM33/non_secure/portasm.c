@@ -606,3 +606,4 @@ void vPortFreeSecureContext( uint32_t * pulTCB ) /* __attribute__ (( naked )) PR
     );
 }
 /*-----------------------------------------------------------*/
+

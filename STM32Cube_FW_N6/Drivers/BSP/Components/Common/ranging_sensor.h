@@ -81,3 +81,4 @@ typedef struct
 #endif
 
 #endif /* RANGING_SENSOR_H */
+

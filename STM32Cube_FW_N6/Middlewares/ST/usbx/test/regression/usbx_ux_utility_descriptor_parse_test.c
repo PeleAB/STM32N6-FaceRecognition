@@ -434,3 +434,4 @@ ULONG output[8]   = {0,0,0,0,0,  0,0,0};
         test_control_return(0);
     }
 }
+

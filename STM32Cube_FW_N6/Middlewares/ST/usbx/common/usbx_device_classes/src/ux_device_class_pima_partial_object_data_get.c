@@ -302,3 +302,4 @@ ULONG                       object_bytes_sent;
     /* Return completion status.  */
     return(status);
 }
+

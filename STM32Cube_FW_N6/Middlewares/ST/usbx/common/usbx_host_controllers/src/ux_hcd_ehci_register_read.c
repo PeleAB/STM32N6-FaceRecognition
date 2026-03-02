@@ -78,3 +78,4 @@ ULONG  _ux_hcd_ehci_register_read(UX_HCD_EHCI *hcd_ehci, ULONG ehci_register)
     return(*(hcd_ehci -> ux_hcd_ehci_base + ehci_register));
 }
 
+

@@ -459,3 +459,4 @@ void arm_svm_linear_predict_f32(
 /**
  * @} end of linearsvm group
  */
+

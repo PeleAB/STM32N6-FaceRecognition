@@ -9,3 +9,4 @@ Responsibilities
 Non-goals
 - Direct HAL/BSP access or hardware policy; rely on services and FAL.
 - Service-level feature logic that should live below.
+

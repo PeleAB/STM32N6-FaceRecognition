@@ -198,3 +198,4 @@ void arm_mult_f32(
 /**
   @} end of BasicMult group
  */
+

@@ -199,3 +199,4 @@ arm_status arm_atan2_q15(q15_t y,q15_t x,q15_t *result)
 /**
   @} end of atan2 group
  */
+

@@ -43,3 +43,4 @@ target_sources(arm_graphic_equalizer_example PRIVATE math_helper.c arm_graphic_e
 
 target_link_libraries(arm_graphic_equalizer_example PRIVATE CMSISDSP)
 
+

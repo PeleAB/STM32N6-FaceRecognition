@@ -86,3 +86,4 @@ VOID  _ux_host_class_hub_port_change_reset_process(UX_HOST_CLASS_HUB *hub, UINT 
     return;
 }
    
+

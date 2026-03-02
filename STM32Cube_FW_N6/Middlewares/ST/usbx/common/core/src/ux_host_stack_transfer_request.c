@@ -272,3 +272,4 @@ UINT  _uxe_host_stack_transfer_request(UX_TRANSFER *transfer_request)
     /* Invoke transfer request function.  */
     return(_ux_host_stack_transfer_request(transfer_request));
 }
+

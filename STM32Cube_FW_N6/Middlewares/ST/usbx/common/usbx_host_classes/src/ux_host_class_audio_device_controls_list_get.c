@@ -273,3 +273,4 @@ ULONG                                           itt_nb_channels;
     return(UX_HOST_CLASS_AUDIO_WRONG_TYPE);
 }
 #endif
+

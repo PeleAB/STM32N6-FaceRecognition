@@ -247,3 +247,4 @@ arm_status arm_mat_scale_q15(
 /**
   @} end of MatrixScale group
  */
+

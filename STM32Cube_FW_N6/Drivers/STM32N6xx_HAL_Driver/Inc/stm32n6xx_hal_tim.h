@@ -2530,3 +2530,4 @@ void TIM_ResetCallback(TIM_HandleTypeDef *htim);
 #endif
 
 #endif /* STM32N6xx_HAL_TIM_H */
+

@@ -429,3 +429,4 @@ u32 *EncAsicGetMvOutput(asicData_s *asic, u32 mbNum);
 void EncAsicClearStatusBit(const void *ewl, u32 statusBit);
 
 #endif
+

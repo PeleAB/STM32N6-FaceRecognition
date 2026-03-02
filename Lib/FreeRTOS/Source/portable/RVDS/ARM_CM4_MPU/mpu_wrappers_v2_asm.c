@@ -1748,3 +1748,4 @@ MPU_xStreamBufferNextMessageLengthBytes_Unpriv
 /*-----------------------------------------------------------*/
 
 #endif /* configUSE_MPU_WRAPPERS_V1 == 0 */
+

@@ -485,3 +485,4 @@ void arm_svm_sigmoid_predict_f32(
 /**
  * @} end of sigmoidsvm group
  */
+

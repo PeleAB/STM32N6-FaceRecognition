@@ -785,3 +785,4 @@ uint32_t HAL_SMBUS_GetError(const SMBUS_HandleTypeDef *hsmbus);
 
 
 #endif /* STM32N6xx_HAL_SMBUS_H */
+

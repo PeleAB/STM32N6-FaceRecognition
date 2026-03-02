@@ -66,3 +66,4 @@ void __malloc_unlock (struct _reent *reent)
   ret = xSemaphoreGive(libc_lock);
   assert(ret == pdTRUE);
 }
+

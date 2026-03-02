@@ -154,3 +154,4 @@ ULONG                                           dummy_ul;
         test_control_return(0);
     }
 }
+

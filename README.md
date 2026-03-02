@@ -247,3 +247,4 @@ Set your board to [boot from flash](#boot-modes) mode and power cycle to boot fr
 - VENC_IMX335_WIDTH must be greater or equal to VENC_IMX335_HEIGHT
 - VENC_VD66GY_WIDTH must be greater or equal to VENC_VD66GY_HEIGHT
 - VENC_VD55G1_WIDTH must be greater or equal to VENC_VD55G1_HEIGHT
+

@@ -71,3 +71,4 @@ UCHAR  _ux_device_class_dfu_state_get(UX_SLAVE_CLASS_DFU *dfu)
     UX_PARAMETER_NOT_USED(dfu);
     return (UCHAR)_ux_system_slave -> ux_system_slave_device_dfu_state_machine;
 }
+

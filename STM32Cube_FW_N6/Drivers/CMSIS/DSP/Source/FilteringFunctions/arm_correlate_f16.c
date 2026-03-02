@@ -1157,3 +1157,4 @@ void arm_correlate_f16(
  */
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
+

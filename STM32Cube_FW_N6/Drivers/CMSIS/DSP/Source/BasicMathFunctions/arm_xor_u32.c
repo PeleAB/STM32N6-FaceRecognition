@@ -127,3 +127,4 @@ void arm_xor_u32(
 /**
   @} end of Xor group
  */
+

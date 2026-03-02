@@ -132,3 +132,4 @@ void arm_clip_q7(const q7_t * pSrc,
 /**
   @} end of BasicClip group
  */
+

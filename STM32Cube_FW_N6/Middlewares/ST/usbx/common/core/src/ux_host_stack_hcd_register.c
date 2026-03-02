@@ -207,3 +207,4 @@ UINT  _uxe_host_stack_hcd_register(UCHAR *hcd_name,
     /* Invoke HCD register function.  */
     return(_ux_host_stack_hcd_register(hcd_name, hcd_init_function, hcd_param1, hcd_param2));
 }
+

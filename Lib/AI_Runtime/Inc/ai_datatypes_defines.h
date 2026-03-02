@@ -149,3 +149,4 @@
 #define AI_FLAG_IS_SET(mask, flag)    ((flag)==((mask)&(flag)))
 
 #endif    /*AI_DATATYPES_DEFINES_H*/
+

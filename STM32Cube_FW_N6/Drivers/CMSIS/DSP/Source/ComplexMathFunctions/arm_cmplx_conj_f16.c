@@ -183,3 +183,4 @@ void arm_cmplx_conj_f16(
   @} end of cmplx_conj group
  */
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
+

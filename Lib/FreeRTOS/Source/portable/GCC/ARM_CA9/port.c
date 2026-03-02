@@ -568,3 +568,4 @@ void vApplicationFPUSafeIRQHandler( uint32_t ulICCIAR )
     ( void ) ulICCIAR;
     configASSERT( ( volatile void * ) NULL );
 }
+

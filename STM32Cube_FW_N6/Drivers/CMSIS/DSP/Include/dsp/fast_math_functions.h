@@ -387,3 +387,4 @@ arm_status arm_divide_q31(q31_t numerator,
 #endif
 
 #endif /* ifndef _FAST_MATH_FUNCTIONS_H_ */
+

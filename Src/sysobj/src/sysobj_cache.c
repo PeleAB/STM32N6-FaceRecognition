@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file    fal_cache.c
+ * @file    sysobj_cache.c
  * @author  GPM Application Team
  *
  ******************************************************************************
@@ -16,7 +16,7 @@
  ******************************************************************************
  */
 
-#include "fal_cache.h"
+#include "sysobj_cache.h"
 
 #include <stdint.h>
 
@@ -35,7 +35,7 @@ static void cache_align_region(uintptr_t *addr, size_t *len)
   *len = aligned_len;
 }
 
-int FAL_CacheIsEnabled(void)
+int SYSOBJ_CacheIsEnabled(void)
 {
 #if defined(__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
   return (SCB->CCR & SCB_CCR_DC_Msk) != 0U;
@@ -44,36 +44,39 @@ int FAL_CacheIsEnabled(void)
 #endif
 }
 
-void FAL_CacheInvalidate(void *addr, size_t len)
+void SYSOBJ_CacheInvalidate(void *addr, size_t len)
 {
   uintptr_t target = (uintptr_t) addr;
 
-  if (!FAL_CacheIsEnabled() || len == 0U)
+  if (!SYSOBJ_CacheIsEnabled() || len == 0U)
     return;
 
   cache_align_region(&target, &len);
   SCB_InvalidateDCache_by_Addr((void *) target, (int32_t) len);
 }
 
-void FAL_CacheClean(void *addr, size_t len)
+void SYSOBJ_CacheClean(void *addr, size_t len)
 {
   uintptr_t target = (uintptr_t) addr;
 
-  if (!FAL_CacheIsEnabled() || len == 0U)
+  if (!SYSOBJ_CacheIsEnabled() || len == 0U)
     return;
 
   cache_align_region(&target, &len);
   SCB_CleanDCache_by_Addr((void *) target, (int32_t) len);
 }
 
-void FAL_CacheCleanInvalidate(void *addr, size_t len)
+void SYSOBJ_CacheCleanInvalidate(void *addr, size_t len)
 {
   uintptr_t target = (uintptr_t) addr;
 
-  if (!FAL_CacheIsEnabled() || len == 0U)
+  if (!SYSOBJ_CacheIsEnabled() || len == 0U)
     return;
 
   cache_align_region(&target, &len);
   SCB_CleanInvalidateDCache_by_Addr((void *) target, (int32_t) len);
 }
+
+
+
 

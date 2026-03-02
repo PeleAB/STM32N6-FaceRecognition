@@ -562,3 +562,4 @@ void arm_lms_norm_f32(
 /**
   @} end of LMS_NORM group
  */
+

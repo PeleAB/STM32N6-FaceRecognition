@@ -87,3 +87,4 @@ void arm_nn_activations_direct_q7(q7_t *data, uint16_t size, uint16_t int_width,
 /**
  * @} end of Acti group
  */
+

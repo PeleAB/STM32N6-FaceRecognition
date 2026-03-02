@@ -19,3 +19,4 @@
 file(GLOB SRC "./*_s8.c")
 target_sources(cmsis-nn PRIVATE ${SRC} arm_fully_connected_s16.c)
 
+

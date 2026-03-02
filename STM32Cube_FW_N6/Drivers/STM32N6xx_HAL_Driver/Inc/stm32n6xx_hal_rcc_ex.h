@@ -3137,3 +3137,4 @@ HAL_StatusTypeDef HAL_RCCEx_PLLSSCGConfig(uint32_t PLLnumber, const RCC_PLLInitT
 #endif
 
 #endif /* STM32N6xx_HAL_RCC_EX_H */
+

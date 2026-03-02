@@ -159,3 +159,4 @@ int32_t arm_convolve_1x1_s8_fast_get_buffer_size(const cmsis_nn_dims *input_dims
 /**
  * @} end of NNConv group
  */
+

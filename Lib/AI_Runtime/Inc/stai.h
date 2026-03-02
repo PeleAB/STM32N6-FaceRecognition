@@ -470,3 +470,4 @@ stai_format stai_init_format(
 STAI_API_DECLARE_END
 
 #endif    /* STAI_H */
+

@@ -93,3 +93,4 @@ UX_SLAVE_ENDPOINT                       *endpoint;
 #endif
     }
 }
+

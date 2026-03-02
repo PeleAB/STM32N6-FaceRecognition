@@ -22,3 +22,4 @@
 void freertos_libc_init(void);
 
 #endif
+

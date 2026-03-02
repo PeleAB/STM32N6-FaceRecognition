@@ -401,3 +401,4 @@ UINT  _uxe_host_class_audio_control_get(UX_HOST_CLASS_AUDIO *audio, UX_HOST_CLAS
     /* Invoke audio control get function.  */
     return(_ux_host_class_audio_control_get(audio, audio_control));
 }
+

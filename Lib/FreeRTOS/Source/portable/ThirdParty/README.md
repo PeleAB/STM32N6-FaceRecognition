@@ -49,3 +49,4 @@ community supported FreeRTOS port:
 
 A new FreeRTOS port can be directly contributed by anyone. The process to
 contribute a FreeRTOS port is documented [here](https://github.com/FreeRTOS/FreeRTOS-Kernel-Community-Supported-Ports/blob/main/README.md).
+

@@ -49,3 +49,4 @@ This middleware simplifies the development process for applications that require
 ### V1.4.1 / December 2024
 
 Initial Version
+

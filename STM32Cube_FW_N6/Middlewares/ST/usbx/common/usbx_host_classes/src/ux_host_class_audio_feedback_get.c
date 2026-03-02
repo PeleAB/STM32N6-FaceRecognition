@@ -149,3 +149,4 @@ UINT  _uxe_host_class_audio_feedback_get(UX_HOST_CLASS_AUDIO *audio, UCHAR *feed
     /* Invoke audio feedback get function.  */
     return(_ux_host_class_audio_feedback_get(audio, feedback));
 }
+

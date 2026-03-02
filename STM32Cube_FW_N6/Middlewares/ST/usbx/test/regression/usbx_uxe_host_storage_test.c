@@ -175,3 +175,4 @@ UCHAR                                           dummy_buffer[512];
         test_control_return(0);
     }
 }
+

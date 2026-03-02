@@ -238,3 +238,4 @@ __STATIC_INLINE q31_t arm_div_q63_to_q31(q63_t num, q31_t den)
 #endif
 
 #endif /*ifndef _ARM_MATH_UTILS_H_ */
+

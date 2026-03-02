@@ -755,3 +755,4 @@ void arm_mat_init_f32(
 #endif
 
 #endif /* ifndef _MATRIX_FUNCTIONS_H_ */
+

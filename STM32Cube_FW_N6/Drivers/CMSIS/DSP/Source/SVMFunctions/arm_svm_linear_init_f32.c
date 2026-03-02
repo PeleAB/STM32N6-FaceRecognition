@@ -90,3 +90,4 @@ void arm_svm_linear_init_f32(arm_svm_linear_instance_f32 *S,
 /**
  * @} end of linearsvm group
  */
+

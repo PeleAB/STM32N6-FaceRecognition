@@ -226,3 +226,4 @@ void arm_absmax_no_idx_f16(
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

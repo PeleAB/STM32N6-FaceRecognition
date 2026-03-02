@@ -447,3 +447,4 @@ extern void vClearInterruptMask( uint32_t ulMask ) /* __attribute__(( naked )) P
 /* *INDENT-ON* */
 
 #endif /* PORTMACROCOMMON_H */
+

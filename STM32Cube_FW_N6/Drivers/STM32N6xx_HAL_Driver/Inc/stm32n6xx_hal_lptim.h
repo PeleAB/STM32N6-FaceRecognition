@@ -1272,3 +1272,4 @@ HAL_LPTIM_StateTypeDef HAL_LPTIM_GetState(const LPTIM_HandleTypeDef *hlptim);
 #endif
 
 #endif /* STM32N6xx_HAL_LPTIM_H */
+

@@ -52,3 +52,4 @@ void arm_sort_init_f32(arm_sort_instance_f32 * S, arm_sort_alg alg, arm_sort_dir
 /**
   @} end of Sorting group
  */
+

@@ -314,3 +314,4 @@ UINT  _uxe_host_class_audio_control_value_set(UX_HOST_CLASS_AUDIO *audio, UX_HOS
     /* Invoke audio control set function.  */
     return(_ux_host_class_audio_control_value_set(audio, audio_control));
 }
+

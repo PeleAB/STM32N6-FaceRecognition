@@ -223,3 +223,4 @@ void arm_absmax_no_idx_f32(
 /**
   @} end of AbsMax group
  */
+

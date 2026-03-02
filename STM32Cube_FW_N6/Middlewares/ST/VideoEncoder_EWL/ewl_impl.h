@@ -97,3 +97,4 @@ void VENC_IRQHandler(void);
 }
 #endif
 #endif /* __EWL_IMPL_H__ */
+

@@ -78,3 +78,4 @@ UINT  _ux_hcd_sim_host_frame_number_get(UX_HCD_SIM_HOST *hcd_sim_host, ULONG *fr
     return(UX_SUCCESS);
 }
 
+

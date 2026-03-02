@@ -65,3 +65,4 @@ void NPU_CACHE_IRQHandler(void)
 {
   __NOP();
 }
+

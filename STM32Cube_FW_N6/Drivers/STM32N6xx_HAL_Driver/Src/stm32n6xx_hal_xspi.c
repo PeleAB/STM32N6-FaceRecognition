@@ -3512,3 +3512,4 @@ static void XSPIM_GetConfig(uint8_t instance_nb, XSPIM_CfgTypeDef *pCfg)
   */
 
 #endif /* XSPI || XSPI1 || XSPI2 || XSPI3 */
+

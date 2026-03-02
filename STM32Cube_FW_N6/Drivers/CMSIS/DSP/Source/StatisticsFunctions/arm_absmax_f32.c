@@ -258,3 +258,4 @@ void arm_absmax_f32(
 /**
   @} end of AbsMax group
  */
+

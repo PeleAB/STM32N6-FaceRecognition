@@ -84,3 +84,4 @@ arm_status arm_nn_mat_mul_core_1x_s8(int32_t row_elements,
 /**
  * @} end of NNBasicMath group
  */
+

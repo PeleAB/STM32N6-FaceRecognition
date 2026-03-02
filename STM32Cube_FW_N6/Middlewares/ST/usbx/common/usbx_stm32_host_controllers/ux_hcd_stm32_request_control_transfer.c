@@ -544,3 +544,4 @@ static inline VOID _ux_hcd_stm32_request_control_status(UX_HCD_STM32 *hcd_stm32,
                              ed -> ux_stm32_ed_dir,
                              EP_TYPE_CTRL, USBH_PID_DATA, 0, 0, 0);
 }
+

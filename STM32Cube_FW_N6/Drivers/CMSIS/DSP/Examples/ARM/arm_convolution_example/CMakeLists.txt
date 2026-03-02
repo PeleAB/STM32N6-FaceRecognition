@@ -43,3 +43,4 @@ target_sources(arm_convolution_example PRIVATE arm_convolution_example_f32.c mat
 
 target_link_libraries(arm_convolution_example PRIVATE CMSISDSP)
 
+

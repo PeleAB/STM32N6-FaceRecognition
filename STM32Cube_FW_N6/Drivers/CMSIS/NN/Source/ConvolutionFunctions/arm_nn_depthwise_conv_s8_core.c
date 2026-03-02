@@ -216,3 +216,4 @@ q7_t *arm_nn_depthwise_conv_s8_core(const q7_t *row,
     return NULL;
 #endif
 }
+

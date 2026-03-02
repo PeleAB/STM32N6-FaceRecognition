@@ -385,3 +385,4 @@ arm_status arm_conv_partial_fast_opt_q15(
 /**
   @} end of PartialConv group
  */
+

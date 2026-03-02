@@ -98,3 +98,4 @@ void arm_q7_to_q15_reordered_with_offset(const q7_t *src, q15_t *dst, uint32_t b
 /**
  * @} end of nndata_convert group
  */
+

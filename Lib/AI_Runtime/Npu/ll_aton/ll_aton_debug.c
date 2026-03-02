@@ -1019,3 +1019,4 @@ unsigned int get_params_len(const NN_Interface_TypeDef *nn_interface)
 }
 
 #endif
+

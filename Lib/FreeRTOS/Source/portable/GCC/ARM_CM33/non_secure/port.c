@@ -2041,3 +2041,4 @@ BaseType_t xPortIsInsideInterrupt( void )
 
 #endif /* #if ( ( configENABLE_MPU == 1 ) && ( configUSE_MPU_WRAPPERS_V1 == 0 ) ) */
 /*-----------------------------------------------------------*/
+

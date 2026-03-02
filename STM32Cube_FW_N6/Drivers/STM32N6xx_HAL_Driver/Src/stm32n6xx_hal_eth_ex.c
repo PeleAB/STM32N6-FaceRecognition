@@ -1854,3 +1854,4 @@ HAL_StatusTypeDef HAL_ETHEx_SetFPEConfig(ETH_HandleTypeDef *heth,  ETH_FPEConfig
 /**
   * @}
   */
+

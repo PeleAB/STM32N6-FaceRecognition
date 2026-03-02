@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file    fal_cache.h
+ * @file    sysobj_cache.h
  * @author  GPM Application Team
  *
  ******************************************************************************
@@ -16,14 +16,17 @@
  ******************************************************************************
  */
 
-#ifndef FAL_CACHE_H
-#define FAL_CACHE_H
+#ifndef SYSOBJ_CACHE_H
+#define SYSOBJ_CACHE_H
 
 #include <stddef.h>
 
-int FAL_CacheIsEnabled(void);
-void FAL_CacheInvalidate(void *addr, size_t len);
-void FAL_CacheClean(void *addr, size_t len);
-void FAL_CacheCleanInvalidate(void *addr, size_t len);
+int SYSOBJ_CacheIsEnabled(void);
+void SYSOBJ_CacheInvalidate(void *addr, size_t len);
+void SYSOBJ_CacheClean(void *addr, size_t len);
+void SYSOBJ_CacheCleanInvalidate(void *addr, size_t len);
 
-#endif /* FAL_CACHE_H */
+#endif /* SYSOBJ_CACHE_H */
+
+
+

@@ -228,3 +228,4 @@ UX_SLAVE_CLASS_RNDIS    *rndis;
     return(UX_SUCCESS);
 }
 
+

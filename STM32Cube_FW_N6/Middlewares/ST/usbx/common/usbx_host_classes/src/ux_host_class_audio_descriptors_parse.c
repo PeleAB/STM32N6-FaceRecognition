@@ -265,3 +265,4 @@ UINT _uxe_host_class_audio_descriptors_parse(UX_HOST_CLASS_AUDIO *audio,
     /* Invoke audio descriptor parse function.  */
     return(_ux_host_class_audio_descriptors_parse(audio, parse_function, arg));
 }
+

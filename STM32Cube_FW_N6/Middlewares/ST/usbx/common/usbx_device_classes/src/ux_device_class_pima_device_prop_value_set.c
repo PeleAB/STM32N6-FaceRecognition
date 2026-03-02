@@ -143,3 +143,4 @@ UCHAR                       *device_property_value_pointer;
     /* Return completion status.  */
     return(status);
 }
+

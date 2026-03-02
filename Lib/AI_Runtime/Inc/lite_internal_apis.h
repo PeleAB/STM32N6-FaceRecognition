@@ -91,3 +91,4 @@ void forward_lite_nl_gelu_if32of32(
   ai_handle out_ptr, const ai_handle in_ptr, const ai_i32 in_size, const ai_handle params);
 
 #endif /* LITE_INTERNAL_APIS */
+

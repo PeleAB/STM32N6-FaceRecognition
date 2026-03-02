@@ -77,3 +77,4 @@ UINT  _ux_hcd_stm32_port_resume(UX_HCD_STM32 *hcd_stm32, UINT port_index)
     return(UX_FUNCTION_NOT_SUPPORTED);
 }
 
+

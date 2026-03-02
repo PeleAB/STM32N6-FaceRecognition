@@ -534,3 +534,4 @@ int32_t APS256XX_Reset(XSPI_HandleTypeDef *Ctx)
 /**
   * @}
   */
+

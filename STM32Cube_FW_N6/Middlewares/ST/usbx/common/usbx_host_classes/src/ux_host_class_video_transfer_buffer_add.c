@@ -234,3 +234,4 @@ UINT  _uxe_host_class_video_transfer_buffer_add(UX_HOST_CLASS_VIDEO *video, UCHA
     /* Call actual video transfer buffer add function.  */
     return(_ux_host_class_video_transfer_buffer_add(video, buffer));
 }
+

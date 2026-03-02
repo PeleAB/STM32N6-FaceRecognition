@@ -185,3 +185,4 @@ float32_t arm_weighted_sum_f32(const float32_t *in, const float32_t *weigths, ui
 /**
  * @} end of weightedsum group
  */
+

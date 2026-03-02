@@ -178,3 +178,4 @@ arm_status arm_max_pool_s16(const cmsis_nn_context *ctx,
 /**
  * @} end of Pooling group
  */
+

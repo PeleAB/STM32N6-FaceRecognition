@@ -185,3 +185,4 @@ __STATIC_INLINE float16_t arm_typecast_f16_s16(int16_t x)
 #endif
 
 #endif /* ifndef _SUPPORT_FUNCTIONS_F16_H_ */
+

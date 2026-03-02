@@ -620,3 +620,4 @@ uint32_t HAL_SPDIFRX_GetError(SPDIFRX_HandleTypeDef const *const hspdif);
 
 
 #endif /* STM32N6xx_HAL_SPDIFRX_H */
+

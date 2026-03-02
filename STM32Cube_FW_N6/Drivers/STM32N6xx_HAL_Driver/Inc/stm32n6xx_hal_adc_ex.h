@@ -1322,3 +1322,4 @@ HAL_StatusTypeDef       HAL_ADCEx_EnterADCDeepPowerDownMode(ADC_HandleTypeDef *h
 #endif
 
 #endif /* STM32N6xx_HAL_ADC_EX_H */
+

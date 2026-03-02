@@ -106,3 +106,4 @@ typedef struct
 #endif
 
 #endif /* HYBRID_SENSOR_H */
+

@@ -328,3 +328,4 @@ void arm_float_to_q7(
 /**
   @} end of float_to_x group
  */
+

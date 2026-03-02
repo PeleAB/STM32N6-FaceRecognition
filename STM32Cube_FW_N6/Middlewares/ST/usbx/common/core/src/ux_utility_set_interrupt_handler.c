@@ -77,3 +77,4 @@ VOID  _ux_utility_set_interrupt_handler(UINT irq, VOID (*interrupt_handler)(VOID
     /* Unimplemented, just return.  */
     return;
 }
+

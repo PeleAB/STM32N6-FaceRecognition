@@ -491,3 +491,4 @@ _ux_device_class_ccid_command_sett[UX_DEVICE_CLASS_CCID_N_COMMANDS + 1] =
            UX_DEVICE_CLASS_CCID_COMMAND_FLAGS(0x73), 13},
     {0, 0, 0, -1}, /* Command not supported.  */
 };
+

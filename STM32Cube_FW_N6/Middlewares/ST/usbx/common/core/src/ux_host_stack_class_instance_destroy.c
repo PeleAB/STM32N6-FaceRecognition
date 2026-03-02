@@ -143,3 +143,4 @@ VOID    **next_class_instance;
     return(UX_HOST_CLASS_INSTANCE_UNKNOWN);
 }
 
+

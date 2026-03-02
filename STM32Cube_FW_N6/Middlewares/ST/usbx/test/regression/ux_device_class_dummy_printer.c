@@ -261,3 +261,4 @@ UINT _ux_device_class_printer_entry(UX_SLAVE_CLASS_COMMAND *command)
     }
     return(UX_SUCCESS);
 }
+

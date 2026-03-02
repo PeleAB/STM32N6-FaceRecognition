@@ -75,3 +75,4 @@ void arm_iir_lattice_init_f32(
 /**
   @} end of IIR_Lattice group
  */
+

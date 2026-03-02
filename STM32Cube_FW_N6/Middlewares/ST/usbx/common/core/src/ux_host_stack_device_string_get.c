@@ -203,3 +203,4 @@ UINT  _uxe_host_stack_device_string_get(UX_DEVICE *device, UCHAR *descriptor_buf
     /* Invoke string descriptor get function.  */
     return(_ux_host_stack_device_string_get(device, descriptor_buffer, length, language_id, string_index));
 }
+

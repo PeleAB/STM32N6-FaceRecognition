@@ -100,3 +100,4 @@ void arm_quaternion_norm_f32(const float32_t *pInputQuaternions,
 /**
   @} end of QuatNorm group
  */
+

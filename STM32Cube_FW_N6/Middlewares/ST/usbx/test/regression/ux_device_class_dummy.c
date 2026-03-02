@@ -313,3 +313,4 @@ UX_SLAVE_TRANSFER *transfer_request = _ux_device_class_dummy_get_transfer_reques
 
     return(status);
 }
+

@@ -67,3 +67,4 @@ void forward_upsample_bilinear_is16os16(ai_layer* layer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_UPSAMPLE_H*/
+

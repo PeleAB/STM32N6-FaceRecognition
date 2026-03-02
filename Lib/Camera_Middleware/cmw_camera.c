@@ -1392,3 +1392,4 @@ case CMW_IMX335_Sensor:
 
   return CMW_ERROR_NONE;
 }
+

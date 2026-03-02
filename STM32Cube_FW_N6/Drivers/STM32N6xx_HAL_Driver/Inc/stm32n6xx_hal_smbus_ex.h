@@ -131,3 +131,4 @@ HAL_StatusTypeDef HAL_SMBUSEx_ConfigFastModePlus(SMBUS_HandleTypeDef *hsmbus, ui
 #endif
 
 #endif /* STM32N6xx_HAL_SMBUS_EX_H */
+

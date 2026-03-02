@@ -214,3 +214,4 @@ UX_HOST_CLASS_CDC_ACM       *cdc_acm_inst;
     return(UX_SUCCESS);         
 }
 
+

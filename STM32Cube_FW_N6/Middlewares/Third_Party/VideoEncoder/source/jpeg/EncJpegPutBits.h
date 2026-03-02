@@ -80,3 +80,4 @@ bool_e EncJpegBufferStatus(stream_s * stream);
 bool_e EncJpegSetBuffer(stream_s * buffer, u8 * stream, u32 size);
 
 #endif
+

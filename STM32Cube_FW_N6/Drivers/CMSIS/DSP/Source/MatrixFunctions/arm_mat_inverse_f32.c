@@ -1568,3 +1568,4 @@ arm_status arm_mat_inverse_f32(
 /**
   @} end of MatrixInv group
  */
+

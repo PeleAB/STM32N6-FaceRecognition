@@ -167,3 +167,4 @@ void LL_UCPD_StructInit(LL_UCPD_InitTypeDef *UCPD_InitStruct)
 
 #endif /* USE_FULL_LL_DRIVER */
 
+

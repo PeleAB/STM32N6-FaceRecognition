@@ -312,3 +312,4 @@ void arm_svm_linear_predict_f16(
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

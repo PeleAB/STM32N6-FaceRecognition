@@ -269,3 +269,4 @@ UINT  _uxe_host_class_swar_write(UX_HOST_CLASS_SWAR *swar, UCHAR *data_pointer,
     /* Invoke SWAR write function.  */
     return(_ux_host_class_swar_write(swar, data_pointer, requested_length, actual_length));
 }
+

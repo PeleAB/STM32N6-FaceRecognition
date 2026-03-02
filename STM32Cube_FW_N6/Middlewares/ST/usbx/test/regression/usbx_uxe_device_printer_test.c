@@ -189,3 +189,4 @@ UCHAR printer_device_id[] =
         test_control_return(0);
     }
 }
+

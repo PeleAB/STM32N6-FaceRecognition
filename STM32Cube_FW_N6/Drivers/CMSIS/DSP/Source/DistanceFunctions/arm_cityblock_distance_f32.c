@@ -155,3 +155,4 @@ float32_t arm_cityblock_distance_f32(const float32_t *pA,const float32_t *pB, ui
 /**
  * @} end of Manhattan group
  */
+

@@ -234,3 +234,4 @@ void arm_absmax_q15(
 /**
   @} end of AbsMax group
  */
+

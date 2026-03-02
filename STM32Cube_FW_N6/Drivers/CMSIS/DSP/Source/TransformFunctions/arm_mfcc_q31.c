@@ -205,3 +205,4 @@ arm_status arm_mfcc_q31(
 /**
   @} end of MFCC group
  */
+

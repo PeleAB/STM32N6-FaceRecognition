@@ -191,3 +191,4 @@ ULONG                                               descriptor_found;
     return(UX_HOST_CLASS_AUDIO_WRONG_TYPE);
 }
 
+

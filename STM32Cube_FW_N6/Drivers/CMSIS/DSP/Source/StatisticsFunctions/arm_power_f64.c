@@ -75,3 +75,4 @@ void arm_power_f64(
 /**
   @} end of power group
  */
+

@@ -340,3 +340,4 @@ HAL_CRC_StateTypeDef HAL_CRC_GetState(const CRC_HandleTypeDef *hcrc);
 #endif
 
 #endif /* STM32N6xx_HAL_CRC_H */
+

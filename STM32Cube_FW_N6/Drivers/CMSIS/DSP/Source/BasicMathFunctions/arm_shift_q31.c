@@ -230,3 +230,4 @@ void arm_shift_q31(
 /**
   @} end of BasicShift group
  */
+

@@ -108,3 +108,4 @@ void arm_sin_cos_q31(
 /**
   @} end of SinCos group
  */
+

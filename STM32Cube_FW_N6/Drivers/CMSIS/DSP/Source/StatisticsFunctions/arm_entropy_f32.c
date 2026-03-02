@@ -172,3 +172,4 @@ float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
 /**
  * @} end of Entropy group
  */
+

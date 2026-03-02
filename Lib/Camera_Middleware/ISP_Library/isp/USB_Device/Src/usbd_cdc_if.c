@@ -238,3 +238,4 @@ uint32_t USB_CDC_Send_Wrapper_Function(uint8_t* buffer, uint32_t size)
 /**
   * @}
   */
+

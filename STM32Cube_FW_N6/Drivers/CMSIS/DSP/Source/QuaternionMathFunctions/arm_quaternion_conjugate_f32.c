@@ -96,3 +96,4 @@ void arm_quaternion_conjugate_f32(const float32_t *pInputQuaternions,
 /**
   @} end of QuatConjugate group
  */
+

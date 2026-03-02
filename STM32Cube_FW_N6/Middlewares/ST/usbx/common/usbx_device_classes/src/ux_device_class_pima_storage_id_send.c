@@ -143,3 +143,4 @@ UCHAR                   *storage_id;
     /* Return completion status.  */
     return(status);
 }
+

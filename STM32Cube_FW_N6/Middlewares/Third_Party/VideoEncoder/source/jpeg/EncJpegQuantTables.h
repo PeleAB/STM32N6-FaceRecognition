@@ -274,3 +274,4 @@ static const u8 QuantChrominance[11][64] = {
 };
 
 #endif /* #ifndef __QUANT_TABLES_H__ */
+

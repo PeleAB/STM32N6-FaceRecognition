@@ -194,3 +194,4 @@ UINT  _uxe_host_class_video_read(UX_HOST_CLASS_VIDEO *video, UX_HOST_CLASS_VIDEO
     /* Call the actual video read function.  */
     return(_ux_host_class_video_read(video, video_transfer_request));
 }
+

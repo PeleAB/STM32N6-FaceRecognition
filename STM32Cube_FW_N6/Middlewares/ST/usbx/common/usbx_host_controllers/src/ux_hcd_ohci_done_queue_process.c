@@ -346,3 +346,4 @@ ULONG               current_frame;
     _ux_hcd_ohci_register_write(hcd_ohci, OHCI_HC_INTERRUPT_ENABLE, ohci_register_interrupt);
 }
 
+

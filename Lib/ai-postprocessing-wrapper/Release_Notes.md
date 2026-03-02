@@ -26,3 +26,4 @@ Add support for BlazeFace post processing
 ### v1.0.2 / April 2025
 
 Initial Release
+

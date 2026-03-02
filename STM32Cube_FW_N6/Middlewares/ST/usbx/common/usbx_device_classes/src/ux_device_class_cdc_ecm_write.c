@@ -142,3 +142,4 @@ UX_SLAVE_CLASS_CDC_ECM      *cdc_ecm;
     return(status);            
 #endif
 }
+

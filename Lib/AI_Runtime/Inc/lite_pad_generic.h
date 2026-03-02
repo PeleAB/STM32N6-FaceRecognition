@@ -109,3 +109,4 @@ void forward_lite_pad_reflect(ai_ptr_const in_data,
                               const ai_ptr_offset w_stride_pad_r);
 
 #endif    /* LITE_PAD_GENERIC_H */
+

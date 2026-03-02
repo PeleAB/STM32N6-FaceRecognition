@@ -198,3 +198,4 @@ UINT  _uxe_host_stack_device_get(ULONG device_index, UX_DEVICE **device)
     /* Invoke device get function.  */
     return(_ux_host_stack_device_get(device_index, device));
 }
+

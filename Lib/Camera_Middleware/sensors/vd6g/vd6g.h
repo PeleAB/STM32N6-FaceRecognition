@@ -201,3 +201,4 @@ int VD6G_GetExposureRegRange(VD6G_Ctx_t *ctx, uint32_t *min_us, uint32_t *max_us
 #endif
 
 #endif
+

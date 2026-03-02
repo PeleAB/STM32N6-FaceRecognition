@@ -386,3 +386,4 @@ ULONG       result;
         test_control_return(0);
     }
 }
+

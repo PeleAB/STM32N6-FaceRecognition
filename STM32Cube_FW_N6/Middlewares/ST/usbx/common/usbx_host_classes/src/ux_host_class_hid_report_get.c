@@ -320,3 +320,4 @@ UINT  _uxe_host_class_hid_report_get(UX_HOST_CLASS_HID *hid, UX_HOST_CLASS_HID_C
     /* Invoke report ID get function.  */
     return(_ux_host_class_hid_report_get(hid, client_report));
 }
+

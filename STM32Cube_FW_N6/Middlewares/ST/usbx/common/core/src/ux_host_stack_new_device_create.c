@@ -300,3 +300,4 @@ UX_ENDPOINT         *control_endpoint;
        allocated until this point should be freed by the caller via _ux_host_stack_device_resources_free.  */
     return(status);
 }
+

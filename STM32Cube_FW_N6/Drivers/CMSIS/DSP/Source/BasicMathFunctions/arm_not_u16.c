@@ -128,3 +128,4 @@ void arm_not_u16(
 /**
   @} end of Not group
  */
+

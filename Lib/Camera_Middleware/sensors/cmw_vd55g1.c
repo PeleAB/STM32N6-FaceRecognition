@@ -450,3 +450,4 @@ int CMW_VD55G1_Probe(CMW_VD55G1_t *io_ctx, CMW_Sensor_if_t *vd55g1_if)
   vd55g1_if->GetSensorInfo = CMW_VD55G1_GetSensorInfo;
   return ret;
 }
+

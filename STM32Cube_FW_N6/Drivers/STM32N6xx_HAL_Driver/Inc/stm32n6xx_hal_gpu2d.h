@@ -319,3 +319,4 @@ uint32_t               HAL_GPU2D_GetError(GPU2D_HandleTypeDef const *const hgpu2
 
 #endif /* STM32N6xx_HAL_GPU2D_H */
 
+

@@ -463,3 +463,4 @@ UX_HOST_CLASS_DUMMY *dummy_ptr = (UX_HOST_CLASS_DUMMY *) inst;
     }
     return 0;
 }
+

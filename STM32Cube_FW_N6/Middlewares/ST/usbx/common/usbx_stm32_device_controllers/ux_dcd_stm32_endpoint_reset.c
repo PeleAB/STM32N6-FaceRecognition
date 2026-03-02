@@ -114,3 +114,4 @@ UX_DCD_STM32_ED     *ed;
     /* This function never fails.  */
     return(UX_SUCCESS);
 }
+

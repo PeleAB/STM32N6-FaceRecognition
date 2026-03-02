@@ -36,3 +36,4 @@ int _write(int file, char *ptr, int len)
 
   return (status == HAL_OK ? len : 0);
 }
+

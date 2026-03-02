@@ -441,3 +441,4 @@ static void  ux_test_thread_simulation_0_entry(ULONG arg)
         test_control_return(0);
     }
 }
+

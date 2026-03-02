@@ -750,3 +750,4 @@ uint32_t HAL_GPU2D_GetError(GPU2D_HandleTypeDef const *const hgpu2d)
   */
 #endif /* GPU2D */
 #endif /* HAL_GPU2D_MODULE_ENABLED */
+

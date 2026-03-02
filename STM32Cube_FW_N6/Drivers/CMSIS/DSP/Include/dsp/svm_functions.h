@@ -297,3 +297,4 @@ void arm_svm_sigmoid_predict_f32(const arm_svm_sigmoid_instance_f32 *S,
 #endif
 
 #endif /* ifndef _SVM_FUNCTIONS_H_ */
+

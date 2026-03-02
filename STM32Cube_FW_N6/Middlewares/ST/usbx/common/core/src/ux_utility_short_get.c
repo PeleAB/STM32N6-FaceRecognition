@@ -82,3 +82,4 @@ USHORT   value;
     return((ULONG) value);
 }
 
+

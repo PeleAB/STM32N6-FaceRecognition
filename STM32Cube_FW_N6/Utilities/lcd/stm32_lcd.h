@@ -218,3 +218,4 @@ void     UTIL_LCD_FillEllipse(int Xpos, int Ypos, int XRadius, int YRadius, uint
 #endif
 
 #endif /* STM32_LCD_H */
+

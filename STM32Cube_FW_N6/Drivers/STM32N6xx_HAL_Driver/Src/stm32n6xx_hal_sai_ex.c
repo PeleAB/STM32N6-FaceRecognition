@@ -127,3 +127,4 @@ HAL_StatusTypeDef HAL_SAIEx_ConfigPdmMicDelay(const SAI_HandleTypeDef *hsai,
 /**
   * @}
   */
+

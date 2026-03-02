@@ -514,3 +514,4 @@ static uint32_t CRC_Handle_16(CRC_HandleTypeDef *hcrc, uint16_t pBuffer[], uint3
 /**
   * @}
   */
+

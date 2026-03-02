@@ -242,3 +242,4 @@ ULONG                           first_new_aborted = 1;
     /* Return successful completion.  */
     return(UX_SUCCESS);
 }
+

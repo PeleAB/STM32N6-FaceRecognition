@@ -61,3 +61,4 @@ typedef struct MemPoolDef_t {
 #define MEMPOOL_ARR_SIZE(bl_count, bl_size) (((((bl_size) + (4 - 1)) / 4) * 4)*(bl_count))
 
 #endif /* FREERTOS_MPOOL_H_ */
+

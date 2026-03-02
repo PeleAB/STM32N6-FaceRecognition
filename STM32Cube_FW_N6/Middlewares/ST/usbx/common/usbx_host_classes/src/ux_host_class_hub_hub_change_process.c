@@ -79,3 +79,4 @@ UINT  _ux_host_class_hub_hub_change_process(UX_HOST_CLASS_HUB *hub)
     return(UX_SUCCESS);
 }
 
+

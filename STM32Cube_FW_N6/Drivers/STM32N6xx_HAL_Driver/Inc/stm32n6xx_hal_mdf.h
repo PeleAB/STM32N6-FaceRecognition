@@ -1153,3 +1153,4 @@ uint32_t             HAL_MDF_GetError(const MDF_HandleTypeDef *hmdf);
 #endif
 
 #endif /* STM32N6xx_HAL_MDF_H */
+

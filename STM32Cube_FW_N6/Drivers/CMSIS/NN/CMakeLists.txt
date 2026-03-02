@@ -27,3 +27,4 @@ option(BUILD_CMSIS_NN_FUNCTIONS "Build CMSIS-NN Source." ON)
 if(BUILD_CMSIS_NN_FUNCTIONS)
     add_subdirectory(Source)
 endif()
+

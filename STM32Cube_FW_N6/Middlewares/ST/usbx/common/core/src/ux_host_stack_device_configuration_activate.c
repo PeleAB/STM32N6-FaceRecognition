@@ -235,3 +235,4 @@ UINT  _uxe_host_stack_device_configuration_activate(UX_CONFIGURATION *configurat
     /* Invoke configuration activate function.  */
     return(_ux_host_stack_device_configuration_activate(configuration));
 }
+

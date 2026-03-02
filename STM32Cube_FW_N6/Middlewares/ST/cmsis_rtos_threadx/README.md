@@ -1,6 +1,6 @@
-ï»¿# CMSIS-RTOS v2 wrapper implementation
+# CMSIS-RTOS v2 wrapper implementation
 
-The CMSIS-RTOS v2 (CMSIS-RTOS2) provides generic RTOS interfaces for ArmÂ® CortexÂ® processor-based devices. It provides a standardized API for software components that require RTOS functionality and gives therefore serious benefits to the users and the software industry:
+The CMSIS-RTOS v2 (CMSIS-RTOS2) provides generic RTOS interfaces for Arm® Cortex® processor-based devices. It provides a standardized API for software components that require RTOS functionality and gives therefore serious benefits to the users and the software industry:
 
  - CMSIS-RTOS2 provides basic features that are required in many applications.
  - The unified feature set of the CMSIS-RTOS2 reduces learning efforts and simplifies sharing of software components.

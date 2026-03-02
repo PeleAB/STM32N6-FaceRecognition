@@ -272,3 +272,4 @@ void arm_barycenter_f16(const float16_t *in, const float16_t *weights, float16_t
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

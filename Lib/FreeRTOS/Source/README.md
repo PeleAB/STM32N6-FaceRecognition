@@ -98,3 +98,4 @@ git config blame.ignoreRevsFile .git-blame-ignore-revs
 ### Spelling
 *lexicon.txt* contains words that are not traditionally found in an English dictionary. It is used by the spellchecker to verify the various jargon, variable names, and other odd words used in the FreeRTOS code base. If your pull request fails to pass the spelling and you believe this is a mistake, then add the word to *lexicon.txt*.
 Note that only the FreeRTOS Kernel source files are checked for proper spelling, the portable section is ignored.
+

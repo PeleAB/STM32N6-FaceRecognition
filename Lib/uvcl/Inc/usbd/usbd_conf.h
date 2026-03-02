@@ -40,3 +40,4 @@ extern "C" {
 #endif
 
 #endif /* __USBD_CONF_H */
+

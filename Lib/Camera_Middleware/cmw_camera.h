@@ -190,3 +190,4 @@ int CMW_CAMERA_PIPE_VsyncEventCallback(uint32_t pipe);
 #endif
 
 #endif /* __MW_CAMERA_H */
+

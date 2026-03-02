@@ -561,3 +561,4 @@ void HAL_PSSI_AbortCpltCallback(PSSI_HandleTypeDef *hpssi);
 
 #endif /* STM32N6xx_HAL_PSSI_H */
 
+

@@ -2109,3 +2109,4 @@ static uint32_t SDMMC_GetCmdError(SDMMC_TypeDef *SDMMCx)
 /**
   * @}
   */
+

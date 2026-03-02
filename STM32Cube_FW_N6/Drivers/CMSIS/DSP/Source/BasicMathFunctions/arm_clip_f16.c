@@ -139,3 +139,4 @@ void arm_clip_f16(const float16_t * pSrc,
 /**
   @} end of BasicClip group
  */
+

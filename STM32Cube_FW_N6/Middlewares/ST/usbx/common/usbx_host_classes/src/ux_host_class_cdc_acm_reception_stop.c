@@ -190,3 +190,4 @@ UINT  _uxe_host_class_cdc_acm_reception_stop(UX_HOST_CLASS_CDC_ACM *cdc_acm,
     /* Invoke CDC ACM reception function.  */
     return(_ux_host_class_cdc_acm_reception_stop(cdc_acm, cdc_acm_reception));
 }
+

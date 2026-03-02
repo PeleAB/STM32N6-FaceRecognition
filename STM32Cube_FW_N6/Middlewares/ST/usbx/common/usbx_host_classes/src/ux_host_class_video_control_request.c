@@ -269,3 +269,4 @@ UINT _uxe_host_class_video_control_request(UX_HOST_CLASS_VIDEO *video,
                                                 entity_id, control_selector,
                                                 parameter, parameter_size));
 }
+

@@ -227,3 +227,4 @@ arm_status arm_max_pool_s8(const cmsis_nn_context *ctx,
 /**
  * @} end of Pooling group
  */
+

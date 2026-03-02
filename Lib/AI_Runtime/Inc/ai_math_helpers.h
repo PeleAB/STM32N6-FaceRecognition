@@ -570,3 +570,4 @@ AI_INTERFACE_ENTRY void ai_atan2_buffer(ai_handle out, const ai_handle a, const 
 AI_API_DECLARE_END
 
 #endif /* AI_MATH_HELPERS_H */
+

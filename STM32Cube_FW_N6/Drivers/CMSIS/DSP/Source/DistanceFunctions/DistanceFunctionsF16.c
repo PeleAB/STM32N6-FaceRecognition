@@ -34,3 +34,4 @@
 #include "arm_jensenshannon_distance_f16.c"
 #include "arm_minkowski_distance_f16.c"
 
+

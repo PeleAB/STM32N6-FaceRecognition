@@ -222,3 +222,4 @@ void arm_absmax_no_idx_q7(
 /**
   @} end of AbsMax group
  */
+

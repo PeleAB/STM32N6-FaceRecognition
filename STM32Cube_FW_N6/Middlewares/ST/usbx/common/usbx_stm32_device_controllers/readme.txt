@@ -97,3 +97,4 @@ Dependencies:
 -------------
 - Azure RTOS USBX V6.1.3
 - STM32Cube PCD HAL drivers
+

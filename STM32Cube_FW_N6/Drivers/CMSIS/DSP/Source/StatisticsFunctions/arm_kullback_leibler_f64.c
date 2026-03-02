@@ -73,3 +73,4 @@ float64_t arm_kullback_leibler_f64(const float64_t * pSrcA, const float64_t * pS
 /**
  * @} end of Kullback-Leibler group
  */
+

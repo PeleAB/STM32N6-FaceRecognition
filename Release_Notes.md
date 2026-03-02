@@ -55,3 +55,4 @@ Computer Vision AI H264 UVC application using "TinyYOLOv2" model for people dete
 ### V1.0.0 / December 2024
 
 Initial Version
+

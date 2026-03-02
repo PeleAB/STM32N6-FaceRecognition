@@ -141,3 +141,4 @@ arm_status arm_mat_sub_f64(
 /**
   @} end of MatrixSub group
  */
+

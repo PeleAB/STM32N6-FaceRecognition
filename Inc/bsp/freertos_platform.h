@@ -26,3 +26,4 @@ void TIM4_Config(void);
 uint32_t TIM4_Get_Value(void);
 
 #endif /* BSP_FREERTOS_PLATFORM_H */
+

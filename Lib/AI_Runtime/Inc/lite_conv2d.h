@@ -470,3 +470,4 @@ void forward_lite_conv2d_if32of32wf32_group_pool(const ai_float *pDataIn_init,
                                 const ai_short_size pool_pad_y);
 
 #endif    /*LITE_CONV2D_H*/
+

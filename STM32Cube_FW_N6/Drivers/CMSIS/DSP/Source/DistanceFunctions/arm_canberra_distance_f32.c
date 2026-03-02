@@ -220,3 +220,4 @@ float32_t arm_canberra_distance_f32(const float32_t *pA,const float32_t *pB, uin
 /**
  * @} end of Canberra group
  */
+

@@ -105,3 +105,4 @@ void arm_quaternion_normalize_f32(const float32_t *pInputQuaternions,
 /**
   @} end of QuatNormalized group
  */
+

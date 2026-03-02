@@ -116,3 +116,4 @@ void forward_lite_dense_if32of32wf32_lut8(
 
 
 #endif    /* LITE_DENSE_IF32_H */
+

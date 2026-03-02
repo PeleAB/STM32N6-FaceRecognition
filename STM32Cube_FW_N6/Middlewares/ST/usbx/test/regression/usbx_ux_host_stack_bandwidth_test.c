@@ -606,3 +606,4 @@ struct _test_def {
         test_control_return(0);
     }
 }
+

@@ -449,3 +449,4 @@ VOID  _ux_device_class_cdc_ecm_interrupt_thread(ULONG cdc_ecm_class);
 #endif 
 
 #endif /* UX_DEVICE_CLASS_CDC_ECM_H */
+

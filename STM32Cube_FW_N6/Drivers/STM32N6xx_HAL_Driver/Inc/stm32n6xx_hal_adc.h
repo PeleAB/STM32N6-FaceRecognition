@@ -1862,3 +1862,4 @@ void ADC_ConfigureBoostMode(ADC_HandleTypeDef *hadc);
 #endif
 
 #endif /* STM32N6xx_HAL_ADC_H */
+

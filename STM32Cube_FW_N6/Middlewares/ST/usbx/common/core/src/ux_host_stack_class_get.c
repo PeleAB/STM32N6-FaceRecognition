@@ -188,3 +188,4 @@ UINT  _uxe_host_stack_class_get(UCHAR *class_name, UX_HOST_CLASS **host_class)
     /* Invoke class get function.  */
     return(_ux_host_stack_class_get(class_name, host_class));
 }
+

@@ -2051,3 +2051,4 @@ static int32_t IMX335_Probe(uint32_t Resolution, uint32_t PixelFormat)
 /**
   * @}
   */
+

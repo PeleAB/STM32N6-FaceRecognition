@@ -247,3 +247,4 @@ UINT  _uxe_host_class_prolific_read (UX_HOST_CLASS_PROLIFIC *prolific, UCHAR *da
     /* Invoke PROLIFIC read function.  */
     return(_ux_host_class_prolific_read(prolific, data_pointer, requested_length, actual_length));
 }
+

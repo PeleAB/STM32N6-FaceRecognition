@@ -257,3 +257,4 @@ void arm_cmplx_dot_prod_q31(
 /**
   @} end of cmplx_dot_prod group
  */
+

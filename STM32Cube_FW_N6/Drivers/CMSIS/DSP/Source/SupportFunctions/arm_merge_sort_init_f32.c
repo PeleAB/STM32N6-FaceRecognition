@@ -51,3 +51,4 @@ void arm_merge_sort_init_f32(arm_merge_sort_instance_f32 * S, arm_sort_dir dir, 
 /**
   @} end of Sorting group
  */
+

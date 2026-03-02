@@ -91,3 +91,4 @@ UINT    _ux_device_class_video_stream_get(UX_DEVICE_CLASS_VIDEO *video,
     /* Return completion status.  */
     return(UX_SUCCESS);
 }
+

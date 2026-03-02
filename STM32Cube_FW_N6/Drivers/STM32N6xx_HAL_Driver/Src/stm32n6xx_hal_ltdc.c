@@ -4071,3 +4071,4 @@ static void LTDC_SetPredefFormat(LTDC_HandleTypeDef *hltdc, uint32_t LayerIdx)
   * @}
   */
 
+

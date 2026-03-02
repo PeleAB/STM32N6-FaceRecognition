@@ -150,3 +150,4 @@ UINT  _uxe_host_class_hid_mouse_buttons_get(UX_HOST_CLASS_HID_MOUSE *mouse_insta
     return(_ux_host_class_hid_mouse_buttons_get(mouse_instance, mouse_buttons));
 
 }
+

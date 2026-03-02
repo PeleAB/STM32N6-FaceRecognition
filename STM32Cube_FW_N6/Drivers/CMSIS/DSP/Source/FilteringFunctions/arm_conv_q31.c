@@ -743,3 +743,4 @@ void arm_conv_q31(
 /**
   @} end of Conv group
  */
+

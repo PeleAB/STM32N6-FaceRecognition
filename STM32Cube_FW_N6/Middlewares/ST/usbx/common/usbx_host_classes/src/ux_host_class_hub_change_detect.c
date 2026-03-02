@@ -128,3 +128,4 @@ UINT                    class_index;
     return;
 #endif
 }
+

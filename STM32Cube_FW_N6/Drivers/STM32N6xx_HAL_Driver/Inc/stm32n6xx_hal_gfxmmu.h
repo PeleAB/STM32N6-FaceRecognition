@@ -368,3 +368,4 @@ uint32_t HAL_GFXMMU_GetError(GFXMMU_HandleTypeDef *hgfxmmu);
 #endif
 
 #endif /* STM32N6xx_HAL_GFXMMU_H */
+

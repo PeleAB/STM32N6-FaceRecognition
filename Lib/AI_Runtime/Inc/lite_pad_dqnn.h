@@ -46,3 +46,4 @@ void forward_lite_pad_is1os1(const ai_u32 *pDataIn_init,
 
 
 #endif    /*LITE_PADDING_DQNN_H*/
+

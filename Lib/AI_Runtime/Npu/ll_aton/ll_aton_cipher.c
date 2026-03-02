@@ -323,3 +323,4 @@ int LL_DmaCypherInit(LL_Cypher_InitTypeDef *cypherInfo)
 }
 
 #endif //(ATON_STRENG_VERSION_ENCR_DT == 1)
+

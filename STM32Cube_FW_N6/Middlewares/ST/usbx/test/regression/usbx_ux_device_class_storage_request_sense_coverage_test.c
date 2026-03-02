@@ -42,3 +42,4 @@ void    usbx_device_class_storage_request_sense_coverage_test_application_define
     test_control_return(0);
     return;
 }
+

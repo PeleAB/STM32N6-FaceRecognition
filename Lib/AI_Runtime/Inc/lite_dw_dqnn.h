@@ -129,3 +129,4 @@ void forward_lite_dw_is1os1ws1_bn_pad1_optim3(const ai_u32 *pDataIn_init,
 
 
 #endif    /*LITE_DW_DQNN_H*/
+

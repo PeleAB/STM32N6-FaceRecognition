@@ -123,3 +123,4 @@ ULONG                   class_index;
     /* No more entries in the class table.  */
     return(UX_NO_CLASS_MATCH);
 }
+

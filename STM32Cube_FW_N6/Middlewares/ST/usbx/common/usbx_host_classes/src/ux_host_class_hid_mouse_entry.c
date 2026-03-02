@@ -250,3 +250,4 @@ UX_HOST_CLASS_HID_REPORT_CALLBACK       call_back;
     return(UX_STATE_WAIT);
 }
 #endif
+

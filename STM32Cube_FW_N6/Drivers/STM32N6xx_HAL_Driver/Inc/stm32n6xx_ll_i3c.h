@@ -4402,3 +4402,4 @@ void LL_I3C_StructInit(LL_I3C_InitTypeDef *I3C_InitStruct);
 #endif
 
 #endif /* __STM32N6xx_LL_I3C_H */
+

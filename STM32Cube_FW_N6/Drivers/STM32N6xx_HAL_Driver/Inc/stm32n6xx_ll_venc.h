@@ -136,3 +136,4 @@ void LL_VENC_DeInit(void);
   */
 
 #endif /* STM32N6xx_LL_VENC_H */
+

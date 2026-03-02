@@ -260,3 +260,4 @@ void arm_lms_q15(
 /**
   @} end of LMS group
  */
+

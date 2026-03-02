@@ -354,3 +354,4 @@ uint32_t             HAL_DTS_GetError(const DTS_HandleTypeDef *hdts);
 #endif
 
 #endif /* STM32N6xx_HAL_DTS_H */
+

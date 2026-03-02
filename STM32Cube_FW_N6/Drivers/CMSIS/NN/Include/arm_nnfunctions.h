@@ -2530,3 +2530,4 @@ arm_status arm_svdf_state_s16_s8(const cmsis_nn_context *input_ctx,
 #endif
 
 #endif
+

@@ -781,3 +781,4 @@ static UINT    demo_thread_media_write(VOID *storage, ULONG lun, UCHAR * data_po
 
     return UX_SUCCESS;
 }
+

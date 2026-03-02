@@ -613,3 +613,4 @@ extern "C"
 #endif
 
 #endif /*__H264ENCAPI_H__*/
+

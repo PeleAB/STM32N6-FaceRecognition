@@ -1913,3 +1913,4 @@ static uint32_t DTS_ConvertFromCelsiusDegree(float_t temperature)
 /**
   * @}
   */
+

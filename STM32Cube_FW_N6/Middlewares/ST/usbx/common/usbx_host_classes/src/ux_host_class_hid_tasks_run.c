@@ -109,3 +109,4 @@ UX_HOST_CLASS_HID_CLIENT        *client = hid -> ux_host_class_hid_client;
     }
 }
 #endif
+

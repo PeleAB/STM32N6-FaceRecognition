@@ -43,3 +43,4 @@ target_sources(arm_dotproduct_example PRIVATE arm_dotproduct_example_f32.c)
 
 target_link_libraries(arm_dotproduct_example PRIVATE CMSISDSP)
 
+

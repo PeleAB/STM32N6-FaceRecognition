@@ -179,3 +179,4 @@ UINT  _uxe_host_class_prolific_reception_start (UX_HOST_CLASS_PROLIFIC *prolific
     /* Invoke PROLIFIC reception start function.  */
     return(_ux_host_class_prolific_reception_start(prolific, prolific_reception));
 }
+

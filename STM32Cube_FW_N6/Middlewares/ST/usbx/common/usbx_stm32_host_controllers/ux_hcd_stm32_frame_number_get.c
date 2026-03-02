@@ -80,3 +80,4 @@ UINT  _ux_hcd_stm32_frame_number_get(UX_HCD_STM32 *hcd_stm32, ULONG *frame_numbe
     return(UX_SUCCESS);
 }
 
+

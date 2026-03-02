@@ -2445,3 +2445,4 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledDMAReq_CC2(const LPTIM_TypeDef *LPTIM
 #endif
 
 #endif /* STM32N6xx_LL_LPTIM_H */
+

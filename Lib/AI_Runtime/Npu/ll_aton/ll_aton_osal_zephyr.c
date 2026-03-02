@@ -141,3 +141,4 @@ void aton_osal_zephyr_exit_cs(void)
 #include "ll_aton_osal_rtos_template.c"
 
 #endif // (LL_ATON_OSAL == LL_ATON_OSAL_ZEPHYR)
+

@@ -198,3 +198,4 @@ UINT  _uxe_host_class_hid_report_callback_register(UX_HOST_CLASS_HID *hid, UX_HO
     /* Invoke periodic start function.  */
     return(_ux_host_class_hid_report_callback_register(hid, call_back));
 }
+

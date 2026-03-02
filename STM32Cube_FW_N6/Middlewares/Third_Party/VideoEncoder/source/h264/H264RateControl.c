@@ -1367,3 +1367,4 @@ static i64 lin_nsxx(i32 *qp, i32 n)
     }
     return sum;
 }
+

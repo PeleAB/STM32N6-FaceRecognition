@@ -100,3 +100,4 @@ const uint16_t * pBitRevTab)
    }
 }
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
+

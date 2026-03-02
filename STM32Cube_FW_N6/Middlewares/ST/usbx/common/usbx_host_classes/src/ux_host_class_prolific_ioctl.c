@@ -387,3 +387,4 @@ UINT  _uxe_host_class_prolific_ioctl(UX_HOST_CLASS_PROLIFIC *prolific, ULONG ioc
     /* Invoke PROLIFIC ioctl function.  */
     return(_ux_host_class_prolific_ioctl(prolific, ioctl_function, parameter));
 }
+

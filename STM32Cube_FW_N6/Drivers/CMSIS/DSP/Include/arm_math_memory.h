@@ -204,3 +204,4 @@ __STATIC_FORCEINLINE void write_q7x4_ia (
 #endif
 
 #endif /*ifndef _ARM_MATH_MEMORY_H_ */
+

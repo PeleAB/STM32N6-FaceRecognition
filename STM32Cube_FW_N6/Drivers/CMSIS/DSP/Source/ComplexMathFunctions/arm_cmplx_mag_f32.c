@@ -271,3 +271,4 @@ void arm_cmplx_mag_f32(
 /**
   @} end of cmplx_mag group
  */
+

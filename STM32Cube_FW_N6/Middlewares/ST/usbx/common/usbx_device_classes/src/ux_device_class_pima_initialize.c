@@ -341,3 +341,4 @@ UX_SLAVE_CLASS_PIMA_PARAMETER           *pima_parameter;
     /* Invoke PIMA initialize function.  */
     return(_ux_device_class_pima_initialize(command));
 }
+

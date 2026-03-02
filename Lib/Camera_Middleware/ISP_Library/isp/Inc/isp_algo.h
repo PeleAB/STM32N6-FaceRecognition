@@ -34,3 +34,4 @@ ISP_StatusTypeDef ISP_Algo_Process(ISP_HandleTypeDef *hIsp);
 /* Exported variables --------------------------------------------------------*/
 
 #endif /* __ISP_ALGO__H */
+

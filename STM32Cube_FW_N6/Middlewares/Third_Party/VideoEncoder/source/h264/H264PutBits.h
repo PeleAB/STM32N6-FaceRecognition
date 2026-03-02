@@ -83,3 +83,4 @@ void H264RbspTrailingBits(stream_s * stream);
 void H264Comment(char *comment);
 
 #endif
+

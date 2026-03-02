@@ -456,3 +456,4 @@ void UVCL_stm32_usbx_IRQHandler()
 #endif
 #endif
 }
+

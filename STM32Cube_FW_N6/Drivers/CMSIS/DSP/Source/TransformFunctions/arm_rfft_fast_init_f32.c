@@ -350,3 +350,4 @@ arm_status arm_rfft_fast_init_f32(
 /**
   @} end of RealFFT group
  */
+

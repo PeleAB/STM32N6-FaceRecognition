@@ -73,3 +73,4 @@ void arm_min_no_idx_f64(
 /**
   @} end of Min group
  */
+

@@ -71,3 +71,4 @@ void arm_nn_mult_q15(q15_t *pSrcA, q15_t *pSrcB, q15_t *pDst, const uint16_t out
 /**
  * @} end of NNBasicMath group
  */
+

@@ -227,3 +227,4 @@ void arm_power_f32(
 /**
   @} end of power group
  */
+

@@ -50,3 +50,4 @@
 u32 H264CabacInit(u32 *contextTable, u32 cabac_init_idc);
 
 #endif /* __H264CABAC_H__ */
+

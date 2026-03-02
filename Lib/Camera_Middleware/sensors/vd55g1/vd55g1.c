@@ -1150,3 +1150,4 @@ int VD55G1_SetFlickerMode(VD55G1_Ctx_t *ctx, VD55G1_Flicker_t mode)
 
   return 0;
 }
+

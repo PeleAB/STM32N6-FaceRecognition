@@ -73,3 +73,4 @@ void arm_concatenation_s8_z(const int8_t *input,
 /**
  * @} end of Concatenation group
  */
+

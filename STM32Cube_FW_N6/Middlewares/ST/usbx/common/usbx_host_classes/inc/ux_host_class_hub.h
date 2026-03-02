@@ -275,3 +275,4 @@ UINT    _ux_host_class_hub_tasks_run(UX_HOST_CLASS *hub_class);
 
 #endif
 
+

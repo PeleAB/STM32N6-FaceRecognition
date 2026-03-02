@@ -365,3 +365,4 @@ HAL_UART_RxEventTypeTypeDef HAL_UARTEx_GetRxEventType(const UART_HandleTypeDef *
 
 #endif /* STM32N6xx_HAL_UART_EX_H */
 
+

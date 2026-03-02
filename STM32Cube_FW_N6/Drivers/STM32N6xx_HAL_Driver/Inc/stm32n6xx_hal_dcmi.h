@@ -696,3 +696,4 @@ uint32_t              HAL_DCMI_GetError(const DCMI_HandleTypeDef *hdcmi);
 #endif
 
 #endif /* STM32N6xx_HAL_DCMI_H */
+

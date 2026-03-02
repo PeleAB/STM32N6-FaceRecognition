@@ -17,3 +17,4 @@ Otherwise, the features and implementations are the same : a few optimized Neon 
 
 The license covering those files is different : It is a MIT license.
 Other parts of the CMSIS-DSP are covered with an Apache-2.0 license.
+

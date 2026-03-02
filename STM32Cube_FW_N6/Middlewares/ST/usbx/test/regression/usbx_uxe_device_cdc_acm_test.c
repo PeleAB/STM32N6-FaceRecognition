@@ -175,3 +175,4 @@ UX_SLAVE_CLASS_COMMAND                  dummy_command;
         test_control_return(0);
     }
 }
+

@@ -3144,3 +3144,4 @@ static HAL_StatusTypeDef HASH_WaitOnFlagUntilTimeout(HASH_HandleTypeDef *hhash, 
 /**
   * @}
   */
+

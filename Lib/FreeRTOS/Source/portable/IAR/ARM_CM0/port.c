@@ -489,3 +489,4 @@ __weak void vPortSetupTimerInterrupt( void )
     }
 
 #endif /* configUSE_TICKLESS_IDLE */
+

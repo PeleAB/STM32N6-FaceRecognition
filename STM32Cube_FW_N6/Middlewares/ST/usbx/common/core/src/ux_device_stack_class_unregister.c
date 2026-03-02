@@ -201,3 +201,4 @@ UINT  _uxe_device_stack_class_unregister(UCHAR *class_name,
     /* Invoke unregister function.  */
     return(_ux_device_stack_class_unregister(class_name, class_entry_function));
 }
+

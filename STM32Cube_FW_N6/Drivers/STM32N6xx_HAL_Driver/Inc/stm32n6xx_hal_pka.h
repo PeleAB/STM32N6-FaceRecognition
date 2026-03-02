@@ -668,3 +668,4 @@ uint32_t             HAL_PKA_GetError(const PKA_HandleTypeDef *hpka);
 #endif
 
 #endif /* STM32N6xx_HAL_PKA_H */
+

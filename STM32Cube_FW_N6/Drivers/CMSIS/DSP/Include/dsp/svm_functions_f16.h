@@ -279,3 +279,4 @@ void arm_svm_sigmoid_predict_f16(const arm_svm_sigmoid_instance_f16 *S,
 #endif
 
 #endif /* ifndef _SVM_FUNCTIONS_F16_H_ */
+

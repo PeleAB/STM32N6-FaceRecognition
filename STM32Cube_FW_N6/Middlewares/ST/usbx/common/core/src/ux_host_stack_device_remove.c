@@ -218,3 +218,4 @@ UX_HOST_CLASS_COMMAND       command;
     /* We are done with this device removal.  */
     return(UX_SUCCESS);
 }
+

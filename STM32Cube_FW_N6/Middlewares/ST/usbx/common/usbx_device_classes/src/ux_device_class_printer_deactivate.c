@@ -107,3 +107,4 @@ UX_SLAVE_CLASS              *printer_class;
     /* Return completion status.  */
     return(UX_SUCCESS);
 }
+

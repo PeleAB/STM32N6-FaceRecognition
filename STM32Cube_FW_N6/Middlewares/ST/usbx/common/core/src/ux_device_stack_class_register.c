@@ -224,3 +224,4 @@ UINT  _uxe_device_stack_class_register(UCHAR *class_name,
     return(_ux_device_stack_class_register(class_name, class_entry_function,
                             configuration_number, interface_number, parameter));
 }
+

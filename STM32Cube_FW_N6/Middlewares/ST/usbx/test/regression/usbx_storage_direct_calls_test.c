@@ -1692,3 +1692,4 @@ UINT    default_device_media_status(VOID *storage, ULONG lun, ULONG media_id, UL
     /* The ATA drive never fails. This is just for demo only !!!! */
     return(UX_SUCCESS);
 }
+

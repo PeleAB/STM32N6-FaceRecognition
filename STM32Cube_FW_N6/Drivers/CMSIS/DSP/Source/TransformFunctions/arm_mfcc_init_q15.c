@@ -105,3 +105,4 @@ arm_status arm_mfcc_init_q15(
 /**
   @} end of MFCC group
  */
+

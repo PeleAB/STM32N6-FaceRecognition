@@ -1490,3 +1490,4 @@ ULONG                                                                   clock;
     return(UX_SUCCESS);
 #endif
 }
+

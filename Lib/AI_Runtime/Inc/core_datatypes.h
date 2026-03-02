@@ -60,3 +60,4 @@
 typedef uint16_t ai_id_obj;
 
 #endif    /*AI_CORE_DATATYPES_H*/
+

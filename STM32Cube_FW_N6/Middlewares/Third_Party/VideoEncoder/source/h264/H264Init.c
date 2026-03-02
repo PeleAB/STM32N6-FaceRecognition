@@ -769,3 +769,4 @@ i32 H264GetAllowedWidth(i32 width, H264EncPictureType inputType)
         return ((width + 7) / 8) * 8;
     }
 }
+

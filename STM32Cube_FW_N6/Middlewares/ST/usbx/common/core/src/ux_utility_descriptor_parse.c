@@ -216,3 +216,4 @@ ULONG           entry_size;
     /* Return the size.  */
     return(size);
 }
+

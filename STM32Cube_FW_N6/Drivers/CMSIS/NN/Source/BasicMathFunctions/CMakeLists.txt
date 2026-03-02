@@ -18,3 +18,4 @@
 
 file(GLOB SRC "./*_*.c")
 target_sources(cmsis-nn PRIVATE ${SRC})
+

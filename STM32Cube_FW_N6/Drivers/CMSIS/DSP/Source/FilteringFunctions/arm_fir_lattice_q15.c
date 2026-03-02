@@ -504,3 +504,4 @@ void arm_fir_lattice_q15(
 /**
   @} end of FIR_Lattice group
  */
+

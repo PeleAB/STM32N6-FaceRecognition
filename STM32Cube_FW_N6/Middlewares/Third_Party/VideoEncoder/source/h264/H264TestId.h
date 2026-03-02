@@ -116,3 +116,4 @@ void H264InputLineBufDepthTest(h264Instance_s *inst);
 void H264CroppingTest(h264Instance_s *inst);
 
 #endif
+

@@ -159,3 +159,4 @@ UINT _uxe_device_class_audio_ioctl(UX_DEVICE_CLASS_AUDIO *audio, ULONG ioctl_fun
     /* Dispatch IOCTL commands.  */
     return(_ux_device_class_audio_ioctl(audio, ioctl_function, parameter));
 }
+

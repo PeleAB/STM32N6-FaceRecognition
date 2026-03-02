@@ -8784,3 +8784,4 @@ uint32_t    LL_RCC_GetXSPIClockFreq(uint32_t XSPIxSource);
 #endif
 
 #endif /* STM32N6xx_LL_RCC_H */
+

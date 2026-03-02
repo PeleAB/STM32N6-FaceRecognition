@@ -546,3 +546,4 @@ ErrorStatus LL_CRC_DeInit(const CRC_TypeDef *CRCx);
 #endif
 
 #endif /* STM32N6xx_LL_CRC_H */
+

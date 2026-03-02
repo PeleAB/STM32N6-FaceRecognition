@@ -34,3 +34,4 @@
 #include "arm_svm_rbf_predict_f16.c"
 #include "arm_svm_sigmoid_init_f16.c"
 #include "arm_svm_sigmoid_predict_f16.c"
+

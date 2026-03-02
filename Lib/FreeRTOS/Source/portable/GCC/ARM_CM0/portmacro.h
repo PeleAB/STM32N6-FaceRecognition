@@ -162,3 +162,4 @@ portFORCE_INLINE static BaseType_t xPortIsInsideInterrupt( void )
 /* *INDENT-ON* */
 
 #endif /* PORTMACRO_H */
+

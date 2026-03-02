@@ -428,3 +428,4 @@ CMSE_NS_ENTRY uint32_t SECURE_SystemCoreClockUpdate(void)
 /**
   * @}
   */
+

@@ -221,3 +221,4 @@ void arm_cmplx_mag_fast_q15(
 /**
   @} end of cmplx_mag group
  */
+

@@ -190,3 +190,4 @@ int32_t IRQ_SetPriorityGroupBits (uint32_t bits);
 uint32_t IRQ_GetPriorityGroupBits (void);
 
 #endif  // IRQ_CTRL_H_
+

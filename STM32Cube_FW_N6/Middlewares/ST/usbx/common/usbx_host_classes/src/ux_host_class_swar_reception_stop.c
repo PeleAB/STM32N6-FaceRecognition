@@ -160,3 +160,4 @@ UINT  _uxe_host_class_swar_reception_stop (UX_HOST_CLASS_SWAR *swar,
     /* Invoke SWAR reception start function.  */
     return(_ux_host_class_swar_reception_start(swar, swar_reception));
 }
+

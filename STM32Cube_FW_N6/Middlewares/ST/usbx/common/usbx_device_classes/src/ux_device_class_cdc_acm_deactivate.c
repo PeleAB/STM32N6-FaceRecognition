@@ -140,3 +140,4 @@ UX_SLAVE_ENDPOINT           *endpoint_out;
     /* Return completion status.  */
     return(UX_SUCCESS);
 }
+

@@ -204,3 +204,4 @@ UX_SLAVE_CLASS                          dummy_class_array[2];
         test_control_return(0);
     }
 }
+

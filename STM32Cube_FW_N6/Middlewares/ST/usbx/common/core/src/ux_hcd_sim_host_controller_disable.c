@@ -82,3 +82,4 @@ UX_HCD  *hcd = hcd_sim_host -> ux_hcd_sim_host_hcd_owner;
     /* Return successful completion.  */
     return(UX_SUCCESS);
 }
+

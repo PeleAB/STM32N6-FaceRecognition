@@ -80,3 +80,4 @@ VOID* _ux_utility_memory_allocate_mulc_safe(ULONG align,ULONG cache,ULONG size_m
 {
     return UX_UTILITY_MEMORY_ALLOCATE_MULC_SAFE(align, cache, size_mul_v, size_mul_c);
 }
+

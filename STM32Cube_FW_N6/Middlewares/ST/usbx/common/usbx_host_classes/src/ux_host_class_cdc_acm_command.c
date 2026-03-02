@@ -267,3 +267,4 @@ UINT  _uxe_host_class_cdc_acm_command(UX_HOST_CLASS_CDC_ACM *cdc_acm, ULONG comm
     /* Invoke CDC ACM command send function.  */
     return(_ux_host_class_cdc_acm_command(cdc_acm, command, value, data_buffer, data_length));
 }
+

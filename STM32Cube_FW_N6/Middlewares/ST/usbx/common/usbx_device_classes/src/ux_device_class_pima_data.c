@@ -274,3 +274,4 @@ USHORT _ux_device_class_pima_supported_image_formats[] =        {
 #endif
                                                                 0
                                                                 };
+

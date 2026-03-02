@@ -20,3 +20,4 @@ void freertos_libc_init()
 {
   /* Nothing to do for IAR */
 }
+

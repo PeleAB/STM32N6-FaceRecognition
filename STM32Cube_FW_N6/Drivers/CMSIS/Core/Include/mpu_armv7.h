@@ -273,3 +273,4 @@ __STATIC_INLINE void ARM_MPU_Load(ARM_MPU_Region_t const* table, uint32_t cnt)
 }
 
 #endif
+

@@ -10,3 +10,4 @@ Responsibilities
 
 Non-goals
 - No application logic, buffering strategies, or FreeRTOS task ownership beyond what is required for basic startup.
+

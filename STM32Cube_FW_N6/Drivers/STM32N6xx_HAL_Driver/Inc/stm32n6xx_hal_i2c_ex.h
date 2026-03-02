@@ -154,3 +154,4 @@ HAL_StatusTypeDef HAL_I2CEx_ConfigFastModePlus(I2C_HandleTypeDef *hi2c, uint32_t
 #endif
 
 #endif /* STM32N6xx_HAL_I2C_EX_H */
+

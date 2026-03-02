@@ -749,3 +749,4 @@ UINT    _uxe_device_class_video_ioctl(UX_DEVICE_CLASS_VIDEO *video, ULONG ioctl_
 #endif
 
 #endif
+

@@ -178,3 +178,4 @@ UINT  _uxe_host_class_prolific_command(UX_HOST_CLASS_PROLIFIC *prolific, ULONG c
     /* Invoke PROLIFIC command function.  */
     return(_ux_host_class_prolific_command(prolific, command, value, data_buffer, data_length));
 }
+

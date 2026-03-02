@@ -169,3 +169,4 @@ arm_status arm_atan2_f16(float16_t y,float16_t x,float16_t *result)
 /**
   @} end of atan2 group
  */
+

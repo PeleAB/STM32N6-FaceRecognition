@@ -82,3 +82,4 @@ UINT  _ux_hcd_ohci_port_suspend(UX_HCD_OHCI *hcd_ohci, ULONG port_index)
     return(UX_FUNCTION_NOT_SUPPORTED);  
 }
 
+

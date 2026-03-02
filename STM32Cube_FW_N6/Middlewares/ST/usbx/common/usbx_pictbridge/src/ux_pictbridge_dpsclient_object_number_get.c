@@ -84,3 +84,4 @@ UINT  _ux_pictbridge_dpsclient_object_number_get(UX_SLAVE_CLASS_PIMA *pima,
     return(UX_SUCCESS);
 }
 
+

@@ -150,3 +150,4 @@ void dequantize(int32_t* arr, float32_t* tmp, int32_t n, int32_t zero_point, flo
   }
 }
 
+

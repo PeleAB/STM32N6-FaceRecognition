@@ -1395,3 +1395,4 @@ HAL_StatusTypeDef HAL_I3C_Get_ENTDAA_Payload_Info(I3C_HandleTypeDef *hi3c,
 #endif
 
 #endif /* STM32N6xx_HAL_I3C_H */
+

@@ -181,3 +181,4 @@ u32 H264FillerRc(h264RateControl_s * rc, u32 frameCnt);
 i32 H264Calculate(i32 a, i32 b, i32 c);
 #endif /* H264_RATE_CONTROL_H */
 
+

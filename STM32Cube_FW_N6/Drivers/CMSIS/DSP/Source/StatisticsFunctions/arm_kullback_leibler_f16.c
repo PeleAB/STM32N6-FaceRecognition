@@ -150,3 +150,4 @@ float16_t arm_kullback_leibler_f16(const float16_t * pSrcA,const float16_t * pSr
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

@@ -1361,3 +1361,4 @@ UCHAR _ux_pictbridge_xml_variable_xmlns[]                           =   "xmlns";
 /* Define Pictbridge XML string names.  */
 UCHAR _ux_pictbridge_xml_string_xmlns[]                             =   "http://www.cipa.jp/dps/schema/"; 
 
+

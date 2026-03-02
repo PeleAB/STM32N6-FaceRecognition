@@ -300,3 +300,4 @@ void                  HAL_IWDG_EarlyWakeupCallback(IWDG_HandleTypeDef *hiwdg);
 #endif
 
 #endif /* STM32N6xx_HAL_IWDG_H */
+

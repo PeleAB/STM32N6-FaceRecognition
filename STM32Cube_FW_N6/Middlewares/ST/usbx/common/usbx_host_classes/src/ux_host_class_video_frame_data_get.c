@@ -205,3 +205,4 @@ UCHAR                                           *field_offsets;
        not find the right video device.  */
     return(UX_HOST_CLASS_VIDEO_WRONG_TYPE);
 }
+

@@ -147,3 +147,4 @@ UINT    _uxe_device_class_audio_stream_get(UX_DEVICE_CLASS_AUDIO *audio,
     /* Get audio stream instance.  */
     return(_ux_device_class_audio_stream_get(audio, stream_index, stream));
 }
+

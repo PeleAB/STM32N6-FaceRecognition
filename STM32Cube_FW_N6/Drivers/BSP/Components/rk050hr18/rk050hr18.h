@@ -96,3 +96,4 @@ extern "C" {
 #endif
 
 #endif /* __RK050HR18_H */
+

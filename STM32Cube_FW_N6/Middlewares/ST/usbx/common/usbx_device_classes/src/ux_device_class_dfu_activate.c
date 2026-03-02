@@ -155,3 +155,4 @@ UX_SLAVE_CLASS_DFU                      *dfu;
     return(UX_SUCCESS);
 }
 
+

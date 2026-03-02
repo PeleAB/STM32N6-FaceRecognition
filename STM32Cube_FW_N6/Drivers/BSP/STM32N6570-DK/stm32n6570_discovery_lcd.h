@@ -301,3 +301,4 @@ HAL_StatusTypeDef MX_LTDC_Init(LTDC_HandleTypeDef *hltdc, uint32_t Width, uint32
 #endif
 
 #endif /* STM32N6570_DISCOVERY_LCD_H */
+

@@ -72,3 +72,4 @@ float32_t arm_sokalsneath_distance(const uint32_t *pA, const uint32_t *pB, uint3
 /**
  * @} end of BoolDist group
  */
+

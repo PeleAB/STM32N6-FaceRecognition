@@ -579,3 +579,4 @@ uint32_t HAL_HASH_GetError(const HASH_HandleTypeDef *hhash);
 
 
 #endif /* STM32N6xx_HAL_HASH_H */
+

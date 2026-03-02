@@ -61,3 +61,4 @@ NX_PACKET   *out_packet;
 static void post_init_device()
 {
 }
+

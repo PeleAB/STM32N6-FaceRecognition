@@ -52,3 +52,4 @@ size_t __write(int file, const unsigned char *ptr, size_t len)
 
   return (status == HAL_OK ? len : 0);
 }
+

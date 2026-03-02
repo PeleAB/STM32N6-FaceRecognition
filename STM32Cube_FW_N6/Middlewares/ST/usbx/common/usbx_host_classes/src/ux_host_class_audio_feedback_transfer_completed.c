@@ -93,3 +93,4 @@ ULONG                       endpoint_dir;
     _ux_host_stack_transfer_request(transfer_request);
 }
 #endif
+

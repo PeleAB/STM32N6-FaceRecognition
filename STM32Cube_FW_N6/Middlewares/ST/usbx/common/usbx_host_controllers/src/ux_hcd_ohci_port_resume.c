@@ -82,3 +82,4 @@ UINT  _ux_hcd_ohci_port_resume(UX_HCD_OHCI *hcd_ohci, UINT port_index)
     return(UX_FUNCTION_NOT_SUPPORTED);  
 }
 
+

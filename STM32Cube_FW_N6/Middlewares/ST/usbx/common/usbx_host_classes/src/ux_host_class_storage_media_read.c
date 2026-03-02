@@ -246,3 +246,4 @@ UINT  _uxe_host_class_storage_media_read(UX_HOST_CLASS_STORAGE *storage, ULONG s
     /* Invoke storage media read function.  */
     return(_ux_host_class_storage_media_read(storage, sector_start, sector_count, data_pointer));
 }
+

@@ -149,3 +149,4 @@ UCHAR                           *hid_buffer;
     /* Return the status to the caller.  */
     return(UX_SUCCESS);
 }
+

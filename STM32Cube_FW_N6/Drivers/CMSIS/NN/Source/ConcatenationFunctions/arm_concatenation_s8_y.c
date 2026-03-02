@@ -74,3 +74,4 @@ void arm_concatenation_s8_y(const int8_t *input,
 /**
  * @} end of Concatenation group
  */
+

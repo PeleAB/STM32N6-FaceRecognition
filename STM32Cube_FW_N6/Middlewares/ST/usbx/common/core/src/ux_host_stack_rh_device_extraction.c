@@ -86,3 +86,4 @@ UINT  _ux_host_stack_rh_device_extraction(UX_HCD *hcd, UINT port_index)
     return(UX_SUCCESS);
 }
 
+

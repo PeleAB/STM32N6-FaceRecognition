@@ -20,3 +20,4 @@ file(GLOB SRC "./*_s8.c")
 target_sources(cmsis-nn PRIVATE ${SRC} arm_softmax_s8_s16.c
                                        arm_softmax_s16.c
                                        arm_nn_softmax_common_s8.c)
+

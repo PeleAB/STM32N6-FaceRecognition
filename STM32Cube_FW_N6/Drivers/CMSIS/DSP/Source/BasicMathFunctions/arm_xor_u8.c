@@ -127,3 +127,4 @@ void arm_xor_u8(
 /**
   @} end of Xor group
  */
+

@@ -581,3 +581,4 @@ void  tx_test_thread_simulation_1_entry(ULONG arg)
         tx_thread_suspend(&tx_test_thread_simulation_1);
     }
 }
+

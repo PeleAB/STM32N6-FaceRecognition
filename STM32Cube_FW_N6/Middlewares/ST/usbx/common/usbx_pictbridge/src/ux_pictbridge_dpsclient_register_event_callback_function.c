@@ -82,3 +82,4 @@ UINT  _ux_pictbridge_dpsclient_register_event_callback_function(UX_PICTBRIDGE *p
     return(UX_SUCCESS);
 }
 
+

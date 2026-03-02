@@ -732,3 +732,4 @@ HAL_StatusTypeDef HAL_ETHEx_SetFPEConfig(ETH_HandleTypeDef *heth,  ETH_FPEConfig
 #endif
 
 #endif /* STM32N6xx_HAL_ETH_EX_H */
+

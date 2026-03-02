@@ -393,3 +393,4 @@ UINT _uxe_device_class_audio10_control_process(UX_DEVICE_CLASS_AUDIO *audio,
     /* Process control request.  */
     return(_ux_device_class_audio10_control_process(audio, transfer, group));
 }
+

@@ -43,3 +43,4 @@ target_sources(arm_fir_example PRIVATE arm_fir_data.c math_helper.c arm_fir_exam
 
 target_link_libraries(arm_fir_example PRIVATE CMSISDSP)
 
+

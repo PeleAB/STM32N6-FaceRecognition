@@ -138,3 +138,4 @@ void forward_lite_dense_iu16ou16ws16_fxp(
 );
 
 #endif    /* LITE_DENSE_IS16_H */
+

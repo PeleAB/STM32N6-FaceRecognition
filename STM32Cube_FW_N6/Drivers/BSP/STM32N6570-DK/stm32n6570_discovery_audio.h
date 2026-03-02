@@ -394,3 +394,4 @@ HAL_StatusTypeDef MX_MDF1_Init(MDF_HandleTypeDef *hmdf, MX_MDF_Config_t *MXInit)
 #endif
 
 #endif /* STM32N6570_DISCOVERY_AUDIO_H */
+

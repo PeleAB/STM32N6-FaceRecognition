@@ -200,3 +200,4 @@ arm_status arm_atan2_q31(q31_t y,q31_t x,q31_t *result)
 /**
   @} end of atan2 group
  */
+

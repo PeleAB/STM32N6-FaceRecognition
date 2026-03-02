@@ -3376,3 +3376,4 @@ static uint32_t RCC_GetPCLK5ClockFreq(uint32_t HCLK_Frequency)
 /**
   * @}
   */
+

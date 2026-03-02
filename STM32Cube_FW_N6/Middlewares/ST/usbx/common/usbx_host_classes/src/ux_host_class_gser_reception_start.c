@@ -186,3 +186,4 @@ UINT  _uxe_host_class_gser_reception_start (UX_HOST_CLASS_GSER *gser,
     /* Invoke CDC ACM reception start function.  */
     return(_ux_host_class_gser_reception_start(gser, gser_reception));
 }
+

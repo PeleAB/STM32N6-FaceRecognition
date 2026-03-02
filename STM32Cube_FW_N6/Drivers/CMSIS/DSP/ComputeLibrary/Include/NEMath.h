@@ -412,3 +412,4 @@ inline float16x8_t vpowq_f16(float16x8_t val, float16x8_t n)
 #endif /* __ARM_FEATURE_FP16_VECTOR_ARITHMETIC */
 #endif
 #endif /* __ARM_COMPUTE_NEMATH_H__ */
+

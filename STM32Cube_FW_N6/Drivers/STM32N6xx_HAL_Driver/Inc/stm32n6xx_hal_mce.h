@@ -458,3 +458,4 @@ uint32_t HAL_MCE_KeyCRCComputation(const uint32_t *pKey);
 
 #endif /* STM32N6xx_HAL_MCE_H */
 
+

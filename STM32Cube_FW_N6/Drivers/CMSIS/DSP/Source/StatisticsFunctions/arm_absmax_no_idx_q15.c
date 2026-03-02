@@ -218,3 +218,4 @@ void arm_absmax_no_idx_q15(
 /**
   @} end of AbsMax group
  */
+

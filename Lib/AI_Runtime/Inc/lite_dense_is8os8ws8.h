@@ -95,3 +95,4 @@ void forward_lite_dense_is8os8ws8_ch(ai_i8 * pDataOut,
                                      ai_i16 *pBuffer_a);
 
 #endif    /*LITE_DENSE_IS8OS8WS8_H*/
+

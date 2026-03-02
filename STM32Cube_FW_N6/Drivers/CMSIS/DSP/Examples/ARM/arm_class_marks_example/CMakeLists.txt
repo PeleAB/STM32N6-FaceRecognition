@@ -43,3 +43,4 @@ target_sources(arm_class_marks_example PRIVATE arm_class_marks_example_f32.c)
 
 target_link_libraries(arm_class_marks_example PRIVATE CMSISDSP)
 
+

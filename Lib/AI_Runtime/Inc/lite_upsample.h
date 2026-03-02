@@ -237,3 +237,4 @@ void forward_lite_upsample_zeros_if32of32( const ai_float *in_data,
                                          const ai_size height_out);
 
 #endif    /*LITE_UPSAMPLE__H*/
+

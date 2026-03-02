@@ -98,3 +98,4 @@ UINT  _ux_dcd_stm32_transfer_abort(UX_DCD_STM32 *dcd_stm32, UX_SLAVE_TRANSFER *t
     /* Return to caller with success.  */
     return(UX_SUCCESS);
 }
+

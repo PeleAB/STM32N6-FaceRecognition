@@ -40,3 +40,4 @@ int mcu_cache_clean_invalidate_range(uint32_t start_addr, uint32_t end_addr);
 void set_mcu_cache_state(uint8_t i_cache_state, uint8_t d_cache_state);
 
 #endif // __MCU_CACHE_H
+

@@ -167,3 +167,4 @@ UINT  _uxe_device_class_hid_receiver_event_get(UX_SLAVE_CLASS_HID *hid,
     /* Invoke function to free HID event.  */
     return(_ux_device_class_hid_receiver_event_get(hid, event));
 }
+

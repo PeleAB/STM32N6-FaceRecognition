@@ -652,3 +652,4 @@ uint32_t               HAL_JPEG_GetError(const JPEG_HandleTypeDef *hjpeg);
 
 #endif /* STM32N6xx_HAL_JPEG_H */
 
+

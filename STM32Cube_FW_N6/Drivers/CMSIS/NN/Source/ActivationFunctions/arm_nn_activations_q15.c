@@ -94,3 +94,4 @@ void arm_nn_activations_direct_q15(q15_t *data, uint16_t size, uint16_t int_widt
 /**
  * @} end of Acti group
  */
+

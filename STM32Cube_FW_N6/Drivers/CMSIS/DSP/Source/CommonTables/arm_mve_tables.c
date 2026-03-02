@@ -6531,3 +6531,4 @@ q15_t rearranged_twiddle_stride3_4096_q15[2728]={
 #endif /* !defined(ARM_DSP_CONFIG_TABLES) || defined(ARM_FFT_ALLOW_TABLES) */
 #endif /* defined(ARM_MATH_MVEI)  */
 
+

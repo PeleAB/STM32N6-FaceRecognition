@@ -1195,3 +1195,4 @@ UX_SLAVE_ENDPOINT       *endpoint;
     }
 }
 #endif /* defined(USBD_HAL_ISOINCOMPLETE_CALLBACK) */
+

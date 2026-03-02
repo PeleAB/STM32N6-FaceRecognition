@@ -392,3 +392,4 @@ void forward_dense_if32of32ws1_bn(ai_layer* layer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_DENSE_DQNN_H*/
+

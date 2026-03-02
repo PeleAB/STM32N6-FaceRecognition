@@ -488,3 +488,4 @@ void arm_svm_polynomial_predict_f32(
 /**
  * @} end of polysvm group
  */
+

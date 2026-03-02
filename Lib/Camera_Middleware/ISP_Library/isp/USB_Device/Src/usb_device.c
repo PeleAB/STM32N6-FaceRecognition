@@ -56,3 +56,4 @@ void MX_USB_DEVICE_Init(void)
     Error_Handler();
   }
 }
+

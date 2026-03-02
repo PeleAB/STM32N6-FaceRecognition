@@ -103,3 +103,4 @@ ULONG   ticks;
     /* Return completion status.  */
     return;
 }
+

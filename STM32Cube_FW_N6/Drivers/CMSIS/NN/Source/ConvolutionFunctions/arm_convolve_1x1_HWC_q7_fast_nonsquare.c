@@ -233,3 +233,4 @@ arm_status arm_convolve_1x1_HWC_q7_fast_nonsquare(const q7_t *Im_in,
 /**
  * @} end of NNConv group
  */
+

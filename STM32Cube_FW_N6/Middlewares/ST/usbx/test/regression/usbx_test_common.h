@@ -27,3 +27,4 @@ UINT total_final_memory_size = 0;
 
     return total_final_memory_size;
 }
+

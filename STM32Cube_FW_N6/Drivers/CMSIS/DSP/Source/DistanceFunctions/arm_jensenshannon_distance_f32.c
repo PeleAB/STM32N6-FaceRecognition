@@ -245,3 +245,4 @@ float32_t arm_jensenshannon_distance_f32(const float32_t *pA,const float32_t *pB
 /**
  * @} end of JensenShannon group
  */
+

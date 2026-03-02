@@ -133,3 +133,4 @@ int32_t arm_depthwise_conv_wrapper_s8_get_buffer_size(const cmsis_nn_dw_conv_par
 /**
  * @} end of NNConv group
  */
+

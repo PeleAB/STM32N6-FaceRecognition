@@ -120,3 +120,4 @@ arm_status arm_softmax_s16(const int16_t *input,
 /**
  * @} end of Softmax group
  */
+

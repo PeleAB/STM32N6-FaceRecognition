@@ -23,3 +23,4 @@ VOID _ux_utility_interrupt_restore(ALIGN_TYPE flags)
     _tx_thread_interrupt_restore(flags);
 }
 #endif
+

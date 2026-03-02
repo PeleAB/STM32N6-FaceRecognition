@@ -132,3 +132,4 @@ void arm_f16_to_float(
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

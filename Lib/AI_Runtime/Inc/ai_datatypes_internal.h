@@ -415,3 +415,4 @@ ai_size get_tensor_byte_size(const ai_tensor* t);
 AI_API_DECLARE_END
 
 #endif /*AI_DATATYPES_INTERNAL_H*/
+

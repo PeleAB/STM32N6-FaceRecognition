@@ -138,3 +138,4 @@ int32_t imx335_register_set(imx335_ctx_t *ctx, uint16_t reg, uint8_t value);
 /**
   * @}
   */
+

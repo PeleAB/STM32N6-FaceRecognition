@@ -223,3 +223,4 @@ void arm_rotation2quaternion_f32(const float32_t *pInputRotations,
 /**
   @} end of RotQuat group
  */
+

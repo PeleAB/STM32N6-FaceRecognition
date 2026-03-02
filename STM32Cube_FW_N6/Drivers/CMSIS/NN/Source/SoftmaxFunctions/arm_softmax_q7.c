@@ -105,3 +105,4 @@ void arm_softmax_q7(const q7_t *vec_in, const uint16_t dim_vec, q7_t *p_out)
 /**
  * @} end of Softmax group
  */
+

@@ -133,3 +133,4 @@ VOID                    (*write_callback)(struct UX_HOST_CLASS_CDC_ACM_STRUCT *,
     return;
 }
 #endif
+

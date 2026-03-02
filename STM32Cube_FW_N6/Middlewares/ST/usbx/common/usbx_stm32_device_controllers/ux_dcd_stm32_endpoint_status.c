@@ -95,3 +95,4 @@ UX_DCD_STM32_ED      *ed;
     else
         return(UX_TRUE);
 }
+

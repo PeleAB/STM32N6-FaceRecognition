@@ -61,3 +61,4 @@ extern USBD_DescriptorsTypeDef HS_Desc;
 
 #endif /* __USBD_DESC_H*/
 
+

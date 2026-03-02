@@ -84,3 +84,4 @@ void arm_biquad_cascade_stereo_df2T_init_f32(
 /**
   @} end of BiquadCascadeDF2T group
  */
+

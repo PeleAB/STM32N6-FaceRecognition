@@ -4662,3 +4662,4 @@ HAL_StatusTypeDef HAL_RCC_GetConfigAttributes(uint32_t Item, uint32_t *pAttribut
 #endif
 
 #endif /* STM32N6xx_HAL_RCC_H */
+

@@ -77,3 +77,4 @@ int32_t od_ssd_st_pp_process(od_ssd_st_pp_in_centroid_t *pInput,
 #endif
 
 #endif      /* __OD_SSD_ST_PP_IF_H__  */
+

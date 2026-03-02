@@ -292,3 +292,4 @@ void arm_absmax_q7(
 /**
   @} end of AbsMax group
  */
+

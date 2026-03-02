@@ -438,3 +438,4 @@ UINT  _uxe_host_class_audio_streaming_sampling_set(UX_HOST_CLASS_AUDIO *audio, U
     /* Invoke sampling characteristics set function.  */
     return(_ux_host_class_audio_streaming_sampling_set(audio, audio_sampling));
 }
+

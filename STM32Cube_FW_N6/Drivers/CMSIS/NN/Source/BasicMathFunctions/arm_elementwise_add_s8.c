@@ -232,3 +232,4 @@ arm_status arm_elementwise_add_s8(const int8_t *input_1_vect,
 /**
  * @} end of BasicMath group
  */
+

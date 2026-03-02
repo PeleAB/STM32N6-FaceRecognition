@@ -343,3 +343,4 @@ const float64_t * pSrcB,
 #endif
 
 #endif /* ifndef _COMPLEX_MATH_FUNCTIONS_H_ */
+

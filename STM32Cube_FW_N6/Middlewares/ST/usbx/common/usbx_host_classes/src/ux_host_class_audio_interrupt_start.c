@@ -196,3 +196,4 @@ UINT    _uxe_host_class_audio_interrupt_start(UX_HOST_CLASS_AUDIO_AC *audio,
     /* Invoke interrupt start function.  */
     return(_ux_host_class_audio_interrupt_start(audio, callback_function, arg));
 }
+

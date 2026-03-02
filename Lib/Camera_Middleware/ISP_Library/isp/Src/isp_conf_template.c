@@ -69,3 +69,4 @@ void HAL_DCMIPP_PIPE_FrameEventCallback(DCMIPP_HandleTypeDef *hdcmipp, uint32_t 
   }
   /* Additional applicative processing can be implemented from here */
 }
+

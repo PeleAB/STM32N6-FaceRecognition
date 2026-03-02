@@ -353,3 +353,4 @@ UINT _uxe_device_class_hid_read_run(UX_SLAVE_CLASS_HID *hid, UCHAR *buffer,
     return(_ux_device_class_hid_read_run(hid, buffer, requested_length, actual_length));
 }
 #endif
+

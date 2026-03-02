@@ -411,3 +411,4 @@ void forward_ap_integer_UINT8(ai_layer *pLayer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_POOL_H*/
+

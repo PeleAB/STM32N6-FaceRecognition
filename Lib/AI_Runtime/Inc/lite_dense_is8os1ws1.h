@@ -51,3 +51,4 @@ void forward_lite_dense_is8os1ws1_bn_fxp(ai_pbits *out_ptr,
                                          const ai_i32 *threshold_ptr);
 
 #endif    /*LITE_DENSE_IS8OS1WS1_H*/
+

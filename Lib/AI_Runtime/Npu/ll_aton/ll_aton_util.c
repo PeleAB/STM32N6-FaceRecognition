@@ -88,3 +88,4 @@ void LL_ATON_setbits(uint32_t *bits, unsigned int pos, int nbits, unsigned int v
     bits[index1] = tmp;
   }
 }
+

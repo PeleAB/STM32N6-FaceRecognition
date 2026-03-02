@@ -95,3 +95,4 @@ UX_HCD_STM32        *hcd_stm32;
     }
 }
 
+

@@ -730,3 +730,4 @@ void arm_fir_q15(
 /**
   @} end of FIR group
  */
+

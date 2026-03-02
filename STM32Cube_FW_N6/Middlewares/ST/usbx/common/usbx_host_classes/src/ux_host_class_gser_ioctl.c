@@ -340,3 +340,4 @@ UINT  _uxe_host_class_gser_ioctl(UX_HOST_CLASS_GSER *gser, ULONG interface_index
     /* Invoke GSER ioctl function.  */
     return(_ux_host_class_gser_ioctl(gser, interface_index, ioctl_function, parameter));
 }
+

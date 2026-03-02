@@ -295,3 +295,4 @@ void arm_lms_norm_q15(
 /**
   @} end of LMS_NORM group
  */
+

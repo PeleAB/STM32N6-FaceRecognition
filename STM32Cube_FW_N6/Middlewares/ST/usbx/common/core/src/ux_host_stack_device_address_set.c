@@ -191,3 +191,4 @@ UCHAR           device_address_byte;
     }
 #endif
 }
+

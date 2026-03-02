@@ -283,3 +283,4 @@ void LL_LPUART_StructInit(LL_LPUART_InitTypeDef *LPUART_InitStruct)
   */
 
 #endif /* USE_FULL_LL_DRIVER */
+

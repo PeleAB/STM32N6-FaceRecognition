@@ -871,3 +871,4 @@ HAL_StatusTypeDef HAL_MMC_RPMB_ReadBlocks_IT(MMC_HandleTypeDef *hmmc, uint8_t *p
 
 
 #endif /* STM32N6xx_HAL_MMC_H */
+

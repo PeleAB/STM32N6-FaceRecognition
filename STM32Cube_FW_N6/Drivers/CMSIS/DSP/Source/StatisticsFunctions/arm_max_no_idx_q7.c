@@ -141,3 +141,4 @@ void arm_max_no_idx_q7(
 /**
   @} end of Max group
  */
+

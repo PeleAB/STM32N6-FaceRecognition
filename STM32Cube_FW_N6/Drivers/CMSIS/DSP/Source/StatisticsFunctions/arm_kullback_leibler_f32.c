@@ -191,3 +191,4 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
 /**
  * @} end of Kullback-Leibler group
  */
+

@@ -148,3 +148,4 @@ void ISP_ToolCom_PrepareNextCommand()
 }
 
 #endif /* ISP_MW_TUNING_TOOL_SUPPORT */
+

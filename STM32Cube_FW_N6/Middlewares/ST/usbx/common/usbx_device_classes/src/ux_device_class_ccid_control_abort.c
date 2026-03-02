@@ -149,3 +149,4 @@ UX_DEVICE_CLASS_CCID_MESSAGE_HEADER         *msg;
     handles -> ux_device_class_ccid_handles_abort(slot, UX_NULL);
     return(UX_SUCCESS);
 }
+

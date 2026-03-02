@@ -25,3 +25,4 @@
  */
 
 #include "arm_gaussian_naive_bayes_predict_f16.c"
+

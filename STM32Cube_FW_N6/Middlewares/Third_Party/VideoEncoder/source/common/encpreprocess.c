@@ -1181,3 +1181,4 @@ void TraceAroiYuv(asicData_s * asic, preProcess_s * preProcess)
 
 }
 #endif
+

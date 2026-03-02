@@ -612,3 +612,4 @@ ULONG                       tick, diff;
     return(UX_STATE_WAIT);
 }
 #endif
+

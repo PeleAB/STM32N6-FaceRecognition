@@ -389,3 +389,4 @@ UINT                                length, length1;
     return(UX_PICTBRIDGE_ERROR_NO_DISCOVERY_SCRIPT);
 }
 
+

@@ -110,3 +110,4 @@ NX_PACKET               tmp_packet;
 static void post_init_device()
 {
 }
+

@@ -155,3 +155,4 @@ void arm_f16_to_q15(
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

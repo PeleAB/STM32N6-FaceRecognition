@@ -197,3 +197,4 @@ static void post_init_device(ULONG input)
     //basic_test_device();
     ongoing_writes_test_device();
 }
+

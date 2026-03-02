@@ -305,3 +305,4 @@ void LL_ATON_OSAL_SIGNAL_EVENT()
 
   LL_ATON_LIB_UNUSED(ret);
 }
+

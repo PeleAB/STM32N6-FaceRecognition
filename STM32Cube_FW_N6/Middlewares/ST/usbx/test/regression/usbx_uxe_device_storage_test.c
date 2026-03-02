@@ -189,3 +189,4 @@ UX_SLAVE_CLASS_STORAGE_PARAMETER        dummy_parameter;
         test_control_return(0);
     }
 }
+

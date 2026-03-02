@@ -32,3 +32,4 @@ uint32_t ISP_ToolCom_CheckCommandReceived(uint8_t **block_cmd);
 void ISP_ToolCom_PrepareNextCommand();
 
 #endif
+

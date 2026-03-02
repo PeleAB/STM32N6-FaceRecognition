@@ -155,3 +155,4 @@ void forward_lite_maxpool_iu16ou16_scalepos(const ai_u16 *pApInput,
                                             const ai_u16 Out_ZeroPoint);
 
 #endif    /*LITE_MAXPOOL_DQNN_H*/
+

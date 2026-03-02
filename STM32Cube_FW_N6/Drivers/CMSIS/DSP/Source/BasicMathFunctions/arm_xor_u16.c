@@ -135,3 +135,4 @@ void arm_xor_u16(
 /**
   @} end of Xor group
  */
+

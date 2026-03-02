@@ -335,3 +335,4 @@ __STATIC_INLINE void ARM_PMU_CNTR_Increment(uint32_t mask)
 }
 
 #endif
+

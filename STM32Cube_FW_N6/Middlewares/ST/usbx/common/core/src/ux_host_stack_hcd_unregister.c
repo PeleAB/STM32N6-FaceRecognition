@@ -248,3 +248,4 @@ UINT  _uxe_host_stack_hcd_unregister(UCHAR *hcd_name,
     /* Invoke HCD unregister function.  */
     return(_ux_host_stack_hcd_unregister(hcd_name, hcd_param1, hcd_param2));
 }
+

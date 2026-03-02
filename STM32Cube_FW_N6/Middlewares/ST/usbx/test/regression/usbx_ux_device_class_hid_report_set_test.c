@@ -356,3 +356,4 @@ UX_HOST_CLASS_HID_CLIENT_REPORT client_report;
     printf("SUCCESS!\n");
     test_control_return(0);
 }
+

@@ -885,3 +885,4 @@ typedef StreamBufferHandle_t MessageBufferHandle_t;
 /* *INDENT-ON* */
 
 #endif /* !defined( FREERTOS_MESSAGE_BUFFER_H ) */
+

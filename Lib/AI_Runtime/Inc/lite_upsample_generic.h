@@ -56,3 +56,4 @@ void forward_lite_upsample_zeros( ai_ptr in_data,
                                   const ai_handle p_zero_value);
 
 #endif    /*LITE_UPSAMPLE_GENERIC_H*/
+

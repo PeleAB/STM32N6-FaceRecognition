@@ -6,3 +6,4 @@ armcortexm3ct.cpi_div=1                               # (int   , run-time ) defa
 armcortexm3ct.cpi_mul=1                               # (int   , run-time ) default = '0x1'    : multiplier for calculating CPI (Cycles Per Instruction)
 armcortexm3ct.min_sync_level=3                        # (int   , run-time ) default = '0x0'    : force minimum syncLevel (0=off=default,1=syncState,2=postInsnIO,3=postInsnAll)
 #------------------------------------------------------------------------------
+

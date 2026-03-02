@@ -2404,3 +2404,4 @@ HAL_StatusTypeDef ADC_Calibration_MeasureOffset(ADC_HandleTypeDef *hadc,
 /**
   * @}
   */
+

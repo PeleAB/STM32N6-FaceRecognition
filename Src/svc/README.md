@@ -11,3 +11,4 @@ Responsibilities
 Non-goals
 - Board bring-up and raw HAL interaction (BSP/FAL handle those).
 - Application-specific orchestration (that stays in App).
+

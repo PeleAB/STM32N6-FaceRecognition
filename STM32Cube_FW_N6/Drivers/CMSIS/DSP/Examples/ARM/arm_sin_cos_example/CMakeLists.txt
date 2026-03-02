@@ -43,3 +43,4 @@ target_sources(arm_sin_cos_example PRIVATE arm_sin_cos_example_f32.c)
 
 target_link_libraries(arm_sin_cos_example PRIVATE CMSISDSP)
 
+

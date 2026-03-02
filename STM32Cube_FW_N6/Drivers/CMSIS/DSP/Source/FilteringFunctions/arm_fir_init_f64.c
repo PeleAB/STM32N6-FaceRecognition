@@ -93,3 +93,4 @@ void arm_fir_init_f64(
 /**
   @} end of FIR group
  */
+

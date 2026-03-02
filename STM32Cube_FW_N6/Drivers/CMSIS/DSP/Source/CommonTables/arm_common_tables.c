@@ -70574,3 +70574,4 @@ const float32_t __logf_lut_f32[8] = {
 const unsigned char hwLUT[256] = { B6(0), B6(1), B6(1), B6(2) };
 
 #endif /* (defined(ARM_MATH_MVEI) || defined(ARM_MATH_HELIUM)) */
+

@@ -275,3 +275,4 @@ float32_t arm_logsumexp_f32(const float32_t *in, uint32_t blockSize)
 /**
  * @} end of LogSumExp group
  */
+

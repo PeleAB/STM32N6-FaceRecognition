@@ -92,3 +92,4 @@ typedef struct
 } jpegInstance_s;
 
 #endif
+

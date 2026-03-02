@@ -748,3 +748,4 @@ __STATIC_INLINE void LL_DBGMCU_AHB5_UnFreezePeriph(uint32_t Periphs)
 #endif
 
 #endif /* STM32N6xx_LL_SYSTEM_H */
+

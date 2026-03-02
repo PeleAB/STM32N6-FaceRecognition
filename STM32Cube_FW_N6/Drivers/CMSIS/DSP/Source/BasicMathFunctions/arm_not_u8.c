@@ -120,3 +120,4 @@ void arm_not_u8(
 /**
   @} end of Not group
  */
+

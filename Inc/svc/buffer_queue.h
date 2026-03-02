@@ -44,3 +44,4 @@ uint8_t *bqueue_get_ready(bqueue_t *bq);
 void bqueue_put_ready(bqueue_t *bq);
 
 #endif /* SVC_BUFFER_QUEUE_H */
+

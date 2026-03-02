@@ -169,3 +169,4 @@ void arm_mult_f16(
 /**
   @} end of BasicMult group
  */
+

@@ -363,3 +363,4 @@ void arm_correlate_f64(
 /**
   @} end of Corr group
  */
+

@@ -382,3 +382,4 @@ ULONG       addr, value;
         test_control_return(0);
     }
 }
+

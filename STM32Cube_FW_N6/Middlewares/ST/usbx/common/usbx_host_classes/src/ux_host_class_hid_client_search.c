@@ -149,3 +149,4 @@ UX_HOST_CLASS_HID_CLIENT_COMMAND    hid_client_command;
     return(UX_HOST_CLASS_HID_UNKNOWN);
 }
 
+

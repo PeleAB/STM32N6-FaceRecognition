@@ -93,3 +93,4 @@ arm_status arm_elementwise_mul_s16(const int16_t *input_1_vect,
 /**
  * @} end of BasicMath group
  */
+

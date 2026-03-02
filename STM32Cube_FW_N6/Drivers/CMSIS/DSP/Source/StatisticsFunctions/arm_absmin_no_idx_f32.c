@@ -224,3 +224,4 @@ void arm_absmin_no_idx_f32(
 /**
   @} end of AbsMin group
  */
+

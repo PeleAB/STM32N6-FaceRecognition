@@ -60,3 +60,4 @@ typedef struct {
 STAI_API_DECLARE_END
 
 #endif    /* AI_LITE_H */
+

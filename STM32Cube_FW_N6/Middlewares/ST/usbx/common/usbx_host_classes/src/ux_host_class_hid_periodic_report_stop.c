@@ -166,3 +166,4 @@ UINT  _uxe_host_class_hid_periodic_report_stop(UX_HOST_CLASS_HID *hid)
     return(_ux_host_class_hid_periodic_report_stop(hid));
 }
 
+

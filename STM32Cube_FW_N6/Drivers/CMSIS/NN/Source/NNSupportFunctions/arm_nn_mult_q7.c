@@ -71,3 +71,4 @@ void arm_nn_mult_q7(q7_t *pSrcA, q7_t *pSrcB, q7_t *pDst, const uint16_t out_shi
 /**
  * @} end of NNBasicMath group
  */
+

@@ -419,3 +419,4 @@ void HAL_MPU_ConfigMemoryAttributes_NS(const MPU_Attributes_InitTypeDef *pMPU_At
 #endif
 
 #endif /* STM32N6xx_HAL_CORTEX_H */
+

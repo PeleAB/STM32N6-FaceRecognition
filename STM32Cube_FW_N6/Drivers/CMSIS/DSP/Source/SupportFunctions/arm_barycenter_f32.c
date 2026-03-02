@@ -412,3 +412,4 @@ void arm_barycenter_f32(const float32_t *in, const float32_t *weights, float32_t
 /**
  * @} end of barycenter group
  */
+

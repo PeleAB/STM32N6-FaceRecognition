@@ -205,3 +205,4 @@ UINT i;
         test_control_return(0);
     }
 }
+

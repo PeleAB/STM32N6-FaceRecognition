@@ -835,3 +835,4 @@ UINT    printer_device_state = UX_STATE_RESET;
         tx_thread_relinquish();
     }
 }
+

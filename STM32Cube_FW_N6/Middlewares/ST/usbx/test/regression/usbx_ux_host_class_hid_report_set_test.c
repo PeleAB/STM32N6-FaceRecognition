@@ -623,3 +623,4 @@ UCHAR                           buffer[256];
     printf("SUCCESS!\n");
     test_control_return(0);
 }
+

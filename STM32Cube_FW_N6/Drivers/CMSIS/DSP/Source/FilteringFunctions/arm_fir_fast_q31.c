@@ -320,3 +320,4 @@ void arm_fir_fast_q31(
 /**
   @} end of FIR group
  */
+

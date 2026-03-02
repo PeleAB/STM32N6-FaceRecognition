@@ -129,3 +129,4 @@ float16_t arm_euclidean_distance_f16(const float16_t *pA,const float16_t *pB, ui
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

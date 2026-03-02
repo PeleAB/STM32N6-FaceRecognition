@@ -3207,3 +3207,4 @@ __STATIC_INLINE int32_t ITM_CheckChar (void)
 #endif /* __CORE_ARMV8MML_H_DEPENDANT */
 
 #endif /* __CMSIS_GENERIC */
+

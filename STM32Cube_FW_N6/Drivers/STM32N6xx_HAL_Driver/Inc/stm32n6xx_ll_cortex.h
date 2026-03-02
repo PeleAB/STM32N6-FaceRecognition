@@ -1480,3 +1480,4 @@ __STATIC_INLINE uint32_t LL_MPU_GetRegionAccess_NS(uint32_t Region)
 #endif
 
 #endif /* STM32N6xx_LL_CORTEX_H */
+

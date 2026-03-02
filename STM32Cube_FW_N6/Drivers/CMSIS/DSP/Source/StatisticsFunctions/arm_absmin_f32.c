@@ -277,3 +277,4 @@ void arm_absmin_f32(
 /**
   @} end of AbsMin group
  */
+

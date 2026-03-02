@@ -1005,3 +1005,4 @@ uint32_t HAL_SYSCFG_GetAddressWritePostingBuffer(void);
 #endif /* __cplusplus */
 
 #endif /* __STM32N6xx_HAL_H */
+

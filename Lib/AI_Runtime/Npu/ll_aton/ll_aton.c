@@ -2688,3 +2688,4 @@ void ec_trace_wait_epoch_end(uint32_t wait_mask)
 }
 
 #endif
+

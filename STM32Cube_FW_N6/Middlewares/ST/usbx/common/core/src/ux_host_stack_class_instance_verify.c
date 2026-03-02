@@ -143,3 +143,4 @@ UINT            class_name_length =  0;
     /* This class does not exist.  */    
     return(UX_HOST_CLASS_INSTANCE_UNKNOWN);
 }
+

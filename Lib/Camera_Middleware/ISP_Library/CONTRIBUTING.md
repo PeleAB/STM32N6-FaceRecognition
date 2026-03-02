@@ -38,3 +38,4 @@ Please note that:
 ## 3. Support requests and questions
 
 For support requests or any other question related to the product, the tools, the environment, you can submit a post to the **ST Community** on the appropriate topic [page](https://community.st.com/t5/stm32-mcus/ct-p/stm32-mcus).
+

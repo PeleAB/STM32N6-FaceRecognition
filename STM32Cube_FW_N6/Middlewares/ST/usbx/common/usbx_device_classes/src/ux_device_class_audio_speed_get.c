@@ -71,3 +71,4 @@ ULONG _ux_device_class_audio_speed_get(UX_DEVICE_CLASS_AUDIO_STREAM *stream)
     UX_PARAMETER_NOT_USED(stream);
     return(_ux_system_slave -> ux_system_slave_speed);
 }
+

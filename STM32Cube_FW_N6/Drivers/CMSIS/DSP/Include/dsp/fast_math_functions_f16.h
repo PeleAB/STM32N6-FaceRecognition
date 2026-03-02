@@ -123,3 +123,4 @@ __STATIC_FORCEINLINE arm_status arm_sqrt_f16(
 #endif
 
 #endif /* ifndef _FAST_MATH_FUNCTIONS_F16_H_ */
+

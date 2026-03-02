@@ -16,3 +16,4 @@ the /FreeRTOS/Source/portable/RVDS/ARM_CM4F directory.
 If the revision of the ARM Cortex-M7 core is r0p1 then use the FreeRTOS ARM
 Cortex-M7 r0p1 port located in the /FreeRTOS/Source/portable/RVDS/ARM_CM7/r0p1
 directory.
+

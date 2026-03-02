@@ -226,3 +226,4 @@ UX_SLAVE_CLASS_HID          *hid;
     return(UX_SUCCESS);
 }
 
+

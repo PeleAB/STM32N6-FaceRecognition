@@ -915,3 +915,4 @@ __STATIC_INLINE void __FPU_Enable(void)
 #pragma GCC diagnostic pop
 
 #endif /* __CMSIS_GCC_H */
+

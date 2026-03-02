@@ -243,3 +243,4 @@ HAL_StatusTypeDef HAL_SMBUSEx_ConfigFastModePlus(SMBUS_HandleTypeDef *hsmbus, ui
 /**
   * @}
   */
+

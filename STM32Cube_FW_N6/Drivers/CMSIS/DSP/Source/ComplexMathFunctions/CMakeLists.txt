@@ -72,3 +72,4 @@ endif()
 
 ### Includes
 target_include_directories(CMSISDSPComplexMath PUBLIC "${DSP}/Include")
+

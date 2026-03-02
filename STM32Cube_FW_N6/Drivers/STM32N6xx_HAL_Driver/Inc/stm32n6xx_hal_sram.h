@@ -228,3 +228,4 @@ HAL_SRAM_StateTypeDef HAL_SRAM_GetState(const SRAM_HandleTypeDef *hsram);
 #endif
 
 #endif /* STM32N6xx_HAL_SRAM_H */
+

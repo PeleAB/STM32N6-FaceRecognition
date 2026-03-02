@@ -167,3 +167,4 @@ typedef enum
 #endif
 
 #endif /*ifndef _ARM_NN_MATH_TYPES_H_ */
+

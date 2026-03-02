@@ -182,3 +182,4 @@ void arm_dot_prod_f16(
 /**
   @} end of BasicDotProd group
  */
+

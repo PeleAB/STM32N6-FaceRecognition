@@ -271,3 +271,4 @@ ai_bool core_set_error(
 AI_API_DECLARE_END
 
 #endif    /*CORE_COMMON_H*/
+

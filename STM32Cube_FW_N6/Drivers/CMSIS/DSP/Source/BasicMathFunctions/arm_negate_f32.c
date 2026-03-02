@@ -190,3 +190,4 @@ void arm_negate_f32(
 /**
   @} end of BasicNegate group
  */
+

@@ -2228,3 +2228,4 @@ void LL_DMA2D_ConfigSize(DMA2D_TypeDef *DMA2Dx, uint32_t NbrOfLines, uint32_t Nb
 #endif
 
 #endif /* STM32N6xx_LL_DMA2D_H */
+

@@ -50,3 +50,4 @@ extern "C" {
 #endif
 
 #endif /* CMW_CAMERA_CONF_H */
+

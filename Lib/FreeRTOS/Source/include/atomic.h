@@ -417,3 +417,4 @@ static portFORCE_INLINE uint32_t Atomic_XOR_u32( uint32_t volatile * pulDestinat
 /* *INDENT-ON* */
 
 #endif /* ATOMIC_H */
+

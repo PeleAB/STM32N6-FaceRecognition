@@ -757,3 +757,4 @@ arm_status arm_conv_partial_q7(
 /**
   @} end of PartialConv group
  */
+

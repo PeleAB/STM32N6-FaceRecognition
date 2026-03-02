@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file    fal_camera.h
+ * @file    sysobj_camera.h
  * @author  GPM Application Team
  *
  ******************************************************************************
@@ -16,8 +16,8 @@
  ******************************************************************************
  */
 
-#ifndef FAL_CAMERA_H
-#define FAL_CAMERA_H
+#ifndef SYSOBJ_CAMERA_H
+#define SYSOBJ_CAMERA_H
 
 #include <stdint.h>
 
@@ -33,4 +33,7 @@ int CAM_NNPipe_UpdateAddress(uint8_t *nn_pipe_dst);
 int CAM_GetVencWidth(void);
 int CAM_GetVencHeight(void);
 
-#endif /* FAL_CAMERA_H */
+#endif /* SYSOBJ_CAMERA_H */
+
+
+

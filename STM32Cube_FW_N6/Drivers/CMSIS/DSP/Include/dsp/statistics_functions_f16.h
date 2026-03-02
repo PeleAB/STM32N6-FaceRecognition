@@ -264,3 +264,4 @@ void arm_mse_f16(
 #endif
 
 #endif /* ifndef _STATISTICS_FUNCTIONS_F16_H_ */
+

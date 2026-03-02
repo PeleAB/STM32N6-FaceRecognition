@@ -105,3 +105,4 @@ void arm_quaternion_product_single_f32(const float32_t *qa,
 /**
   @} end of QuatProdSingle group
  */
+

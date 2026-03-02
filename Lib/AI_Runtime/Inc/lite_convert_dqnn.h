@@ -228,3 +228,4 @@ void forward_lite_node_convert_is16ou16(
   const ai_u16 out_zp);
 
 #endif    /*LITE_CONVERT_DQNN_H*/
+

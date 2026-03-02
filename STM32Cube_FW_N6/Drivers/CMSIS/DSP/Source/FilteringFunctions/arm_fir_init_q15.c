@@ -143,3 +143,4 @@ arm_status arm_fir_init_q15(
 /**
   @} end of FIR group
  */
+

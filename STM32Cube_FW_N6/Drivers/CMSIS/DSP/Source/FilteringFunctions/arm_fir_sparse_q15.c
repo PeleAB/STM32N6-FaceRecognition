@@ -339,3 +339,4 @@ void arm_fir_sparse_q15(
 /**
   @} end of FIR_Sparse group
  */
+

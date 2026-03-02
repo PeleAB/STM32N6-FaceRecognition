@@ -160,3 +160,4 @@ HAL_StatusTypeDef MX_SDMMC1_SD_Init(SD_HandleTypeDef *hsd);
 #endif
 
 #endif /* STM32N6570_DK_SD_H */
+

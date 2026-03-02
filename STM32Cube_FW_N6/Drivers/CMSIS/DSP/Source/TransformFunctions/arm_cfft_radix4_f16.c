@@ -1270,3 +1270,4 @@ float16_t onebyfftLen)
 }
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
+

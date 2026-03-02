@@ -107,3 +107,4 @@ ULONG       ehci_register_port_status;
     return(UX_FUNCTION_NOT_SUPPORTED);  
 }
 
+

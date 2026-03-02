@@ -164,3 +164,4 @@ void arm_biquad_cascade_df1_mve_init_f16(arm_biquad_casd_df1_inst_f16 * S,
   @} end of BiquadCascadeDF1 group
  */
 #endif /* #if defined(ARMfloat16_t_SUPPORTED) */
+

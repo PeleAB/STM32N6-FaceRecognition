@@ -840,3 +840,4 @@ uint32_t             HAL_I2C_GetError(const I2C_HandleTypeDef *hi2c);
 
 
 #endif /* STM32N6xx_HAL_I2C_H */
+

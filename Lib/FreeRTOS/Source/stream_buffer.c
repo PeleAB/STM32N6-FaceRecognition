@@ -1453,3 +1453,4 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 
 #endif /* configUSE_TRACE_FACILITY */
 /*-----------------------------------------------------------*/
+

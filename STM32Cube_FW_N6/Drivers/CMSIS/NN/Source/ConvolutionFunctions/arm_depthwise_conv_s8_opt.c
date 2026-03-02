@@ -431,3 +431,4 @@ int32_t arm_depthwise_conv_s8_opt_get_buffer_size(const cmsis_nn_dims *input_dim
 /**
  * @} end of NNConv group
  */
+

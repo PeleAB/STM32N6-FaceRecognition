@@ -135,3 +135,4 @@ ErrorStatus I3C_TgtTimingComputation(const I3C_TgtTimingTypeDef *pInputTiming,
 #endif
 
 #endif /* __STM32N6xx_UTIL_I3C_H */
+

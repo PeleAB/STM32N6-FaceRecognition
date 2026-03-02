@@ -425,3 +425,4 @@ PCD_StateTypeDef HAL_PCD_GetState(PCD_HandleTypeDef const *hpcd);
 #endif
 
 #endif /* STM32N6xx_HAL_PCD_H */
+

@@ -340,3 +340,4 @@ int CMW_IMX335_Probe(CMW_IMX335_t *io_ctx, CMW_Sensor_if_t *imx335_if)
   imx335_if->SetTestPattern = CMW_IMX335_SetTestPattern;
   return ret;
 }
+

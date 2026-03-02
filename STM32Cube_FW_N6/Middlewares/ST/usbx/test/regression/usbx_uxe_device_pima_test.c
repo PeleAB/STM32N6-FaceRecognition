@@ -818,3 +818,4 @@ UINT demo_object_handle_check(ULONG object_handle,
 {
     return(UX_ERROR);
 }
+

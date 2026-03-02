@@ -175,3 +175,4 @@ UCHAR                               *device_property_value;
     /* Return completion status.  */
     return(status);
 }
+

@@ -538,3 +538,4 @@ int                 is_free = 0;
 #define ux_test_regular_memory_free() _ux_system -> ux_system_memory_byte_pool[UX_MEMORY_BYTE_POOL_REGULAR] -> ux_byte_pool_available
 
 #endif /* _UX_TEST_H */
+

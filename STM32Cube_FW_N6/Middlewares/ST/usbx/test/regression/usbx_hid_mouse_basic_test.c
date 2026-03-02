@@ -508,3 +508,4 @@ UX_SLAVE_CLASS_HID_EVENT        hid_event;
     }
 }
 
+

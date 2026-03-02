@@ -1423,3 +1423,4 @@ static ErrorStatus IC4Config(TIM_TypeDef *TIMx, const LL_TIM_IC_InitTypeDef *TIM
 
 #endif /* USE_FULL_LL_DRIVER */
 
+

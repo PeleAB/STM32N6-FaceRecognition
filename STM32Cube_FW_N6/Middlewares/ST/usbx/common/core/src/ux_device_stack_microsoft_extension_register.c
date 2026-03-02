@@ -86,3 +86,4 @@ UINT  _ux_device_stack_microsoft_extension_register(ULONG vendor_request,
     return(UX_SUCCESS);
 }
 
+

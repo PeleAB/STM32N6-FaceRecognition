@@ -546,3 +546,4 @@ evision_return_t evision_api_awb_run_roi(evision_awb_estimator_t* const self,
 #endif
 
 #endif /* EVISION_API_AWB_H_ */
+

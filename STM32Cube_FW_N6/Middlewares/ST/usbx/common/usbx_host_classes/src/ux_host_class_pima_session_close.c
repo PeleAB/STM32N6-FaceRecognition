@@ -174,3 +174,4 @@ UINT  _uxe_host_class_pima_session_close(UX_HOST_CLASS_PIMA *pima, UX_HOST_CLASS
     /* Call the actual pima session close function.  */
     return(_ux_host_class_pima_session_close(pima, pima_session));
 }
+

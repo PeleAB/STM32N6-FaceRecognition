@@ -220,3 +220,4 @@ UINT _uxe_device_class_cdc_acm_write_with_callback(UX_SLAVE_CLASS_CDC_ACM *cdc_a
 
     return (_ux_device_class_cdc_acm_write_with_callback(cdc_acm, buffer, requested_length));
 }
+

@@ -139,3 +139,4 @@ void arm_min_no_idx_q7(
 /**
   @} end of Min group
  */
+

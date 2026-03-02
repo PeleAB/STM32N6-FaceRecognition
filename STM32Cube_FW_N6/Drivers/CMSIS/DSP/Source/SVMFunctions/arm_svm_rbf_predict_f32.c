@@ -521,3 +521,4 @@ void arm_svm_rbf_predict_f32(
 /**
  * @} end of rbfsvm group
  */
+

@@ -1796,3 +1796,4 @@ __weak void HAL_PWREx_ADCVM_Falling_Callback(void)
 /**
   * @}
   */
+

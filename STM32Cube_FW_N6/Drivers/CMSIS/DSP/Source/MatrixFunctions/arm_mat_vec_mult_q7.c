@@ -418,3 +418,4 @@ void arm_mat_vec_mult_q7(const arm_matrix_instance_q7 *pSrcMat, const q7_t *pVec
 /**
  * @} end of MatrixMult group
  */
+

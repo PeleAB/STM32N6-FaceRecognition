@@ -124,3 +124,4 @@ arm_status arm_sqrt_q31(
 /**
   @} end of SQRT group
  */
+

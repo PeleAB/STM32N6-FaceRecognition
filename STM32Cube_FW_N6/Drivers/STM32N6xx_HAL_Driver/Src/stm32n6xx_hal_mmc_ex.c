@@ -446,3 +446,4 @@ HAL_StatusTypeDef HAL_MMCEx_DMALinkedList_WriteBlocks(MMC_HandleTypeDef *hmmc,
 /**
   * @}
   */
+

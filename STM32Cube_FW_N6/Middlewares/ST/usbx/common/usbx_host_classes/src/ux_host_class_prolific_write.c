@@ -250,3 +250,4 @@ UINT  _uxe_host_class_prolific_write(UX_HOST_CLASS_PROLIFIC *prolific, UCHAR *da
     /* Invoke PROLIFIC write function.  */
     return(_ux_host_class_prolific_write(prolific, data_pointer, requested_length, actual_length));
 }
+

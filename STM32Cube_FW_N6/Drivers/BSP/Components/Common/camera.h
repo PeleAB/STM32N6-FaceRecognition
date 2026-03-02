@@ -104,3 +104,4 @@ typedef struct
 #endif
 
 #endif /* CAMERA_H */
+

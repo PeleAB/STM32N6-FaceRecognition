@@ -119,3 +119,4 @@ void app_stats_cpuload_get(float *cpu_load_last, float *cpu_load_last_second, fl
 {
   cpuload_get_info(&cpu_load, cpu_load_last, cpu_load_last_second, cpu_load_last_five_seconds);
 }
+

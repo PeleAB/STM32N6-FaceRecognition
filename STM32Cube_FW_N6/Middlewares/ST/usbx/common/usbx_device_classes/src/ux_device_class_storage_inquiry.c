@@ -258,3 +258,4 @@ UCHAR                   *inquiry_buffer;
     return(status);
 }
 
+

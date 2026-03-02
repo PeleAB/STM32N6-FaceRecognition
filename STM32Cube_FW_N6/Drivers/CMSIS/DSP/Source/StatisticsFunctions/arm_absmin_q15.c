@@ -267,3 +267,4 @@ void arm_absmin_q15(
 /**
   @} end of AbsMin group
  */
+

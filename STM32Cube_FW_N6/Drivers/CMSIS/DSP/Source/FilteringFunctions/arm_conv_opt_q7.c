@@ -358,3 +358,4 @@ void arm_conv_opt_q7(
 /**
   @} end of Conv group
  */
+

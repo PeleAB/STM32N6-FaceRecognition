@@ -952,3 +952,4 @@ uint32_t HAL_CRYP_GetError(const CRYP_HandleTypeDef *hcryp);
   */
 
 #endif /* STM32N6xx_HAL_CRYP_H */
+

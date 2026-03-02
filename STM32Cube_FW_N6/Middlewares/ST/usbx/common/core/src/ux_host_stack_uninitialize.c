@@ -127,3 +127,4 @@ UINT  _ux_host_stack_uninitialize(VOID)
     /* Return success to caller.  */
     return(UX_SUCCESS);
 }
+

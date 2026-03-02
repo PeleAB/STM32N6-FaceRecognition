@@ -314,3 +314,4 @@ UINT                                    i;
     /* Invoke storage initialize function.  */
     return(_ux_device_class_storage_initialize(command));
 }
+

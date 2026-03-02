@@ -44,3 +44,4 @@ typedef enum
 } arm_ml_kernel_type;
 
 #endif
+

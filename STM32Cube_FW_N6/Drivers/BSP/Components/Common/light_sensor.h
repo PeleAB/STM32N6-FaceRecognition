@@ -83,3 +83,4 @@ typedef struct
 #endif
 
 #endif /* LIGHT_SENSOR_H */
+

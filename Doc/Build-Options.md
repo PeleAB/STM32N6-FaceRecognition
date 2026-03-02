@@ -23,3 +23,4 @@ Cameras allow flipping the image along two axes.
 
 #define SENSOR_<YOUR_SENSOR_NAME>_FLIP CMW_MIRRORFLIP_NONE
 ```
+

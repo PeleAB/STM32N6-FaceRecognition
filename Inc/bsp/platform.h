@@ -40,3 +40,4 @@ void HAL_CACHEAXI_MspDeInit(CACHEAXI_HandleTypeDef *hcacheaxi);
 void IAC_IRQHandler(void);
 
 #endif /* BSP_PLATFORM_H */
+

@@ -63,3 +63,4 @@ void app_run(void)
 
   BSP_LED_On(LED_GREEN);
 }
+

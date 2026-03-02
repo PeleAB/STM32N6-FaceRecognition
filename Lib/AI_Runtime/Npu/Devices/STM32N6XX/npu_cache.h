@@ -36,3 +36,4 @@ void npu_cache_clean_range(uint32_t start_addr, uint32_t end_addr);
 #endif
 
 #endif /* NPU_CACHE_H */
+

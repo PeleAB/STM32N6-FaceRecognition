@@ -754,3 +754,4 @@ void VENC_IRQHandler(void)
 #endif /* EWL_SYNC_API */
   }
 }
+

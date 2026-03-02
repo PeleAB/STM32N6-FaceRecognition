@@ -507,3 +507,4 @@ arm_status arm_mat_ldlt_f32(
 /**
   @} end of MatrixChol group
  */
+

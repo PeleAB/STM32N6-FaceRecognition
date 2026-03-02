@@ -422,3 +422,4 @@ extern BaseType_t xPortIsTaskPrivileged( void );
 /* *INDENT-ON* */
 
 #endif /* PORTMACRO_H */
+

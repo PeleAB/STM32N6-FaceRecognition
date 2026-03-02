@@ -682,3 +682,4 @@ extern ULONG ux_device_class_rndis_oid_supported_list[];
 #endif 
 
 #endif /* UX_DEVICE_CLASS_RNDIS_H */
+

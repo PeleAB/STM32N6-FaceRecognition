@@ -652,3 +652,4 @@ typedef enum {
 #ifdef __REGISTERS_ENUM_FAKE_H__
 } regName;
 #endif /*__REGISTERS_ENUM_FAKE_H__*/
+

@@ -360,3 +360,4 @@ void arm_conv_opt_q15(
 /**
   @} end of Conv group
  */
+

@@ -61,3 +61,4 @@ extern "C" {
 #endif
 
 #endif /* STM32N6570_DK_ERRNO_H */
+

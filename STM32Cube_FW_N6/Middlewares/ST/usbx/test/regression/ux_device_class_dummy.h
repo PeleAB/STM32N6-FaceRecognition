@@ -51,3 +51,4 @@ UINT  _ux_device_class_dummy_transfer(UX_DEVICE_CLASS_DUMMY *dummy, UCHAR endpoi
 UINT  _ux_device_class_dummy_abort(UX_DEVICE_CLASS_DUMMY *dummy, UCHAR endpoint_address);
 
 #endif
+

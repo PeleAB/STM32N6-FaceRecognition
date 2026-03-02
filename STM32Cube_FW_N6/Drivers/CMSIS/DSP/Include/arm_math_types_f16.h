@@ -161,3 +161,4 @@ won't be built.
 #endif
 
 #endif /* _ARM_MATH_F16_H */
+

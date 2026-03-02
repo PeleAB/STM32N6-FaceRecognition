@@ -25,3 +25,4 @@ int UVCL_usbx_init(UVCL_Ctx_t *p_ctx, PCD_HandleTypeDef *pcd_handle, PCD_TypeDef
 void UVCL_stm32_usbx_IRQHandler(void);
 
 #endif
+

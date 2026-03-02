@@ -186,3 +186,4 @@ HAL_StatusTypeDef HAL_CRCEx_Output_Data_Reverse(CRC_HandleTypeDef *hcrc, uint32_
 #endif
 
 #endif /* STM32N6xx_HAL_CRC_EX_H */
+

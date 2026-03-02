@@ -212,3 +212,4 @@ extern uint32_t __enoncacheable;
 #endif
 
 #endif /* ___STM32N6xx_HAL_DEF */
+

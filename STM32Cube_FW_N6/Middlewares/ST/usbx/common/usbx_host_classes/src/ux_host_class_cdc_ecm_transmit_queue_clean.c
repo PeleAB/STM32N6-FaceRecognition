@@ -152,3 +152,4 @@ NX_PACKET               *next_packet;
     cdc_ecm -> ux_host_class_cdc_ecm_xmit_queue_head =  UX_NULL;
 }
 #endif
+

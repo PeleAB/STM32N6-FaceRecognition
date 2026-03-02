@@ -858,3 +858,4 @@ void arm_conv_q7(
 /**
   @} end of Conv group
  */
+

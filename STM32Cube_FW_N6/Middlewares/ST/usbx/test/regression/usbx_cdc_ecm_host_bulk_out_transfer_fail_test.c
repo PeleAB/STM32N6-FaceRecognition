@@ -43,3 +43,4 @@ static void post_init_host()
 static void post_init_device()
 {
 }
+

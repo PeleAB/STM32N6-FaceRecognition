@@ -170,3 +170,4 @@ UINT    _uxe_host_class_hid_mouse_wheel_get(UX_HOST_CLASS_HID_MOUSE *mouse_insta
 #endif
 
 #endif
+

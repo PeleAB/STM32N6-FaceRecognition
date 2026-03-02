@@ -221,3 +221,4 @@ void    BSP_TS_IRQHandler(uint32_t Instance);
 #endif
 
 #endif /* STM32N6570_DK_TS_H */
+

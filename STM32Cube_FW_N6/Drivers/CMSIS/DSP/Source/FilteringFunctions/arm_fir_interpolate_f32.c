@@ -1250,3 +1250,4 @@ void arm_fir_interpolate_f32(
 /**
   @} end of FIR_Interpolate group
  */
+

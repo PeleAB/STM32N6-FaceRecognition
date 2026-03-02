@@ -266,3 +266,4 @@ UINT  _uxe_host_class_video_control_get(UX_HOST_CLASS_VIDEO *video, UX_HOST_CLAS
     /* Call the actual video control get function.  */
     return(_ux_host_class_video_control_get(video, video_control));
 }
+

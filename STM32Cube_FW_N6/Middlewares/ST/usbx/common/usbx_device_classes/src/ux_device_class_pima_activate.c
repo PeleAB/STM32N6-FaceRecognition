@@ -177,3 +177,4 @@ UX_SLAVE_ENDPOINT                       *endpoint_interrupt;
     return(UX_SUCCESS);
 }
 
+

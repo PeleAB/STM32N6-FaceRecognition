@@ -1055,3 +1055,4 @@ int UVCL_get_serial_string_desc(void *p_dst, int dst_len)
   gen_serial(serial);
   return UVCL_get_string_desc(p_dst, dst_len, serial);
 }
+

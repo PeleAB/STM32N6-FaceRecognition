@@ -149,3 +149,4 @@ UX_HOST_CLASS_HID_MOUSE     *mouse_instance;
     return;    
 }
 
+

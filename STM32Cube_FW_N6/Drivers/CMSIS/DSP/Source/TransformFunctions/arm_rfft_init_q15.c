@@ -246,3 +246,4 @@ arm_status arm_rfft_init_q15(
 /**
   @} end of RealFFT group
  */
+

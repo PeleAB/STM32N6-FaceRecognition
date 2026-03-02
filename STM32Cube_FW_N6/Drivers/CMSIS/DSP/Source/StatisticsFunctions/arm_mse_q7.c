@@ -177,3 +177,4 @@ void arm_mse_q7(
 /**
   @} end of MSE group
  */
+

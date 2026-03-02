@@ -168,3 +168,4 @@ q7_t *arm_nn_depthwise_conv_nt_t_s8(const q7_t *lhs,
 /**
  * @} end of NNBasicMath group
  */
+

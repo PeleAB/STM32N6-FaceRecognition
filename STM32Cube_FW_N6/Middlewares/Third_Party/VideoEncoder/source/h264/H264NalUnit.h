@@ -100,3 +100,4 @@ void H264NalUnitTrailinBits(stream_s * stream, true_e byteStream);
 u32 H264FillerNALU(stream_s * sp, i32 cnt, true_e byteStream);
 
 #endif
+

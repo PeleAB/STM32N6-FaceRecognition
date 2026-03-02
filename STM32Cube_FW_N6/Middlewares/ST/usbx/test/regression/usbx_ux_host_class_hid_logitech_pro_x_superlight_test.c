@@ -461,3 +461,4 @@ static void                         demo_device_hid_instance_deactivate(VOID *in
     if (inst == (VOID *)device_hid)
         device_hid = UX_NULL;
 }
+

@@ -84,3 +84,4 @@ UX_THREAD *_ux_utility_thread_identify(VOID)
     return(UX_THREAD_GET_SYSTEM_STATE() ? UX_NULL : tx_thread_identify());
 }
 #endif
+

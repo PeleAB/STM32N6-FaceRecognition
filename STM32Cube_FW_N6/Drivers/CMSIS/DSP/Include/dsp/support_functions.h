@@ -451,3 +451,4 @@ void arm_barycenter_f32(const float32_t *in
 #endif
 
 #endif /* ifndef _SUPPORT_FUNCTIONS_H_ */
+

@@ -1400,3 +1400,4 @@ static VOID demo_host_media_read_write_notify(UINT fx_req, UINT fx_rc,
     dump_data(ram_disk_memory1 + sec_start * 512, 1 * 512);
 #endif
 }
+

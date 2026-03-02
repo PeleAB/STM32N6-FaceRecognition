@@ -139,3 +139,4 @@ void arm_rms_q31(
 /**
   @} end of RMS group
  */
+

@@ -729,3 +729,4 @@ UX_SLAVE_INTERFACE                                  *interface;
         ux_utility_delay_ms(100);
     }
 }
+

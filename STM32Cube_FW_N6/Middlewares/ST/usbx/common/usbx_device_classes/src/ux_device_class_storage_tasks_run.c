@@ -1290,3 +1290,4 @@ static inline VOID _ux_device_class_storage_disk_error(UX_SLAVE_CLASS_STORAGE *s
 }
 
 #endif
+

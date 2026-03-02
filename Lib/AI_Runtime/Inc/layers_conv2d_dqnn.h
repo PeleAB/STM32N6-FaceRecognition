@@ -486,3 +486,4 @@ void forward_dw_is8os8ws8_sssa_ch(const ai_i8 *pData_in,
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_CONV2D_DQNN_H*/
+

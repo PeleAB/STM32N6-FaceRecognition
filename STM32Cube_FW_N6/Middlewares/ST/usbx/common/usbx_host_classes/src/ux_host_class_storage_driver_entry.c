@@ -367,3 +367,4 @@ ULONG                           partition_start;
     _ux_host_class_storage_unlock(storage);
 }
 #endif
+

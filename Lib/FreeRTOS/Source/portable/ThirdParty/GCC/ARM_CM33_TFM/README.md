@@ -70,3 +70,4 @@ To enable calling TF-M services by the Non-Secure Side, the files below should b
 
 
 *Copyright (c) 2020-2021, Arm Limited. All rights reserved.*
+

@@ -203,3 +203,4 @@ UINT  _uxe_host_class_audio_entity_control_value_get(UX_HOST_CLASS_AUDIO *audio,
     /* Invoke entity control get function.  */
     return(_ux_host_class_audio_entity_control_value_get(audio, audio_control));
 }
+

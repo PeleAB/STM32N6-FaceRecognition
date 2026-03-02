@@ -114,3 +114,4 @@ ULONG           class_index;
     /* There is no driver who want to own this class!  */
     return(UX_NULL);
 }
+

@@ -1046,3 +1046,4 @@ uint32_t HAL_MCE_GetError(MCE_HandleTypeDef const *hmce)
 /**
   * @}
   */
+

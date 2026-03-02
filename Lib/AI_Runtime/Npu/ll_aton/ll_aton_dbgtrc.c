@@ -1083,3 +1083,4 @@ int LL_Dbgtrc_SynchronousCountersTest(void)
 }
 
 #endif // ATON_DEBUG_TRACE_NUM
+

@@ -172,3 +172,4 @@ HAL_StatusTypeDef MX_I2C2_Init(I2C_HandleTypeDef *phi2c, uint32_t timing);
 #endif
 
 #endif /* STM32N6570_DISCOVERY_BUS_H */
+

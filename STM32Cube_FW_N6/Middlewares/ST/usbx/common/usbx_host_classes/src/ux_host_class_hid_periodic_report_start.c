@@ -186,3 +186,4 @@ UINT  _uxe_host_class_hid_periodic_report_start(UX_HOST_CLASS_HID *hid)
     /* Invoke periodic start function.  */
     return(_ux_host_class_hid_periodic_report_start(hid));
 }
+

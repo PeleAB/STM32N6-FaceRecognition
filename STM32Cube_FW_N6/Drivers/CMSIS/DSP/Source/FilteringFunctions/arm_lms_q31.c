@@ -281,3 +281,4 @@ void arm_lms_q31(
 /**
   @} end of LMS group
  */
+

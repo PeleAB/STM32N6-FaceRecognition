@@ -127,3 +127,4 @@ arm_status arm_mat_cmplx_trans_q31(
 /**
  * @} end of MatrixTrans group
  */
+

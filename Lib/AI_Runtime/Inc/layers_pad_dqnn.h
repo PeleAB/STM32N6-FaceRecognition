@@ -47,3 +47,4 @@ void forward_pad_is1os1(ai_layer *pLayer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_PADDING_DQNN_H*/
+

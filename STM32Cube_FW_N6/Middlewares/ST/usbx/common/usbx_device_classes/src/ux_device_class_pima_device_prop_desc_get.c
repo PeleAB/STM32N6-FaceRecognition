@@ -163,3 +163,4 @@ UCHAR                               *device_property_desc_dataset;
     /* Return completion status.  */
     return(status);
 }
+

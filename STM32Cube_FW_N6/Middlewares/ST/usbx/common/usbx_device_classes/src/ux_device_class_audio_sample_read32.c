@@ -197,3 +197,4 @@ UINT _uxe_device_class_audio_sample_read32(UX_DEVICE_CLASS_AUDIO_STREAM *stream,
     /* Read 32-bit sample.  */
     return(_ux_device_class_audio_sample_read32(stream, buffer));
 }
+

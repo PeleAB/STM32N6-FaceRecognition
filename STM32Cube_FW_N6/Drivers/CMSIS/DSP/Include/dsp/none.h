@@ -574,3 +574,4 @@ __STATIC_FORCEINLINE uint32_t __ROR(uint32_t op1, uint32_t op2)
 #endif
 
 #endif /* ifndef _TRANSFORM_FUNCTIONS_H_ */
+

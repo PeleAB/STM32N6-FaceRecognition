@@ -189,3 +189,4 @@ UINT    _uxe_host_class_storage_media_get(UX_HOST_CLASS_STORAGE *storage,
 }
 
 #endif
+

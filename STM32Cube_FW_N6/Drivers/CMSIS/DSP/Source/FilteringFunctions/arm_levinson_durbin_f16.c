@@ -274,3 +274,4 @@ void arm_levinson_durbin_f16(const float16_t *phi,
 /**
   @} end of LD group
  */
+

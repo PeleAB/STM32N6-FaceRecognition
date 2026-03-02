@@ -209,3 +209,4 @@ UINT    _uxe_host_class_storage_lock(UX_HOST_CLASS_STORAGE *storage, ULONG wait)
     return(_ux_host_class_storage_lock(storage, wait));
 }
 #endif
+

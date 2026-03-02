@@ -870,3 +870,4 @@ uint32_t HAL_GFXMMU_GetError(GFXMMU_HandleTypeDef *hgfxmmu)
 /**
   * @}
   */
+

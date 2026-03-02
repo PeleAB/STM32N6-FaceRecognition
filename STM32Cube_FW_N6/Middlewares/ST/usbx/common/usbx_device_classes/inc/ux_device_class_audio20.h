@@ -502,3 +502,4 @@ UINT _uxe_device_class_audio20_control_process(UX_DEVICE_CLASS_AUDIO *audio,
 #endif 
 
 #endif /* ifndef UX_DEVICE_CLASS_AUDIO20_H */
+

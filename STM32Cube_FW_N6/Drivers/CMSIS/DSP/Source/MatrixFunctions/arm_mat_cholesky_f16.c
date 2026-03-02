@@ -254,3 +254,4 @@ arm_status arm_mat_cholesky_f16(
   @} end of MatrixChol group
  */
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+

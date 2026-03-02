@@ -170,3 +170,4 @@ extern UCHAR _ux_system_device_class_ccid_name[];
 
 #endif
 
+

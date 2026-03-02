@@ -95,3 +95,4 @@ void arm_svm_rbf_init_f16(arm_svm_rbf_instance_f16 *S,
 
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
 
+

@@ -120,3 +120,4 @@ arm_status arm_mat_cholesky_f64(
 /**
   @} end of MatrixChol group
  */
+

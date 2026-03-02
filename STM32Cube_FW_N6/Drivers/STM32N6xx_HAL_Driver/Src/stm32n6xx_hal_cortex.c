@@ -786,3 +786,4 @@ static void MPU_ConfigMemoryAttributes(MPU_Type *MPUx, const MPU_Attributes_Init
 /**
   * @}
   */
+

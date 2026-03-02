@@ -142,3 +142,4 @@ void arm_clip_f32(const float32_t * pSrc,
 /**
   @} end of BasicClip group
  */
+

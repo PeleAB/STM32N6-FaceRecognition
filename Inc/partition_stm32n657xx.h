@@ -775,3 +775,4 @@ __STATIC_INLINE void TZ_SAU_Setup (void)
 }
 
 #endif  /* PARTITION_STM32N657XX_H */
+

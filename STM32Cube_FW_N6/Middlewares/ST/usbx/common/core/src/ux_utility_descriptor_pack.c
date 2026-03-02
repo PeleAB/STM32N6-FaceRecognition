@@ -127,3 +127,4 @@ VOID  _ux_utility_descriptor_pack(UCHAR * descriptor, UCHAR * descriptor_structu
     /* Return to caller.  */
     return;
 }
+

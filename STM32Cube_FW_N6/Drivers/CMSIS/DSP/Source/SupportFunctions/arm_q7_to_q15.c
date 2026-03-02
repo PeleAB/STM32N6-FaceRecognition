@@ -186,3 +186,4 @@ void arm_q7_to_q15(
 /**
   @} end of q7_to_x group
  */
+

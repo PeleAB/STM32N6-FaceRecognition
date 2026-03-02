@@ -738,3 +738,4 @@ foreach(test_case ${test_cases})
   target_link_libraries(${test_name} PRIVATE test_utility)
   add_test(${CMAKE_BUILD_TYPE}::${test_name} ${test_name})
 endforeach()
+

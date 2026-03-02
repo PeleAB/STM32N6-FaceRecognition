@@ -97,3 +97,4 @@ int32_t arm_fully_connected_s8_get_buffer_size(const cmsis_nn_dims *filter_dims)
 /**
  * @} end of FC group
  */
+

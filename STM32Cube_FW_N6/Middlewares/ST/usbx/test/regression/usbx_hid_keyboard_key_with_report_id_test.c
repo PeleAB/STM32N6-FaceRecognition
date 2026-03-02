@@ -720,3 +720,4 @@ UINT                            i;
 
     ux_device_class_hid_event_set(hid, &hid_event);
 }
+

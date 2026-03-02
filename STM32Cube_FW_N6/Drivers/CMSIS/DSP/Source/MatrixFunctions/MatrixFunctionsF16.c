@@ -39,3 +39,4 @@
 #include "arm_mat_cholesky_f16.c"
 #include "arm_mat_solve_upper_triangular_f16.c"
 #include "arm_mat_solve_lower_triangular_f16.c"
+

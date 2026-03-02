@@ -50,3 +50,4 @@ void forward_lite_norm_if32of32( ai_float* output,
                                  ai_bool scale);
 
 #endif    /* LITE_NORM_F32_H */
+

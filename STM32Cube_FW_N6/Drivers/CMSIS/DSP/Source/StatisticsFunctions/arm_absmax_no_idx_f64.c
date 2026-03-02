@@ -85,3 +85,4 @@ void arm_absmax_no_idx_f64(
 /**
   @} end of AbsMax group
  */
+

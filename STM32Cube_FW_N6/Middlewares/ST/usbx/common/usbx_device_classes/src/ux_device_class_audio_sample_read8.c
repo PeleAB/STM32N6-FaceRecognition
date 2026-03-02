@@ -194,3 +194,4 @@ UINT _uxe_device_class_audio_sample_read8(UX_DEVICE_CLASS_AUDIO_STREAM *stream,
     /* Read 8-bit sample.  */
     return(_ux_device_class_audio_sample_read8(stream, buffer));
 }
+

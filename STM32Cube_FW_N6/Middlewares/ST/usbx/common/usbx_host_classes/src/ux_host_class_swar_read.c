@@ -264,3 +264,4 @@ UINT  _uxe_host_class_swar_read (UX_HOST_CLASS_SWAR *swar, UCHAR *data_pointer,
     /* Invoke SWAR read function.  */
     return(_ux_host_class_swar_read(swar, data_pointer, requested_length, actual_length));
 }
+

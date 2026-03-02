@@ -413,3 +413,4 @@ UINT  _uxe_host_class_pima_device_info_get(UX_HOST_CLASS_PIMA *pima,
     /* Call the actual pima device info get function.  */
     return(_ux_host_class_pima_device_info_get(pima, pima_device));
 }
+

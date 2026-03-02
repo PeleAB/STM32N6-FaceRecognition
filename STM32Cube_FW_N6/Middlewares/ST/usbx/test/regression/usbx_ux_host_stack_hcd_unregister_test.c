@@ -630,3 +630,4 @@ static VOID  ux_test_dpump_instance_deactivate(VOID *dpump_instance)
     /* Reset the DPUMP instance.  */
     dpump_device = UX_NULL;
 }
+

@@ -923,3 +923,4 @@ static void MDIOS_InitCallbacksToDefault(MDIOS_HandleTypeDef *hmdios)
 /**
   * @}
   */
+

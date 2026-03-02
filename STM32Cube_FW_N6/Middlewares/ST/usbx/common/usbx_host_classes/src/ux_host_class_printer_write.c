@@ -309,3 +309,4 @@ UINT  _uxe_host_class_printer_write(UX_HOST_CLASS_PRINTER *printer, UCHAR * data
     /* Call the actual printer write function.  */
     return(_ux_host_class_printer_write(printer, data_pointer, requested_length, actual_length));
 }
+

@@ -238,3 +238,4 @@ UINT    _uxe_host_class_audio_control_request(UX_HOST_CLASS_AUDIO *audio,
                             request_type, request, request_value,
                             spec_id, parameter, parameter_size, actual_size));
 }
+

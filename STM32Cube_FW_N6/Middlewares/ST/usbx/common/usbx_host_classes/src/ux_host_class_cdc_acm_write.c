@@ -304,3 +304,4 @@ UINT  _uxe_host_class_cdc_acm_write(UX_HOST_CLASS_CDC_ACM *cdc_acm, UCHAR *data_
     /* Invoke CDC ACM write function.  */
     return(_ux_host_class_cdc_acm_write(cdc_acm, data_pointer, requested_length, actual_length));
 }
+

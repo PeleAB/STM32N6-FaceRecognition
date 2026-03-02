@@ -877,3 +877,4 @@ void arm_correlate_q31(
 /**
   @} end of Corr group
  */
+

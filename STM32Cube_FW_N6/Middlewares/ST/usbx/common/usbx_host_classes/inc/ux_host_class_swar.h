@@ -198,3 +198,4 @@ UINT    _uxe_host_class_swar_reception_start (UX_HOST_CLASS_SWAR *swar,
 #endif 
 
 #endif
+

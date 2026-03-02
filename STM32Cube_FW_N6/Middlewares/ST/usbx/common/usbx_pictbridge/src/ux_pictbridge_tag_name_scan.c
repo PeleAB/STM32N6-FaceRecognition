@@ -118,3 +118,4 @@ UINT    status;
     return(UX_PICTBRIDGE_ERROR_PARAMETER_UNKNOWN);    
 }
 
+

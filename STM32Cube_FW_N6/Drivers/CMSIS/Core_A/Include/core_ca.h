@@ -2612,3 +2612,4 @@ __STATIC_INLINE void MMU_InvalidateTLB(void)
 #endif /* __CORE_CA_H_DEPENDANT */
 
 #endif /* __CMSIS_GENERIC */
+

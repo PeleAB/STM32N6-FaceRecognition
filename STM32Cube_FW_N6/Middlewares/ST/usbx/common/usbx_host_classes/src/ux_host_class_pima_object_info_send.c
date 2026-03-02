@@ -312,3 +312,4 @@ UINT  _uxe_host_class_pima_object_info_send(UX_HOST_CLASS_PIMA *pima,
 
     return(_ux_host_class_pima_object_info_send(pima, pima_session, storage_id, parent_object_id, object));
 }
+

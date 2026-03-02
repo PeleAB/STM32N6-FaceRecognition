@@ -184,3 +184,4 @@ void arm_scale_q7(
 /**
   @} end of BasicScale group
  */
+

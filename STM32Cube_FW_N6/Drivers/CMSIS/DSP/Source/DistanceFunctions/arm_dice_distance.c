@@ -90,3 +90,4 @@ float32_t arm_dice_distance(const uint32_t *pA, const uint32_t *pB, uint32_t num
 /**
  * @} end of groupDistance group
  */
+

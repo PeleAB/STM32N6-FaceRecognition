@@ -580,3 +580,4 @@ arm_status arm_nn_mat_mult_nt_t_s8(const q7_t *lhs,
 /**
  * @} end of NNBasicMath group
  */
+

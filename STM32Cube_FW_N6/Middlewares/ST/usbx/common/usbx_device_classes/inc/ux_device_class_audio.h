@@ -666,3 +666,4 @@ UINT    _uxe_device_class_audio_interrupt_send(UX_DEVICE_CLASS_AUDIO *audio, UCH
 #endif
 
 #endif /* ifndef UX_DEVICE_CLASS_AUDIO_H */
+

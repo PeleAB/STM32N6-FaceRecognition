@@ -243,3 +243,4 @@ UCHAR                                           dummy_buffer[64];
         test_control_return(0);
     }
 }
+

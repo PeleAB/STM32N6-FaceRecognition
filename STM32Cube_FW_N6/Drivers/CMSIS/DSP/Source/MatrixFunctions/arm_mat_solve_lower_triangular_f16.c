@@ -232,3 +232,4 @@
   @} end of MatrixInv group
  */
 #endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+

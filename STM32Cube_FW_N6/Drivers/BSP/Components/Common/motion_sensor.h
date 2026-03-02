@@ -97,3 +97,4 @@ typedef struct
 #endif
 
 #endif /* MOTION_SENSOR_H */
+

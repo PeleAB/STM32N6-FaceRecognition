@@ -686,3 +686,4 @@ int CMW_VD66GY_Probe(CMW_VD66GY_t *io_ctx, CMW_Sensor_if_t *vd6g_if)
   vd6g_if->GetSensorInfo = CMW_VD66GY_GetSensorInfo;
   return ret;
 }
+

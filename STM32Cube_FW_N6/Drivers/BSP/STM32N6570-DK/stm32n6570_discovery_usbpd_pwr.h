@@ -341,3 +341,4 @@ void    BSP_USBPD_PWR_EventCallback(uint32_t PortNum);
 
 #endif /* STM32N6570_DISCOVERY_USBPD_PWR_H */
 
+

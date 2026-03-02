@@ -493,3 +493,4 @@ arm_status arm_fully_connected_q7_opt(const q7_t *pV,
 /**
  * @} end of FC group
  */
+

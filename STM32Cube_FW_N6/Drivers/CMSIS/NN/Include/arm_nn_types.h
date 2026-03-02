@@ -135,3 +135,4 @@ typedef struct
 } cmsis_nn_softmax_lut_s16;
 
 #endif // _ARM_NN_TYPES_H
+

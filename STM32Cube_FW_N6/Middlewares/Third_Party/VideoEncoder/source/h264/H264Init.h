@@ -71,3 +71,4 @@ H264EncRet H264Init(const H264EncConfig * pEncCfg, h264Instance_s ** instAddr);
 void H264Shutdown(h264Instance_s *data);
 
 #endif
+

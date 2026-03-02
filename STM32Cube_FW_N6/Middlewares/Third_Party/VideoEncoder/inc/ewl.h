@@ -254,3 +254,4 @@ i32 EWLGetInputLineBufferBase(const void *instance, EWLLinearMem_t * info);
 }
 #endif
 #endif /*__EWL_H__*/
+

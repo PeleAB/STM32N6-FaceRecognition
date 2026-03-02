@@ -132,3 +132,4 @@ In case you turn on dma usage you must provide uncache section name `.uncached_b
 Needed uncache memory size is:
  * around 34K for usbx stack
  * around 6K for stm32_usbd stack
+

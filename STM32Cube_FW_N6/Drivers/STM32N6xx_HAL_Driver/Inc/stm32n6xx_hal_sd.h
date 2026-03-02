@@ -796,3 +796,4 @@ HAL_StatusTypeDef HAL_SD_Abort_IT(SD_HandleTypeDef *hsd);
 
 
 #endif /* STM32N6xx_HAL_SD_H */
+

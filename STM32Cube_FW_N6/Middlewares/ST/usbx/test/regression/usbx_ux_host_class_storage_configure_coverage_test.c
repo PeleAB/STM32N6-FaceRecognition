@@ -38,3 +38,4 @@ void    usbx_ux_host_class_storage_configure_overage_test_application_define(voi
     test_control_return(0);
     return;
 }
+

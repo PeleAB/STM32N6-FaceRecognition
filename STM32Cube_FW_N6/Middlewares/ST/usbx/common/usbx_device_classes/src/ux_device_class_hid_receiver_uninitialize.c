@@ -90,3 +90,4 @@ VOID _ux_device_class_hid_receiver_uninitialize(UX_DEVICE_CLASS_HID_RECEIVER *re
     _ux_utility_memory_free(receiver);
 }
 #endif
+

@@ -145,3 +145,4 @@ UX_SLAVE_CLASS              *class_ptr;
     return(UX_SUCCESS);
 }
 
+

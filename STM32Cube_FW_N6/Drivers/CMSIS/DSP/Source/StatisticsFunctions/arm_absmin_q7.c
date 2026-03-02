@@ -320,3 +320,4 @@ void arm_absmin_q7(
 /**
   @} end of AbsMin group
  */
+

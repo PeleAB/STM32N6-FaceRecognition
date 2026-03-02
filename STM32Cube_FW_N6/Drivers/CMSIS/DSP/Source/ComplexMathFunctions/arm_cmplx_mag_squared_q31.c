@@ -185,3 +185,4 @@ void arm_cmplx_mag_squared_q31(
 /**
   @} end of cmplx_mag_squared group
  */
+

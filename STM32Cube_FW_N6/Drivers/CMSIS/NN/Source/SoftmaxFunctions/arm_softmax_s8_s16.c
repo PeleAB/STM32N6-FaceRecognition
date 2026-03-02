@@ -53,3 +53,4 @@ void arm_softmax_s8_s16(const int8_t *input,
 /**
  * @} end of Softmax group
  */
+

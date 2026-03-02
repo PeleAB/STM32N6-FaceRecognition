@@ -499,3 +499,4 @@ UX_HCD_STM32        *hcd_stm32;
         _ux_host_semaphore_put(&_ux_system_host -> ux_system_host_hcd_semaphore);
     }
 }
+

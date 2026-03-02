@@ -96,3 +96,4 @@ ULONG   local_actual_flags_ptr;
     return(status);
 }
 #endif
+

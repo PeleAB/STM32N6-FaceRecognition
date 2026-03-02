@@ -274,3 +274,4 @@ UINT  _uxe_host_class_gser_read(UX_HOST_CLASS_GSER *gser,
     /* Invoke GSER read function.  */
     return(_ux_host_class_gser_read(gser, interface_index, data_pointer, requested_length, actual_length));
 }
+

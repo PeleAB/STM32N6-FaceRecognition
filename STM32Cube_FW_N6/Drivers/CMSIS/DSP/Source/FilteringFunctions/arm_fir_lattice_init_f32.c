@@ -68,3 +68,4 @@ void arm_fir_lattice_init_f32(
 /**
   @} end of FIR_Lattice group
  */
+

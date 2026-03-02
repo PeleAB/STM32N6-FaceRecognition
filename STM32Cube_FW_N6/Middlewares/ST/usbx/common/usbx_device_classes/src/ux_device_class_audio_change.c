@@ -300,3 +300,4 @@ ULONG                                    endpoint_dir;
     /* Return completion status.  */
     return(UX_SUCCESS);
 }
+

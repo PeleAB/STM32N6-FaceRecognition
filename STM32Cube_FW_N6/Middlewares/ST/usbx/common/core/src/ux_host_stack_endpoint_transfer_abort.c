@@ -142,3 +142,4 @@ UINT  _uxe_host_stack_endpoint_transfer_abort(UX_ENDPOINT *endpoint)
     /* Invoke transfer abort function.  */
     return(_ux_host_stack_endpoint_transfer_abort(endpoint));
 }
+

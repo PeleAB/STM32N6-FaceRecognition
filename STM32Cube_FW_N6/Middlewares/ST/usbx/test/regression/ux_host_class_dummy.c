@@ -553,3 +553,4 @@ UX_TRANSFER     *transfer = _ux_host_class_dummy_get_transfer_request(dummy, end
     UX_TEST_ASSERT(transfer);
     return ux_host_stack_transfer_request_abort(transfer);
 }
+

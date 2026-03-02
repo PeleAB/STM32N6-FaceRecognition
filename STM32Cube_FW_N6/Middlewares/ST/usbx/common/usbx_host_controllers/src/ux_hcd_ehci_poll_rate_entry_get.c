@@ -106,3 +106,4 @@ UX_EHCI_ED *_ux_hcd_ehci_poll_rate_entry_get(UX_HCD_EHCI *hcd_ehci,
     /* Return the list entry.  */
     return(ed_list);
 }
+

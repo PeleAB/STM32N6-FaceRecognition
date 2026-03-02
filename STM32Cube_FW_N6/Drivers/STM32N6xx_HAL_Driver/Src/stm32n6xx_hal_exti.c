@@ -847,3 +847,4 @@ uint32_t HAL_EXTI_GetLockAttributes(void)
   * @}
   */
 
+

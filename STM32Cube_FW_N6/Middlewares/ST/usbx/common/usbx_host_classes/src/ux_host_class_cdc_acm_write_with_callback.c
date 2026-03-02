@@ -217,3 +217,4 @@ UINT  _uxe_host_class_cdc_acm_write_with_callback(UX_HOST_CLASS_CDC_ACM *cdc_acm
     return(_ux_host_class_cdc_acm_write_with_callback(cdc_acm, data_pointer, requested_length));
 }
 #endif
+

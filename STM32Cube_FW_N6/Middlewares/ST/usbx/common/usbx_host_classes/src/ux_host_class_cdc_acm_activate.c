@@ -375,3 +375,4 @@ UX_HOST_CLASS_CDC_ACM_LINE_STATE    line_state;
     return(status);
 }
 
+

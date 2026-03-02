@@ -262,3 +262,4 @@ UX_SLAVE_CLASS_HID_PARAMETER    hid_parameter;
     test_control_return(0);
 #endif
 }
+

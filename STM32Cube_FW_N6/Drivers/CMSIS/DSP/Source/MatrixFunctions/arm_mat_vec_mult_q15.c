@@ -386,3 +386,4 @@ void arm_mat_vec_mult_q15(const arm_matrix_instance_q15 *pSrcMat, const q15_t *p
 /**
  * @} end of MatrixMult group
  */
+

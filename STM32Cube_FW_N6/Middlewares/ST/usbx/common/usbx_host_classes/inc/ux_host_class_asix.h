@@ -488,3 +488,4 @@ UINT  _ux_host_class_asix_setup(UX_HOST_CLASS_ASIX *asix);
 #endif 
 
 #endif
+

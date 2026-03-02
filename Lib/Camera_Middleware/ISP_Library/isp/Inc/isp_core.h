@@ -516,3 +516,4 @@ typedef struct
 /* Exported functions ------------------------------------------------------- */
 
 #endif /* __ISP_CORE__H */
+

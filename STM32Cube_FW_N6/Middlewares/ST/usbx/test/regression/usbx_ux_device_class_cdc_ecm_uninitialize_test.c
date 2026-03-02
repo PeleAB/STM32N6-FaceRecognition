@@ -382,3 +382,4 @@ UX_SLAVE_CLASS_COMMAND                  command;
     printf("SUCCESS!\n");
     test_control_return(0);
 }
+

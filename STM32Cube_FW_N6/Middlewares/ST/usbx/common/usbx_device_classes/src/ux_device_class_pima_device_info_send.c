@@ -371,3 +371,4 @@ USHORT                  *array_pointer;
     /* Return completion status.  */
     return(status);
 }
+

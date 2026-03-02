@@ -203,3 +203,4 @@ bool_e EncJpegSetBuffer(stream_s * buffer, u8 * stream, u32 size)
 
     return ENCHW_OK;
 }
+

@@ -696,3 +696,4 @@ ULONG actual_length;
         tx_thread_suspend(&tx_test_thread_slave_simulation);
     }
 }
+

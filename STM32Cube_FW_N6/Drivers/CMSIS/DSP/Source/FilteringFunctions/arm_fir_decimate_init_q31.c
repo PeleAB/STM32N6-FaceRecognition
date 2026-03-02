@@ -103,3 +103,4 @@ arm_status arm_fir_decimate_init_q31(
 /**
   @} end of FIR_decimate group
  */
+

@@ -159,3 +159,4 @@ UINT                 status;
     /* Instance is good.  */
     return(UX_SUCCESS);
 }
+

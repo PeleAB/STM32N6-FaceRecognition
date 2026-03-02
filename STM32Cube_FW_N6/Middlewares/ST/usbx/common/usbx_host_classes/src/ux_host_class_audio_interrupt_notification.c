@@ -94,3 +94,4 @@ UX_HOST_CLASS_AUDIO_AC *ac;
     /* Issue another request again.  */
     _ux_host_stack_transfer_request(transfer_request);
 }
+

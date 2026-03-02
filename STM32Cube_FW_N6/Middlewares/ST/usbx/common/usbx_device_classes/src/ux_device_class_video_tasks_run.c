@@ -111,3 +111,4 @@ ULONG                           running_count;
     return (running_count > 0) ? (UX_STATE_WAIT) : (UX_STATE_IDLE);
 }
 #endif
+

@@ -176,3 +176,4 @@ void arm_sub_q15(
 /**
   @} end of BasicSub group
  */
+

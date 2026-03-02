@@ -2030,3 +2030,4 @@ uint32_t HAL_GFXTIM_GetError(const GFXTIM_HandleTypeDef *hgfxtim)
 /**
   * @}
   */
+

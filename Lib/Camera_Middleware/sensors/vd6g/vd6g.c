@@ -1347,3 +1347,4 @@ int VD6G_SetExposureTime(VD6G_Ctx_t *ctx, int exposure_us)
 
   return 0;
 }
+

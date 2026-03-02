@@ -187,3 +187,4 @@ UINT  _uxe_host_stack_device_configuration_get(UX_DEVICE *device, UINT configura
     /* Invoke configuration get function.  */
     return(_ux_host_stack_device_configuration_get(device, configuration_index, configuration));
 }
+

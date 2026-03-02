@@ -3917,3 +3917,4 @@ static uint32_t SPI_GetPacketSize(const SPI_HandleTypeDef *hspi)
 /**
   * @}
   */
+

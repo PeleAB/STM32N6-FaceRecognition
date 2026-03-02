@@ -7,3 +7,4 @@ armcortexm7ct.cpi_mul=1                               # (int   , run-time ) defa
 armcortexm7ct.min_sync_level=3                        # (int   , run-time ) default = '0x0'    : force minimum syncLevel (0=off=default,1=syncState,2=postInsnIO,3=postInsnAll)
 armcortexm7ct.vfp-present=1                           # (bool  , init-time) default = '1'      : Set whether the model has VFP support
 #------------------------------------------------------------------------------
+

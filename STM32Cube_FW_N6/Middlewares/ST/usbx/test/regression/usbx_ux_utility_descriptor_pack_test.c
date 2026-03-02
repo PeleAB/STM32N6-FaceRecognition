@@ -386,3 +386,4 @@ ULONG input[]     = {0x03020100, 0x0504, 0x6, 0x0807, 0x0c0b0a09, 0x0};
         test_control_return(0);
     }
 }
+

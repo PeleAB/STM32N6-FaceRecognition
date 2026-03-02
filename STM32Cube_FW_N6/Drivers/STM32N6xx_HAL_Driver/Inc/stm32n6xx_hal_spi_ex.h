@@ -97,3 +97,4 @@ HAL_StatusTypeDef HAL_SPIEx_ConfigureUnderrun(SPI_HandleTypeDef *hspi, uint32_t 
 #endif
 
 #endif /* STM32N6xx_HAL_SPI_EX_H */
+

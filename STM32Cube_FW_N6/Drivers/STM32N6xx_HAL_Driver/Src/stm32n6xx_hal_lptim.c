@@ -3775,3 +3775,4 @@ HAL_StatusTypeDef LPTIM_DMA_Start_IT(DMA_HandleTypeDef *hdma, uint32_t src, uint
 /**
   * @}
   */
+

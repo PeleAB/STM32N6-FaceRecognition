@@ -89,3 +89,4 @@ UINT  _ux_hcd_stm32_power_on_port(UX_HCD_STM32 *hcd_stm32, ULONG port_index)
     return(UX_SUCCESS);
 }
 
+

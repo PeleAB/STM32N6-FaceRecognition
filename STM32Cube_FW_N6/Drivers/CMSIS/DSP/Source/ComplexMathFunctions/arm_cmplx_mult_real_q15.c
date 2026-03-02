@@ -236,3 +236,4 @@ void arm_cmplx_mult_real_q15(
 /**
   @} end of CmplxByRealMult group
  */
+

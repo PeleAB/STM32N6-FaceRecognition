@@ -2589,3 +2589,4 @@ static void RCC_ATTR_ConfigItemGroup(uint32_t ItemGroupIdx, uint32_t Item, uint3
 /**
   * @}
   */
+

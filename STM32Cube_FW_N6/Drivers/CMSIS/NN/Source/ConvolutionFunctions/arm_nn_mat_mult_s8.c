@@ -178,3 +178,4 @@ q7_t *arm_nn_mat_mult_s8(const q7_t *input_row,
     return NULL;
 #endif
 }
+

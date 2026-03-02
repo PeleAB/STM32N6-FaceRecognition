@@ -568,3 +568,4 @@ UCHAR                           state_modifier[2] = {0, (0x01 << 1)};
         ux_utility_thread_suspend(&tx_demo_thread_slave_simulation);
     }
 }
+

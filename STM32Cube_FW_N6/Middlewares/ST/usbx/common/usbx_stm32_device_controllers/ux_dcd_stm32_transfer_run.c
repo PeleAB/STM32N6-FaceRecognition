@@ -166,3 +166,4 @@ ULONG                   ed_status;
     return(UX_STATE_WAIT);
 }
 #endif /* defined(UX_DEVICE_STANDALONE) */
+

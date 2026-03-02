@@ -159,3 +159,4 @@ void arm_mfcc_f16(
 /**
   @} end of MFCC group
  */
+

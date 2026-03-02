@@ -21,3 +21,4 @@ VOID ux_test_hcd_sim_host_cleanup(VOID);
 UINT _ux_test_hcd_sim_host_entry(UX_HCD *hcd, UINT function, VOID *parameter);
 
 #endif /* _UX_TEST_HCD_SIM_HOST_H */
+

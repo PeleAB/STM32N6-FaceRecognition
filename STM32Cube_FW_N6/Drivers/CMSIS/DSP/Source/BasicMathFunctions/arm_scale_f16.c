@@ -181,3 +181,4 @@ void arm_scale_f16(
 /**
   @} end of BasicScale group
  */
+

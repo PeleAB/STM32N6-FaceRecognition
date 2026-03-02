@@ -878,3 +878,4 @@ void arm_clip_q7(const q7_t * pSrc,
 #endif
 
 #endif /* ifndef _BASIC_MATH_FUNCTIONS_H_ */
+

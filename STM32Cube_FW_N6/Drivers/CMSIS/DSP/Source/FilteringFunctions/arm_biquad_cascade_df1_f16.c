@@ -489,3 +489,4 @@ void arm_biquad_cascade_df1_f16(
 #endif /* #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE) */
 
 #endif /*#if defined(ARM_FLOAT16_SUPPORTED)*/
+

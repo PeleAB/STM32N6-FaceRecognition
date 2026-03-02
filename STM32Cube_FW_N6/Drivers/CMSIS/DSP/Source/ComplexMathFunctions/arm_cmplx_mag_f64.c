@@ -98,3 +98,4 @@ void arm_cmplx_mag_f64(
 /**
   @} end of cmplx_mag group
  */
+

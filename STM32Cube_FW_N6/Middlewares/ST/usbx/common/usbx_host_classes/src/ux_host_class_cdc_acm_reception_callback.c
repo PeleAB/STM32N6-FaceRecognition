@@ -142,3 +142,4 @@ UX_HOST_CLASS_CDC_ACM_RECEPTION     *cdc_acm_reception;
     return;
 }
 
+

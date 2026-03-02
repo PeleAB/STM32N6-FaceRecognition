@@ -164,3 +164,4 @@ void arm_negate_f16(
 /**
   @} end of BasicNegate group
  */
+

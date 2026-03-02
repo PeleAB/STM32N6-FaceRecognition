@@ -140,3 +140,4 @@ void arm_min_no_idx_q15(
 /**
   @} end of Min group
  */
+

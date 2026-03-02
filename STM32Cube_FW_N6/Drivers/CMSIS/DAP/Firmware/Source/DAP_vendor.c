@@ -98,3 +98,4 @@ uint32_t DAP_ProcessVendorCommand(const uint8_t *request, uint8_t *response) {
 }
 
 ///@}
+

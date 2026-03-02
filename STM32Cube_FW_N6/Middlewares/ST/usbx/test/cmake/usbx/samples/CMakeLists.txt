@@ -13,3 +13,4 @@ foreach(sample_file ${sample_files})
   add_executable(${sample_file_name} ${sample_file} fake.c)
   target_link_libraries(${sample_file_name} PRIVATE azrtos::usbx)
 endforeach()
+

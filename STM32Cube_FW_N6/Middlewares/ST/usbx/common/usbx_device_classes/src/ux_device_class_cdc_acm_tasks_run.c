@@ -476,3 +476,4 @@ UINT                        zlp = UX_FALSE;
 #endif /* !defined(UX_DEVICE_CLASS_CDC_ACM_TRANSMISSION_DISABLE)  */
 
 #endif /* defined(UX_DEVICE_STANDALONE)  */
+

@@ -131,3 +131,4 @@ int32_t arm_convolve_wrapper_s8_get_buffer_size(const cmsis_nn_conv_params *conv
 /**
  * @} end of NNConv group
  */
+

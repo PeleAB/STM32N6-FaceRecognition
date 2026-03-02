@@ -381,3 +381,4 @@ void arm_dct4_q31(
 /**
   @} end of DCT4_IDCT4 group
  */
+

@@ -125,3 +125,4 @@ UX_PICTBRIDGE_JOBINFO       *jobinfo;
     return(UX_SUCCESS);    
 }
 
+

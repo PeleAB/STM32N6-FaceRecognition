@@ -213,3 +213,4 @@ ULONG               total_theoretical_available;
     /* Return the search pointer.  */
     return(current_ptr);
 }
+

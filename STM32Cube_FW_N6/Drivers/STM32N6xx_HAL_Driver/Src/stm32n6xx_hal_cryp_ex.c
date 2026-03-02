@@ -1014,3 +1014,4 @@ static void CRYPEx_SetKey(CRYP_HandleTypeDef *hcryp, uint32_t KeySize)
 /**
   * @}
   */
+

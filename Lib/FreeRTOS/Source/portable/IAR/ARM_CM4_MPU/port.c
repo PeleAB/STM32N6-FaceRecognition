@@ -1372,3 +1372,4 @@ BaseType_t xPortIsAuthorizedToAccessBuffer( const void * pvBuffer,
 
 #endif /* #if ( configUSE_MPU_WRAPPERS_V1 == 0 ) */
 /*-----------------------------------------------------------*/
+

@@ -350,3 +350,4 @@ UX_MEMORY_BYTE_POOL *pool_ptr;
     test_control_return(0);
     return;
 }
+

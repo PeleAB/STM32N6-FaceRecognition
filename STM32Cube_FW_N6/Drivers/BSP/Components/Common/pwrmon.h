@@ -249,3 +249,4 @@ typedef struct
 #endif
 
 #endif /* __PWRMON_H */
+
