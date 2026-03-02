@@ -22,3 +22,7 @@ project(${CMAKE_PROJECT_NAME})
 # Include external project file
 include("mx-generated.cmake")
 
+# Add sysobj uart
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+    ${PROJECT_ROOT}/Src/sysobj/src/sysobj_uart.c
+)
