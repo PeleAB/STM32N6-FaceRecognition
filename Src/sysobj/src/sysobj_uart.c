@@ -5,7 +5,9 @@
 
 #include "sysobj_uart.h"
 #include <stddef.h>
+#include <stdint.h>
 #include <string.h>
+
 
 /**
  * Internal Software CRC32 Implementation

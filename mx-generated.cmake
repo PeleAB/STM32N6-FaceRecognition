@@ -31,6 +31,7 @@ set(APP_SOURCES
     ${PROJECT_ROOT}/Src/app/app.c
     ${PROJECT_ROOT}/Src/svc/buffer_queue.c
     ${PROJECT_ROOT}/Src/sysobj/src/sysobj_camera.c
+    ${PROJECT_ROOT}/Src/sysobj/src/sysobj_uart.c
     ${PROJECT_ROOT}/Src/svc/app_display.c
     ${PROJECT_ROOT}/Src/sysobj/src/sysobj_encoder.c
     ${PROJECT_ROOT}/Src/bsp/fuse_programming.c
