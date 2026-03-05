@@ -24,6 +24,7 @@
 
 #include "app/app.h"
 #include "app/app_config.h"
+#include "sysobj_params.h"
 #include "app_postprocess.h"
 #include "sysobj_cache.h"
 #include "sysobj_camera.h"
@@ -75,6 +76,25 @@ static StaticTask_t isp_thread;
 static StackType_t isp_thread_stack[2 *configMINIMAL_STACK_SIZE];
 static SemaphoreHandle_t isp_sem;
 static StaticSemaphore_t isp_sem_buffer;
+
+/* ---------------------------------------------------------------------------
+ * Inference guard mutex — held while Run_Inference() is executing.
+ * params pre/post_write_hook take this mutex to ensure the NPU is not
+ * accessing NOR flash when MMP mode is disabled for erase/write.
+ * ------------------------------------------------------------------------- */
+static SemaphoreHandle_t s_inference_mutex;
+static StaticSemaphore_t s_inference_mutex_buf;
+
+static void params_pre_write_hook(void)
+{
+  /* Block until any running inference releases the mutex */
+  xSemaphoreTake(s_inference_mutex, portMAX_DELAY);
+}
+
+static void params_post_write_hook(void)
+{
+  xSemaphoreGive(s_inference_mutex);
+}
 
 static void app_main_pipe_frame_event(void)
 {
@@ -154,7 +174,10 @@ static void nn_thread_fct(void *arg)
     SYSOBJ_CacheInvalidate(output_buffer, nn_out_len);
     ret = nn_service_prepare_io(capture_buffer_local, nn_in_len, output_buffer, nn_out_len);
     assert(ret == NN_SERVICE_OK);
+    /* Hold inference mutex so params write knows when the NPU is safe to pause */
+    xSemaphoreTake(s_inference_mutex, portMAX_DELAY);
     Run_Inference(nn_model->instance);
+    xSemaphoreGive(s_inference_mutex);
     time_stat_update(&stats->nn_inference_time, HAL_GetTick() - ts);
 
     bqueue_put_free(&nn_input_queue);
@@ -215,6 +238,17 @@ static void isp_thread_fct(void *arg)
   }
 }
 
+/* ---------------------------------------------------------------------------
+ * Persistent parameter table
+ * Descriptor order must match app_param_id_t enum in app_config.h.
+ * ------------------------------------------------------------------------- */
+static const param_descriptor_t s_param_table[PARAM_ID_COUNT] = {
+  /* id                    type            default   min    max   */
+  { PARAM_CONF_THRESHOLD, PARAM_TYPE_U32,  50ULL,   0ULL,  100ULL },
+  { PARAM_BRIGHTNESS,     PARAM_TYPE_U32,  80ULL,   0ULL,  100ULL },
+  { PARAM_TARGET_FPS,     PARAM_TYPE_U32,  30ULL,   1ULL,   60ULL },
+};
+
 void app_pipeline_init(void)
 {
   nn_service_model_cfg_t nn_cfg = {
@@ -223,6 +257,29 @@ void app_pipeline_init(void)
     .postprocess_type = POSTPROCESS_TYPE,
   };
   int ret;
+  params_status_t pret;
+
+  /* Create the inference guard mutex (must exist before sysobj_params_init) */
+  s_inference_mutex = xSemaphoreCreateMutexStatic(&s_inference_mutex_buf);
+  assert(s_inference_mutex != NULL);
+
+  /* Initialise persistent parameter store (must be after BSP_PlatformInit).
+   * mmp_base_addr = XSPI2_BASE: reads via memcpy from the AXI window so they
+   * are safe while the NPU accesses model weights through the same window.
+   * pre/post_write_hook: pause/resume inference around erase+write operations. */
+  params_cfg_t pcfg = {
+    .flash_base_addr  = PARAM_FLASH_BASE,
+    .xspi_instance    = PARAM_XSPI_INST,
+    .mmp_base_addr    = XSPI2_BASE,
+    .pre_write_hook   = params_pre_write_hook,
+    .post_write_hook  = params_post_write_hook,
+    .table            = s_param_table,
+    .table_count      = PARAM_ID_COUNT,
+  };
+  pret = sysobj_params_init(&pcfg);
+  /* PARAMS_ERR_ALL_CORRUPT is recoverable — flash blank on first boot */
+  assert(pret == PARAMS_OK || pret == PARAMS_ERR_ALL_CORRUPT);
+  (void)pret;
 
   ret = nn_service_init();
   assert(ret == NN_SERVICE_OK);

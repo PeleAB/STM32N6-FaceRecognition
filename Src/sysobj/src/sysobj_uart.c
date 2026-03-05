@@ -4,13 +4,38 @@
  */
 
 #include "sysobj_uart.h"
+#include "FreeRTOS.h"
 #include "stm32n6xx_hal.h"
+#include "task.h"
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 
+static UART_HandleTypeDef *s_huart = NULL;
 
-extern UART_HandleTypeDef huart1;
+#define UART_IT_RX_BUFFER_SIZE 256
+static uint8_t g_it_rx_buffer[UART_IT_RX_BUFFER_SIZE];
+static uint16_t g_it_rd_ptr = 0;
+static volatile uint16_t g_it_wr_ptr = 0;
+static uint8_t g_rx_byte;
+
+static uint8_t g_rx_buffer[SYSOBJ_UART_MAX_PAYLOAD_SIZE + 12];
+static uint16_t g_rx_idx = 0;
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+  if (s_huart != NULL && huart->Instance == s_huart->Instance) {
+    g_it_rx_buffer[g_it_wr_ptr] = g_rx_byte;
+    g_it_wr_ptr = (g_it_wr_ptr + 1) % UART_IT_RX_BUFFER_SIZE;
+    HAL_UART_Receive_IT(s_huart, &g_rx_byte, 1);
+  }
+}
+
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
+  if (s_huart != NULL && huart->Instance == s_huart->Instance) {
+    /* Restart reception if error occurs */
+    HAL_UART_Receive_IT(s_huart, &g_rx_byte, 1);
+  }
+}
 
 /**
  * Internal Software CRC32 Implementation
@@ -138,9 +163,19 @@ static void internal_handle_manage_set_led(const sysobj_uart_msg_t *msg) {
   }
 }
 
+__attribute__((weak)) void sysobj_uart_handle_manage_telemetry(uint8_t src_id) {
+  (void)src_id;
+}
+
+static void internal_handle_manage_telemetry(const sysobj_uart_msg_t *msg) {
+  sysobj_uart_handle_manage_telemetry(msg->src_id);
+}
+
 static const sysobj_uart_handler_entry_t msg_handler_table[] = {
     {SYSOBJ_UART_MSG_TYPE_MANAGE, SYSOBJ_UART_MANAGE_SUBTYPE_SET_LED,
      internal_handle_manage_set_led},
+    {SYSOBJ_UART_MSG_TYPE_MANAGE, SYSOBJ_UART_MANAGE_SUBTYPE_TELEMETRY,
+     internal_handle_manage_telemetry},
     /* Add future handlers here */
 };
 
@@ -148,6 +183,10 @@ static const sysobj_uart_handler_entry_t msg_handler_table[] = {
   (sizeof(msg_handler_table) / sizeof(msg_handler_table[0]))
 
 static void sysobj_uart_send_ack(const sysobj_uart_msg_t *rx_msg) {
+  if (!rx_msg->need_ack) {
+    return;
+  }
+
   sysobj_uart_msg_t ack_msg;
   uint8_t buffer[SYSOBJ_UART_MAX_PAYLOAD_SIZE + 12];
   uint16_t out_len;
@@ -161,9 +200,10 @@ static void sysobj_uart_send_ack(const sysobj_uart_msg_t *rx_msg) {
   ack_msg.data = rx_msg->data;
   ack_msg.data_len = rx_msg->data_len;
 
-  if (sysobj_uart_generate(&ack_msg, buffer, sizeof(buffer), &out_len) ==
-      SYSOBJ_UART_ERROR_NONE) {
-    HAL_UART_Transmit(&huart1, buffer, out_len, 100);
+  if (s_huart != NULL &&
+      sysobj_uart_generate(&ack_msg, buffer, sizeof(buffer), &out_len) ==
+          SYSOBJ_UART_ERROR_NONE) {
+    HAL_UART_Transmit(s_huart, buffer, out_len, 100);
   }
 }
 
@@ -233,4 +273,69 @@ sysobj_uart_error_t sysobj_uart_generate(const sysobj_uart_msg_t *msg,
   *out_len = total_len;
 
   return SYSOBJ_UART_ERROR_NONE;
+}
+
+sysobj_uart_error_t sysobj_uart_send(const sysobj_uart_msg_t *msg) {
+  if (s_huart == NULL) {
+    return SYSOBJ_UART_ERROR_NULL_POINTER;
+  }
+  uint8_t buffer[SYSOBJ_UART_MAX_PAYLOAD_SIZE + 12];
+  uint16_t out_len;
+  sysobj_uart_error_t err =
+      sysobj_uart_generate(msg, buffer, sizeof(buffer), &out_len);
+  if (err == SYSOBJ_UART_ERROR_NONE) {
+    HAL_UART_Transmit(s_huart, buffer, out_len, 100);
+  }
+  return err;
+}
+
+void sysobj_uart_init(UART_HandleTypeDef *huart) { s_huart = huart; }
+
+void sysobj_uart_task_func(void *pvParameters) {
+  (void)pvParameters;
+  uint8_t rx_byte;
+  sysobj_uart_msg_t msg;
+
+  if (s_huart == NULL) {
+    while (1)
+      vTaskDelay(pdMS_TO_TICKS(1000));
+  }
+
+  __HAL_UART_CLEAR_OREFLAG(s_huart);
+  __HAL_UART_CLEAR_FEFLAG(s_huart);
+
+  /* Start IT reception, 1 byte at a time */
+  HAL_UART_Receive_IT(s_huart, &g_rx_byte, 1);
+
+  while (1) {
+    /* Read from software IT ring buffer */
+    while (g_it_rd_ptr != g_it_wr_ptr) {
+      rx_byte = g_it_rx_buffer[g_it_rd_ptr];
+      g_it_rd_ptr = (g_it_rd_ptr + 1) % UART_IT_RX_BUFFER_SIZE;
+
+      if (g_rx_idx == 0 && rx_byte != SYSOBJ_UART_SOF) {
+        continue;
+      }
+
+      g_rx_buffer[g_rx_idx++] = rx_byte;
+
+      if (g_rx_idx >= 2) {
+        uint8_t payload_len = g_rx_buffer[1];
+        uint16_t total_expected = 3 + payload_len + 4;
+
+        if (g_rx_idx >= total_expected) {
+          if (sysobj_uart_parse(g_rx_buffer, g_rx_idx, &msg) ==
+              SYSOBJ_UART_ERROR_NONE) {
+            sysobj_uart_dispatch_msg(&msg);
+          }
+          g_rx_idx = 0;
+        } else if (g_rx_idx >= sizeof(g_rx_buffer)) {
+          g_rx_idx = 0;
+        }
+      }
+    }
+
+    /* Yield for a bit */
+    vTaskDelay(pdMS_TO_TICKS(1));
+  }
 }

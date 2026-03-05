@@ -60,6 +60,8 @@ set(APP_SOURCES
     ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_cacheaxi.c
     ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_cortex.c
     ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_dcmipp.c
+    ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_dma.c
+    ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_dma_ex.c
     ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_dma2d.c
     ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_gpio.c
     ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_i2c.c
@@ -74,6 +76,7 @@ set(APP_SOURCES
     ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_rif.c
     ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_tim.c
     ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_uart.c
+    ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_uart_ex.c
     ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_xspi.c
     ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_ll_usb.c
     ${CUBE_FW}/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_ll_venc.c

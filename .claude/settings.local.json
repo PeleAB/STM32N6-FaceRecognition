@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l /c/developments/x-cube-n6-ai-h264-usb-uvc/Src/svc/*.c /c/developments/x-cube-n6-ai-h264-usb-uvc/Src/sysobj/src/*.c)",
+      "Bash(grep -r \"typedef struct\\\\|typedef enum\" /c/developments/x-cube-n6-ai-h264-usb-uvc/Inc/svc/*.h /c/developments/x-cube-n6-ai-h264-usb-uvc/Src/sysobj/inc/*.h)",
+      "Bash(grep -l \"HAL_\" /c/developments/x-cube-n6-ai-h264-usb-uvc/Src/svc/*.c /c/developments/x-cube-n6-ai-h264-usb-uvc/Src/sysobj/src/*.c)"
+    ]
+  }
+}

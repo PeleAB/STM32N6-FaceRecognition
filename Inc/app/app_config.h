@@ -19,8 +19,33 @@
 #define APP_CONFIG
 
 #include "postprocess_conf.h"
+#include "sysobj_params.h"
 
+/* ---------------------------------------------------------------------------
+ * Persistent parameter store configuration
+ * 3 × 4 KB sectors at the very end of the 128 MB NOR flash (MX66UW1G45G).
+ *   Bank 0: 0x07FFD000   Bank 1: 0x07FFE000   Bank 2: 0x07FFF000
+ * ------------------------------------------------------------------------- */
+#define PARAM_FLASH_BASE  0x07FFD000UL
+#define PARAM_XSPI_INST   0U
+
+/**
+ * @brief Application parameter IDs.
+ *
+ * Each entry corresponds to one row in s_param_table (defined in
+ * app_pipeline.c).  Add new IDs here and a matching row in the table.
+ * Maximum: PARAMS_MAX_ENTRIES (15).
+ */
+typedef enum {
+  PARAM_CONF_THRESHOLD = 0, /*!< uint32, default=50,  range [0,  100] – detection confidence % */
+  PARAM_BRIGHTNESS     = 1, /*!< uint32, default=80,  range [0,  100] – display brightness %   */
+  PARAM_TARGET_FPS     = 2, /*!< uint32, default=30,  range [1,   60] – target frame rate       */
+  PARAM_ID_COUNT       = 3,
+} app_param_id_t;
+
+#ifndef USE_DCACHE
 #define USE_DCACHE
+#endif
 
 /* Define sensor info */
 #define SENSOR_IMX335_WIDTH 2592
