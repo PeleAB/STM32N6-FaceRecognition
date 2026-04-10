@@ -35,13 +35,20 @@ typedef enum {
 } sysobj_uart_msg_type_t;
 
 typedef enum {
-  SYSOBJ_UART_MANAGE_SUBTYPE_SET_LED = 0x01,
+  SYSOBJ_UART_MANAGE_SUBTYPE_SET_LED   = 0x01,
   SYSOBJ_UART_MANAGE_SUBTYPE_TELEMETRY = 0x02,
+  SYSOBJ_UART_MANAGE_SUBTYPE_GET_STATE = 0x03,
 } sysobj_uart_manage_subtype_t;
 
 typedef enum {
-  SYSOBJ_UART_CONFIG_SUBTYPE_PARAM_READ  = 0x01, /*!< UI → MCU: read one param  */
-  SYSOBJ_UART_CONFIG_SUBTYPE_PARAM_WRITE = 0x02, /*!< UI → MCU: write one param */
+  SYSOBJ_UART_CONFIG_SUBTYPE_PARAM_READ         = 0x01,
+  SYSOBJ_UART_CONFIG_SUBTYPE_PARAM_WRITE        = 0x02,
+  SYSOBJ_UART_CONFIG_SUBTYPE_ENTER_CONFIG       = 0x03,
+  SYSOBJ_UART_CONFIG_SUBTYPE_EXIT_CONFIG        = 0x04,
+  SYSOBJ_UART_CONFIG_SUBTYPE_MODEL_SELECT       = 0x05,
+  SYSOBJ_UART_CONFIG_SUBTYPE_ENROLL             = 0x06,
+  SYSOBJ_UART_CONFIG_SUBTYPE_COMMIT_ENROLL      = 0x07,
+  SYSOBJ_UART_CONFIG_SUBTYPE_CLEAR_EMBEDDINGS   = 0x08,
 } sysobj_uart_config_subtype_t;
 
 typedef enum {
@@ -173,6 +180,81 @@ void sysobj_uart_handle_config_param_write(uint8_t src_id, uint16_t param_id,
  * @return sysobj_uart_error_t Error status.
  */
 sysobj_uart_error_t sysobj_uart_send(const sysobj_uart_msg_t *msg);
+
+/**
+ * @brief Handler for MANAGE -> GET_STATE message.
+ * MCU should reply with a 2-byte payload: [status, state].
+ * Weak — override in the application to implement the state machine.
+ *
+ * @param src_id Source node ID of the requester.
+ */
+void sysobj_uart_handle_manage_get_state(uint8_t src_id);
+
+/**
+ * @brief Handler for CONFIG -> ENTER_CONFIG message.
+ * MCU should transition to config mode and reply with [status, state].
+ * Weak — override in the application.
+ *
+ * @param src_id Source node ID of the requester.
+ */
+void sysobj_uart_handle_config_enter_config(uint8_t src_id);
+
+/**
+ * @brief Handler for CONFIG -> EXIT_CONFIG message.
+ * MCU should exit config mode and reply with [status, state].
+ * Weak — override in the application.
+ *
+ * @param src_id Source node ID of the requester.
+ */
+void sysobj_uart_handle_config_exit_config(uint8_t src_id);
+
+/**
+ * @brief Handler for CONFIG -> MODEL_SELECT message.
+ * Request payload: model_id[0..1] (LE).
+ * The override should call sysobj_params_write(PARAM_ACTIVE_MODEL, model_id)
+ * (and optionally nn_service_select() if multiple models are compiled in),
+ * then sysobj_uart_send() a response with:
+ *   data[0]    = status (0=OK, 0x10=wrong state)
+ *   data[1..2] = model_id (LE)
+ *
+ * Weak — override in the application.
+ *
+ * @param src_id   Source node ID of the requester.
+ * @param model_id Index of the model to activate.
+ */
+void sysobj_uart_handle_config_model_select(uint8_t src_id, uint16_t model_id);
+
+/**
+ * @brief Handler for CONFIG -> ENROLL message.
+ * Requests enrollment of the next detected face.  The actual embedding capture
+ * happens asynchronously on the next frame where a face is detected.
+ * Reply: data[0] = status (0=OK, 0x10=wrong state).
+ * Weak — override in the application.
+ *
+ * @param src_id Source node ID of the requester.
+ */
+void sysobj_uart_handle_config_enroll(uint8_t src_id);
+
+/**
+ * @brief Handler for CONFIG -> COMMIT_ENROLL message.
+ * Requests that accumulated embedding samples be averaged and persisted to
+ * NOR flash.  The flash write is deferred to nn_thread (NPU idle).
+ * Reply: data[0] = status, data[1..4] = current sample count (LE uint32).
+ * Weak — override in the application.
+ *
+ * @param src_id Source node ID of the requester.
+ */
+void sysobj_uart_handle_config_commit_enroll(uint8_t src_id);
+
+/**
+ * @brief Handler for CONFIG -> CLEAR_EMBEDDINGS message.
+ * Clears all enrolled embeddings from SRAM and erases the NOR flash sector.
+ * Reply: data[0] = status (0=OK, 0x10=wrong state).
+ * Weak — override in the application.
+ *
+ * @param src_id Source node ID of the requester.
+ */
+void sysobj_uart_handle_config_clear_embeddings(uint8_t src_id);
 
 /**
  * @brief Initialize the sysobj UART message handler.

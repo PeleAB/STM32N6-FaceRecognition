@@ -171,12 +171,121 @@ static void internal_handle_manage_telemetry(const sysobj_uart_msg_t *msg) {
   sysobj_uart_handle_manage_telemetry(msg->src_id);
 }
 
+__attribute__((weak)) void sysobj_uart_handle_manage_get_state(uint8_t src_id) {
+  (void)src_id;
+}
+
+static void internal_handle_manage_get_state(const sysobj_uart_msg_t *msg) {
+  sysobj_uart_handle_manage_get_state(msg->src_id);
+}
+
+__attribute__((weak)) void sysobj_uart_handle_config_param_read(uint8_t src_id,
+                                                                uint16_t param_id) {
+  (void)src_id;
+  (void)param_id;
+}
+
+static void internal_handle_config_param_read(const sysobj_uart_msg_t *msg) {
+  if (msg->data == NULL || msg->data_len < 2) return;
+  uint16_t param_id = (uint16_t)msg->data[0] | ((uint16_t)msg->data[1] << 8);
+  sysobj_uart_handle_config_param_read(msg->src_id, param_id);
+}
+
+__attribute__((weak)) void sysobj_uart_handle_config_param_write(uint8_t src_id,
+                                                                  uint16_t param_id,
+                                                                  uint8_t type,
+                                                                  uint64_t value) {
+  (void)src_id;
+  (void)param_id;
+  (void)type;
+  (void)value;
+}
+
+static void internal_handle_config_param_write(const sysobj_uart_msg_t *msg) {
+  if (msg->data == NULL || msg->data_len < 11) return;
+  uint16_t param_id = (uint16_t)msg->data[0] | ((uint16_t)msg->data[1] << 8);
+  uint8_t  type     = msg->data[2];
+  uint64_t value    = 0;
+  for (int i = 0; i < 8; i++)
+    value |= ((uint64_t)msg->data[3 + i]) << (8 * i);
+  sysobj_uart_handle_config_param_write(msg->src_id, param_id, type, value);
+}
+
+__attribute__((weak)) void sysobj_uart_handle_config_enter_config(uint8_t src_id) {
+  (void)src_id;
+}
+
+static void internal_handle_config_enter_config(const sysobj_uart_msg_t *msg) {
+  sysobj_uart_handle_config_enter_config(msg->src_id);
+}
+
+__attribute__((weak)) void sysobj_uart_handle_config_exit_config(uint8_t src_id) {
+  (void)src_id;
+}
+
+static void internal_handle_config_exit_config(const sysobj_uart_msg_t *msg) {
+  sysobj_uart_handle_config_exit_config(msg->src_id);
+}
+
+__attribute__((weak)) void sysobj_uart_handle_config_model_select(uint8_t src_id,
+                                                                   uint16_t model_id) {
+  (void)src_id;
+  (void)model_id;
+}
+
+static void internal_handle_config_model_select(const sysobj_uart_msg_t *msg) {
+  if (msg->data == NULL || msg->data_len < 2) return;
+  uint16_t model_id = (uint16_t)msg->data[0] | ((uint16_t)msg->data[1] << 8);
+  sysobj_uart_handle_config_model_select(msg->src_id, model_id);
+}
+
+__attribute__((weak)) void sysobj_uart_handle_config_enroll(uint8_t src_id) {
+  (void)src_id;
+}
+
+static void internal_handle_config_enroll(const sysobj_uart_msg_t *msg) {
+  sysobj_uart_handle_config_enroll(msg->src_id);
+}
+
+__attribute__((weak)) void sysobj_uart_handle_config_commit_enroll(uint8_t src_id) {
+  (void)src_id;
+}
+
+static void internal_handle_config_commit_enroll(const sysobj_uart_msg_t *msg) {
+  sysobj_uart_handle_config_commit_enroll(msg->src_id);
+}
+
+__attribute__((weak)) void sysobj_uart_handle_config_clear_embeddings(uint8_t src_id) {
+  (void)src_id;
+}
+
+static void internal_handle_config_clear_embeddings(const sysobj_uart_msg_t *msg) {
+  sysobj_uart_handle_config_clear_embeddings(msg->src_id);
+}
+
 static const sysobj_uart_handler_entry_t msg_handler_table[] = {
     {SYSOBJ_UART_MSG_TYPE_MANAGE, SYSOBJ_UART_MANAGE_SUBTYPE_SET_LED,
      internal_handle_manage_set_led},
     {SYSOBJ_UART_MSG_TYPE_MANAGE, SYSOBJ_UART_MANAGE_SUBTYPE_TELEMETRY,
      internal_handle_manage_telemetry},
-    /* Add future handlers here */
+    {SYSOBJ_UART_MSG_TYPE_MANAGE, SYSOBJ_UART_MANAGE_SUBTYPE_GET_STATE,
+     internal_handle_manage_get_state},
+    {SYSOBJ_UART_MSG_TYPE_CONFIG, SYSOBJ_UART_CONFIG_SUBTYPE_PARAM_READ,
+     internal_handle_config_param_read},
+    {SYSOBJ_UART_MSG_TYPE_CONFIG, SYSOBJ_UART_CONFIG_SUBTYPE_PARAM_WRITE,
+     internal_handle_config_param_write},
+    {SYSOBJ_UART_MSG_TYPE_CONFIG, SYSOBJ_UART_CONFIG_SUBTYPE_ENTER_CONFIG,
+     internal_handle_config_enter_config},
+    {SYSOBJ_UART_MSG_TYPE_CONFIG, SYSOBJ_UART_CONFIG_SUBTYPE_EXIT_CONFIG,
+     internal_handle_config_exit_config},
+    {SYSOBJ_UART_MSG_TYPE_CONFIG, SYSOBJ_UART_CONFIG_SUBTYPE_MODEL_SELECT,
+     internal_handle_config_model_select},
+    {SYSOBJ_UART_MSG_TYPE_CONFIG, SYSOBJ_UART_CONFIG_SUBTYPE_ENROLL,
+     internal_handle_config_enroll},
+    {SYSOBJ_UART_MSG_TYPE_CONFIG, SYSOBJ_UART_CONFIG_SUBTYPE_COMMIT_ENROLL,
+     internal_handle_config_commit_enroll},
+    {SYSOBJ_UART_MSG_TYPE_CONFIG, SYSOBJ_UART_CONFIG_SUBTYPE_CLEAR_EMBEDDINGS,
+     internal_handle_config_clear_embeddings},
 };
 
 #define MSG_HANDLER_TABLE_SIZE                                                 \

@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import http from "http";
 import { spawn } from "child_process";
 import { SerialPort } from "serialport";
+//#region electron/main.ts
 var __filename = fileURLToPath(import.meta.url);
 var __dirname = path.dirname(__filename);
 var activeFfmpegProcesses = [];
@@ -159,3 +160,4 @@ app.whenReady().then(() => {
 app.on("window-all-closed", () => {
 	if (process.platform !== "darwin") app.quit();
 });
+//#endregion

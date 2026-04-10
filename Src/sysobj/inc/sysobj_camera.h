@@ -33,6 +33,20 @@ int CAM_NNPipe_UpdateAddress(uint8_t *nn_pipe_dst);
 int CAM_GetVencWidth(void);
 int CAM_GetVencHeight(void);
 
+/**
+ * @brief Stop PIPE2, reconfigure to a new resolution, and restart.
+ *
+ * Must be called while the NPU is idle (caller holds s_inference_mutex).
+ * Preserves the existing crop ROI aspect ratio; only changes output dimensions.
+ *
+ * @param width       New PIPE2 output width  (e.g. FR_DET_WIDTH  = 128)
+ * @param height      New PIPE2 output height (e.g. FR_DET_HEIGHT = 128)
+ * @param nn_pipe_dst Destination buffer for the restarted pipe.
+ * @param cam_mode    Camera mode (e.g. CMW_MODE_CONTINUOUS).
+ */
+void CAM_NNPipe_Reconfigure(uint16_t width, uint16_t height,
+                             uint8_t *nn_pipe_dst, uint32_t cam_mode);
+
 #endif /* SYSOBJ_CAMERA_H */
 
 

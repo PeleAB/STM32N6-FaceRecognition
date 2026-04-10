@@ -207,6 +207,35 @@ void CAM_NNPipe_Start(uint8_t *nn_pipe_dst, uint32_t cam_mode)
   assert(ret == CMW_ERROR_NONE);
 }
 
+void CAM_NNPipe_Reconfigure(uint16_t width, uint16_t height,
+                             uint8_t *nn_pipe_dst, uint32_t cam_mode)
+{
+  CMW_DCMIPP_Conf_t dcmipp_conf;
+  uint32_t hw_pitch;
+  int ret;
+
+  /* Stop the ancillary pipe at HAL level before reconfiguring.
+   * CMW does not expose a per-pipe stop; HAL_DCMIPP_PIPE_Stop is the
+   * correct mechanism and matches what CMW_CAMERA_Start sets up. */
+  ret = HAL_DCMIPP_PIPE_Stop(CMW_CAMERA_GetDCMIPPHandle(), DCMIPP_PIPE2);
+  assert(ret == HAL_OK);
+
+  dcmipp_conf.output_width  = width;
+  dcmipp_conf.output_height = height;
+  dcmipp_conf.output_format = NN_FORMAT;
+  dcmipp_conf.output_bpp    = NN_BPP;
+  dcmipp_conf.mode          = CMW_Aspect_ratio_manual_roi;
+  dcmipp_conf.enable_swap   = 1;
+  dcmipp_conf.enable_gamma_conversion = 0;
+  CAM_InitCropConfig(&dcmipp_conf.manual_conf, sensor_width, sensor_height);
+  ret = CMW_CAMERA_SetPipeConfig(DCMIPP_PIPE2, &dcmipp_conf, &hw_pitch);
+  assert(ret == HAL_OK);
+  assert(hw_pitch == (uint32_t)width * dcmipp_conf.output_bpp);
+
+  ret = CMW_CAMERA_Start(DCMIPP_PIPE2, nn_pipe_dst, cam_mode);
+  assert(ret == CMW_ERROR_NONE);
+}
+
 static int CAM_SetPipeAddress(uint32_t pipe, uint8_t *dst)
 {
   int ret;
