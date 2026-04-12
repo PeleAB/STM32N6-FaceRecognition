@@ -64,8 +64,10 @@ static uint8_t nn_input_buffers[2][NN_INPUT_BUFFER_SIZE] ALIGN_32 IN_PSRAM;
 static bqueue_t nn_input_queue;
 static uint8_t nn_output_buffers[2][NN_OUTPUT_BUFFER_SIZE_ALIGN] ALIGN_32;
 static bqueue_t nn_output_queue;
-static nn_service_handle_t nn_model_handle = NN_SERVICE_INVALID_HANDLE;
-static const nn_service_model_t *nn_model;
+static nn_service_handle_t nn_model_det_handle = NN_SERVICE_INVALID_HANDLE;
+static const nn_service_model_t *nn_model_det;
+static nn_service_handle_t nn_model_rec_handle = NN_SERVICE_INVALID_HANDLE;
+static const nn_service_model_t *nn_model_rec;
 
 /* tasks */
 static StaticTask_t nn_thread;
@@ -138,17 +140,15 @@ static void nn_thread_fct(void *arg)
   uint32_t nn_period_ms;
   uint32_t nn_period[2];
   uint8_t *nn_pipe_dst;
-  uint32_t nn_out_len;
-  uint32_t nn_in_len;
+
   uint32_t total_ts;
   uint32_t ts;
   int ret;
 
   (void) nn_period_ms;
 
-  assert(nn_model);
-  nn_in_len = nn_model->user_input_size;
-  nn_out_len = nn_model->user_output_size;
+  assert(nn_model_det);
+  assert(nn_model_rec);
 
   nn_period[1] = HAL_GetTick();
 
@@ -171,12 +171,29 @@ static void nn_thread_fct(void *arg)
 
     total_ts = HAL_GetTick();
     ts = HAL_GetTick();
-    SYSOBJ_CacheInvalidate(output_buffer, nn_out_len);
-    ret = nn_service_prepare_io(capture_buffer_local, nn_in_len, output_buffer, nn_out_len);
+    
+    /* 1. First model: Detection */
+    SYSOBJ_CacheInvalidate(output_buffer, nn_model_det->user_output_size);
+    ret = nn_service_select(nn_model_det_handle);
+    assert(ret == NN_SERVICE_OK);
+    ret = nn_service_prepare_io(capture_buffer_local, nn_model_det->user_input_size, output_buffer, nn_model_det->user_output_size);
     assert(ret == NN_SERVICE_OK);
     /* Hold inference mutex so params write knows when the NPU is safe to pause */
     xSemaphoreTake(s_inference_mutex, portMAX_DELAY);
-    Run_Inference(nn_model->instance);
+    Run_Inference(nn_model_det->instance);
+    xSemaphoreGive(s_inference_mutex);
+
+    /* Placeholder for intermediate step: Using output_buffer from det to crop input for rec.
+       We will reuse both capture_buffer_local and output_buffer for the second model run. */
+
+    /* 2. Second model: Recognition */
+    SYSOBJ_CacheInvalidate(output_buffer, nn_model_rec->user_output_size);
+    ret = nn_service_select(nn_model_rec_handle);
+    assert(ret == NN_SERVICE_OK);
+    ret = nn_service_prepare_io(capture_buffer_local, nn_model_rec->user_input_size, output_buffer, nn_model_rec->user_output_size);
+    assert(ret == NN_SERVICE_OK);
+    xSemaphoreTake(s_inference_mutex, portMAX_DELAY);
+    Run_Inference(nn_model_rec->instance);
     xSemaphoreGive(s_inference_mutex);
     time_stat_update(&stats->nn_inference_time, HAL_GetTick() - ts);
 
@@ -192,7 +209,7 @@ static void dp_thread_fct(void *arg)
   od_yolov2_pp_static_param_t pp_params;
   od_pp_out_t pp_output;
   stat_info_t *stats = app_stats_state();
-  const nn_service_model_t *model = nn_model;
+  const nn_service_model_t *model = nn_model_rec;
   uint32_t total_ts;
   void *pp_input;
   int is_dp_done;
@@ -251,8 +268,13 @@ static const param_descriptor_t s_param_table[PARAM_ID_COUNT] = {
 
 void app_pipeline_init(void)
 {
-  nn_service_model_cfg_t nn_cfg = {
-    .name = "default",
+  nn_service_model_cfg_t nn_cfg_det = {
+    .name = "default_det",
+    .instance = &NN_Instance_Default,
+    .postprocess_type = POSTPROCESS_TYPE,
+  };
+  nn_service_model_cfg_t nn_cfg_rec = {
+    .name = "default_rec",
     .instance = &NN_Instance_Default,
     .postprocess_type = POSTPROCESS_TYPE,
   };
@@ -283,15 +305,21 @@ void app_pipeline_init(void)
 
   ret = nn_service_init();
   assert(ret == NN_SERVICE_OK);
-  ret = nn_service_register(&nn_cfg, &nn_model_handle);
+  ret = nn_service_register(&nn_cfg_det, &nn_model_det_handle);
   assert(ret == NN_SERVICE_OK);
-  ret = nn_service_select(nn_model_handle);
+  nn_model_det = nn_service_get(nn_model_det_handle);
+  assert(nn_model_det);
+  assert(nn_model_det->user_input_size <= sizeof(nn_input_buffers[0]));
+  assert(nn_model_det->user_output_size <= sizeof(nn_output_buffers[0]));
+  assert(nn_model_det->postprocess_type == POSTPROCESS_TYPE);
+
+  ret = nn_service_register(&nn_cfg_rec, &nn_model_rec_handle);
   assert(ret == NN_SERVICE_OK);
-  nn_model = nn_service_active();
-  assert(nn_model);
-  assert(nn_model->user_input_size <= sizeof(nn_input_buffers[0]));
-  assert(nn_model->user_output_size <= sizeof(nn_output_buffers[0]));
-  assert(nn_model->postprocess_type == POSTPROCESS_TYPE);
+  nn_model_rec = nn_service_get(nn_model_rec_handle);
+  assert(nn_model_rec);
+  assert(nn_model_rec->user_input_size <= sizeof(nn_input_buffers[0]));
+  assert(nn_model_rec->user_output_size <= sizeof(nn_output_buffers[0]));
+  assert(nn_model_rec->postprocess_type == POSTPROCESS_TYPE);
 
   ret = bqueue_init(&nn_input_queue, 2, (uint8_t *[2]){nn_input_buffers[0], nn_input_buffers[1]});
   assert(ret == 0);
