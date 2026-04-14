@@ -29,6 +29,7 @@
 #include "stm32n6570_discovery.h"
 #include "stm32n6xx_hal.h"
 #include "svc/app_stats.h"
+#include "svc/app_trackobject.h"
 #include "svc/draw.h"
 #include "svc/figs.h"
 #include "sysobj_encoder.h"
@@ -114,14 +115,14 @@ static void cvt_nn_box_to_dp_box(od_pp_outBuffer_t *detect, box_t *box_dp) {
   box_dp->conf = detect->conf;
 }
 
-static void draw_box(uint8_t *p_buffer, od_pp_outBuffer_t *box_nn) {
+static void draw_track_box(uint8_t *p_buffer, TrackObject_s *track) {
   box_t box_disp;
 
-  cvt_nn_box_to_dp_box(box_nn, &box_disp);
+  cvt_nn_box_to_dp_box(&track->dbox, &box_disp);
   DRAW_RectArgbHw(p_buffer, VENC_WIDTH, VENC_HEIGHT, box_disp.x, box_disp.y,
                   box_disp.w, box_disp.h, OBJ_RECT_COLOR);
   DRAW_PrintfArgbHw(&CONF_LEVEL_FONT, p_buffer, VENC_WIDTH, VENC_HEIGHT,
-                    box_disp.x, box_disp.y, "%5.1f %%", box_disp.conf * 100);
+                    box_disp.x, box_disp.y, "ID:%d", track->id);
 }
 
 static void time_stat_display(time_stat_t *p_stat, uint8_t *p_buffer,
@@ -210,12 +211,18 @@ static void build_display(uint8_t *p_buffer, od_pp_out_t *pp_out) {
   int line_nb = VENC_HEIGHT / INF_INFO_FONT.height - 4;
   stat_info_t si_copy;
   int nb;
-  int i;
 
   stat_info_copy(&si_copy);
 
-  for (i = 0; i < pp_out->nb_detect; i++)
-    draw_box(p_buffer, &pp_out->pOutBuff[i]);
+  {
+    TO_DisplayIterator_s it;
+    TrackObject_s *track;
+    TrackObject_DisplayIterator_Init(&it);
+    while ((track = TrackObject_DisplayIterator_GetNext(&it)) != NULL) {
+      if (track->is_dbox_valid)
+        draw_track_box(p_buffer, track);
+    }
+  }
 
   line_nb = build_display_inference_info(
       p_buffer, si_copy.nn_inference_time.last, line_nb);

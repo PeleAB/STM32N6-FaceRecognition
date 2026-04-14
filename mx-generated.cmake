@@ -50,6 +50,13 @@ set(APP_SOURCES
     ${PROJECT_ROOT}/Model/reid.c
     ${PROJECT_ROOT}/Model/stai_od.c
     ${PROJECT_ROOT}/Model/stai_reid.c
+    ${PROJECT_ROOT}/Src/svc/app_trackobject.c
+    ${PROJECT_ROOT}/Lib/stm32-mw-ipl/Src/stm32ipl.c
+    ${PROJECT_ROOT}/Lib/stm32-mw-ipl/Src/stm32ipl_resize.c
+    ${PROJECT_ROOT}/Lib/stm32-mw-ipl/Src/mve_resize.c
+    ${PROJECT_ROOT}/Lib/stm32-mw-ipl/Src/stm32ipl_rect.c
+    ${PROJECT_ROOT}/Lib/stm32-mw-ipl/Src/stm32ipl_mem_alloc.c
+    ${PROJECT_ROOT}/Lib/stm32-mw-ipl/Src/umm_malloc.c
     ${PROJECT_ROOT}/Gcc/Src/console.c
     ${PROJECT_ROOT}/Gcc/Src/freertos_libc.c
     ${PROJECT_ROOT}/Gcc/Src/fast_memcpy.c
@@ -215,6 +222,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${PROJECT_ROOT}/Inc/bsp
     ${PROJECT_ROOT}/Src/sysobj/inc
     ${PROJECT_ROOT}/Model
+    ${PROJECT_ROOT}/Lib/stm32-mw-ipl/Inc
     ${LIB_ROOT}/ai-postprocessing-wrapper
     ${LIB_ROOT}/lib_vision_models_pp/lib_vision_models_pp/Inc
     ${LIB_ROOT}/AI_Runtime/Inc
@@ -257,6 +265,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 
 # ------------------------------ Definitions ----------------------------- #
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
+    STM32IPL
     STM32N657xx
     USE_FULL_ASSERT
     USE_FULL_LL_DRIVER

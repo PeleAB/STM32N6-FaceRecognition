@@ -84,5 +84,12 @@ typedef enum {
 /* Delay display by CAPTURE_DELAY frame number */
 #define CAPTURE_DELAY 1
 
+/* ReID tracking configuration */
+#define APP_MAX_OBJECT_DETECT             20
+#define APP_MAX_OBJECT_TRACKING           10
+#define APP_SCORE_THRESHOLD               0.5
+#define APP_LOST_TIME_IN_MS               60000
+#define APP_START_TRACKING_CONF_THRESHOLD 0.9
+
 #endif
 

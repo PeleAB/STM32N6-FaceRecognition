@@ -33,6 +33,8 @@
 #include "svc/buffer_queue.h"
 #include "stai_od.h"
 #include "stai_reid.h"
+#include "stm32ipl.h"
+#include "svc/app_trackobject.h"
 #include "stm32n6xx_hal.h"
 #include "utils.h"
 #include "FreeRTOS.h"
@@ -54,8 +56,14 @@
 #define NN_REID_OUTPUT_SIZE STAI_REID_OUT_1_SIZE      /* 1280 (feature vector) */
 
 #define NN_INPUT_BUFFER_SIZE  NN_OD_INPUT_SIZE      /* camera pipe delivers od-sized frames */
-#define MAX_OUTPUT_BUFFER_SIZE MAX(NN_OD_OUTPUT_SIZE, NN_REID_OUTPUT_SIZE)
-#define NN_OUTPUT_BUFFER_SIZE_ALIGN ALIGN_VALUE(MAX_OUTPUT_BUFFER_SIZE, 32)
+
+/* Frame passed from nn_thread to dp_thread via nn_output_queue */
+typedef struct {
+  od_pp_out_t       pp_out;
+  od_pp_outBuffer_t boxes[APP_MAX_OBJECT_DETECT];
+} nn_dp_frame_t;
+
+#define NN_DP_FRAME_SIZE ALIGN_VALUE(sizeof(nn_dp_frame_t), 32)
 
 /* capture buffers */
 static uint8_t capture_buffer[CAPTURE_BUFFER_NB][VENC_MAX_WIDTH * VENC_MAX_HEIGHT * CAPTURE_BPP] ALIGN_32 IN_PSRAM;
@@ -69,10 +77,11 @@ STAI_NETWORK_CONTEXT_DECLARE(network_reid_ctx, STAI_REID_CONTEXT_SIZE);
 
 static uint8_t nn_input_buffers[2][NN_INPUT_BUFFER_SIZE] ALIGN_32 IN_PSRAM;
 static bqueue_t nn_input_queue;
-static uint8_t nn_output_buffers[2][NN_OUTPUT_BUFFER_SIZE_ALIGN] ALIGN_32;
+static uint8_t nn_output_buffers[2][NN_DP_FRAME_SIZE] ALIGN_32;
 static bqueue_t nn_output_queue;
-/* Separate buffer for reid feature output — not passed to dp_thread */
-static uint8_t nn_reid_features[NN_REID_OUTPUT_SIZE] ALIGN_32;
+
+/* STM32Ipl memory pool */
+static uint8_t ipl_mem_pool[64 * 1024] ALIGN_32;
 
 /* tasks */
 static StaticTask_t nn_thread;
@@ -165,27 +174,50 @@ static void app_main_pipe_vsync_event(void)
   (void)ret;
 }
 
+static void dbox_to_roi(const od_pp_outBuffer_t *dbox, rectangle_t *roi,
+                        int width, int height)
+{
+  int xc = (int)(dbox->x_center * width);
+  int yc = (int)(dbox->y_center * height);
+  int w  = (int)(dbox->width * width);
+  int h  = (int)(dbox->height * height);
+  int x0 = MAX(0, xc - w / 2);
+  int y0 = MAX(0, yc - h / 2);
+  roi->x = (int16_t)x0;
+  roi->y = (int16_t)y0;
+  roi->w = (int16_t)MIN(w, width - x0);
+  roi->h = (int16_t)MIN(h, height - y0);
+}
+
 static void nn_thread_fct(void *arg)
 {
+  static od_pp_outBuffer_t nn_od_boxes[APP_MAX_OBJECT_DETECT];
+  static uint8_t reid_features_all[APP_MAX_OBJECT_DETECT][NN_REID_OUTPUT_SIZE] ALIGN_32;
+  static uint8_t od_raw_buf[NN_OD_OUTPUT_SIZE] ALIGN_32;
   stat_info_t *stats = app_stats_state();
-  uint32_t nn_period_ms;
   uint32_t nn_period[2];
-  uint8_t *nn_pipe_dst;
-
-  uint32_t total_ts;
-  uint32_t ts;
-
-  (void) nn_period_ms;
+  uint32_t total_ts, ts;
+  uint32_t nn_period_ms;
+  (void)nn_period_ms;
 
   nn_period[1] = HAL_GetTick();
 
-  nn_pipe_dst = bqueue_get_free(&nn_input_queue, 0);
+  uint8_t *nn_pipe_dst = bqueue_get_free(&nn_input_queue, 0);
   assert(nn_pipe_dst);
   CAM_NNPipe_Start(nn_pipe_dst, CMW_MODE_CONTINUOUS);
+
+  /* Get reid input buffer — statically allocated by model, address is fixed */
+  stai_ptr reid_input_ptrs[1];
+  stai_size n_reid_in;
+  stai_reid_get_inputs(network_reid_ctx, reid_input_ptrs, &n_reid_in);
+  uint8_t *reid_input_buf = (uint8_t *)reid_input_ptrs[0];
+
   while (1)
   {
     uint8_t *capture_buffer_local;
     uint8_t *output_buffer;
+    nn_dp_frame_t *frame;
+    od_pp_out_t pp_out;
 
     nn_period[0] = nn_period[1];
     nn_period[1] = HAL_GetTick();
@@ -195,37 +227,63 @@ static void nn_thread_fct(void *arg)
     assert(capture_buffer_local);
     output_buffer = bqueue_get_free(&nn_output_queue, 1);
     assert(output_buffer);
+    frame = (nn_dp_frame_t *)output_buffer;
 
     total_ts = HAL_GetTick();
     ts = HAL_GetTick();
-    
-    /* 1. Detection */
+
+    /* 1. OD inference */
     stai_ptr od_inputs[1] = { capture_buffer_local };
     stai_od_set_inputs(network_od_ctx, od_inputs, 1);
     xSemaphoreTake(s_inference_mutex, portMAX_DELAY);
     Run_Inference(network_od_ctx, stai_od_run, stai_ext_od_new_inference);
     xSemaphoreGive(s_inference_mutex);
 
-    /* Get OD output pointer (points into NPU AXISRAM — valid only until next
-     * inference starts, which will overwrite those same scratch banks). */
+    /* Copy OD output before reid inference overwrites NPU AXISRAM */
     stai_ptr od_outputs[STAI_OD_OUT_NUM];
     stai_size n_od_out;
     stai_od_get_outputs(network_od_ctx, od_outputs, &n_od_out);
-
-    /* Copy OD output into the queue buffer NOW, before reid inference
-     * overwrites the NPU AXISRAM that holds the od output. */
     SYSOBJ_CacheInvalidate(od_outputs[0], NN_OD_OUTPUT_SIZE);
-    memcpy(output_buffer, od_outputs[0], NN_OD_OUTPUT_SIZE);
+    memcpy(od_raw_buf, od_outputs[0], NN_OD_OUTPUT_SIZE);
 
-    /* 2. ReID placeholder — output goes to dedicated features buffer,
-     * NOT output_buffer (which dp_thread will read for od postprocessing). */
-    stai_ptr reid_outputs[1] = { nn_reid_features };
-    stai_reid_set_outputs(network_reid_ctx, reid_outputs, 1);
-    xSemaphoreTake(s_inference_mutex, portMAX_DELAY);
-    Run_Inference(network_reid_ctx, stai_reid_run, stai_ext_reid_new_inference);
-    xSemaphoreGive(s_inference_mutex);
+    /* 2. OD postprocess inline */
+    pp_out.pOutBuff = nn_od_boxes;
+    pp_out.nb_detect = 0;
+    (void)app_postprocess_run((void *[]){ od_raw_buf }, 1, &pp_out, &s_od_pp_params);
+
+    /* 3. Reid per detected object */
+    int nb_reid = MIN(pp_out.nb_detect, APP_MAX_OBJECT_DETECT);
+    for (int i = 0; i < nb_reid; i++) {
+      image_t src_img, dst_img;
+      rectangle_t roi;
+
+      dbox_to_roi(&pp_out.pOutBuff[i], &roi, NN_WIDTH, NN_HEIGHT);
+      STM32Ipl_Init(&src_img, NN_WIDTH, NN_HEIGHT, IMAGE_BPP_RGB888,
+                    capture_buffer_local);
+      STM32Ipl_Init(&dst_img, STAI_REID_IN_1_WIDTH, STAI_REID_IN_1_HEIGHT,
+                    IMAGE_BPP_RGB888, reid_input_buf);
+      STM32Ipl_Resize_Roi(&src_img, &roi, &dst_img, NULL, RESIZE_BILINEAR);
+      SCB_CleanDCache_by_Addr((uint32_t *)reid_input_buf,
+                              ALIGN_VALUE(NN_REID_INPUT_SIZE, 32));
+
+      stai_ptr reid_out[1] = { reid_features_all[i] };
+      stai_reid_set_outputs(network_reid_ctx, reid_out, 1);
+      xSemaphoreTake(s_inference_mutex, portMAX_DELAY);
+      Run_Inference(network_reid_ctx, stai_reid_run, stai_ext_reid_new_inference);
+      xSemaphoreGive(s_inference_mutex);
+      SYSOBJ_CacheInvalidate(reid_features_all[i], NN_REID_OUTPUT_SIZE);
+    }
+
+    /* 4. Update tracking */
+    TrackObject_UpdateAll(&pp_out, reid_features_all);
 
     time_stat_update(&stats->nn_inference_time, HAL_GetTick() - ts);
+
+    /* Hand off postprocessed frame to dp_thread */
+    frame->pp_out.nb_detect = pp_out.nb_detect;
+    memcpy(frame->boxes, nn_od_boxes,
+           pp_out.nb_detect * sizeof(od_pp_outBuffer_t));
+    frame->pp_out.pOutBuff = frame->boxes;
 
     bqueue_put_free(&nn_input_queue);
     bqueue_put_ready(&nn_output_queue);
@@ -236,34 +294,27 @@ static void nn_thread_fct(void *arg)
 
 static void dp_thread_fct(void *arg)
 {
-  /* Output buffer for filtered detection boxes — must be valid before
-   * app_postprocess_run() so yolov2_pp_scoreFiltering_centroid can write into it. */
-  static od_pp_outBuffer_t s_out_boxes[AI_OD_YOLOV2_PP_MAX_BOXES_LIMIT];
-  od_pp_out_t pp_output;
   stat_info_t *stats = app_stats_state();
   uint32_t total_ts;
-  void *pp_input;
-  int is_dp_done;
-  uint32_t ts;
 
   while (1)
   {
     uint8_t *output_buffer;
+    nn_dp_frame_t *frame;
+    int is_dp_done;
 
     output_buffer = bqueue_get_ready(&nn_output_queue);
     assert(output_buffer);
     total_ts = HAL_GetTick();
-    ts = HAL_GetTick();
-    pp_input = (void *) output_buffer;
 
-    pp_output.pOutBuff = s_out_boxes;
-    pp_output.nb_detect = 0;
-    /* Post-processing adapted for od (YOLO v2) */
-    (void)app_postprocess_run((void * []){pp_input}, 1, &pp_output, &s_od_pp_params);
-    time_stat_update(&stats->nn_pp_time, HAL_GetTick() - ts);
+    frame = (nn_dp_frame_t *)output_buffer;
+    /* Restore intra-buffer pointer (pOutBuff was serialised as an offset) */
+    frame->pp_out.pOutBuff = frame->boxes;
+
     app_stats_cpuload_update();
 
-    is_dp_done = app_display_render(capture_buffer[capture_buffer_disp_idx], &pp_output);
+    is_dp_done = app_display_render(capture_buffer[capture_buffer_disp_idx],
+                                    &frame->pp_out);
 
     if (is_dp_done)
       time_stat_update(&stats->disp_total_time, HAL_GetTick() - total_ts);
@@ -344,6 +395,8 @@ void app_pipeline_init(void)
 
   isp_sem = xSemaphoreCreateCountingStatic(1, 0, &isp_sem_buffer);
   assert(isp_sem);
+
+  STM32Ipl_InitLib(ipl_mem_pool, sizeof(ipl_mem_pool));
 }
 
 void app_pipeline_start(void)
