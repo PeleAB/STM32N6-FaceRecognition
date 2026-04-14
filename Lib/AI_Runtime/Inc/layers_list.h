@@ -165,7 +165,13 @@ LAYER_ENTRY(GRU, LAYER_STATEFUL_ID(3), gru, forward_gru, init_gru, destroy_gru)
 /*!< Stateful Template layer declaration */
 /* LAYER_ENTRY(TEMPLATE, LAYER_STATEFUL_ID(XX), template, forward_template, init_template, destroy_template) */
 
+/*****************************************************************************/
+/*!< Softmax Cross Entropy Loss layer */
+LAYER_ENTRY(SOFTMAXCROSSENTROPYLOSS, LAYER_ID(100), softmaxcrossentropyloss, forward_softmaxcrossentropyloss, NULL, NULL)
+LAYER_ENTRY(SOFTMAXCROSSENTROPYLOSSGRAD, LAYER_ID(101), softmaxcrossentropylossgrad, backward_softmaxcrossentropylossgrad, NULL, NULL)
+LAYER_ENTRY(INPLACEACCUMULATORV2, LAYER_ID(102), inplaceaccumulatorv2, backward_inplaceaccumulatorv2, NULL, NULL)
+LAYER_ENTRY(RELU_GRAD, LAYER_ID(103), relu_grad, backward_relu, NULL, NULL)
+
 #undef LAYER_ENTRY
 #undef LAYER_ID
 #undef LAYER_STATEFUL_ID
-

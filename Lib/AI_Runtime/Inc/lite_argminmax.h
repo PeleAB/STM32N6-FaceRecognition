@@ -59,4 +59,3 @@ void forward_lite_argmin_is8( const ai_i8* in_data,
 
 
 #endif    /*LITE_ARGMINMAX_H*/
-

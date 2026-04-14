@@ -260,4 +260,3 @@ ai_size ai_tensor_get_data_byte_size(
 AI_API_DECLARE_END
 
 #endif    /*AI_LAYER_CUSTOM_INTERFACE_H*/
-

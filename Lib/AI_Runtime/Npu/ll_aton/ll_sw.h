@@ -28,9 +28,6 @@ extern "C"
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "ll_sw_float.h"
-#include "ll_sw_integer.h"
-
   // ############################ ############################ ###########################
   // ############################     SUPPORTED NODES TYPES    ###########################
   // ############################ ############################ ###########################
@@ -119,7 +116,8 @@ extern "C"
     LL_SW_ROUND,
     LL_SW_REDUCELOGSUMEXP,
     LL_SW_SIGN,
-    LL_SW_TILE
+    LL_SW_TILE,
+    LL_SW_GELU
   } NodeType;
 
   // ############################ ############################ ###########################
@@ -321,7 +319,7 @@ extern "C"
     float extrapol_val;                  /**< used in tf_crop_and_resize cas */
     resize_mode mode;                    /**< resize mode */
     nearest_mode nearest_mode;           /**< used in nearest mode */
-    coord_transf_mode coord_transf_mode; /**< coordinate tranformation mode */
+    coord_transf_mode coord_transf_mode; /**< coordinate transformation mode */
   } Resize_sw_info;
 
   typedef struct Activ_sw_info
@@ -352,13 +350,6 @@ extern "C"
     Tensor_info operand2;
   } Concat_sw_info;
 
-  typedef struct Gather_sw_info
-  {
-    General general;
-    Tensor_info operand;
-    int axis;
-  } Gather_sw_info;
-
   typedef struct Global_pool_sw_info
   {
     General general;
@@ -386,6 +377,14 @@ extern "C"
     General general;
     Tensor_info operand_b;
   } Matmul_sw_info;
+
+  typedef struct Gather_sw_info
+  {
+    General general;
+    Tensor_info operand;
+    int axis;
+  } Gather_sw_info;
+
   typedef struct Tile_sw_info
   {
     General general;
@@ -561,8 +560,36 @@ extern "C"
     float extrapol_val;                  /**< used in tf_crop_and_resize cas */
     resize_mode mode;                    /**< resize mode */
     nearest_mode nearest_mode;           /**< used in nearest mode */
-    coord_transf_mode coord_transf_mode; /**< coordinate tranformation mode */
+    coord_transf_mode coord_transf_mode; /**< coordinate transformation mode */
   } Resize_integer_sw_info;
+
+  typedef struct Argmax_integer_sw_info
+  {
+    General general;
+    int axis;
+    int keepdims;
+    int select_last_index;
+  } Argmax_integer_sw_info;
+  typedef struct Argmin_integer_sw_info
+  {
+    General general;
+    int axis;
+    int keepdims;
+    int select_last_index;
+  } Argmin_integer_sw_info;
+
+  typedef struct Gather_integer_sw_info
+  {
+    General general;
+    Tensor_info operand;
+    int axis;
+  } Gather_integer_sw_info;
+
+  typedef struct Tile_integer_sw_info
+  {
+    General general;
+    int16_t repeats[4];
+  } Tile_integer_sw_info;
 
   // ############################ ########################### ###########################
   // ############################ QUANT/DEQUANT NODES STRUCTS ###########################
@@ -591,9 +618,49 @@ extern "C"
     Tensor_info ozp;
   } Requantizelinear_sw_info;
 
+  // ## INTEGER FUNCTION DECLARATIONS ##########################################################
+
+  void ll_sw_forward_dequantizelinear(Dequantizelinear_sw_info *sw_info);
+  void ll_sw_forward_quantizelinear(Quantizelinear_sw_info *sw_info);
+  void ll_sw_forward_requantizelinear(Requantizelinear_sw_info *sw_info);
+  void ll_sw_forward_qlinearmatmul(Qlinearmatmul_sw_info *sw_info);
+  void ll_sw_forward_conv_integer(Conv_integer_sw_info *sw_info);
+  void ll_sw_forward_pool_integer(Pool_integer_sw_info *sw_info);
+  void ll_sw_forward_global_pool_integer(Global_pool_integer_sw_info *sw_info);
+  void ll_sw_forward_activ_integer(Activ_integer_sw_info *sw_info);
+  void ll_sw_forward_eltwise_integer(Eltwise_integer_sw_info *sw_info);
+  void ll_sw_forward_gemm_integer(Gemm_integer_sw_info *sw_info);
+  void ll_sw_forward_softmax_integer(Softmax_integer_sw_info *sw_info);
+  void ll_sw_forward_resize_integer(Resize_integer_sw_info *sw_info);
+  void ll_sw_forward_argmin_integer(Argmin_integer_sw_info *sw_info);
+  void ll_sw_forward_argmax_integer(Argmax_integer_sw_info *sw_info);
+  void ll_sw_forward_gather_integer(Gather_integer_sw_info *sw_info);
+  void ll_sw_forward_tile_integer(Tile_integer_sw_info *sw_info);
+
+  // ## FLOAT FUNCTION DECLARATIONS ##########################################################
+  void ll_sw_forward_conv(Conv_sw_info *sw_info);
+  void ll_sw_forward_gemm(Gemm_sw_info *sw_info);
+  void ll_sw_forward_matmul(Matmul_sw_info *sw_info);
+  void ll_sw_forward_pool(Pool_sw_info *sw_info);
+  void ll_sw_forward_global_pool(Global_pool_sw_info *sw_info);
+  void ll_sw_forward_activ(Activ_sw_info *sw_info);
+  void ll_sw_forward_arith(Arith_sw_info *sw_info);
+  void ll_sw_forward_bn(Bn_sw_info *sw_info);
+  void ll_sw_forward_instance_normalization(Instance_normalization_sw_info *sw_info);
+  void ll_sw_forward_lrn(Lrn_sw_info *sw_info);
+  void ll_sw_forward_concat(Concat_sw_info *sw_info);
+  void ll_sw_forward_resize(Resize_sw_info *sw_info);
+  void ll_sw_forward_reduce(Reduce_sw_info *sw_info);
+  void ll_sw_forward_lpnormalization(Lpnormalization_sw_info *sw_info);
+  void ll_sw_forward_argmin(Argmin_sw_info *sw_info);
+  void ll_sw_forward_argmax(Argmax_sw_info *sw_info);
+  void ll_sw_forward_sign(Sign_sw_info *sw_info);
+  void ll_sw_forward_gather(Gather_sw_info *sw_info);
+  void ll_sw_forward_tile(Tile_sw_info *sw_info);
+  void ll_sw_forward_softmax(Softmax_sw_info *sw_info);
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif //__LL_SW_H__
-

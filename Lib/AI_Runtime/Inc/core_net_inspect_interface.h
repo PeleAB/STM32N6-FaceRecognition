@@ -115,4 +115,3 @@ typedef struct ai_inspect_config_s {
 AI_API_DECLARE_END
 
 #endif    /* CORE_NET_INSPECT_INTERFACE_H */
-

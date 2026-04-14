@@ -35,4 +35,3 @@
 #endif    /* HAS_AI_ASSERT */
 
 #endif    /* CORE_ASSERT_H */
-

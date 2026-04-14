@@ -168,4 +168,3 @@ void forward_lite_dense_is1of32ws1_bn(
 
 
 #endif    /*LITE_DENSE_IS1WS1_H*/
-

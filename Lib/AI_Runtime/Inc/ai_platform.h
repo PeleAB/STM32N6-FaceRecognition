@@ -828,6 +828,7 @@ typedef struct ai_network_report_ {
   ai_u32                          n_nodes;
 
   ai_signature                    signature;
+
 } ai_network_report;
 
 /*!
@@ -983,4 +984,3 @@ ai_bool ai_buffer_array_item_set_address(
 AI_API_DECLARE_END
 
 #endif /*AI_PLATFORM_H*/
-

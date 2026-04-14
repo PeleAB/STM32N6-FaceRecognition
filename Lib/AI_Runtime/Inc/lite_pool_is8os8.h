@@ -60,4 +60,3 @@ void forward_lite_avepool_is8os8( const ai_i8 *pData_in,
                                   const ai_i8 out_zeropoint);
 #endif /* LITE_POOL_IS8OS8 */
 
-

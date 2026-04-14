@@ -67,4 +67,3 @@ void pool_func_ap_array_f32(ai_float *pData_in,
                       ai_float *pData_out);
 
 #endif // LITE_POOL_F32_H_
-

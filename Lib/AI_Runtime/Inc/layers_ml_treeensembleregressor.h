@@ -57,4 +57,3 @@ void forward_tree_ensemble_regressor(ai_layer *pLayer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_SVMREGRESSOR_H*/
-

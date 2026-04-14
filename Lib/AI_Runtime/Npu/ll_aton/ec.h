@@ -20,9 +20,10 @@
 #define __EC_H
 
 #include <inttypes.h>
+#include <stdint.h>
 
 /** Magic number of the Epoch Controller binary file. */
-#define ECASM_BINARY_MAGIC 0xECBF0030
+#define ECASM_BINARY_MAGIC 0xECBF0050
 
 /** Magic number of the Epoch Controller blob. */
 #define ECASM_BLOB_MAGIC 0xCA057A7A
@@ -30,12 +31,21 @@
 /** Type containing an Epoch Controller instruction. */
 typedef uint32_t ECInstr;
 
+/** Print format specifier for the type containing an Epoch Controller instruction. */
+#define PRI_ECInstr PRIu32
+
 /** Type containing an address of an Epoch Controller instruction. */
 typedef uint32_t ECAddr;
+
+/** Print format specifier for the type containing an address of an Epoch Controller instruction. */
+#define PRI_ECAddr PRIu32
 
 /** Type used for each entry of the Epoch Controller binary file: magic number, number of elements, file and instruction
  * offsets. */
 typedef uint32_t ECFileEntry;
 
-#endif // #ifndef __EC_H
+/** Print format specifier for the type used for each entry of the Epoch Controller binary file: magic number, number of
+ * elements, file and instruction offsets. */
+#define PRI_ECFileEntry PRIu32
 
+#endif // #ifndef __EC_H

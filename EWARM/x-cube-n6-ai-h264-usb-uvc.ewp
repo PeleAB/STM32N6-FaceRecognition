@@ -240,7 +240,7 @@
                     <state>LL_ATON_RT_MODE=LL_ATON_RT_ASYNC</state>
                     <state>LL_ATON_SW_FALLBACK</state>
                     <state>LL_ATON_DBG_BUFFER_INFO_EXCLUDED=1</state>
-                    <state>APP_HAS_PARALLEL_NETWORKS=0</state>
+                    <state>APP_HAS_PARALLEL_NETWORKS=1</state>
                     <state>FEAT_FREERTOS</state>
                     <state>UVC_LIB_USE_USBX</state>
                     <state>UX_INCLUDE_USER_DEFINE_FILE</state>
@@ -596,7 +596,7 @@
                     <state>LL_ATON_RT_MODE=LL_ATON_RT_ASYNC</state>
                     <state>LL_ATON_SW_FALLBACK</state>
                     <state>LL_ATON_DBG_BUFFER_INFO_EXCLUDED=1</state>
-                    <state>APP_HAS_PARALLEL_NETWORKS=0</state>
+                    <state>APP_HAS_PARALLEL_NETWORKS=1</state>
                     <state>FEAT_FREERTOS</state>
                     <state>UVC_LIB_USE_USBX</state>
                     <state>UX_INCLUDE_USER_DEFINE_FILE</state>

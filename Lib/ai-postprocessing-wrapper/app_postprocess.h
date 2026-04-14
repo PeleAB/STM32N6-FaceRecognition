@@ -68,7 +68,7 @@ extern "C"
 #define POSTPROCESS_CUSTOM              (1000) /* Custom post processing which needs to be implemented by user       */
 
 /* Exported functions ------------------------------------------------------- */
-int32_t app_postprocess_init(void *params_postprocess, NN_Instance_TypeDef *NN_Instance);
+int32_t app_postprocess_init(void *params_postprocess, void *network_instance);
 int32_t app_postprocess_run(void *pInput[], int nb_input, void *pOutput, void *pInput_param);
 
 #ifdef __cplusplus

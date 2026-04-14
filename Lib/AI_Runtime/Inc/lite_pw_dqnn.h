@@ -125,4 +125,3 @@ void forward_lite_pw_is1of32ws1_bn_optim1(const ai_u32 *pDataIn_init,
 
 
 #endif    /*LITE_PW_DQNN_H*/
-

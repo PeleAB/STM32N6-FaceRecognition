@@ -40,4 +40,3 @@ void forward_lite_bn_if32of32wf32(
 
 
 #endif    /* LITE_BN_F32_H */
-

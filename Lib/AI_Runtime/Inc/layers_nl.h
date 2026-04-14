@@ -1128,4 +1128,3 @@ void forward_prelu_integer(ai_layer *pLayer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_NL_H*/
-

@@ -24,8 +24,9 @@
 #if POSTPROCESS_TYPE == POSTPROCESS_OD_YOLO_V2_UI
 static uint8_t scratch_buffer[AI_OD_YOLOV2_PP_GRID_WIDTH * AI_OD_YOLOV2_PP_GRID_HEIGHT * AI_OD_YOLOV2_PP_NB_ANCHORS * sizeof(od_pp_outBuffer_t)];
 
-int32_t app_postprocess_init(void *params_postprocess, NN_Instance_TypeDef *NN_Instance)
+int32_t app_postprocess_init(void *params_postprocess, void *network_instance)
 {
+  NN_Instance_TypeDef *NN_Instance = (NN_Instance_TypeDef *)network_instance;
   int32_t error = AI_OD_POSTPROCESS_ERROR_NO;
   od_yolov2_pp_static_param_t *params = (od_yolov2_pp_static_param_t *) params_postprocess;
   const LL_Buffer_InfoTypeDef *buffers_info = LL_ATON_Output_Buffers_Info(NN_Instance);

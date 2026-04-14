@@ -30,10 +30,10 @@
  * @brief platform runtime core library version
  */
 #ifndef AI_PLATFORM_RUNTIME_MAJOR
-#define AI_PLATFORM_RUNTIME_MAJOR    (10)
+#define AI_PLATFORM_RUNTIME_MAJOR    (12)
 #endif
 #ifndef AI_PLATFORM_RUNTIME_MINOR
-#define AI_PLATFORM_RUNTIME_MINOR    (2)
+#define AI_PLATFORM_RUNTIME_MINOR    (0)
 #endif
 #ifndef AI_PLATFORM_RUNTIME_MICRO
 #define AI_PLATFORM_RUNTIME_MICRO    (0)
@@ -60,4 +60,3 @@
 typedef uint16_t ai_id_obj;
 
 #endif    /*AI_CORE_DATATYPES_H*/
-

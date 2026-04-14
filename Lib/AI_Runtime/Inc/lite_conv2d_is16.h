@@ -211,4 +211,3 @@ void forward_lite_conv2d_iu16ou16ws16_fxp(
                );
 
 #endif    /* LITE_CONV2D_IS16_H */
-

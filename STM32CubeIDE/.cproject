@@ -44,7 +44,7 @@
                   <listOptionValue builtIn="false" value="LL_ATON_RT_MODE=LL_ATON_RT_ASYNC"/>
                   <listOptionValue builtIn="false" value="LL_ATON_SW_FALLBACK"/>
                   <listOptionValue builtIn="false" value="LL_ATON_DBG_BUFFER_INFO_EXCLUDED=1"/>
-                  <listOptionValue builtIn="false" value="APP_HAS_PARALLEL_NETWORKS=0"/>
+                  <listOptionValue builtIn="false" value="APP_HAS_PARALLEL_NETWORKS=1"/>
                   <listOptionValue builtIn="false" value="FEAT_FREERTOS"/>
                   <listOptionValue builtIn="false" value="UVC_LIB_USE_USBX"/>
                   <listOptionValue builtIn="false" value="UX_INCLUDE_USER_DEFINE_FILE"/>
@@ -111,7 +111,7 @@
                   <listOptionValue builtIn="false" value="LL_ATON_RT_MODE=LL_ATON_RT_ASYNC"/>
                   <listOptionValue builtIn="false" value="LL_ATON_SW_FALLBACK"/>
                   <listOptionValue builtIn="false" value="LL_ATON_DBG_BUFFER_INFO_EXCLUDED=1"/>
-                  <listOptionValue builtIn="false" value="APP_HAS_PARALLEL_NETWORKS=0"/>
+                  <listOptionValue builtIn="false" value="APP_HAS_PARALLEL_NETWORKS=1"/>
                   <listOptionValue builtIn="false" value="FEAT_FREERTOS"/>
                   <listOptionValue builtIn="false" value="UVC_LIB_USE_USBX"/>
                   <listOptionValue builtIn="false" value="UX_INCLUDE_USER_DEFINE_FILE"/>

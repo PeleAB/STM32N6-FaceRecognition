@@ -20,7 +20,6 @@
 
 #if (LL_ATON_OSAL == LL_ATON_OSAL_FREERTOS)
 
-#include <assert.h>
 #include <limits.h>
 #include <stdbool.h>
 
@@ -37,4 +36,3 @@ static StaticSemaphore_t _cache_mutex_buffer;    // buffer for `_cache_mutex` wh
 #include "ll_aton_osal_rtos_template.c"
 
 #endif // (LL_ATON_OSAL == LL_ATON_OSAL_FREERTOS)
-

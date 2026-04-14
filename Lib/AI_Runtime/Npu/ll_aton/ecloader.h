@@ -60,11 +60,11 @@ extern "C"
   extern const char *ec_get_reloc_id(const ECFileEntry *reloc_table_ptr, unsigned int idx);
 
   // relocate all the values associated with a relocation specified by using an index
-  extern bool ec_reloc(const ECFileEntry *reloc_table_ptr, ECInstr *blob, unsigned int idx, ECAddr base,
+  extern bool ec_reloc(ECInstr *blob, const ECFileEntry *reloc_table_ptr, unsigned int idx, ECAddr base,
                        ECAddr *prev_base);
 
   // relocate all the values associated with a relocation specified by using an identifier
-  extern bool ec_reloc_by_id(const ECFileEntry *reloc_table_ptr, ECInstr *blob, const char *id, ECAddr base,
+  extern bool ec_reloc_by_id(ECInstr *blob, const ECFileEntry *reloc_table_ptr, const char *id, ECAddr base,
                              ECAddr *prev_base);
 
   /* functions dealing with patches */
@@ -81,18 +81,21 @@ extern "C"
   // return the identifier of a patch contained in an Epoch Controller binary
   extern const char *ec_get_patch_id(const ECFileEntry *patch_table_ptr, unsigned int idx);
 
+  // get the number of bits for which the value to apply to the patch contained in an Epoch Controller binary must be
+  // shifted right or left
+  extern int32_t ec_get_patch_shr(const ECFileEntry *patch_table_ptr, unsigned int idx);
+
   // return the mask associated with a patch contained in an Epoch Controller binary
   extern uint32_t ec_get_patch_mask(const ECFileEntry *patch_table_ptr, unsigned int idx);
 
   // patch all the values associated with a patch specified by using an index
-  extern bool ec_patch(const ECFileEntry *patch_table_ptr, ECInstr *blob, unsigned int idx, uint32_t value);
+  extern bool ec_patch(ECInstr *blob, const ECFileEntry *patch_table_ptr, unsigned int idx, uint64_t value);
 
   // patch all the values associated with a patch specified by using an identifier
-  extern bool ec_patch_by_id(const ECFileEntry *patch_table_ptr, ECInstr *blob, const char *id, uint32_t value);
+  extern bool ec_patch_by_id(ECInstr *blob, const ECFileEntry *patch_table_ptr, const char *id, uint64_t value);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif // #ifndef __ECLOADER_H
-

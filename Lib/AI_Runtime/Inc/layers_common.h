@@ -288,4 +288,3 @@ void ai_layer_check_scratch_size( ai_layer_type layer_type, ai_array_format fmt,
 AI_API_DECLARE_END
 
 #endif /*LAYERS_COMMON_H*/
-

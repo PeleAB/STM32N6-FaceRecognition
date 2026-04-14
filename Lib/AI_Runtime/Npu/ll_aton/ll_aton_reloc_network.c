@@ -33,24 +33,26 @@
  */
 
 #if !defined(AI_RELOC_LOG_ENABLE)
-#define AI_RELOC_LOG_ENABLE 1 /* 1: enable debug trace support (printf-based) */
+#define AI_RELOC_LOG_ENABLE 0 /* 1: enable debug trace support (printf-based) */
 #endif
 
 #ifndef NDEBUG
-#if defined(AI_RELOC_LOG_ENABLE) && AI_RELOC_LOG_ENABLE == 1
+#if defined(AI_RELOC_LOG_ENABLE) && (AI_RELOC_LOG_ENABLE == 1)
 #define AI_RELOC_LOG(...) printf(__VA_ARGS__)
-#else
+#else // !AI_RELOC_LOG_ENABLE
 #define AI_RELOC_LOG(...)                                                                                              \
   do                                                                                                                   \
   {                                                                                                                    \
   } while (0)
-#endif
-#else
+#endif // !AI_RELOC_LOG_ENABLE
+#else  // NDEBUG
+#undef AI_RELOC_LOG_ENABLE
+#define AI_RELOC_LOG_ENABLE 0
 #define AI_RELOC_LOG(...)                                                                                              \
   do                                                                                                                   \
   {                                                                                                                    \
   } while (0)
-#endif
+#endif // NDEBUG
 
 #if !defined(LL_ATON_PLATFORM) || (LL_ATON_PLATFORM != LL_ATON_PLAT_STM32N6)
 #error "Model Relocatable mode is only supported for LL_ATON_PLAT_STM32N6 platform"
@@ -66,9 +68,9 @@
 #define RELOC_MCU_D_CACHE_CLEAN_INVALIDATE(_addr, _size)                                                               \
   LL_ATON_Cache_MCU_Clean_Invalidate_Range((uintptr_t)(_addr), (uint32_t)(_size))
 
-#define RELOC_MCU_I_CACHE_INVALIDATE(_addr, _size) SCB_InvalidateICache_by_Addr((void *)_addr, (int32_t)_size);
+#define RELOC_MCU_I_CACHE_INVALIDATE(_addr, _size) SCB_InvalidateICache_by_Addr((void *)(_addr), (int32_t)(_size));
 
-#else
+#else // !STM32N6
 
 #define RELOC_MCU_I_CACHE_INVALIDATE(_addr, _size)                                                                     \
   do                                                                                                                   \
@@ -80,16 +82,17 @@
   {                                                                                                                    \
   } while (0)
 
-#endif
+#endif // !STM32N6
 
 #if defined(STM32N6)
-#define RELOC_NPU_CACHE_INVALIDATE() LL_ATON_Cache_NPU_Invalidate()
-#else
-#define RELOC_NPU_CACHE_INVALIDATE()                                                                                   \
+#define RELOC_NPU_CACHE_CLEAN_INVALIDATE(_addr, _size)                                                                 \
+  LL_ATON_Cache_NPU_Clean_Invalidate_Range((uintptr_t)(_addr), (uint32_t)(_size))
+#else // !STM32N6
+#define RELOC_NPU_CACHE_CLEAN_INVALIDATE(_addr, _size)                                                                 \
   do                                                                                                                   \
   {                                                                                                                    \
   } while (0)
-#endif
+#endif // !STM32N6
 
 /*
  *  Implementation of the call-backs fcts
@@ -97,13 +100,13 @@
 static void _assert_func(const char *filename, int line, const char *assert_func, const char *expr)
 {
   AI_RELOC_LOG("-> assert_func called from reloc code : %d %s : %s %s\n", line, filename, assert_func, expr);
-  assert(1 != 1);
+  LL_ATON_ASSERT(1 != 1);
 }
 
 static void _ll_lib_error(int err_code, int line, const char *func)
 {
   AI_RELOC_LOG("-> ll_lib_error called from reloc code : %d %d : %s\n", line, err_code, func);
-  assert(1 != 1);
+  LL_ATON_ASSERT(1 != 1);
 }
 
 static void _LL_ATON_Cache_MCU_Clean_Range(uintptr_t virtual_addr, uint32_t size)
@@ -136,29 +139,34 @@ static void _LL_ATON_Cache_NPU_Clean_Invalidate_Range(uintptr_t virtual_addr, ui
  * -----------------------------------------------------------------------------
  */
 static struct ll_aton_reloc_callback _network_reloc_callback = {
+    /* services */
     .assert_func = &_assert_func,
     .ll_lib_error = &_ll_lib_error,
 
+    /* cache operations */
     .ll_aton_cache_mcu_clean_range = &_LL_ATON_Cache_MCU_Clean_Range,
     .ll_aton_cache_mcu_invalidate_range = &_LL_ATON_Cache_MCU_Invalidate_Range,
     .ll_aton_cache_mcu_clean_invalidate_range = &_LL_ATON_Cache_MCU_Clean_Invalidate_Range,
     .ll_aton_cache_npu_clean_range = &_LL_ATON_Cache_NPU_Clean_Range,
     .ll_aton_cache_npu_clean_invalidate_range = &_LL_ATON_Cache_NPU_Clean_Invalidate_Range,
 
+    /* ll aton lib */
     .ll_aton_lib_concat = &LL_ATON_LIB_Concat,
     .ll_aton_lib_cast = &LL_ATON_LIB_Cast,
+    .ll_aton_lib_dma_transpose = &LL_ATON_LIB_DMA_Transpose,
     .ll_aton_lib_softmax = &LL_ATON_LIB_Softmax,
     .ll_aton_lib_dma_imagetorow = &LL_ATON_LIB_DMA_ImageToRow,
     .ll_aton_lib_dma_spacetodepth = &LL_ATON_LIB_DMA_SpaceToDepth,
     .ll_aton_lib_dma_rowtoimage = &LL_ATON_LIB_DMA_RowToImage,
     .ll_aton_lib_dma_depthtospace = &LL_ATON_LIB_DMA_DepthToSpace,
-    .ll_aton_lib_dma_outputs_flat_copy = &LL_ATON_LIB_DMA_Outputs_Flat_Copy,
     .ll_aton_lib_dma_outputs_slice_splitlike = &LL_ATON_LIB_DMA_Outputs_Slice_SplitLike,
-    .ll_aton_lib_dma_outputs_channel_split_aton = &LL_ATON_LIB_DMA_Outputs_Channel_Split_Aton,
-    .ll_aton_lib_dma_outputs_channel_split_batched = &LL_ATON_LIB_DMA_Outputs_Channel_Split_Batched,
-    .ll_aton_lib_dma_pad_memset = &LL_ATON_LIB_DMA_Pad_Memset,
-    .ll_aton_lib_dma_pad_filling = &LL_ATON_LIB_DMA_Pad_Filling,
-    .ll_aton_lib_dma_transpose = &LL_ATON_LIB_DMA_Transpose,
+    .ll_aton_lib_pad_std = &LL_ATON_LIB_Pad_Standard,
+    .ll_aton_lib_pad_4loop = &LL_ATON_LIB_Pad_4Loop,
+
+    /* ll aton sw & lib internals */
+    .ll_aton_lib_dma_outputs_flat_copy = &__LL_ATON_LIB_DMA_Outputs_Flat_Copy,
+    .ll_aton_lib_dma_outputs_channel_split_aton = &__LL_ATON_LIB_DMA_Outputs_Channel_Split_Aton,
+    .ll_aton_lib_dma_outputs_channel_split_batched = &__LL_ATON_LIB_DMA_Outputs_Channel_Split_Batched,
 };
 
 /* -----------------------------------------------------------------------------
@@ -242,6 +250,8 @@ struct net_entries
   uint32_t get_epoch_items;
   uint32_t get_output_buffers;
   uint32_t get_input_buffers;
+  uint32_t weight_encryption_info;
+  uint32_t blob_encryption_info;
   uint32_t get_internal_buffers;
   uint32_t ctx;
 };
@@ -487,10 +497,10 @@ static int _ai_reloc_rt_checking(const struct ai_reloc_bin_hdr *bin)
     return AI_RELOC_RT_ERR_INVALID_BIN;
   }
 
-  if (((c_struct_sizes >> 8) & 0xFF) != sizeof(EpochBlock_ItemTypeDef))
+  if (((c_struct_sizes >> 8) & 0xFF) != sizeof(LL_ATON_RT_EpochBlockItem_t))
   {
-    AI_RELOC_LOG("AI RELOC ERROR: sizeof(EpochBlock_ItemTypeDef) issue - %d != %d\r\n",
-                 (int)((c_struct_sizes >> 8) & 0xFF), (int)sizeof(EpochBlock_ItemTypeDef));
+    AI_RELOC_LOG("AI RELOC ERROR: sizeof(LL_ATON_RT_EpochBlockItem_t) issue - %d != %d\r\n",
+                 (int)((c_struct_sizes >> 8) & 0xFF), (int)sizeof(LL_ATON_RT_EpochBlockItem_t));
     return AI_RELOC_RT_ERR_INVALID_BIN;
   }
 
@@ -515,7 +525,6 @@ static int _ai_reloc_prepare_mpools(const uintptr_t file_ptr, struct id_mpool_ma
   uint32_t params_start = AI_RELOC_GET_OFFSET(header->sect.params_start);
   params_start += AI_RELOC_GET_OFFSET(header->sect.data_data);
   uintptr_t addr_0 = 0;
-  bool invalidate_npu_cache = false;
 
   ll_aton_reloc_mem_pool_desc *cur_mem_c_desc;
 
@@ -539,11 +548,6 @@ static int _ai_reloc_prepare_mpools(const uintptr_t file_ptr, struct id_mpool_ma
     const uint32_t sz = AI_RELOC_ROUND_UP(cur_mem_c_desc->size);
     const uint32_t foff = cur_mem_c_desc->foff;
     const uintptr_t src = id_map->addr_0 + foff;
-
-    if (AI_RELOC_MPOOL_IS_CACHEABLE(flags))
-    {
-      invalidate_npu_cache = true;
-    }
 
     if (AI_RELOC_MPOOL_IS_RELOC(flags)) /* Relocated mempool */
     {
@@ -575,11 +579,13 @@ static int _ai_reloc_prepare_mpools(const uintptr_t file_ptr, struct id_mpool_ma
         }
         if (AI_RELOC_MPOOL_IS_MIXED(flags))
         {
+          RELOC_NPU_CACHE_CLEAN_INVALIDATE(id_map->addr_1, sz); // `addr_1` might not be NPU cacheable
           memcpy((void *)id_map->addr_1, (void const *)(src), sz);
           RELOC_MCU_D_CACHE_CLEAN_INVALIDATE(id_map->addr_1, sz);
         }
         else if ((AI_RELOC_MPOOL_IS_ACTIV(flags)) && (mode & AI_RELOC_RT_LOAD_MODE_CLEAR))
         {
+          RELOC_NPU_CACHE_CLEAN_INVALIDATE(id_map->addr_1, sz); // `addr_1` might not be NPU cacheable
           memset((void *)id_map->addr_1, 0, sz);
           RELOC_MCU_D_CACHE_CLEAN_INVALIDATE(id_map->addr_1, sz);
         }
@@ -591,6 +597,11 @@ static int _ai_reloc_prepare_mpools(const uintptr_t file_ptr, struct id_mpool_ma
     }
     else /* !AI_RELOC_MPOOL_IS_RELOC */
     {
+      if (AI_RELOC_MPOOL_IS_CACHEABLE(flags))
+      {
+        RELOC_NPU_CACHE_CLEAN_INVALIDATE(dst, sz);
+      }
+
       if (AI_RELOC_MPOOL_IS_COPY(flags))
       {
         memcpy((void *)dst, (void const *)(src), sz);
@@ -606,9 +617,6 @@ static int _ai_reloc_prepare_mpools(const uintptr_t file_ptr, struct id_mpool_ma
     cur_mem_c_desc++;
     cur_index++;
   }
-
-  if (invalidate_npu_cache)
-    RELOC_NPU_CACHE_INVALIDATE();
 
   if (addr_0) /* Update the param_0 base address */
     id_map->addr_0 = addr_0;
@@ -788,8 +796,9 @@ static int _ai_reloc_install(const uintptr_t file_ptr, uintptr_t ram_addr, size_
   if (mode & AI_RELOC_RT_LOAD_MODE_COPY)
   {
     const uint32_t ro_sz = AI_RELOC_GET_OFFSET(rom_addr->sect.data_data);
-    memcpy((void *)ram_addr, (void const *)file_ptr, ro_sz);
 
+    RELOC_NPU_CACHE_CLEAN_INVALIDATE(ram_addr, ro_sz); // `ram_addr` might not be NPU cacheable
+    memcpy((void *)ram_addr, (void const *)file_ptr, ro_sz);
     RELOC_MCU_D_CACHE_CLEAN_INVALIDATE(ram_addr, ro_sz);
 
     /* Update the rom_addr/ram_addr pointers */
@@ -805,6 +814,9 @@ static int _ai_reloc_install(const uintptr_t file_ptr, uintptr_t ram_addr, size_
   const uint32_t bss_size = rom_addr->sect.bss_end - rom_addr->sect.bss_start;
   const uintptr_t src_data = AI_RELOC_GET_ADDR(file_ptr, rom_addr->sect.data_data);
   const uint32_t rw_sz = AI_RELOC_GET_OFFSET(rom_addr->sect.bss_end);
+
+  RELOC_NPU_CACHE_CLEAN_INVALIDATE(ram_addr, rw_sz - bss_size); // `ram_addr` might not be NPU cacheable
+  RELOC_NPU_CACHE_CLEAN_INVALIDATE(bss_start, bss_size);        // `bss_start` might not be NPU cacheable
 
   /* Copy the data section, including the got section */
   memcpy((void *)ram_addr, (const void *)src_data, rw_sz - bss_size);
@@ -929,7 +941,7 @@ static char *_magic_to_str(uint32_t val)
 
 void ll_aton_reloc_log_info(const uintptr_t file_ptr)
 {
-#if defined(AI_RELOC_LOG_ENABLE) && AI_RELOC_LOG_ENABLE == 1
+#if defined(AI_RELOC_LOG_ENABLE) && (AI_RELOC_LOG_ENABLE == 1)
   ll_aton_reloc_info rt_info;
 
   const struct ai_reloc_bin_hdr *bin = (const struct ai_reloc_bin_hdr *)file_ptr;
@@ -1149,19 +1161,19 @@ void *ai_rel_network_get_output(uintptr_t inst, uint32_t num)
   return (void *)res;
 }
 
-const EpochBlock_ItemTypeDef *ai_rel_network_get_epoch_items(uintptr_t inst)
+const LL_ATON_RT_EpochBlockItem_t *ai_rel_network_get_epoch_items(uintptr_t inst)
 {
   if (_ai_rel_check_handler(inst))
     return NULL;
 
   const struct ai_reloc_rt_ctx *rt_ctx = (const struct ai_reloc_rt_ctx *)inst;
   const struct ai_reloc_bin_hdr *bin = (const struct ai_reloc_bin_hdr *)rt_ctx->rom_addr;
-  const EpochBlock_ItemTypeDef *blocks;
+  const LL_ATON_RT_EpochBlockItem_t *blocks;
 
   uintptr_t res = call_with_r9((void *)rt_ctx->rom_addr, AI_RELOC_GET_OFFSET(bin->vec.get_epoch_items),
                                (void *)rt_ctx->ram_addr, 0, 0, 0);
 
-  blocks = (const EpochBlock_ItemTypeDef *)res;
+  blocks = (const LL_ATON_RT_EpochBlockItem_t *)res;
 
   return blocks;
 }
@@ -1217,13 +1229,49 @@ const LL_Buffer_InfoTypeDef *ai_rel_network_get_internal_buffers_info(uintptr_t 
   return buff_infos;
 }
 
-void ai_rel_call_start_end_function(uintptr_t inst, start_end_func_ptr fct, const void *epoch_block)
+const LL_Streng_EncryptionTypedef *ai_rel_network_blob_encryption_info(uintptr_t inst)
+{
+  if (_ai_rel_check_handler(inst))
+    return NULL;
+
+  const struct ai_reloc_rt_ctx *rt_ctx = (const struct ai_reloc_rt_ctx *)inst;
+  const struct ai_reloc_bin_hdr *bin = (const struct ai_reloc_bin_hdr *)rt_ctx->rom_addr;
+  const LL_Streng_EncryptionTypedef *strg_encrpy_info;
+
+  uintptr_t res =
+      call_with_r9((void *)rt_ctx->rom_addr, AI_RELOC_GET_OFFSET(bin->vec.blob_encryption_info), 0, 0, 0, 0);
+
+  strg_encrpy_info = (const LL_Streng_EncryptionTypedef *)res;
+
+  return strg_encrpy_info;
+}
+
+const LL_Streng_EncryptionTypedef *ai_rel_network_weight_encryption_info(uintptr_t inst)
+{
+  if (_ai_rel_check_handler(inst))
+    return NULL;
+
+  const struct ai_reloc_rt_ctx *rt_ctx = (const struct ai_reloc_rt_ctx *)inst;
+  const struct ai_reloc_bin_hdr *bin = (const struct ai_reloc_bin_hdr *)rt_ctx->rom_addr;
+  const LL_Streng_EncryptionTypedef *strg_encrpy_info;
+
+  uintptr_t res =
+      call_with_r9((void *)rt_ctx->rom_addr, AI_RELOC_GET_OFFSET(bin->vec.weight_encryption_info), 0, 0, 0, 0);
+
+  strg_encrpy_info = (const LL_Streng_EncryptionTypedef *)res;
+
+  return strg_encrpy_info;
+}
+
+void ai_rel_call_start_end_function(uintptr_t inst, start_end_func_ptr fct,
+                                    const LL_ATON_RT_EpochBlockItem_t *epoch_block,
+                                    const NN_Instance_TypeDef *nn_instance)
 {
   register uint32_t _saved_r9;
   register uint32_t _r9 = ((struct ai_reloc_rt_ctx *)inst)->ram_addr;
   __asm volatile("mov %0, r9\n\t" : "=r"(_saved_r9));
   __asm volatile("mov r9, %0\n\t" ::"r"(_r9));
-  fct(epoch_block);
+  fct(epoch_block, nn_instance);
   __asm volatile("mov r9, %0\n\t" ::"r"(_saved_r9));
 }
 
@@ -1245,14 +1293,14 @@ int ll_aton_reloc_get_file_ptr(const NN_Instance_TypeDef *nn_inst, uintptr_t *fi
   return AI_RELOC_RT_ERR_NONE;
 }
 
-const EpochBlock_ItemTypeDef *ll_aton_reloc_get_epoch_items(const NN_Instance_TypeDef *nn_inst)
+const LL_ATON_RT_EpochBlockItem_t *ll_aton_reloc_get_epoch_items(const NN_Instance_TypeDef *nn_inst)
 {
   if (!nn_inst || !nn_inst->exec_state.inst_reloc)
   {
     return NULL;
   }
 
-  const EpochBlock_ItemTypeDef *epochs = ai_rel_network_get_epoch_items(nn_inst->exec_state.inst_reloc);
+  const LL_ATON_RT_EpochBlockItem_t *epochs = ai_rel_network_get_epoch_items(nn_inst->exec_state.inst_reloc);
   return epochs;
 }
 
@@ -1370,4 +1418,3 @@ void *ll_aton_reloc_get_output(const NN_Instance_TypeDef *nn_inst, uint32_t num)
 }
 
 #endif /* defined(LL_ATON_RT_RELOC) */
-

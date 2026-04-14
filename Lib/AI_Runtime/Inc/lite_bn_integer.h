@@ -214,4 +214,3 @@ void forward_lite_bn_iu8ou8_ch( const ai_u8 *p_in,
                         ai_i32 scratch_size,
                         ai_i16 *pBuffer_a);
 #endif    /* LITE_BN_INTEGER_H */
-

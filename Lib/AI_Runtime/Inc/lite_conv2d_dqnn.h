@@ -566,4 +566,3 @@ void forward_lite_conv2d_is16os16ws1_fxp(const ai_i16 *pIn,
 AI_API_DECLARE_END
 
 #endif    /*LITE_CONV2D_DQNN_H*/
-

@@ -87,4 +87,3 @@ void forward_zipmap(ai_layer* layer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_ML_H*/
-

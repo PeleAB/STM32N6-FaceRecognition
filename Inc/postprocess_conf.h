@@ -18,7 +18,7 @@
 
 #include "arm_math.h"
 
-#define POSTPROCESS_TYPE POSTPROCESS_OD_YOLO_V2_UF
+#define POSTPROCESS_TYPE POSTPROCESS_OD_YOLO_V2_UI
 
 /* I/O configuration */
 #define AI_OD_YOLOV2_PP_NB_CLASSES                (1)

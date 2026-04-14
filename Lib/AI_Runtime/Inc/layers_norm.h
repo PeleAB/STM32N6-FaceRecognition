@@ -203,4 +203,3 @@ void forward_bn_is16os1ws16(ai_layer *pLayer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_NORM_H*/
-

@@ -64,4 +64,3 @@ void forward_linearclassifier(ai_layer *pLayer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_LINEARCLASSIFIER_H*/
-

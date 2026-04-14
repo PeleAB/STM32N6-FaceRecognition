@@ -61,4 +61,3 @@ void forward_lite_nl_softmax_iu8ou8(
   ai_i32* scratch);
 
 #endif    /* LITE_NL_GENERIC_INTEGER_H */
-

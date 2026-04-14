@@ -55,4 +55,3 @@ void forward_cast(ai_layer* layer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_FORMATS_CONVERTERS_H*/
-

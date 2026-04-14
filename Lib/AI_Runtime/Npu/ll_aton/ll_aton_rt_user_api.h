@@ -82,6 +82,8 @@ extern "C"
       .epoch_block_items = &LL_ATON_EpochBlockItems_##nn_if_name,                                                      \
       .output_buffers_info = &LL_ATON_Output_Buffers_Info_##nn_if_name,                                                \
       .input_buffers_info = &LL_ATON_Input_Buffers_Info_##nn_if_name,                                                  \
+      .weight_encryption_info = &LL_ATON_WeightEncryption_Info_##nn_if_name,                                           \
+      .blob_encryption_info = &LL_ATON_BlobEncryption_Info_##nn_if_name,                                               \
       .internal_buffers_info = &LL_ATON_Internal_Buffers_Info_##nn_if_name}
 
 /**
@@ -123,7 +125,7 @@ extern "C"
    * @param rt_callback Function pointer to callback function (set to `NULL` to disable epoch tracing)
    *
    * @note  This function must only be called when no network is currently executing
-   *        and should be called BEFORE `LL_ATON_RT_Init_Network()` otherwise runtime init events will be lost!
+   *        and should be called BEFORE `LL_ATON_RT_RuntimeInit()` otherwise runtime init events will be lost!
    */
   void LL_ATON_RT_SetRuntimeCallback(TraceRuntime_FuncPtr_t rt_callback);
 
@@ -143,7 +145,7 @@ extern "C"
    * @param epoch_block_callback Function pointer to callback function (set to `NULL` to disable epoch tracing)
    *
    * @note  This function must only be called while the passed network instance is not executing
-   *        and should be called before `LL_ATON_RT_Init_Network()`!
+   *        and should be called BEFORE `LL_ATON_RT_Init_Network()`!
    */
   void LL_ATON_RT_SetNetworkCallback(NN_Instance_TypeDef *nn_instance, TraceEpochBlock_FuncPtr_t epoch_block_callback);
 
@@ -256,6 +258,10 @@ extern "C"
    * @}
    */
 
+#if defined(LL_ATON_RT_RELOC) && !defined(BUILD_AI_NETWORK_RELOC)
+#include "ll_aton_reloc_network.h"
+#endif
+
   /** @defgroup User API Function Inline Implementations (of some User API functions)
    * @{
    */
@@ -263,48 +269,150 @@ extern "C"
   static inline LL_ATON_User_IO_Result_t LL_ATON_Set_User_Input_Buffer(const NN_Instance_TypeDef *nn_instance,
                                                                        uint32_t num, void *buffer, uint32_t size)
   {
-    assert((nn_instance != NULL) && (nn_instance->network != NULL) && (nn_instance->network->input_setter != NULL));
-    return nn_instance->network->input_setter(num, buffer, size);
+    LL_ATON_ASSERT(nn_instance != NULL);
+#if defined(LL_ATON_RT_RELOC) && !defined(BUILD_AI_NETWORK_RELOC)
+    if (nn_instance->exec_state.inst_reloc != 0)
+    {
+      return ai_rel_network_set_input(nn_instance->exec_state.inst_reloc, num, buffer, size);
+    }
+    else
+    {
+      LL_ATON_ASSERT(nn_instance->network != NULL);
+      LL_ATON_ASSERT(nn_instance->network->input_setter != NULL);
+      return nn_instance->network->input_setter(num, buffer, size);
+    }
+#else /* !LL_ATON_RT_RELOC */
+  LL_ATON_ASSERT((nn_instance != NULL) && (nn_instance->network != NULL) &&
+                 (nn_instance->network->input_setter != NULL));
+  return nn_instance->network->input_setter(num, buffer, size);
+#endif
   }
 
   static inline void *LL_ATON_Get_User_Input_Buffer(const NN_Instance_TypeDef *nn_instance, uint32_t num)
   {
-    assert((nn_instance != NULL) && (nn_instance->network != NULL) && (nn_instance->network->input_getter != NULL));
-    return nn_instance->network->input_getter(num);
+    LL_ATON_ASSERT(nn_instance != NULL);
+#if defined(LL_ATON_RT_RELOC) && !defined(BUILD_AI_NETWORK_RELOC)
+    if (nn_instance->exec_state.inst_reloc != 0)
+    {
+      return ai_rel_network_get_input(nn_instance->exec_state.inst_reloc, num);
+    }
+    else
+    {
+      LL_ATON_ASSERT(nn_instance->network != NULL);
+      LL_ATON_ASSERT(nn_instance->network->input_getter != NULL);
+      return nn_instance->network->input_getter(num);
+    }
+#else  /* !LL_ATON_RT_RELOC */
+  LL_ATON_ASSERT((nn_instance != NULL) && (nn_instance->network != NULL) &&
+                 (nn_instance->network->input_getter != NULL));
+  return nn_instance->network->input_getter(num);
+#endif /* !LL_ATON_RT_RELOC */
   }
 
   static inline LL_ATON_User_IO_Result_t LL_ATON_Set_User_Output_Buffer(const NN_Instance_TypeDef *nn_instance,
                                                                         uint32_t num, void *buffer, uint32_t size)
   {
-    assert((nn_instance != NULL) && (nn_instance->network != NULL) && (nn_instance->network->output_setter != NULL));
-    return nn_instance->network->output_setter(num, buffer, size);
+    LL_ATON_ASSERT(nn_instance != NULL);
+#if defined(LL_ATON_RT_RELOC) && !defined(BUILD_AI_NETWORK_RELOC)
+    if (nn_instance->exec_state.inst_reloc != 0)
+    {
+      return ai_rel_network_set_output(nn_instance->exec_state.inst_reloc, num, buffer, size);
+    }
+    else
+    {
+      LL_ATON_ASSERT(nn_instance->network != NULL);
+      LL_ATON_ASSERT(nn_instance->network->output_setter != NULL);
+      return nn_instance->network->output_setter(num, buffer, size);
+    }
+#else /* !LL_ATON_RT_RELOC */
+  LL_ATON_ASSERT((nn_instance != NULL) && (nn_instance->network != NULL) &&
+                 (nn_instance->network->output_setter != NULL));
+  return nn_instance->network->output_setter(num, buffer, size);
+#endif
   }
 
   static inline void *LL_ATON_Get_User_Output_Buffer(const NN_Instance_TypeDef *nn_instance, uint32_t num)
   {
-    assert((nn_instance != NULL) && (nn_instance->network != NULL) && (nn_instance->network->output_getter != NULL));
-    return nn_instance->network->output_getter(num);
+    LL_ATON_ASSERT(nn_instance != NULL);
+#if defined(LL_ATON_RT_RELOC) && !defined(BUILD_AI_NETWORK_RELOC)
+    if (nn_instance->exec_state.inst_reloc != 0)
+    {
+      return ai_rel_network_get_output(nn_instance->exec_state.inst_reloc, num);
+    }
+    else
+    {
+      LL_ATON_ASSERT(nn_instance->network != NULL);
+      LL_ATON_ASSERT(nn_instance->network->output_getter != NULL);
+      return nn_instance->network->output_getter(num);
+    }
+#else /* !LL_ATON_RT_RELOC */
+  LL_ATON_ASSERT((nn_instance != NULL) && (nn_instance->network != NULL) &&
+                 (nn_instance->network->output_getter != NULL));
+  return nn_instance->network->output_getter(num);
+#endif
   }
 
   static inline const LL_Buffer_InfoTypeDef *LL_ATON_Output_Buffers_Info(const NN_Instance_TypeDef *nn_instance)
   {
-    assert((nn_instance != NULL) && (nn_instance->network != NULL) &&
-           (nn_instance->network->output_buffers_info != NULL));
-    return nn_instance->network->output_buffers_info();
+    LL_ATON_ASSERT(nn_instance != NULL);
+#if defined(LL_ATON_RT_RELOC) && !defined(BUILD_AI_NETWORK_RELOC)
+    if (nn_instance->exec_state.inst_reloc != 0)
+    {
+      return ai_rel_network_get_output_buffers_info(nn_instance->exec_state.inst_reloc);
+    }
+    else
+    {
+      LL_ATON_ASSERT(nn_instance->network != NULL);
+      LL_ATON_ASSERT(nn_instance->network->output_buffers_info != NULL);
+      return nn_instance->network->output_buffers_info();
+    }
+#else /* !LL_ATON_RT_RELOC */
+  LL_ATON_ASSERT((nn_instance != NULL) && (nn_instance->network != NULL) &&
+                 (nn_instance->network->output_buffers_info != NULL));
+  return nn_instance->network->output_buffers_info();
+#endif
   }
 
   static inline const LL_Buffer_InfoTypeDef *LL_ATON_Input_Buffers_Info(const NN_Instance_TypeDef *nn_instance)
   {
-    assert((nn_instance != NULL) && (nn_instance->network != NULL) &&
-           (nn_instance->network->input_buffers_info != NULL));
-    return nn_instance->network->input_buffers_info();
+#if defined(LL_ATON_RT_RELOC) && !defined(BUILD_AI_NETWORK_RELOC)
+    LL_ATON_ASSERT(nn_instance != NULL);
+    if (nn_instance->exec_state.inst_reloc != 0)
+    {
+      return ai_rel_network_get_input_buffers_info(nn_instance->exec_state.inst_reloc);
+    }
+    else
+    {
+      LL_ATON_ASSERT(nn_instance->network != NULL);
+      LL_ATON_ASSERT(nn_instance->network->input_buffers_info != NULL);
+      return nn_instance->network->input_buffers_info();
+    }
+#else /* !LL_ATON_RT_RELOC */
+  LL_ATON_ASSERT((nn_instance != NULL) && (nn_instance->network != NULL) &&
+                 (nn_instance->network->input_buffers_info != NULL));
+  return nn_instance->network->input_buffers_info();
+#endif
   }
 
   static inline const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info(const NN_Instance_TypeDef *nn_instance)
   {
-    assert((nn_instance != NULL) && (nn_instance->network != NULL) &&
-           (nn_instance->network->internal_buffers_info != NULL));
-    return nn_instance->network->internal_buffers_info();
+#if defined(LL_ATON_RT_RELOC) && !defined(BUILD_AI_NETWORK_RELOC)
+    LL_ATON_ASSERT(nn_instance != NULL);
+    if (nn_instance->exec_state.inst_reloc != 0)
+    {
+      return ai_rel_network_get_internal_buffers_info(nn_instance->exec_state.inst_reloc);
+    }
+    else
+    {
+      LL_ATON_ASSERT(nn_instance->network != NULL);
+      LL_ATON_ASSERT(nn_instance->network->internal_buffers_info != NULL);
+      return nn_instance->network->internal_buffers_info();
+    }
+#else /* !LL_ATON_RT_RELOC */
+  LL_ATON_ASSERT((nn_instance != NULL) && (nn_instance->network != NULL) &&
+                 (nn_instance->network->internal_buffers_info != NULL));
+  return nn_instance->network->internal_buffers_info();
+#endif
   }
 
   /**
@@ -316,4 +424,3 @@ extern "C"
 #endif
 
 #endif /* __LL_ATON_RT_USER_API */
-

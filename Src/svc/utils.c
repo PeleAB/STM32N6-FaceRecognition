@@ -18,18 +18,5 @@
 
 #include "utils.h"
 
-void Run_Inference(NN_Instance_TypeDef *network_instance)
-{
-  LL_ATON_RT_RetValues_t ll_aton_rt_ret;
 
-  do {
-    /* Execute first/next step of Cube.AI/ATON runtime */
-    ll_aton_rt_ret = LL_ATON_RT_RunEpochBlock(network_instance);
-    /* Wait for next event */
-    if (ll_aton_rt_ret == LL_ATON_RT_WFE)
-      LL_ATON_OSAL_WFE();
-  } while (ll_aton_rt_ret != LL_ATON_RT_DONE);
-
-  LL_ATON_RT_Reset_Network(network_instance);
-}
 

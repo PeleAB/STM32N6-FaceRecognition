@@ -58,4 +58,3 @@ AI_API_DECLARE_END
 
 #endif    /*LAYERS_SM_H*/
 
-

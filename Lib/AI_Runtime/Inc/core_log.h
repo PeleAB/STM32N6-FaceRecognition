@@ -128,4 +128,3 @@
 #endif
 
 #endif    /*CORE_LOG_H*/
-

@@ -19,12 +19,12 @@
 #ifndef UTILS
 #define UTILS
 
-#include "ll_aton_rt_user_api.h"
+
 
 #define ALIGN_32 __attribute__ ((aligned (32)))
 #define IN_PSRAM __attribute__ ((section (".psram_bss")))
 #define UNCACHED __attribute__ ((section (".uncached_bss")))
-#define WEAK __weak
+#define WEAK __attribute__((weak))
 
 #ifndef MIN
 #define MIN(a,b) ((a)<(b)?(a):(b))
@@ -36,6 +36,6 @@
 
 #define ARRAY_NB(a) (sizeof(a)/sizeof(a[0]))
 
-void Run_Inference(NN_Instance_TypeDef *network_instance);
+
 
 #endif

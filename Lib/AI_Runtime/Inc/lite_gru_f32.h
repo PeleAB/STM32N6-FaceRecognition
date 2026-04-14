@@ -56,4 +56,3 @@ void forward_lite_gru_if32of32wf32(
 
 
 #endif    /* LITE_GRU_F32_H */
-

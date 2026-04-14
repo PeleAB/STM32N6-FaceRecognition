@@ -27,13 +27,14 @@ extern "C"
 #include <stdint.h>
 
 #include "ll_aton_NN_interface.h"
+#include "ll_aton_platform.h"
 
   /**
    *  * @brief enumerator type for dump_xxx functions
    *   */
   enum
   {
-    MODE_RAW = 0x1,     // Dump buffer with data as is present in memory (i.e. flattend)
+    MODE_RAW = 0x1,     // Dump buffer with data as is present in memory (i.e. flattened)
     MODE_ONNX = 0x2,    // Dump buffer considering shape info and in ONNX canonical form (consider batch info)
     MODE_INBITS = 0x4,  // Dump elements as raw bits (as integers)
     MODE_INFLOAT = 0x8, // Dump elements interpreting Qmn format info (as floats)
@@ -74,7 +75,7 @@ extern "C"
    * @param  pointer to neural network interface structure
    * @retval pointer to buffer or null of not found
    */
-  void *get_buffer(const char *bufname, int in, unsigned *_len, unsigned *_bits,
+  void *get_buffer(const char *bufname, int in, unsigned int *_len, unsigned int *_bits,
                    const NN_Interface_TypeDef *nn_interface);
 
   /**
@@ -95,7 +96,7 @@ extern "C"
    * @param  pointer to neural network interface structure
    * @retval none
    */
-  void set_all_buffers(int in, unsigned val, const NN_Interface_TypeDef *nn_interface);
+  void set_all_buffers(int in, unsigned int val, const NN_Interface_TypeDef *nn_interface);
 
   /**
    * @brief  dump a buffer with a given mode
@@ -118,7 +119,7 @@ extern "C"
 
   /**
    * @brief  dump all internal buffers whose epoch matches (to be used in epoch hooks, or if scheduling epoch
-   * expliciclty)
+   * explicitly)
    * @param  mode dump mode specifier
    * @param  epoch epoch number
    * @retval none
@@ -163,6 +164,7 @@ static inline void dump_all_epoch_buffers(int mode, int epoch, int in, const NN_
 
   static inline void dump_all_epoch_buffers(int mode, int epoch, int in, const NN_Interface_TypeDef *nn_interface)
   {
+    LL_ATON_LIB_UNUSED(in);
     dump_epoch_buffers(mode, epoch, nn_interface);
   }
 
@@ -173,4 +175,3 @@ static inline void dump_all_epoch_buffers(int mode, int epoch, int in, const NN_
 #endif
 
 #endif
-

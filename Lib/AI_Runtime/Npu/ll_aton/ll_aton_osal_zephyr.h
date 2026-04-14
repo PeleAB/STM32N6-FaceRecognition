@@ -37,6 +37,7 @@
 #include "ll_aton_attributes.h"
 #include "ll_aton_osal.h"
 #include "ll_aton_platform.h"
+#include "ll_aton_util.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -152,4 +153,3 @@ extern "C"
 #endif
 
 #endif //__LL_ATON_OSAL_ZEPHYR_H
-

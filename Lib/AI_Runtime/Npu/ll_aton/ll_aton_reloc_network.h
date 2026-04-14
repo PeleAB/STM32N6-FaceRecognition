@@ -143,45 +143,62 @@ extern "C"
 
     /* ll aton lib */
     int (*ll_aton_lib_concat)(const LL_Buffer_InfoTypeDef *inputs, unsigned int ninputs,
-                              const LL_Buffer_InfoTypeDef *output, unsigned int axis, int dma_in, int dma_out);
+                              const LL_Buffer_InfoTypeDef *output, unsigned int axis, int dma_in, int dma_out,
+                              const NN_Instance_TypeDef *nn_instance);
     int (*ll_aton_lib_cast)(const LL_LIB_TensorInfo_TypeDef *input, const LL_LIB_TensorInfo_TypeDef *output, int dma_in,
-                            int dma_out);
+                            int dma_out, const NN_Instance_TypeDef *nn_instance);
+    int (*ll_aton_lib_dma_transpose)(const LL_Buffer_InfoTypeDef *input, const uint32_t *input_axes_offsets,
+                                     const LL_Buffer_InfoTypeDef *output, const uint32_t *output_axes_offsets,
+                                     const uint8_t *target_pos, const uint8_t *perm_to_use, int dma_in, int dma_out,
+                                     const NN_Instance_TypeDef *nn_instance);
     int (*ll_aton_lib_softmax)(const LL_LIB_TensorInfo_TypeDef *input, const LL_LIB_TensorInfo_TypeDef *output,
                                unsigned int axis, int legacy);
     int (*ll_aton_lib_dma_imagetorow)(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned int ninputs,
-                                      const LL_LIB_TensorInfo_TypeDef *output, unsigned blocksize_h,
-                                      unsigned blocksize_w, unsigned stride_h, unsigned stride_w, int dma_in,
-                                      int dma_out);
+                                      const LL_LIB_TensorInfo_TypeDef *output, unsigned int blocksize_h,
+                                      unsigned int blocksize_w, unsigned int stride_h, unsigned int stride_w,
+                                      int dma_in, int dma_out, const NN_Instance_TypeDef *nn_instance);
     int (*ll_aton_lib_dma_spacetodepth)(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned int ninputs,
-                                        const LL_LIB_TensorInfo_TypeDef *output, unsigned blocksize_h,
-                                        unsigned blocksize_w, int dma_in, int dma_out);
+                                        const LL_LIB_TensorInfo_TypeDef *output, unsigned int blocksize_h,
+                                        unsigned int blocksize_w, int dma_in, int dma_out,
+                                        const NN_Instance_TypeDef *nn_instance);
     int (*ll_aton_lib_dma_rowtoimage)(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned int ninputs,
-                                      const LL_LIB_TensorInfo_TypeDef *output, unsigned blocksize_h,
-                                      unsigned blocksize_w, unsigned stride_h, unsigned stride_w, int dma_in,
-                                      int dma_out);
+                                      const LL_LIB_TensorInfo_TypeDef *output, unsigned int blocksize_h,
+                                      unsigned int blocksize_w, unsigned int stride_h, unsigned int stride_w,
+                                      int dma_in, int dma_out, const NN_Instance_TypeDef *nn_instance);
     int (*ll_aton_lib_dma_depthtospace)(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned int ninputs,
-                                        const LL_LIB_TensorInfo_TypeDef *output, unsigned blocksize_h,
-                                        unsigned blocksize_w, int dma_in, int dma_out);
-    int (*ll_aton_lib_dma_outputs_flat_copy)(const LL_LIB_TensorShape_TypeDef *input,
-                                             const LL_LIB_TensorShape_TypeDef *outputs, unsigned int nr_of_outputs,
-                                             int dma_in, int dma_out);
-    int (*ll_aton_lib_dma_outputs_slice_splitlike)(const LL_LIB_TensorShape_TypeDef *input,
-                                                   const LL_LIB_TensorShape_TypeDef *output, int32_t tot_out_size,
-                                                   int32_t width_in_bytes, int32_t fheight, int32_t line_offset,
-                                                   int8_t n_bits, int dma_in, int dma_out);
-    int (*ll_aton_lib_dma_outputs_channel_split_aton)(const LL_LIB_TensorShape_TypeDef *input,
-                                                      const LL_LIB_TensorShape_TypeDef *outputs,
-                                                      unsigned int nr_of_outputs, unsigned int leading_dims, int dma_in,
-                                                      int dma_out);
-    int (*ll_aton_lib_dma_outputs_channel_split_batched)(const LL_LIB_TensorShape_TypeDef *input,
-                                                         const LL_LIB_TensorShape_TypeDef *outputs,
-                                                         unsigned int nr_of_outputs, int dma_in, int dma_out);
-    int (*ll_aton_lib_dma_pad_memset)(void *output, int32_t constant_value, size_t c,
-                                      __ll_pad_sw_params_t *common_params);
-    int (*ll_aton_lib_dma_pad_filling)(__ll_pad_sw_params_t *init_common_params);
-    int (*ll_aton_lib_dma_transpose)(const LL_LIB_TensorShape_TypeDef *input, const uint32_t *input_axes_offsets,
-                                     const LL_LIB_TensorShape_TypeDef *output, const uint32_t *output_axes_offsets,
-                                     const uint8_t *target_pos, const uint8_t *perm_to_use, int dma_in, int dma_out);
+                                        const LL_LIB_TensorInfo_TypeDef *output, unsigned int blocksize_h,
+                                        unsigned int blocksize_w, int dma_in, int dma_out,
+                                        const NN_Instance_TypeDef *nn_instance);
+    int (*ll_aton_lib_dma_outputs_slice_splitlike)(const LL_Buffer_InfoTypeDef *input,
+                                                   const LL_Buffer_InfoTypeDef *output, uint32_t tot_out_size,
+                                                   uint32_t width_in_bytes, uint32_t fheight, uint32_t line_offset,
+                                                   uint8_t n_bits, int dma_in, int dma_out,
+                                                   const NN_Instance_TypeDef *nn_instance);
+    int (*ll_aton_lib_pad_std)(unsigned char *input, unsigned char *output, unsigned char *input_limit,
+                               unsigned char *output_limit, const uint32_t *min_shape, uint8_t mode, uint8_t nbytes,
+                               uint32_t out_elems, int32_t constant_value, uint32_t consecutive_axis,
+                               uint32_t consecutive_elems, const int32_t *pad_in_offsets_start,
+                               const int32_t *pad_in_offsets_end, const int32_t *pad_out_offsets_start,
+                               const int32_t *pad_out_offsets_end, const int32_t *out_shape, const int32_t *out_offsets,
+                               size_t tensor_rank, int dma_in, int dma_out, const NN_Instance_TypeDef *nn_instance);
+    int (*ll_aton_lib_pad_4loop)(unsigned char *input_start, unsigned char *input_end, unsigned char *input_limit,
+                                 unsigned char *output_start, unsigned char *output_end, unsigned char *output_limit,
+                                 int32_t constant_value, uint8_t nbytes, uint32_t *negative_4loop,
+                                 uint32_t *positive_4loop, int dma_in, int dma_out,
+                                 const NN_Instance_TypeDef *nn_instance);
+
+    /* ll aton sw & lib internals */
+    int (*ll_aton_lib_dma_outputs_flat_copy)(const LL_Buffer_InfoTypeDef *input, const LL_Buffer_InfoTypeDef *outputs,
+                                             unsigned int nr_of_outputs, int dma_in, int dma_out,
+                                             const NN_Instance_TypeDef *nn_instance);
+    int (*ll_aton_lib_dma_outputs_channel_split_aton)(const LL_Buffer_InfoTypeDef *input,
+                                                      const LL_Buffer_InfoTypeDef *outputs, unsigned int nr_of_outputs,
+                                                      unsigned int leading_dims, int dma_in, int dma_out,
+                                                      const NN_Instance_TypeDef *nn_instance);
+    int (*ll_aton_lib_dma_outputs_channel_split_batched)(const LL_Buffer_InfoTypeDef *input,
+                                                         const LL_Buffer_InfoTypeDef *outputs,
+                                                         unsigned int nr_of_outputs, int dma_in, int dma_out,
+                                                         const NN_Instance_TypeDef *nn_instance);
   };
 
   /* AI RELOC RT context definition */
@@ -323,14 +340,20 @@ extern "C"
   LL_ATON_User_IO_Result_t ai_rel_network_set_output(uintptr_t inst, uint32_t num, void *buffer, uint32_t size);
   void *ai_rel_network_get_output(uintptr_t inst, uint32_t num);
 
-  const EpochBlock_ItemTypeDef *ai_rel_network_get_epoch_items(uintptr_t inst);
+  const LL_ATON_RT_EpochBlockItem_t *ai_rel_network_get_epoch_items(uintptr_t inst);
   const LL_Buffer_InfoTypeDef *ai_rel_network_get_output_buffers_info(uintptr_t inst);
   const LL_Buffer_InfoTypeDef *ai_rel_network_get_input_buffers_info(uintptr_t inst);
   const LL_Buffer_InfoTypeDef *ai_rel_network_get_internal_buffers_info(uintptr_t inst);
 
-  typedef void (*volatile start_end_func_ptr)(const void *epoch_block);
+  const LL_Streng_EncryptionTypedef *ai_rel_network_blob_encryption_info(uintptr_t inst);
+  const LL_Streng_EncryptionTypedef *ai_rel_network_weight_encryption_info(uintptr_t inst);
 
-  void ai_rel_call_start_end_function(uintptr_t inst, start_end_func_ptr fct, const void *epoch_block);
+  typedef void (*volatile start_end_func_ptr)(const LL_ATON_RT_EpochBlockItem_t *epoch_block,
+                                              const NN_Instance_TypeDef *nn_instance);
+
+  void ai_rel_call_start_end_function(uintptr_t inst, start_end_func_ptr fct,
+                                      const LL_ATON_RT_EpochBlockItem_t *epoch_block,
+                                      const NN_Instance_TypeDef *nn_instance);
 
 #if defined(BUILD_AI_NETWORK_RELOC)
 
@@ -414,7 +437,7 @@ extern "C"
 #define ASYNC_MODE_FLAG 0
 #endif
 
-/* build EXTRA flags defintion */
+/* build EXTRA flags definition */
 #define EXTRA (SECURE_FLAG | (DBG_INFO_FLAG << 1) | (ASYNC_MODE_FLAG << 2))
 
   /* https://developer.arm.com/documentation/dui0774/l/Other-Compiler-specific-Features/Predefined-macros?lang=en#a183-predefined-macros__when-the-softfp-predefined-macro-is-defined
@@ -463,6 +486,8 @@ extern "C"
 #define _OUTPUT_BUFFERS_INFO(name)   MAKE_FN_(Output_Buffers_Info, name)
 #define _INPUT_BUFFERS_INFO(name)    MAKE_FN_(Input_Buffers_Info, name)
 #define _INTERNAL_BUFFERS_INFO(name) MAKE_FN_(Internal_Buffers_Info, name)
+#define _WEIGHTENCRYPTION_INFO(name) MAKE_FN_(WeightEncryption_Info, name)
+#define _BLOBENCRYPTION_INFO(name)   MAKE_FN_(BlobEncryption_Info, name)
 
 #if !defined(INCLUDE_INTERNAL_BUFFERS)
   const LL_Buffer_InfoTypeDef *LL_ATON_Internal_Buffers_Info_Default_Empty(void)
@@ -487,16 +512,18 @@ extern "C"
     void *(*input_getter)(uint32_t num);
     LL_ATON_User_IO_Result_t (*output_setter)(uint32_t num, void *buffer, uint32_t size);
     void *(*output_getter)(uint32_t num);
-    const EpochBlock_ItemTypeDef *(*get_epoch_items)(void);
+    const LL_ATON_RT_EpochBlockItem_t *(*get_epoch_items)(void);
     const LL_Buffer_InfoTypeDef *(*get_output_buffers_info)(void);
     const LL_Buffer_InfoTypeDef *(*get_input_buffers_info)(void);
     const LL_Buffer_InfoTypeDef *(*get_internal_buffers_info)(void);
+    const LL_Streng_EncryptionTypedef *(*weight_encryption_info)(void);
+    const LL_Streng_EncryptionTypedef *(*blob_encryption_info)(void);
     struct ai_reloc_rt_ctx *rt_ctx;
   };
 
   const NN_Interface_TypeDef _itf_network = {.network_name = C_NAME};
 
-#define C_STRUCT_SIZE (sizeof(LL_Buffer_InfoTypeDef) | sizeof(EpochBlock_ItemTypeDef) << 8)
+#define C_STRUCT_SIZE (sizeof(LL_Buffer_InfoTypeDef) | sizeof(LL_ATON_RT_EpochBlockItem_t) << 8)
 
 #define AI_RELOC_NETWORK()                                                                                             \
   struct ai_reloc_rt_ctx __attribute__((used, section(".network_rt_ctx"), )) _network_rt_ctx = {0,                     \
@@ -527,6 +554,8 @@ extern "C"
       .get_epoch_items = &_EPOCH_BLOCK_ITEMS(C_FCT_SUFFIX),                                                            \
       .get_output_buffers_info = &_OUTPUT_BUFFERS_INFO(C_FCT_SUFFIX),                                                  \
       .get_input_buffers_info = &_INPUT_BUFFERS_INFO(C_FCT_SUFFIX),                                                    \
+      .weight_encryption_info = &_WEIGHTENCRYPTION_INFO(C_FCT_SUFFIX),                                                 \
+      .blob_encryption_info = &_BLOBENCRYPTION_INFO(C_FCT_SUFFIX),                                                     \
       .get_internal_buffers_info = &_LL_ATON_INTERNAL_BUFFERS,                                                         \
       .rt_ctx = &_network_rt_ctx,                                                                                      \
   };                                                                                                                   \
@@ -544,4 +573,3 @@ extern "C"
 #endif
 
 #endif /* __LL_ATON_RELOC_NETWORK_H__ */
-

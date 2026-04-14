@@ -512,4 +512,3 @@ ai_size ai_array_get_elems_from_size(
 AI_API_DECLARE_END
 
 #endif /*AI_DATATYPES_FORMAT_H*/
-

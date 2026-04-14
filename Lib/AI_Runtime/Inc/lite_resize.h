@@ -77,4 +77,3 @@ void forward_lite_resize_bilinear_is16os16( const ai_i16* in_data,
                                             const ai_float* roi);
 
 #endif    /*LITE_RESIZE__H*/
-

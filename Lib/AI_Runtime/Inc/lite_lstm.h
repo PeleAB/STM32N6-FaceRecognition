@@ -92,4 +92,3 @@ void forward_lite_lstm_is8os8ws8(  AI_CONST ai_i8* kernel[AI_LITE_LSTM_MAX],
 
 #endif /* LITE_LSTM_H */
 
-

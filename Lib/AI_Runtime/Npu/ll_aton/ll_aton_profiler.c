@@ -16,7 +16,6 @@
  ******************************************************************************
  */
 
-#include <assert.h>
 #include <float.h>
 #include <math.h>
 #include <stdbool.h>
@@ -38,10 +37,12 @@ int LL_ATON_LIB_ConvInteger(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned in
                             int pad_right, int stride_h, int stride_w, int dilation_h, int dilation_w, int pad_value,
                             int groups, char *conv_name)
 {
-  int in_elements = LL_LIB_TENSOR_ELEMENTS(&inputs[0]);
-  int kern_elements = LL_LIB_TENSOR_ELEMENTS(&inputs[1]);
-  // int bias_elements = ninputs > 2 ? LL_LIB_TENSOR_ELEMENTS(&inputs[2]) : 0;
-  int out_elements = LL_LIB_TENSOR_ELEMENTS(output);
+  LL_ATON_LIB_UNUSED(ninputs);
+
+  int in_elements = __LL_LIB_TENSOR_ELEMENTS(&inputs[0]);
+  int kern_elements = __LL_LIB_TENSOR_ELEMENTS(&inputs[1]);
+  // int bias_elements = ninputs > 2 ? __LL_LIB_TENSOR_ELEMENTS(&inputs[2]) : 0;
+  int out_elements = __LL_LIB_TENSOR_ELEMENTS(output);
   int el_size_0 = inputs[0].nbits / 8; // inputs[0].type == DataType_INT8 || inputs[0].type == DataType_UINT8 ? 1 : -1;
   int el_size_1 = inputs[1].nbits / 8; // inputs[0].type == DataType_INT8 || inputs[0].type == DataType_UINT8 ? 1 : -1;
   int el_out_size = output[0].nbits / 8; // output[0].type == DataType_INT32 ? 4 : -1;
@@ -66,13 +67,13 @@ int LL_ATON_LIB_ConvInteger(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned in
   if (el_out_size != 4 || (output->type != DataType_INT32 && output->type != DataType_FXP))
     __LL_LIB_ERROR(_ERR_DATATYPE, LL_ATON_INVALID_PARAM);
 
-  if (in_byte_size > LL_Buffer_len(inputs + 0))
+  if (in_byte_size > (int32_t)LL_Buffer_len(inputs + 0))
     __LL_LIB_ERROR(_ERR_BUFFER_IN, LL_ATON_INVALID_PARAM);
 
-  if (out_byte_size > LL_Buffer_len(output + 0))
+  if (out_byte_size > (int32_t)LL_Buffer_len(output + 0))
     __LL_LIB_ERROR(_ERR_BUFFER_OUT, LL_ATON_INVALID_PARAM);
 
-  if (kern_byte_size > LL_Buffer_len(inputs + 1))
+  if (kern_byte_size > (int32_t)LL_Buffer_len(inputs + 1))
     __LL_LIB_ERROR(_ERR_BUFFER_IN, LL_ATON_INVALID_PARAM);
 
   if (inputs[0].ndims < 4 || inputs[1].ndims < 4)
@@ -140,8 +141,8 @@ int LL_ATON_LIB_ConvInteger(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned in
 
   int out_H = (H + pad_top + pad_bottom - dilation_h * (R - 1) - 1) / stride_h + 1;
   int out_W = (W + pad_left + pad_right - dilation_w * (S - 1) - 1) / stride_w + 1;
-  assert(out_H == out->shape[(out->ndims - 4) + TDIM_FHEIGHT]);
-  assert(out_W == out->shape[(out->ndims - 4) + TDIM_FWIDTH]);
+  LL_ATON_ASSERT(out_H == (int)out->shape[(out->ndims - 4) + TDIM_FHEIGHT]);
+  LL_ATON_ASSERT(out_W == (int)out->shape[(out->ndims - 4) + TDIM_FWIDTH]);
 
   int32_t maxmax = 0;
   for (int n = 0; n < N; ++n) // input batch
@@ -169,7 +170,8 @@ int LL_ATON_LIB_ConvInteger(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned in
                   if (ih >= 0 && ih < H && iw >= 0 && iw < W)
                   {
                     int input_idx = ((n * C + c) * H + ih) * W + iw; // N[C/B]HWB
-                    assert(LL_Buffer_addr_end(feat) /*feat->addr_end.p*/ > (unsigned char *)(in_data + input_idx));
+                    LL_ATON_ASSERT(LL_Buffer_addr_end(feat) /*feat->addr_end.p*/ >
+                                   (unsigned char *)(in_data + input_idx));
                     if (el_size_0 == 1)
                       input_value = in_signed ? in_data[input_idx] : in_data_u[input_idx];
                     else
@@ -181,7 +183,8 @@ int LL_ATON_LIB_ConvInteger(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned in
                   }
                   // LL_ATON_PROFILER_PRINTF("%d %d %d=%d\n", c, r, s, input_value);
                   int weight_idx = ((k * C + c) * R + r) * S + s;
-                  assert(LL_Buffer_addr_end(kern) /*kern->addr_end.p*/ > (unsigned char *)(w_data + weight_idx));
+                  LL_ATON_ASSERT(LL_Buffer_addr_end(kern) /*kern->addr_end.p*/ >
+                                 (unsigned char *)(w_data + weight_idx));
                   int32_t w_value;
                   if (el_size_0 == 1)
                     w_value = w_signed ? w_data[weight_idx] : w_data_u[weight_idx];
@@ -196,17 +199,17 @@ int LL_ATON_LIB_ConvInteger(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned in
             }
           }
           int output_idx = ((n * K + k) * out_H + oh) * out_W + ow;
-          assert(LL_Buffer_addr_end(out) /*out->addr_end.p*/ > (unsigned char *)(out_data + output_idx));
+          LL_ATON_ASSERT(LL_Buffer_addr_end(out) /*out->addr_end.p*/ > (unsigned char *)(out_data + output_idx));
           out_data[output_idx] = sum;
           // LL_ATON_PROFILER_PRINTF("oidx=%d = %d max=%d\n", output_idx, sum, max);
           maxmax = max > maxmax ? max : maxmax;
           maxmax_k = max > maxmax_k ? max : maxmax_k;
         }
       }
-      LL_ATON_PROFILER_PRINTF("%s k=%d %d scale=%g\n", conv_name, k, maxmax_k, kern->scale[k]);
+      LL_ATON_PROFILER_PRINTF("%s k=%d %d scale=%g\n", conv_name, k, maxmax_k, (double)kern->scale[k]);
     }
   }
-  assert(kcount == K * S * R * C * N * out_H * out_W);
+  LL_ATON_ASSERT(kcount == K * S * R * C * N * out_H * out_W);
 
 #define DIFFTH 1
 #if 0
@@ -242,10 +245,10 @@ int LL_ATON_LIB_ConvInteger(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned in
               {
                 int ref_idx = n * RH * RW * RC + (b * RB * RH * RW) + (oh * RW + ow) * RB + c; // HWC
                 int out_idx = n * RH * RW * RC + (oh * RW + ow) * RC + b * RB + c;             // HWC
-                assert(LL_Buffer_addr_end(ref) /*ref->addr_end.p */ > (unsigned char *)(ref_data + ref_idx));
+                LL_ATON_ASSERT(LL_Buffer_addr_end(ref) /*ref->addr_end.p */ > (unsigned char *)(ref_data + ref_idx));
                 int32_t ref_val = ref_data[ref_idx];
                 ref_val = ref->Qn >= 0 ? ref_val >> ref->Qn : ref_val << -ref->Qn;
-                assert(LL_Buffer_addr_end(out) /*out->addr_end.p*/ > (unsigned char *)(out_data + out_idx));
+                LL_ATON_ASSERT(LL_Buffer_addr_end(out) /*out->addr_end.p*/ > (unsigned char *)(out_data + out_idx));
                 int32_t out_val = out_data[out_idx];
                 int diff = abs(ref_val - out_val);
                 if (diff > DIFFTH)
@@ -290,4 +293,3 @@ int LL_ATON_LIB_ConvInteger(const LL_LIB_TensorInfo_TypeDef *inputs, unsigned in
 
   return LL_ATON_INVALID_PARAM;
 }
-

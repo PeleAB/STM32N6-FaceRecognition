@@ -92,4 +92,3 @@ void forward_resize_nearest_is8os8(ai_layer *pLayer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_PAD_GENERIC_H*/
-

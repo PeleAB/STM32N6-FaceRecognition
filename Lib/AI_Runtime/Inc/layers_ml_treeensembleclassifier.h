@@ -106,4 +106,3 @@ ai_i32 decodeEstimator_LEQ_16Bits(const ai_float *pDataIn,
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_TREE_ENSEMBLE_CLASSIFIER_H*/
-

@@ -164,7 +164,6 @@ void Setup_Mpu(void)
 
 void NPUCache_config(void)
 {
-  npu_cache_init();
   npu_cache_enable();
 }
 
@@ -396,22 +395,13 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef *hpcd)
   HAL_NVIC_EnableIRQ(USB1_OTG_HS_IRQn);
 }
 
-void HAL_CACHEAXI_MspInit(CACHEAXI_HandleTypeDef *hcacheaxi)
+/* npu_cache.c (v1.1.3+) now owns HAL_CACHEAXI_MspInit/MspDeInit and calls the
+ * weak hook npu_cache_enable_clocks_and_reset(). Provide that hook here. */
+void npu_cache_enable_clocks_and_reset(void)
 {
-  (void) hcacheaxi;
-
   __HAL_RCC_CACHEAXIRAM_MEM_CLK_ENABLE();
   __HAL_RCC_CACHEAXI_CLK_ENABLE();
   __HAL_RCC_CACHEAXI_FORCE_RESET();
   __HAL_RCC_CACHEAXI_RELEASE_RESET();
-}
-
-void HAL_CACHEAXI_MspDeInit(CACHEAXI_HandleTypeDef *hcacheaxi)
-{
-  (void) hcacheaxi;
-
-  __HAL_RCC_CACHEAXIRAM_MEM_CLK_DISABLE();
-  __HAL_RCC_CACHEAXI_CLK_DISABLE();
-  __HAL_RCC_CACHEAXI_FORCE_RESET();
 }
 

@@ -103,4 +103,3 @@ AI_API_DECLARE_END
 
 #endif    /*LAYERS_DENSE_H*/
 
-

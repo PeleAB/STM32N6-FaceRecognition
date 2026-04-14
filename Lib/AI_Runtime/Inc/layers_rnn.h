@@ -199,4 +199,3 @@ void forward_rnn(ai_layer * layer);
 AI_API_DECLARE_END
 
 #endif /* LAYERS_RNN_H */
-

@@ -51,4 +51,3 @@ typedef ai_u32 ai_array_size;
 AI_API_DECLARE_END
 
 #endif /* DATATYPES_NETWORK_H */
-

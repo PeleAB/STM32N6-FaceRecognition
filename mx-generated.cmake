@@ -46,7 +46,10 @@ set(APP_SOURCES
     ${PROJECT_ROOT}/Src/svc/stm32_lcd_ex.c
     ${PROJECT_ROOT}/Src/sysobj/src/sysobj_cache.c
     ${PROJECT_ROOT}/Src/sysobj/src/sysobj_dma2d.c
-    ${PROJECT_ROOT}/Model/network.c
+    ${PROJECT_ROOT}/Model/od.c
+    ${PROJECT_ROOT}/Model/reid.c
+    ${PROJECT_ROOT}/Model/stai_od.c
+    ${PROJECT_ROOT}/Model/stai_reid.c
     ${PROJECT_ROOT}/Gcc/Src/console.c
     ${PROJECT_ROOT}/Gcc/Src/freertos_libc.c
     ${PROJECT_ROOT}/Gcc/Src/fast_memcpy.c
@@ -106,6 +109,8 @@ list(APPEND APP_SOURCES
     ${LIB_ROOT}/AI_Runtime/Npu/ll_aton/ll_aton_util.c
     ${LIB_ROOT}/AI_Runtime/Npu/ll_aton/ll_sw_float.c
     ${LIB_ROOT}/AI_Runtime/Npu/ll_aton/ll_sw_integer.c
+    ${LIB_ROOT}/AI_Runtime/Npu/ll_aton/ll_aton_stai_internal.c
+    ${LIB_ROOT}/AI_Runtime/Npu/ll_aton/ll_aton_cipher.c
     ${LIB_ROOT}/AI_Runtime/Npu/ll_aton/ecloader.c
     ${LIB_ROOT}/AI_Runtime/Npu/Devices/STM32N6XX/npu_cache.c
     ${LIB_ROOT}/AI_Runtime/Npu/Devices/STM32N6XX/mcu_cache.c
@@ -215,6 +220,8 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${LIB_ROOT}/AI_Runtime/Inc
     ${LIB_ROOT}/AI_Runtime/Npu/ll_aton
     ${LIB_ROOT}/AI_Runtime/Npu/Devices/STM32N6XX
+    C:/ST/STEdgeAI/4.0/Middlewares/ST/AI/Inc
+    C:/ST/STEdgeAI/4.0/Middlewares/ST/AI/Npu/ll_aton
     ${LIB_ROOT}/Camera_Middleware
     ${LIB_ROOT}/Camera_Middleware/sensors
     ${LIB_ROOT}/Camera_Middleware/sensors/imx335
@@ -259,7 +266,7 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     USE_VD55G1_SENSOR
     TX_MAX_PARALLEL_NETWORKS=1
     FEAT_FREERTOS
-    APP_HAS_PARALLEL_NETWORKS=0
+    APP_HAS_PARALLEL_NETWORKS=1
     LL_ATON_PLATFORM=LL_ATON_PLAT_STM32N6
     LL_ATON_OSAL=LL_ATON_OSAL_FREERTOS
     LL_ATON_RT_MODE=LL_ATON_RT_ASYNC

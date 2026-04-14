@@ -59,4 +59,3 @@ void forward_upsample_bilinear(ai_layer *pLayer);
 AI_API_DECLARE_END
 
 #endif    /*LAYERS_UPSAMPLE_GENERIC_H*/
-
