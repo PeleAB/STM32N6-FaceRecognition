@@ -36,6 +36,7 @@ set(APP_SOURCES
     ${PROJECT_ROOT}/Src/sysobj/src/sysobj_encoder.c
     ${PROJECT_ROOT}/Src/bsp/fuse_programming.c
     ${PROJECT_ROOT}/Src/app/app_pipeline.c
+    ${PROJECT_ROOT}/Src/app/face_debug_image.c
     ${PROJECT_ROOT}/Src/bsp/platform.c
     ${PROJECT_ROOT}/Src/bsp/freertos_platform.c
     ${PROJECT_ROOT}/Src/svc/app_stats.c
@@ -46,10 +47,10 @@ set(APP_SOURCES
     ${PROJECT_ROOT}/Src/svc/stm32_lcd_ex.c
     ${PROJECT_ROOT}/Src/sysobj/src/sysobj_cache.c
     ${PROJECT_ROOT}/Src/sysobj/src/sysobj_dma2d.c
-    ${PROJECT_ROOT}/Model/od.c
-    ${PROJECT_ROOT}/Model/reid.c
-    ${PROJECT_ROOT}/Model/stai_od.c
-    ${PROJECT_ROOT}/Model/stai_reid.c
+    ${PROJECT_ROOT}/Model/fd.c
+    ${PROJECT_ROOT}/Model/faceid.c
+    ${PROJECT_ROOT}/Model/stai_fd.c
+    ${PROJECT_ROOT}/Model/stai_faceid.c
     ${PROJECT_ROOT}/Src/svc/app_trackobject.c
     ${PROJECT_ROOT}/Lib/stm32-mw-ipl/Src/stm32ipl.c
     ${PROJECT_ROOT}/Lib/stm32-mw-ipl/Src/stm32ipl_resize.c

@@ -128,6 +128,7 @@ function App() {
             deviceId: { exact: selectedDeviceId },
             width: { ideal: 1280 },
             height: { ideal: 720 },
+            frameRate: { ideal: 10, max: 10 },
           },
           audio: false
         });

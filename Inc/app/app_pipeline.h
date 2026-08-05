@@ -19,8 +19,11 @@
 #ifndef APP_PIPELINE_H
 #define APP_PIPELINE_H
 
+#include <stdint.h>
+
 void app_pipeline_init(void);
 void app_pipeline_start(void);
+void app_pipeline_set_face_input_mode(uint32_t mode);
 
 #endif
 

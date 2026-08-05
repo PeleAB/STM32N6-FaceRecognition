@@ -43,6 +43,7 @@ include("mx-generated.cmake")
 # symbol errors. This block survives CubeMX regeneration automatically.
 # ---------------------------------------------------------------------------
 set_source_files_properties(
+    ${PROJECT_ROOT}/Lib/ai-postprocessing-wrapper/app_postprocess_template.c
     ${PROJECT_ROOT}/Src/sysobj/src/sysobj_cache.c
     ${PROJECT_ROOT}/Src/sysobj/src/sysobj_dma2d.c
     ${PROJECT_ROOT}/Src/sysobj/src/sysobj_encoder.c

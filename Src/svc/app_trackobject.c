@@ -58,7 +58,7 @@ static TrackObject_s *to_find_free()
   return NULL;
 }
 
-static void to_init(od_pp_outBuffer_t *dbox, uint8_t *features)
+static void to_init(od_pp_outBuffer_t *dbox, float *features)
 {
   static int tracking_id = 0;
   TrackObject_s *o = to_find_free();
@@ -76,11 +76,11 @@ static void to_init(od_pp_outBuffer_t *dbox, uint8_t *features)
   o->id = ++tracking_id;
   o->is_dbox_valid = 1;
   o->dbox = *dbox;
-  memcpy(o->features, features, NN_REID_NB_FEATURES);
+  memcpy(o->features, features, NN_REID_NB_FEATURES * sizeof(float));
   o->last_update = HAL_GetTick();
 }
 
-static void to_update(TrackObject_s *o, od_pp_outBuffer_t *dbox, uint8_t *features)
+static void to_update(TrackObject_s *o, od_pp_outBuffer_t *dbox, float *features)
 {
   /* If not tracking, nothing to do */
   if (!to_is_tracking(o))
@@ -92,12 +92,16 @@ static void to_update(TrackObject_s *o, od_pp_outBuffer_t *dbox, uint8_t *featur
   {
     o->is_dbox_valid = 1;
     o->dbox = *dbox;
-    memcpy(o->features, features, NN_REID_NB_FEATURES);
+    memcpy(o->features, features, NN_REID_NB_FEATURES * sizeof(float));
     o->last_update = HAL_GetTick();
   }
   else
   {
-    o->is_dbox_valid = 0;
+    /* CenterFace can miss an isolated frame around the confidence threshold.
+     * Keep the last observed box briefly so the HUD does not blink at the NN
+     * cadence. The track itself still expires on APP_LOST_TIME_IN_MS. */
+    if ((HAL_GetTick() - o->last_update) >= APP_BOX_HOLD_TIME_IN_MS)
+      o->is_dbox_valid = 0;
   }
 
   if (to_too_old(o))
@@ -106,7 +110,7 @@ static void to_update(TrackObject_s *o, od_pp_outBuffer_t *dbox, uint8_t *featur
   }
 }
 
-static float compute_score(TrackObject_s *o, uint8_t features[NN_REID_NB_FEATURES])
+static float compute_score(TrackObject_s *o, float features[NN_REID_NB_FEATURES])
 {
   float sum_ab = 0;
   float sum_aa = 0;
@@ -120,10 +124,12 @@ static float compute_score(TrackObject_s *o, uint8_t features[NN_REID_NB_FEATURE
     sum_bb += features[i] * features[i];
   }
 
-  return 1 - sum_ab / sqrtf(sum_aa * sum_bb);
+  float norm = sqrtf(sum_aa * sum_bb);
+  return (norm > 1.0e-12f) ? 1.0f - sum_ab / norm
+                            : APP_SCORE_THRESHOLD_TRUST_FLOAT;
 }
 
-static void compute_score_matrix(od_pp_out_t *pp_out, uint8_t reid_features[APP_MAX_OBJECT_DETECT][NN_REID_NB_FEATURES])
+static void compute_score_matrix(od_pp_out_t *pp_out, float reid_features[APP_MAX_OBJECT_DETECT][NN_REID_NB_FEATURES])
 {
   TrackObject_s *o;
   int r, c;
@@ -188,7 +194,7 @@ static float assign_dbox_to_obj(int *r, int *c)
   return min_score;
 }
 
-static void assign_or_create(od_pp_out_t *pp_out, uint8_t reid_features[APP_MAX_OBJECT_DETECT][NN_REID_NB_FEATURES])
+static void assign_or_create(od_pp_out_t *pp_out, float reid_features[APP_MAX_OBJECT_DETECT][NN_REID_NB_FEATURES])
 {
   /* Global since it depends of user input that may explode stack */
   static int is_obj_match[APP_MAX_OBJECT_TRACKING];
@@ -238,7 +244,7 @@ static void assign_or_create(od_pp_out_t *pp_out, uint8_t reid_features[APP_MAX_
 }
 
 /* Public API */
-void TrackObject_UpdateAll(od_pp_out_t *pp_out, uint8_t reid_features[APP_MAX_OBJECT_DETECT][NN_REID_NB_FEATURES])
+void TrackObject_UpdateAll(od_pp_out_t *pp_out, float reid_features[APP_MAX_OBJECT_DETECT][NN_REID_NB_FEATURES])
 {
   compute_score_matrix(pp_out, reid_features);
   assign_or_create(pp_out, reid_features);

@@ -30,10 +30,21 @@ const streamServer = http.createServer((req, res) => {
 
         const localFfmpeg = spawn('ffmpeg', [
             '-hide_banner',
+            '-loglevel', 'warning',
+            '-flags', 'low_delay',
+            '-probesize', '1M',
+            '-analyzeduration', '500000',
+            '-rtbufsize', '512K',
             '-f', 'dshow',
             '-i', `video=${cameraName}`,
+            '-an',
+            '-c:v', 'mjpeg',
+            '-pix_fmt', 'yuv420p',
+            '-color_range', 'pc',
+            '-threads', '1',
             '-f', 'mpjpeg',
             '-q:v', '5',
+            '-flush_packets', '1',
             '-'
         ]);
 

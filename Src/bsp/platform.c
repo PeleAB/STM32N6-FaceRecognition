@@ -81,6 +81,10 @@ void BSP_PlatformInit(void)
   BSP_XSPI_RAM_Init(0);
   BSP_XSPI_RAM_EnableMemoryMappedMode(0);
 
+  /* Exit MMP mode if left active by a previous run (soft reset doesn't
+   * de-assert the MMP enable bit, so HAL_XSPI_Command would time-out). */
+  BSP_XSPI_NOR_DisableMemoryMappedMode(0);
+
   NOR_Init.InterfaceMode = BSP_XSPI_NOR_OPI_MODE;
   NOR_Init.TransferRate = BSP_XSPI_NOR_DTR_TRANSFER;
   BSP_XSPI_NOR_Init(0, &NOR_Init);

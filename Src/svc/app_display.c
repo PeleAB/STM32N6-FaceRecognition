@@ -31,6 +31,7 @@
 #include "svc/app_stats.h"
 #include "svc/app_trackobject.h"
 #include "svc/draw.h"
+#include "svc/face_detect.h"
 #include "svc/figs.h"
 #include "sysobj_encoder.h"
 #include "task.h"
@@ -39,7 +40,9 @@
 #define DBG_INFO_FONT font_12
 #define CONF_LEVEL_FONT font_16
 #define INF_INFO_FONT font_16
-#define OBJ_RECT_COLOR 0xffffffff
+#define OBJ_RECT_COLOR   0xffffffff
+#define LANDMARK_COLOR   0xff00ff00  /* green landmark dots */
+#define LANDMARK_DOT_SZ  5
 #define VENC_MAX_WIDTH 1280
 #define VENC_MAX_HEIGHT 720
 #define VENC_OUT_BUFFER_SIZE (255 * 1024)
@@ -65,7 +68,6 @@ static volatile int buffer_flying;
 static int force_intra;
 
 static uint8_t venc_out_buffer[VENC_OUT_BUFFER_SIZE] ALIGN_32 UNCACHED;
-static uint8_t uvc_in_buffers[VENC_OUT_BUFFER_SIZE] ALIGN_32;
 
 static int clamp_point(int *x, int *y) {
   int xi = *x;
@@ -125,14 +127,31 @@ static void draw_track_box(uint8_t *p_buffer, TrackObject_s *track) {
                     box_disp.x, box_disp.y, "ID:%d", track->id);
 }
 
+static void draw_face_landmarks(uint8_t *p_buffer,
+                                const float lm[FACE_NB_LANDMARKS * 2])
+{
+  for (int k = 0; k < FACE_NB_LANDMARKS; k++) {
+    int px, py;
+    convert_point(lm[2 * k], lm[2 * k + 1], &px, &py);
+    int x0 = px - LANDMARK_DOT_SZ / 2;
+    int y0 = py - LANDMARK_DOT_SZ / 2;
+    clamp_point(&x0, &y0);
+    DRAW_FillArgbHw(p_buffer, VENC_WIDTH, VENC_HEIGHT,
+                    x0, y0, LANDMARK_DOT_SZ, LANDMARK_DOT_SZ,
+                    LANDMARK_COLOR);
+  }
+}
+
 static void time_stat_display(time_stat_t *p_stat, uint8_t *p_buffer,
                               char *label, int line_nb, int indent) {
   int offset = VENC_WIDTH - 41 * DBG_INFO_FONT.width;
+  int mean_i = (int)p_stat->mean;
+  int mean_f = (int)((p_stat->mean - (float)mean_i) * 10.0f);
 
   DRAW_PrintfArgbHw(&DBG_INFO_FONT, p_buffer, VENC_WIDTH, VENC_HEIGHT, offset,
                     line_nb * DBG_INFO_FONT.height,
-                    "%*s%s : %3d ms / %5.1f ms ", indent + 1, "", label,
-                    p_stat->last, p_stat->mean);
+                    "%*s%s : %3d ms / %4d.%1d ms ", indent + 1, "", label,
+                    p_stat->last, mean_i, mean_f);
 }
 
 static int build_display_nn_dbg(uint8_t *p_buffer, stat_info_t *si,
@@ -176,8 +195,8 @@ static int build_display_inference_info(uint8_t *p_buffer, uint32_t inf_time,
   const int offset_x = 16;
 
   DRAW_PrintfArgbHw(&INF_INFO_FONT, p_buffer, VENC_WIDTH, VENC_HEIGHT, offset_x,
-                    line_nb * INF_INFO_FONT.height, " Inference : %4.1f ms ",
-                    (double)inf_time);
+                    line_nb * INF_INFO_FONT.height, " Inference : %4lu ms ",
+                    (unsigned long)inf_time);
 
   return line_nb + 1;
 }
@@ -185,11 +204,14 @@ static int build_display_inference_info(uint8_t *p_buffer, uint32_t inf_time,
 static int build_display_cpu_load(uint8_t *p_buffer, int line_nb) {
   const int offset_x = 16;
   float cpu_load_one_second;
+  int cpu_int, cpu_frac;
 
   app_stats_cpuload_get(NULL, &cpu_load_one_second, NULL);
+  cpu_int  = (int)cpu_load_one_second;
+  cpu_frac = (int)((cpu_load_one_second - (float)cpu_int) * 10.0f);
   DRAW_PrintfArgbHw(&INF_INFO_FONT, p_buffer, VENC_WIDTH, VENC_HEIGHT, offset_x,
-                    line_nb * INF_INFO_FONT.height, " Cpu load  : %4.1f  %% ",
-                    cpu_load_one_second);
+                    line_nb * INF_INFO_FONT.height, " Cpu load  : %2d.%1d  %% ",
+                    cpu_int, cpu_frac);
   line_nb++;
 
   return line_nb;
@@ -205,7 +227,9 @@ static void build_display_stat_info(uint8_t *p_buffer, stat_info_t *si) {
   build_display_disp_dbg(p_buffer, si, line_nb);
 }
 
-static void build_display(uint8_t *p_buffer, od_pp_out_t *pp_out) {
+static void build_display(uint8_t *p_buffer, od_pp_out_t *pp_out,
+                          float landmarks[][FACE_NB_LANDMARKS * 2],
+                          int nb_faces) {
   const uint8_t *fig_array[] = {fig0, fig1, fig2, fig3, fig4,
                                 fig5, fig6, fig7, fig8, fig9};
   int line_nb = VENC_HEIGHT / INF_INFO_FONT.height - 4;
@@ -224,6 +248,11 @@ static void build_display(uint8_t *p_buffer, od_pp_out_t *pp_out) {
     }
   }
 
+  /* Draw landmark points for all detected faces this frame */
+  for (int i = 0; i < nb_faces; i++) {
+    draw_face_landmarks(p_buffer, landmarks[i]);
+  }
+
   line_nb = build_display_inference_info(
       p_buffer, si_copy.nn_inference_time.last, line_nb);
   line_nb = build_display_cpu_load(p_buffer, line_nb);
@@ -236,28 +265,15 @@ static void build_display(uint8_t *p_buffer, od_pp_out_t *pp_out) {
 }
 
 static size_t encode_display(int is_intra_force, uint8_t *p_buffer) {
-  size_t res;
-
-  res = ENC_EncodeFrame(p_buffer, venc_out_buffer, VENC_OUT_BUFFER_SIZE,
-                        is_intra_force);
-  if ((int)res > 0 && buffer_flying) {
-    force_intra = 1;
-    return (size_t)-1;
-  }
-
-  if ((int)res <= 0)
-    return res;
-
-  memcpy(&uvc_in_buffers, venc_out_buffer, res);
-
-  return res;
+  return ENC_EncodeFrame(p_buffer, venc_out_buffer, VENC_OUT_BUFFER_SIZE,
+                         is_intra_force);
 }
 
 static int send_display(int len) {
   int ret;
 
   buffer_flying = 1;
-  ret = UVCL_ShowFrame(uvc_in_buffers, len);
+  ret = UVCL_ShowFrame(venc_out_buffer, len);
   if (ret != 0)
     buffer_flying = 0;
 
@@ -320,7 +336,8 @@ int app_display_setup(const ENC_Conf_t *enc_conf,
   return ret;
 }
 
-int app_display_render(uint8_t *frame_buffer, od_pp_out_t *pp_out) {
+int app_display_render(uint8_t *frame_buffer, od_pp_out_t *pp_out,
+                       float landmarks[][FACE_NB_LANDMARKS * 2], int nb_faces) {
   static int uvc_is_active_prev = 0;
   stat_info_t *stats = app_stats_state();
   uint32_t ts;
@@ -331,8 +348,14 @@ int app_display_render(uint8_t *frame_buffer, od_pp_out_t *pp_out) {
     return 0;
   }
 
+  /* Do not touch a rotating camera buffer unless this invocation can encode
+   * it. Drawing frames that USB will drop creates avoidable DMA2D/DCMIPP
+   * ownership races and makes the HUD appear on alternating frames. */
+  if (buffer_flying)
+    return 0;
+
   ts = HAL_GetTick();
-  build_display(frame_buffer, pp_out);
+  build_display(frame_buffer, pp_out, landmarks, nb_faces);
 
   stats_detect_update(pp_out->nb_detect);
 

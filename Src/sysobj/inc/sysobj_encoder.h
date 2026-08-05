@@ -25,6 +25,7 @@ typedef struct {
   int width;
   int height;
   int fps;
+  int gop_frames;
 } ENC_Conf_t;
 
 void ENC_Init(ENC_Conf_t *p_conf);

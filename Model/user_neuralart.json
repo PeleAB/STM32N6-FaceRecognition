@@ -10,6 +10,16 @@
             "memory_pool": "./my_mpools/reid/stm32n6-app2.mpool",
             "memory_descs": ["./my_mdescs/stm32n6.mdesc"],
             "options": "--enable-epoch-controller -O3 --all-buffers-info --cache-maintenance --Oalt-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os"
+        },
+        "fd": {
+            "memory_pool": "./my_mpools/fd/stm32n6-app2.mpool",
+            "memory_descs": ["./my_mdescs/stm32n6.mdesc"],
+            "options": "--enable-epoch-controller -O3 --all-buffers-info --cache-maintenance --Oalt-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os"
+        },
+        "faceid": {
+            "memory_pool": "./my_mpools/faceid/stm32n6-app2.mpool",
+            "memory_descs": ["./my_mdescs/stm32n6.mdesc"],
+            "options": "--enable-epoch-controller -O3 --all-buffers-info --cache-maintenance --Oalt-sched --native-float --enable-virtual-mem-pools --Omax-ca-pipe 4 --Ocache-opt --Os"
         }
     }
 }

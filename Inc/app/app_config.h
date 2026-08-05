@@ -40,8 +40,12 @@ typedef enum {
   PARAM_CONF_THRESHOLD = 0, /*!< uint32, default=50,  range [0,  100] – detection confidence % */
   PARAM_BRIGHTNESS     = 1, /*!< uint32, default=80,  range [0,  100] – display brightness %   */
   PARAM_TARGET_FPS     = 2, /*!< uint32, default=30,  range [1,   60] – target frame rate       */
-  PARAM_ID_COUNT       = 3,
+  PARAM_FACE_INPUT_MODE = 3, /*!< uint32: 0=camera, 1=embedded known-face fixture */
+  PARAM_ID_COUNT        = 4,
 } app_param_id_t;
+
+#define FACE_INPUT_CAMERA 0U
+#define FACE_INPUT_STATIC 1U
 
 #ifndef USE_DCACHE
 #define USE_DCACHE
@@ -70,26 +74,29 @@ typedef enum {
 #define VENC_VD55G1_WIDTH 640
 #define VENC_VD55G1_HEIGHT 480
 
-#define CAMERA_FPS 30
+#define UVC_STREAM_FPS 10
+#define CAMERA_FPS UVC_STREAM_FPS
+#define VENC_GOP_FRAMES 5
 
 #define CAPTURE_FORMAT DCMIPP_PIXEL_PACKER_FORMAT_ARGB8888
 #define CAPTURE_BPP 4
 
-/* Model Related Info */
-#define NN_WIDTH 224
-#define NN_HEIGHT 224
+/* Model Related Info — CenterFace input: 128x128 RGB */
+#define NN_WIDTH 128
+#define NN_HEIGHT 128
 #define NN_FORMAT DCMIPP_PIXEL_PACKER_FORMAT_RGB888_YUV444_1
 #define NN_BPP 3
 
 /* Delay display by CAPTURE_DELAY frame number */
 #define CAPTURE_DELAY 1
 
-/* ReID tracking configuration */
+/* Face tracking configuration */
 #define APP_MAX_OBJECT_DETECT             20
 #define APP_MAX_OBJECT_TRACKING           10
 #define APP_SCORE_THRESHOLD               0.5
 #define APP_LOST_TIME_IN_MS               60000
-#define APP_START_TRACKING_CONF_THRESHOLD 0.9
+#define APP_BOX_HOLD_TIME_IN_MS            500
+#define APP_START_TRACKING_CONF_THRESHOLD 0.5
 
 #endif
 

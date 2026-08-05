@@ -96,3 +96,24 @@ extern UART_HandleTypeDef huart1;
 void USART1_IRQHandler(void) { HAL_UART_IRQHandler(&huart1); }
 
 void USB1_OTG_HS_IRQHandler(void) { UVCL_IRQHandler(); }
+
+/* XSPI2 (NOR flash) and XSPI3 (unused) both fire spurious interrupts during
+ * UVC reconnect due to USB DMA / XSPIM arbitration glitches on STM32N6.
+ * NOR flash runs in memory-mapped mode during normal operation — no active
+ * DMA or interrupt-driven transfers are in flight at reconnect time.
+ * Clear all flags and return so execution is not trapped in the default
+ * BKPT handler. */
+void XSPI1_IRQHandler(void)
+{
+  WRITE_REG(XSPI1->FCR, 0xFFFFFFFFU);
+}
+
+void XSPI2_IRQHandler(void)
+{
+  WRITE_REG(XSPI2->FCR, 0xFFFFFFFFU);
+}
+
+void XSPI3_IRQHandler(void)
+{
+  WRITE_REG(XSPI3->FCR, 0xFFFFFFFFU);
+}

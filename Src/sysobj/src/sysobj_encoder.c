@@ -30,6 +30,7 @@
 
 #define VENC_ALLOCATOR_SIZE (4 * 1024 * 1024)
 #define RATE_CTRL_QP 25
+#define VENC_STREAM_HEADER_MAX_SIZE 512
 
 enum {
   VENC_RATE_CTRL_QP_CONSTANT,
@@ -43,6 +44,8 @@ static struct VENC_Context {
   int is_sps_pps_done;
   uint64_t pic_cnt;
   int gop_len;
+  uint8_t stream_header[VENC_STREAM_HEADER_MAX_SIZE];
+  size_t stream_header_len;
 } VENC_Instance;
 
 static void VENC_SetupConstantQp(H264EncRateCtrl *rate, int qp)
@@ -174,7 +177,17 @@ static int VENC_Encode(uint8_t *p_in, uint8_t *p_out, size_t out_len, size_t *p_
     ret = VENC_EncodeStart(p_ctx, p_out, out_len, &start_len);
     if (ret)
       return ret;
+    assert(start_len <= sizeof(p_ctx->stream_header));
+    memcpy(p_ctx->stream_header, p_out, start_len);
+    p_ctx->stream_header_len = start_len;
     p_ctx->is_sps_pps_done = 1;
+  } else if (is_intra_force) {
+    /* Prefix every recovery IDR with SPS/PPS so a newly connected UVC host
+     * can initialize its decoder without parameters cached by an old stream. */
+    if (p_ctx->stream_header_len > out_len)
+      return -1;
+    memcpy(p_out, p_ctx->stream_header, p_ctx->stream_header_len);
+    start_len = p_ctx->stream_header_len;
   }
 
   ret = VENC_EncodeFrame(p_ctx, p_in, &p_out[start_len], out_len - start_len, &frame_len, is_intra_force);
@@ -201,7 +214,11 @@ void ENC_Init(ENC_Conf_t *p_conf)
   LL_VENC_Init();
 
   memset(&config, 0, sizeof(config));
-  p_ctx->gop_len = p_conf->fps - 1;
+  /* Keep decoder recovery bounded by encoded frames, not by the nominal FPS.
+   * This is especially important when inference temporarily lowers the
+   * number of frames delivered to UVC. */
+  int gop_frames = p_conf->gop_frames > 0 ? p_conf->gop_frames : p_conf->fps;
+  p_ctx->gop_len = gop_frames - 1;
   /* init encoder */
   config.streamType = H264ENC_BYTE_STREAM;
   config.viewMode = H264ENC_BASE_VIEW_SINGLE_BUFFER;
@@ -237,7 +254,7 @@ void ENC_Init(ENC_Conf_t *p_conf)
     VENC_SetupConstantQp(&rate, RATE_CTRL_QP);
   } else if (rate_ctrl_mode == VENC_RATE_CTRL_VBR)
   {
-    VENC_SetupVbr(&rate, target_bitrate, p_conf->fps, RATE_CTRL_QP);
+    VENC_SetupVbr(&rate, target_bitrate, gop_frames, RATE_CTRL_QP);
   } else
   {
     assert(0);

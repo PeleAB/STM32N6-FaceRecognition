@@ -219,7 +219,7 @@ void DRAW_RectArgbHw(uint8_t *p_dst, int dst_width, int dst_height, int x_pos, i
 void DRAW_FillArgbHw(uint8_t *p_dst, int dst_width, int dst_height, int x_pos, int y_pos, int width, int height,
                      uint32_t color)
 {
-  draw_fill_argb_hw(p_dst, dst_width, dst_height, x_pos, y_pos, width, height, color);
+  draw_fill_argb_hw(p_dst, dst_width, dst_height, width, height, x_pos, y_pos, color);
 }
 
 void DRAW_PrintfArgbHw(DRAW_Font_t *p_font, uint8_t *p_dst, int dst_width, int dst_height, int x_pos, int y_pos,
@@ -244,22 +244,23 @@ void DRAW_CopyArgbHW(uint8_t *p_dst, int dst_width, int dst_height, uint8_t *p_s
 
 WEAK void DRAW_HwLock(void *dma2d_handle)
 {
-  assert_param(0);
+  (void)dma2d_handle;
+  assert(0);
 }
 
 WEAK void DRAW_HwUnlock()
 {
-  assert_param(0);
+  assert(0);
 }
 
 WEAK void DRAW_Wfe()
 {
-  assert_param(0);
+  assert(0);
 }
 
 WEAK void DRAW_Signal()
 {
-  assert_param(0);
+  assert(0);
 }
 
 

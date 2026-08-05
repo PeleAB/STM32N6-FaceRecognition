@@ -1,4 +1,4 @@
-:: Model Generation Script for STM32N6 Dual Model Pipeline
+:: Model Generation Script for STM32N6 Face Detection Pipeline
 @echo off
 setlocal enabledelayedexpansion
 
@@ -15,45 +15,44 @@ if not exist %STEDGEAI_EXE% (
     exit /b 1
 )
 
-echo --- Generating Model 1: Object Detection (od) ---
-%STEDGEAI_EXE% generate --name od ^
+echo --- Generating Model 1: Face Detection (fd) - CenterFace ---
+%STEDGEAI_EXE% generate --name fd ^
   --no-inputs-allocation ^
-  --model quantized_tiny_yolo_v2_224_.tflite ^
+  --model centerface.tflite ^
   --target stm32n6 ^
-  --st-neural-art od@user_neuralart.json ^
-  --input-data-type uint8 --output-data-type int8
+  --st-neural-art fd@user_neuralart.json ^
+  --input-data-type uint8 --output-data-type float32
 
 if %errorlevel% neq 0 (popd & exit /b %errorlevel%)
 
-copy st_ai_output\od_ecblobs.h .
-copy st_ai_output\od.c .
-copy st_ai_output\stai_od.c .
-copy st_ai_output\stai_od.h .
-copy st_ai_output\od_atonbuf.xSPI2.raw od_data.xSPI2.bin
+copy st_ai_output\fd_ecblobs.h .
+copy st_ai_output\fd.c .
+copy st_ai_output\stai_fd.c .
+copy st_ai_output\stai_fd.h .
+copy st_ai_output\fd_atonbuf.xSPI2.raw fd_data.xSPI2.bin
 
-:: Convert to HEX for flashing (assuming arm-none-eabi-objcopy is in PATH)
-arm-none-eabi-objcopy -I binary od_data.xSPI2.bin --change-addresses 0x70380000 -O ihex od_data.hex
+arm-none-eabi-objcopy -I binary fd_data.xSPI2.bin --change-addresses 0x70380000 -O ihex fd_data.hex
 
-echo --- Generating Model 2: Re-Identification (reid) ---
-%STEDGEAI_EXE% generate --name reid ^
+echo --- Generating Model 2: Face ID Embedding (faceid) - MobileFaceNet ---
+%STEDGEAI_EXE% generate --name faceid ^
   --no-outputs-allocation ^
-  --model mobilenetv2_a100_256_128_fft_int8.tflite ^
+  --model mobilefacenet_int8_faces.onnx ^
   --target stm32n6 ^
-  --st-neural-art reid@user_neuralart.json ^
-  --input-data-type uint8 --output-data-type uint8
+  --st-neural-art faceid@user_neuralart.json ^
+  --input-data-type uint8 --output-data-type float32
 
 if %errorlevel% neq 0 (popd & exit /b %errorlevel%)
 
-copy st_ai_output\reid_ecblobs.h .
-copy st_ai_output\reid.c .
-copy st_ai_output\stai_reid.c .
-copy st_ai_output\stai_reid.h .
-copy st_ai_output\reid_atonbuf.xSPI2.raw reid_data.xSPI2.bin
+copy st_ai_output\faceid_ecblobs.h .
+copy st_ai_output\faceid.c .
+copy st_ai_output\stai_faceid.c .
+copy st_ai_output\stai_faceid.h .
+copy st_ai_output\faceid_atonbuf.xSPI2.raw faceid_data.xSPI2.bin
 
-arm-none-eabi-objcopy -I binary reid_data.xSPI2.bin --change-addresses 0x72000000 -O ihex reid_data.hex
+arm-none-eabi-objcopy -I binary faceid_data.xSPI2.bin --change-addresses 0x72000000 -O ihex faceid_data.hex
 
 echo.
-echo Model generation complete. 
-echo Please flash od_data.hex and reid_data.hex to your board.
+echo Model generation complete.
+echo Please flash fd_data.hex and faceid_data.hex to your board.
 
 popd

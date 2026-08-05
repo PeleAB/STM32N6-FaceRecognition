@@ -22,16 +22,16 @@
 
 #include "app_config.h"
 #include "od_pp_output_if.h"
-#include "stai_reid.h"
+#include "stai_faceid.h"
 
-#define NN_REID_NB_FEATURES                  (STAI_REID_OUT_1_SIZE)
+#define NN_REID_NB_FEATURES                  (STAI_FACEID_OUT_1_SIZE)
 
 typedef struct
 {
   int id;
   int is_dbox_valid;
   od_pp_outBuffer_t dbox;
-  uint8_t features[NN_REID_NB_FEATURES];
+  float features[NN_REID_NB_FEATURES];
   uint32_t last_update;
 } TrackObject_s;
 
@@ -40,7 +40,7 @@ typedef struct
   int idx;
 } TO_DisplayIterator_s;
 
-void TrackObject_UpdateAll(od_pp_out_t *pp_out, uint8_t reid_features[APP_MAX_OBJECT_DETECT][NN_REID_NB_FEATURES]);
+void TrackObject_UpdateAll(od_pp_out_t *pp_out, float reid_features[APP_MAX_OBJECT_DETECT][NN_REID_NB_FEATURES]);
 void TrackObject_DisplayIterator_Init(TO_DisplayIterator_s *it);
 TrackObject_s * TrackObject_DisplayIterator_GetNext(TO_DisplayIterator_s *it);
 
