@@ -51,8 +51,8 @@ This top readme gives an overview of the app. Additional documentation is availa
 
 ## Enrollment Gallery
 
-Build and launch the viewer from `electron-uvc-viewer`, connect it to the
-ST-LINK virtual COM port, enter a name, and choose one of the enrollment paths:
+Launch the React viewer, connect it to the ST-LINK virtual COM port, enter a
+name, and choose one of the enrollment paths:
 
 - **Use Camera**: keep exactly one face in view while the board collects 5-8
   samples, then select **Commit**.
@@ -68,6 +68,46 @@ The PC photo workflow requires Python with `numpy`, `opencv-python`, and
 
 ---
 
+## React/Electron Viewer
+
+The desktop application in `electron-uvc-viewer` is the supported host UI. It
+combines the live UVC stream with:
+
+- serial connection and message log
+- inference time, CPU load, and detection telemetry
+- persistent firmware parameters
+- camera and PC-photo enrollment
+- gallery list, delete, and clear controls
+
+### Requirements
+
+- Node.js 20 or newer
+- FFmpeg available on `PATH` for the Windows low-latency fallback
+- Python with `numpy`, `opencv-python`, and `onnxruntime` for **Use Photos**
+
+### Run in development mode
+
+```bash
+cd electron-uvc-viewer
+npm install
+npm run dev
+```
+
+### Build the application
+
+```bash
+cd electron-uvc-viewer
+npm install
+npm run build
+```
+
+Connect both board USB cables before opening the viewer. Select `STM32 uvc` as
+the camera, select the ST-LINK virtual COM port at 115200 baud, and click
+**Connect**. Video can operate without serial, but telemetry, configuration,
+and enrollment require the COM connection.
+
+---
+
 ## Hardware Support
 
 Supported development platforms:
@@ -76,9 +116,6 @@ Supported development platforms:
   - Connect to the onboard ST-LINK debug adapter (CN6) using a __USB-C to USB-C cable__ for sufficient power.
   - An additional USB cable to connect USB1 (CN18) to the host computer for UVC streaming.
   - OTP fuses are configured for xSPI IOs to achieve maximum speed (200MHz) on xSPI interfaces.
-
-![Board](_htmresc/STM32N6570-DK.png)
-STM32N6570-DK board with MB1854B IMX335.
 
 Supported camera modules:
 
@@ -101,14 +138,10 @@ Supported camera modules:
 
 The STM32N6 series does not have internal flash memory. To retain firmware after a reboot, program it into the external flash. Alternatively, you can load firmware directly into SRAM (development mode), but note that the program will be lost if the board is powered off in this mode.
 
-Development Mode: used for loading firmware into RAM during a debug session or for programming firmware into external flash.
-
-Boot from Flash: used to boot firmware from external flash.
-
-|                  | STM32N6570-DK                                                                |
-| -------------    | -------------                                                                |
-| Boot from flash  | ![STM32N6570-DK Boot from flash](_htmresc/STM32N6570-DK_Boot_from_flash.png) |
-| Development mode | ![STM32N6570-DK Development mode](_htmresc/STM32N6570-DK_Dev_mode.png)       |
+**Development mode** is used for loading firmware into RAM during a debug
+session or programming external flash. **Boot from flash** starts the signed
+application stored in external flash. See [Boot Overview](Doc/Boot-Overview.md)
+for the board switch configuration and programming flow.
 
 ---
 
@@ -133,7 +166,7 @@ Three binaries must be programmed in the board's external flash using the follow
 4. Program `Binary/x-cube-n6-ai-h264-usb-uvc.hex` (firmware application).
 5. Set the board to [boot from flash mode](#boot-modes).
 6. Power cycle the board.
-7. [Launch host camera application](#launch-host-camera-application)
+7. [Launch the React/Electron viewer](#reactelectron-viewer).
 
 ---
 
@@ -159,23 +192,6 @@ STM32_Programmer_CLI -c port=SWD mode=HOTPLUG -el $DKEL -hardRst -w Binary/netwo
 # Application Firmware
 STM32_Programmer_CLI -c port=SWD mode=HOTPLUG -el $DKEL -hardRst -w Binary/x-cube-n6-ai-h264-usb-uvc.hex
 ```
-
----
-
-### Launch Host Camera Application
-
-Observe the streaming of the camera and the output of the computer vision network on a camera application:
-
-![Screenshot of application running](_htmresc/STM32N6_AI_H264_UVC_capture.jpg)
-
-- **Linux users:**
-  Use a webcam application that is able to decode H264 (e.g., guvcview, VLC).
-
-- **Windows users:**
-  Install [ffmpeg](https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z) and then run the following command:
-  ```bash
-  ffplay.exe -f dshow -i video="STM32 uvc"
-  ```
 
 ---
 
@@ -232,9 +248,9 @@ $ arm-none-eabi-gdb build/Project.elf
 (gdb) continue
 ```
 
-#### Launch Host Camera Application
+#### Launch the React/Electron Viewer
 
-See [instructions above](#launch-host-camera-application)
+See [React/Electron Viewer](#reactelectron-viewer).
 
 ### Application Build and Run - Boot from Flash
 
