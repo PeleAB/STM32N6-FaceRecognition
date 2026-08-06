@@ -5,6 +5,16 @@ import {
   createRequestTelemetryMsg,
   createParamReadMsg,
   createParamWriteMsg,
+  createEnrollMsg,
+  createCommitEnrollMsg,
+  createClearGalleryMsg,
+  createGalleryListMsg,
+  createGalleryStatusMsg,
+  createGalleryDeleteMsg,
+  createGalleryImportMsg,
+  parseGalleryStatus,
+  parseGalleryList,
+  type GalleryEntry,
   parseParamReadResponse,
   parseParamWriteResponse,
   generatePacket,
@@ -64,6 +74,11 @@ function App() {
   const logEndRef = useRef<HTMLDivElement>(null);
   const rxBufferRef = useRef<number[]>([]);
   const [telemetry, setTelemetry] = useState({ cpuLoad: 0, inferenceTime: 0, nbDetect: 0 });
+  const [gallery, setGallery] = useState<GalleryEntry[]>([]);
+  const [enrollName, setEnrollName] = useState('');
+  const [galleryStatus, setGalleryStatus] = useState({ result: 0, active: false,
+    samples: 0, required: 8, count: 0, name: '' });
+  const [galleryMessage, setGalleryMessage] = useState('');
 
   // Config param state — keyed by param ID
   const [params, setParams] = useState<Record<ParamId, ParamState>>(
@@ -192,6 +207,54 @@ function App() {
     await window.electronAPI.serial.send(packet);
   };
 
+  const sendMessage = async (msg: ReturnType<typeof createGalleryStatusMsg>) => {
+    if (!isConnected) return;
+    await window.electronAPI.serial.send(generatePacket(msg));
+  };
+  const refreshGallery = async () => {
+    await sendMessage(createGalleryListMsg());
+    await sendMessage(createGalleryStatusMsg());
+  };
+  const startEnrollment = async () => {
+    const name = enrollName.trim();
+    if (!name) { setGalleryMessage('Enter a name first.'); return; }
+    setGalleryMessage('Look at the camera alone while samples are collected.');
+    await sendMessage(createEnrollMsg(name));
+  };
+  const commitEnrollment = async () => sendMessage(createCommitEnrollMsg());
+  const clearGallery = async () => {
+    if (window.confirm('Delete every enrolled identity?'))
+      await sendMessage(createClearGalleryMsg());
+  };
+  const deleteGalleryEntry = async (slot: number) =>
+    sendMessage(createGalleryDeleteMsg(slot));
+  const importFromPhotos = async () => {
+    const name = enrollName.trim();
+    if (!name) { setGalleryMessage('Enter a name first.'); return; }
+    if (!isConnected) { setGalleryMessage('Connect to the board first.'); return; }
+    setGalleryMessage('Analyzing photos with CenterFace + MobileFaceNet…');
+    const result = await window.electronAPI.gallery.createFromPhotos();
+    if (!result.success) {
+      if (!result.canceled) setGalleryMessage(result.error || 'Photo enrollment failed.');
+      return;
+    }
+    await sendMessage(createGalleryImportMsg(name, new Int8Array(result.embeddingQ7!)));
+    setGalleryMessage(`Uploading template averaged from ${result.photos?.length || 0} photo(s)…`);
+  };
+
+  useEffect(() => {
+    if (!isConnected) return;
+    refreshGallery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected]);
+
+  useEffect(() => {
+    if (!isConnected || !galleryStatus.active) return;
+    const timer = setInterval(() => sendMessage(createGalleryStatusMsg()), 700);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected, galleryStatus.active]);
+
   const readParam = async (paramId: ParamId) => {
     if (!isConnected) return;
     setParams(prev => ({ ...prev, [paramId]: { ...prev[paramId], status: 'loading' } }));
@@ -281,6 +344,30 @@ function App() {
                   },
                 }));
               }
+            } else if (parsed.msg.msg_subtype === SysobjUartConfigSubtype.GALLERY_LIST && parsed.msg.data) {
+              const response = parseGalleryList(parsed.msg.data);
+              if (response?.result === 0) setGallery(response.entries);
+            } else if ([SysobjUartConfigSubtype.ENROLL,
+                        SysobjUartConfigSubtype.COMMIT_ENROLL,
+                        SysobjUartConfigSubtype.CLEAR_EMBEDDINGS,
+                        SysobjUartConfigSubtype.GALLERY_STATUS,
+                        SysobjUartConfigSubtype.GALLERY_IMPORT_Q7]
+                        .includes(parsed.msg.msg_subtype as any) && parsed.msg.data) {
+              const response = parseGalleryStatus(parsed.msg.data);
+              if (response) {
+                setGalleryStatus(response);
+                const errors = ['', 'Invalid name', 'Busy', 'Need at least 5 samples',
+                  'Gallery is full', 'Flash write failed', 'Invalid slot'];
+                if (response.result !== 0) setGalleryMessage(errors[response.result] || `Error ${response.result}`);
+                else if (parsed.msg.msg_subtype !== SysobjUartConfigSubtype.GALLERY_STATUS) {
+                  setGalleryMessage(parsed.msg.msg_subtype === SysobjUartConfigSubtype.ENROLL
+                    ? 'Collecting one sample per single-face inference…' : 'Gallery updated.');
+                  window.electronAPI.serial.send(generatePacket(createGalleryListMsg()));
+                }
+              }
+            } else if (parsed.msg.msg_subtype === SysobjUartConfigSubtype.GALLERY_DELETE && parsed.msg.data) {
+              if (parsed.msg.data[0] !== 0) setGalleryMessage('Could not delete gallery entry.');
+              window.electronAPI.serial.send(generatePacket(createGalleryListMsg()));
             }
           }
 
@@ -378,6 +465,36 @@ function App() {
               Refresh Telemetry
             </button>
           </div>
+        </div>
+
+        <div className="panel-section">
+          <div className="section-header">
+            <h2>Enrollment Gallery</h2>
+            <button className="btn-text" onClick={refreshGallery} disabled={!isConnected}>Refresh</button>
+          </div>
+          <div className="gallery-enroll">
+            <input className="select-input" value={enrollName} maxLength={15}
+              placeholder="Person name" onChange={e => setEnrollName(e.target.value)} />
+            <div className="gallery-actions">
+              <button className="btn btn-primary" onClick={startEnrollment} disabled={!isConnected}>Use Camera</button>
+              <button className="btn btn-secondary" onClick={importFromPhotos} disabled={!isConnected}>Use Photos…</button>
+            </div>
+            {galleryStatus.active && <div className="gallery-progress">
+              <div className="gallery-progress-bar"><span style={{ width: `${Math.min(100, galleryStatus.samples / galleryStatus.required * 100)}%` }} /></div>
+              <span>{galleryStatus.name}: {galleryStatus.samples}/{galleryStatus.required}</span>
+              <button className="btn btn-primary" onClick={commitEnrollment}
+                disabled={galleryStatus.samples < 5}>Commit</button>
+            </div>}
+            {galleryMessage && <div className="gallery-message">{galleryMessage}</div>}
+          </div>
+          <div className="gallery-list">
+            {gallery.length === 0 && <div className="gallery-empty">No enrolled identities</div>}
+            {gallery.map(entry => <div className="gallery-row" key={entry.slot}>
+              <span><b>{entry.name}</b><small>slot {entry.slot}</small></span>
+              <button className="btn-text danger" onClick={() => deleteGalleryEntry(entry.slot)} disabled={!isConnected}>Delete</button>
+            </div>)}
+          </div>
+          {gallery.length > 0 && <button className="btn-text danger" onClick={clearGallery} disabled={!isConnected}>Clear gallery</button>}
         </div>
 
         <div className="panel-section">

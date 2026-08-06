@@ -1,11 +1,19 @@
-# x-cube-n6-ai-h264-usb-uvc Application
+# STM32N6 Face Recognition
 
-Computer Vision application demonstrating the deployment of object detection models on the STM32N6570-DK board and stream results through USB using UVC/H264 format.
+Real-time face detection and recognition for the STM32N6570-DK. The firmware
+runs CenterFace and MobileFaceNet on the STM32N6 NPU, overlays identities on an
+H.264 UVC stream, and maintains a named enrollment gallery in external NOR
+flash.
 
-Following UVC resolution and framerate will be output according to connected camera :
-- 1280x720@30fps for IMX335
-- 1120x720@30fps for VD66GY
-- 640x480@30fps for VD55G1
+The included Electron viewer provides low-latency video, telemetry, persistent
+configuration, and gallery management over the ST-LINK virtual COM port.
+
+Current UVC output is synchronized at 10 fps to keep latency low and prevent
+HUD flicker:
+
+- 1280x720 for IMX335
+- 1120x720 for VD66GY
+- 640x480 for VD55G1
 
 This top readme gives an overview of the app. Additional documentation is available in the [Doc](./Doc/) folder.
 
@@ -21,6 +29,14 @@ This top readme gives an overview of the app. Additional documentation is availa
 
 ## Features Demonstrated in This Example
 
+- CenterFace face detection with five facial landmarks
+- MobileFaceNet 128-dimensional recognition embeddings
+- Similarity-transform face alignment
+- Persistent gallery with eight named identities
+- Camera enrollment using multiple live samples
+- Offline enrollment from existing PC photos
+- Identity and cosine-similarity HUD overlay
+- Low-latency H.264 UVC streaming at 10 fps
 - Multi-threaded application flow (FreeRTOS)
 - NPU accelerated quantized AI model inference
 - Dual DCMIPP pipes
@@ -30,6 +46,25 @@ This top readme gives an overview of the app. Additional documentation is availa
 - USB UVC (Azure RTOS USBX)
 - Dev mode
 - Boot from external flash
+
+---
+
+## Enrollment Gallery
+
+Build and launch the viewer from `electron-uvc-viewer`, connect it to the
+ST-LINK virtual COM port, enter a name, and choose one of the enrollment paths:
+
+- **Use Camera**: keep exactly one face in view while the board collects 5-8
+  samples, then select **Commit**.
+- **Use Photos**: select several clear photos. The PC runs the same CenterFace
+  alignment and MobileFaceNet model, averages the normalized embeddings, and
+  uploads the resulting template to the board.
+
+Gallery entries can be listed, replaced by enrolling the same name, deleted,
+or cleared from the viewer. Templates survive power cycles.
+
+The PC photo workflow requires Python with `numpy`, `opencv-python`, and
+`onnxruntime` available on `PATH`.
 
 ---
 

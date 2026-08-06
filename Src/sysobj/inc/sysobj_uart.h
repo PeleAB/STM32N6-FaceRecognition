@@ -49,6 +49,10 @@ typedef enum {
   SYSOBJ_UART_CONFIG_SUBTYPE_ENROLL             = 0x06,
   SYSOBJ_UART_CONFIG_SUBTYPE_COMMIT_ENROLL      = 0x07,
   SYSOBJ_UART_CONFIG_SUBTYPE_CLEAR_EMBEDDINGS   = 0x08,
+  SYSOBJ_UART_CONFIG_SUBTYPE_GALLERY_LIST       = 0x09,
+  SYSOBJ_UART_CONFIG_SUBTYPE_GALLERY_STATUS     = 0x0A,
+  SYSOBJ_UART_CONFIG_SUBTYPE_GALLERY_DELETE     = 0x0B,
+  SYSOBJ_UART_CONFIG_SUBTYPE_GALLERY_IMPORT_Q7  = 0x0C,
 } sysobj_uart_config_subtype_t;
 
 typedef enum {
@@ -233,7 +237,8 @@ void sysobj_uart_handle_config_model_select(uint8_t src_id, uint16_t model_id);
  *
  * @param src_id Source node ID of the requester.
  */
-void sysobj_uart_handle_config_enroll(uint8_t src_id);
+void sysobj_uart_handle_config_enroll(uint8_t src_id, const uint8_t *name,
+                                      uint8_t name_len);
 
 /**
  * @brief Handler for CONFIG -> COMMIT_ENROLL message.
@@ -255,6 +260,12 @@ void sysobj_uart_handle_config_commit_enroll(uint8_t src_id);
  * @param src_id Source node ID of the requester.
  */
 void sysobj_uart_handle_config_clear_embeddings(uint8_t src_id);
+void sysobj_uart_handle_config_gallery_list(uint8_t src_id);
+void sysobj_uart_handle_config_gallery_status(uint8_t src_id);
+void sysobj_uart_handle_config_gallery_delete(uint8_t src_id, uint8_t slot);
+void sysobj_uart_handle_config_gallery_import_q7(uint8_t src_id,
+                                                 const uint8_t *data,
+                                                 uint8_t data_len);
 
 /**
  * @brief Initialize the sysobj UART message handler.

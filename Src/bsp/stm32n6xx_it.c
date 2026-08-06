@@ -97,6 +97,31 @@ void USART1_IRQHandler(void) { HAL_UART_IRQHandler(&huart1); }
 
 void USB1_OTG_HS_IRQHandler(void) { UVCL_IRQHandler(); }
 
+/* A RAM-debug launch can inherit a pending WWDG early-warning interrupt from
+ * the STM32N6 boot/debug sequence even though this application never enables
+ * WWDG. Acknowledge the stale interrupt. If a boot stage did leave WWDG
+ * running, refresh it at the safe early-warning boundary as well. */
+void WWDG_IRQHandler(void)
+{
+  if ((WWDG->SR & WWDG_SR_EWIF) != 0U) {
+    WWDG->SR = 0U;
+    if ((WWDG->CR & WWDG_CR_WDGA) != 0U)
+      MODIFY_REG(WWDG->CR, WWDG_CR_T, WWDG_CR_T);
+  }
+  NVIC_ClearPendingIRQ(WWDG_IRQn);
+}
+
+/* Wakeup pins are not used by the application, but the ROM/debug launch can
+ * leave their shared interrupt pending. Clear every asserted PWR wakeup flag
+ * and the NVIC pending bit so it cannot fall through Default_Handler. */
+void WAKEUP_PIN_IRQHandler(void)
+{
+  uint32_t flags = PWR->WKUPSR & PWR_WAKEUP_FLAG_ALL;
+  if (flags != 0U)
+    PWR->WKUPCR = flags;
+  NVIC_ClearPendingIRQ(WAKEUP_PIN_IRQn);
+}
+
 /* XSPI2 (NOR flash) and XSPI3 (unused) both fire spurious interrupts during
  * UVC reconnect due to USB DMA / XSPIM arbitration glitches on STM32N6.
  * NOR flash runs in memory-mapped mode during normal operation — no active

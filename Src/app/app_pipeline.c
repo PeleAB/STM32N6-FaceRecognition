@@ -20,7 +20,6 @@
 
 #include <assert.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <string.h>
 
 #include "app/app.h"
@@ -32,6 +31,7 @@
 #include "sysobj_camera.h"
 #include "svc/app_display.h"
 #include "svc/app_stats.h"
+#include "svc/face_gallery.h"
 #include "svc/buffer_queue.h"
 #include "svc/face_detect.h"
 #include "stai_fd.h"
@@ -384,54 +384,6 @@ static void nn_thread_fct(void *arg)
     (void)app_postprocess_run((void **)fd_outputs, FD_OUT_NUM,
                               &pp_out_buf, &s_fd_pp_params);
 
-    /* --- DIAGNOSTIC: dump NPU input/output stats every ~1s --- */
-    {
-      static uint32_t dbg_cnt = 0;
-      if ((dbg_cnt++ % 30) == 0) {
-        /* Input buffer non-zero / sum to confirm camera is writing real data. */
-        const uint8_t *in = fd_input_buffer;
-        uint32_t sum = 0;
-        uint32_t nonzero = 0;
-        uint8_t in_min = 255, in_max = 0;
-        for (int i = 0; i < (int)NN_INPUT_BUFFER_SIZE; i++) {
-          uint8_t v = in[i];
-          sum += v;
-          if (v != 0) nonzero++;
-          if (v < in_min) in_min = v;
-          if (v > in_max) in_max = v;
-        }
-
-        /* Heatmap scan */
-        const float *hm  = (const float *)fd_outputs[FD_OUT_HEATMAP];
-        const float *sc  = (const float *)fd_outputs[FD_OUT_SCALE];
-        const float *off = (const float *)fd_outputs[FD_OUT_OFFSET];
-        float hm_max = -1e30f;
-        float hm_min =  1e30f;
-        int hm_max_idx = -1;
-        int cnt_03 = 0, cnt_05 = 0, cnt_07 = 0;
-        for (int i = 0; i < AI_FD_PP_GRID_WIDTH * AI_FD_PP_GRID_HEIGHT; i++) {
-          float v = hm[i];
-          if (v > hm_max) { hm_max = v; hm_max_idx = i; }
-          if (v < hm_min) hm_min = v;
-          if (v > 0.3f) cnt_03++;
-          if (v > 0.5f) cnt_05++;
-          if (v > 0.7f) cnt_07++;
-        }
-        int mx_r = (hm_max_idx >= 0) ? hm_max_idx / AI_FD_PP_GRID_WIDTH : -1;
-        int mx_c = (hm_max_idx >= 0) ? hm_max_idx % AI_FD_PP_GRID_WIDTH : -1;
-
-        printf("[FD] src=%s in sum=%lu nz=%lu/%d min=%u max=%u  "
-               "hm min=%.3f max=%.3f@(%d,%d) cnt>.3=%d >.5=%d >.7=%d  "
-               "sc[0..1]=%.3f,%.3f off[0..1]=%.3f,%.3f nb=%d\r\n",
-               face_input_mode == FACE_INPUT_STATIC ? "static" : "camera",
-               (unsigned long)sum, (unsigned long)nonzero, (int)NN_INPUT_BUFFER_SIZE,
-               in_min, in_max,
-               hm_min, hm_max, mx_r, mx_c, cnt_03, cnt_05, cnt_07,
-               sc[0], sc[1], off[0], off[1],
-               (int)pp_out_buf.boxes.nb_detect);
-      }
-    }
-
     /* 3. FaceID embedding per detected face */
     int nb_faces = MIN(pp_out_buf.boxes.nb_detect, APP_MAX_OBJECT_DETECT);
 
@@ -453,6 +405,11 @@ static void nn_thread_fct(void *arg)
       SYSOBJ_CacheInvalidate(faceid_features_all[i],
                              ALIGN_VALUE(NN_FACEID_OUTPUT_SIZE * sizeof(float), 32));
     }
+
+    /* Enrollment accepts only an unambiguous frame. Multiple faces must never
+     * be averaged into one person's template. */
+    if (nb_faces == 1)
+      FaceGallery_OfferEmbedding(faceid_features_all[0]);
 
     /* 4. Update tracking */
     od_pp_out_t tracking_pp = pp_out_buf.boxes;
@@ -549,6 +506,8 @@ void app_pipeline_init(void)
   params_status_t pret = sysobj_params_init(&app_pcfg);
   (void)pret;
 
+  FaceGallery_Init();
+
   uint64_t face_input_mode = FACE_INPUT_CAMERA;
   (void)sysobj_params_read(PARAM_FACE_INPUT_MODE, &face_input_mode, NULL);
   app_pipeline_set_face_input_mode((uint32_t)face_input_mode);
@@ -589,6 +548,40 @@ void app_pipeline_init(void)
   assert(isp_sem);
 
   STM32Ipl_InitLib(ipl_mem_pool, sizeof(ipl_mem_pool));
+}
+
+face_gallery_status_t app_pipeline_gallery_commit(void)
+{
+  xSemaphoreTake(s_inference_mutex, portMAX_DELAY);
+  face_gallery_status_t st = FaceGallery_Commit();
+  xSemaphoreGive(s_inference_mutex);
+  return st;
+}
+
+face_gallery_status_t app_pipeline_gallery_clear(void)
+{
+  xSemaphoreTake(s_inference_mutex, portMAX_DELAY);
+  face_gallery_status_t st = FaceGallery_Clear();
+  xSemaphoreGive(s_inference_mutex);
+  return st;
+}
+
+face_gallery_status_t app_pipeline_gallery_delete(uint8_t slot)
+{
+  xSemaphoreTake(s_inference_mutex, portMAX_DELAY);
+  face_gallery_status_t st = FaceGallery_Delete(slot);
+  xSemaphoreGive(s_inference_mutex);
+  return st;
+}
+
+face_gallery_status_t app_pipeline_gallery_import_q7(const char *name,
+                                                     uint8_t name_len,
+                                                     const int8_t *embedding)
+{
+  xSemaphoreTake(s_inference_mutex, portMAX_DELAY);
+  face_gallery_status_t st = FaceGallery_ImportQ7(name, name_len, embedding);
+  xSemaphoreGive(s_inference_mutex);
+  return st;
 }
 
 void app_pipeline_start(void)

@@ -123,8 +123,17 @@ static void draw_track_box(uint8_t *p_buffer, TrackObject_s *track) {
   cvt_nn_box_to_dp_box(&track->dbox, &box_disp);
   DRAW_RectArgbHw(p_buffer, VENC_WIDTH, VENC_HEIGHT, box_disp.x, box_disp.y,
                   box_disp.w, box_disp.h, OBJ_RECT_COLOR);
-  DRAW_PrintfArgbHw(&CONF_LEVEL_FONT, p_buffer, VENC_WIDTH, VENC_HEIGHT,
-                    box_disp.x, box_disp.y, "ID:%d", track->id);
+  if (track->name[0] != '\0') {
+    int similarity_percent = (int)(track->recognition_similarity * 100.0f + 0.5f);
+    if (similarity_percent < 0) similarity_percent = 0;
+    if (similarity_percent > 100) similarity_percent = 100;
+    DRAW_PrintfArgbHw(&CONF_LEVEL_FONT, p_buffer, VENC_WIDTH, VENC_HEIGHT,
+                      box_disp.x, box_disp.y, "%s %d%%", track->name,
+                      similarity_percent);
+  } else {
+    DRAW_PrintfArgbHw(&CONF_LEVEL_FONT, p_buffer, VENC_WIDTH, VENC_HEIGHT,
+                      box_disp.x, box_disp.y, "Unknown ID:%d", track->id);
+  }
 }
 
 static void draw_face_landmarks(uint8_t *p_buffer,

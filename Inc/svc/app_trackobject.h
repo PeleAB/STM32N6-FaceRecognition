@@ -23,6 +23,7 @@
 #include "app_config.h"
 #include "od_pp_output_if.h"
 #include "stai_faceid.h"
+#include "svc/face_gallery.h"
 
 #define NN_REID_NB_FEATURES                  (STAI_FACEID_OUT_1_SIZE)
 
@@ -32,6 +33,8 @@ typedef struct
   int is_dbox_valid;
   od_pp_outBuffer_t dbox;
   float features[NN_REID_NB_FEATURES];
+  char name[FACE_GALLERY_NAME_MAX + 1];
+  float recognition_similarity;
   uint32_t last_update;
 } TrackObject_s;
 

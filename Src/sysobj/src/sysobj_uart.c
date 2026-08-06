@@ -239,12 +239,16 @@ static void internal_handle_config_model_select(const sysobj_uart_msg_t *msg) {
   sysobj_uart_handle_config_model_select(msg->src_id, model_id);
 }
 
-__attribute__((weak)) void sysobj_uart_handle_config_enroll(uint8_t src_id) {
+__attribute__((weak)) void sysobj_uart_handle_config_enroll(uint8_t src_id,
+                                                             const uint8_t *name,
+                                                             uint8_t name_len) {
   (void)src_id;
+  (void)name;
+  (void)name_len;
 }
 
 static void internal_handle_config_enroll(const sysobj_uart_msg_t *msg) {
-  sysobj_uart_handle_config_enroll(msg->src_id);
+  sysobj_uart_handle_config_enroll(msg->src_id, msg->data, msg->data_len);
 }
 
 __attribute__((weak)) void sysobj_uart_handle_config_commit_enroll(uint8_t src_id) {
@@ -261,6 +265,41 @@ __attribute__((weak)) void sysobj_uart_handle_config_clear_embeddings(uint8_t sr
 
 static void internal_handle_config_clear_embeddings(const sysobj_uart_msg_t *msg) {
   sysobj_uart_handle_config_clear_embeddings(msg->src_id);
+}
+
+__attribute__((weak)) void sysobj_uart_handle_config_gallery_list(uint8_t src_id) {
+  (void)src_id;
+}
+static void internal_handle_config_gallery_list(const sysobj_uart_msg_t *msg) {
+  sysobj_uart_handle_config_gallery_list(msg->src_id);
+}
+
+__attribute__((weak)) void sysobj_uart_handle_config_gallery_status(uint8_t src_id) {
+  (void)src_id;
+}
+static void internal_handle_config_gallery_status(const sysobj_uart_msg_t *msg) {
+  sysobj_uart_handle_config_gallery_status(msg->src_id);
+}
+
+__attribute__((weak)) void sysobj_uart_handle_config_gallery_delete(uint8_t src_id,
+                                                                     uint8_t slot) {
+  (void)src_id;
+  (void)slot;
+}
+static void internal_handle_config_gallery_delete(const sysobj_uart_msg_t *msg) {
+  if (msg->data == NULL || msg->data_len < 1) return;
+  sysobj_uart_handle_config_gallery_delete(msg->src_id, msg->data[0]);
+}
+
+__attribute__((weak)) void sysobj_uart_handle_config_gallery_import_q7(
+    uint8_t src_id, const uint8_t *data, uint8_t data_len) {
+  (void)src_id;
+  (void)data;
+  (void)data_len;
+}
+static void internal_handle_config_gallery_import_q7(const sysobj_uart_msg_t *msg) {
+  sysobj_uart_handle_config_gallery_import_q7(msg->src_id, msg->data,
+                                               msg->data_len);
 }
 
 static const sysobj_uart_handler_entry_t msg_handler_table[] = {
@@ -286,6 +325,14 @@ static const sysobj_uart_handler_entry_t msg_handler_table[] = {
      internal_handle_config_commit_enroll},
     {SYSOBJ_UART_MSG_TYPE_CONFIG, SYSOBJ_UART_CONFIG_SUBTYPE_CLEAR_EMBEDDINGS,
      internal_handle_config_clear_embeddings},
+    {SYSOBJ_UART_MSG_TYPE_CONFIG, SYSOBJ_UART_CONFIG_SUBTYPE_GALLERY_LIST,
+     internal_handle_config_gallery_list},
+    {SYSOBJ_UART_MSG_TYPE_CONFIG, SYSOBJ_UART_CONFIG_SUBTYPE_GALLERY_STATUS,
+     internal_handle_config_gallery_status},
+    {SYSOBJ_UART_MSG_TYPE_CONFIG, SYSOBJ_UART_CONFIG_SUBTYPE_GALLERY_DELETE,
+     internal_handle_config_gallery_delete},
+    {SYSOBJ_UART_MSG_TYPE_CONFIG, SYSOBJ_UART_CONFIG_SUBTYPE_GALLERY_IMPORT_Q7,
+     internal_handle_config_gallery_import_q7},
 };
 
 #define MSG_HANDLER_TABLE_SIZE                                                 \

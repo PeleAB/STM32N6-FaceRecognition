@@ -1,4 +1,8 @@
 export interface IElectronAPI {
+    gallery: {
+        createFromPhotos: () => Promise<{ success: boolean; canceled?: boolean;
+            error?: string; embeddingQ7?: number[]; photos?: Array<{ photo: string; confidence: number }> }>;
+    };
     serial: {
         list: () => Promise<Array<{ path: string, manufacturer?: string, pnpId?: string }>>;
         connect: (path: string, baudRate: number) => Promise<{ success: boolean; error?: string }>;

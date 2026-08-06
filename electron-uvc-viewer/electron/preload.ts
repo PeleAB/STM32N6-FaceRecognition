@@ -1,6 +1,9 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('electronAPI', {
+    gallery: {
+        createFromPhotos: () => ipcRenderer.invoke('gallery:create-from-photos'),
+    },
     serial: {
         list: () => ipcRenderer.invoke('serial:list'),
         connect: (path: string, baudRate: number) => ipcRenderer.invoke('serial:connect', path, baudRate),

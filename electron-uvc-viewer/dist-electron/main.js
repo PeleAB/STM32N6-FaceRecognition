@@ -1,8 +1,8 @@
-import { BrowserWindow, app, ipcMain, session } from "electron";
+import { BrowserWindow, app, dialog, ipcMain, session } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
 import http from "http";
-import { spawn } from "child_process";
+import { execFile, spawn } from "child_process";
 import { SerialPort } from "serialport";
 //#region electron/main.ts
 var __filename = fileURLToPath(import.meta.url);
@@ -94,6 +94,58 @@ function createWindow() {
 }
 var currentPort = null;
 app.whenReady().then(() => {
+	ipcMain.handle("gallery:create-from-photos", async () => {
+		const selection = await dialog.showOpenDialog(mainWindow, {
+			title: "Choose enrollment photos",
+			properties: ["openFile", "multiSelections"],
+			filters: [{
+				name: "Photos",
+				extensions: [
+					"jpg",
+					"jpeg",
+					"png",
+					"bmp",
+					"webp"
+				]
+			}]
+		});
+		if (selection.canceled || selection.filePaths.length === 0) return {
+			success: false,
+			canceled: true
+		};
+		const repoRoot = path.resolve(__dirname, "..", "..");
+		const script = path.join(repoRoot, "Tools", "create_face_embedding.py");
+		const modelDir = path.join(repoRoot, "Model");
+		return await new Promise((resolve) => {
+			execFile("python", [
+				script,
+				"--model-dir",
+				modelDir,
+				...selection.filePaths
+			], { maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
+				if (error) {
+					resolve({
+						success: false,
+						error: stderr.trim() || error.message
+					});
+					return;
+				}
+				try {
+					const result = JSON.parse(stdout.trim());
+					resolve({
+						success: true,
+						embeddingQ7: result.embeddingQ7,
+						photos: result.photos
+					});
+				} catch (e) {
+					resolve({
+						success: false,
+						error: `Invalid embedding output: ${e.message}`
+					});
+				}
+			});
+		});
+	});
 	ipcMain.handle("serial:list", async () => {
 		try {
 			return await SerialPort.list();

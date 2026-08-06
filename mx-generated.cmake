@@ -52,6 +52,7 @@ set(APP_SOURCES
     ${PROJECT_ROOT}/Model/stai_fd.c
     ${PROJECT_ROOT}/Model/stai_faceid.c
     ${PROJECT_ROOT}/Src/svc/app_trackobject.c
+    ${PROJECT_ROOT}/Src/svc/face_gallery.c
     ${PROJECT_ROOT}/Lib/stm32-mw-ipl/Src/stm32ipl.c
     ${PROJECT_ROOT}/Lib/stm32-mw-ipl/Src/stm32ipl_resize.c
     ${PROJECT_ROOT}/Lib/stm32-mw-ipl/Src/mve_resize.c

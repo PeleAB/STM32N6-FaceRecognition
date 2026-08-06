@@ -18,6 +18,7 @@
 
 #include "app_trackobject.h"
 #include "stm32n6xx_hal.h"
+#include "svc/face_gallery.h"
 
 #include <assert.h>
 
@@ -26,6 +27,14 @@
 
 static float score_matrix[APP_MAX_OBJECT_TRACKING][APP_MAX_OBJECT_DETECT];
 static TrackObject_s track_objects[APP_MAX_OBJECT_TRACKING];
+
+static void to_recognize(TrackObject_s *o, const float *features)
+{
+  o->name[0] = '\0';
+  o->recognition_similarity = 0.0f;
+  (void)FaceGallery_Match(features, o->name, sizeof(o->name),
+                          &o->recognition_similarity);
+}
 
 static int to_is_tracking(TrackObject_s *o)
 {
@@ -77,6 +86,7 @@ static void to_init(od_pp_outBuffer_t *dbox, float *features)
   o->is_dbox_valid = 1;
   o->dbox = *dbox;
   memcpy(o->features, features, NN_REID_NB_FEATURES * sizeof(float));
+  to_recognize(o, features);
   o->last_update = HAL_GetTick();
 }
 
@@ -93,6 +103,7 @@ static void to_update(TrackObject_s *o, od_pp_outBuffer_t *dbox, float *features
     o->is_dbox_valid = 1;
     o->dbox = *dbox;
     memcpy(o->features, features, NN_REID_NB_FEATURES * sizeof(float));
+    to_recognize(o, features);
     o->last_update = HAL_GetTick();
   }
   else

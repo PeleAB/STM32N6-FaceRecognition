@@ -24,6 +24,7 @@
 #include "bsp/platform.h"
 #include "stm32n6570_discovery.h"
 #include "svc/app_stats.h"
+#include "svc/face_gallery.h"
 #include "sysobj/inc/sysobj_uart.h"
 #include "sysobj_params.h"
 #include "task.h"
@@ -182,6 +183,106 @@ void sysobj_uart_handle_config_param_write(uint8_t src_id, uint16_t param_id,
   sysobj_uart_send(&msg);
 }
 
+static void gallery_send(uint8_t dst_id, uint8_t subtype,
+                         const uint8_t *payload, uint8_t payload_len)
+{
+  sysobj_uart_msg_t msg = {
+    .src_id = 0x02, .dst_id = dst_id, .is_ack = 0, .need_ack = 0,
+    .msg_type = SYSOBJ_UART_MSG_TYPE_CONFIG, .msg_subtype = subtype,
+    .data = payload, .data_len = payload_len,
+  };
+  (void)sysobj_uart_send(&msg);
+}
+
+static void gallery_send_status(uint8_t dst_id, uint8_t subtype,
+                                face_gallery_status_t result)
+{
+  face_gallery_enroll_status_t status;
+  FaceGallery_GetStatus(&status);
+  uint8_t name_len = (uint8_t)strlen(status.name);
+  uint8_t payload[6 + FACE_GALLERY_NAME_MAX];
+  payload[0] = (uint8_t)result;
+  payload[1] = status.active;
+  payload[2] = status.samples;
+  payload[3] = status.required_samples;
+  payload[4] = status.count;
+  payload[5] = name_len;
+  memcpy(&payload[6], status.name, name_len);
+  gallery_send(dst_id, subtype, payload, (uint8_t)(6 + name_len));
+}
+
+void sysobj_uart_handle_config_enroll(uint8_t src_id, const uint8_t *name,
+                                      uint8_t name_len)
+{
+  face_gallery_status_t st = FaceGallery_StartEnrollment((const char *)name,
+                                                          name_len);
+  gallery_send_status(src_id, SYSOBJ_UART_CONFIG_SUBTYPE_ENROLL, st);
+}
+
+void sysobj_uart_handle_config_commit_enroll(uint8_t src_id)
+{
+  face_gallery_status_t st = app_pipeline_gallery_commit();
+  gallery_send_status(src_id, SYSOBJ_UART_CONFIG_SUBTYPE_COMMIT_ENROLL, st);
+}
+
+void sysobj_uart_handle_config_clear_embeddings(uint8_t src_id)
+{
+  face_gallery_status_t st = app_pipeline_gallery_clear();
+  gallery_send_status(src_id, SYSOBJ_UART_CONFIG_SUBTYPE_CLEAR_EMBEDDINGS, st);
+}
+
+void sysobj_uart_handle_config_gallery_status(uint8_t src_id)
+{
+  gallery_send_status(src_id, SYSOBJ_UART_CONFIG_SUBTYPE_GALLERY_STATUS,
+                      FACE_GALLERY_OK);
+}
+
+void sysobj_uart_handle_config_gallery_list(uint8_t src_id)
+{
+  uint8_t payload[2 + FACE_GALLERY_MAX_ENTRIES *
+                        (2 + FACE_GALLERY_NAME_MAX)];
+  uint8_t pos = 2;
+  uint8_t count = 0;
+  payload[0] = FACE_GALLERY_OK;
+  for (uint8_t slot = 0; slot < FACE_GALLERY_MAX_ENTRIES; slot++) {
+    char name[FACE_GALLERY_NAME_MAX + 1];
+    if (FaceGallery_GetName(slot, name, sizeof(name)) != 0) continue;
+    uint8_t len = (uint8_t)strlen(name);
+    payload[pos++] = slot;
+    payload[pos++] = len;
+    memcpy(&payload[pos], name, len);
+    pos += len;
+    count++;
+  }
+  payload[1] = count;
+  gallery_send(src_id, SYSOBJ_UART_CONFIG_SUBTYPE_GALLERY_LIST, payload, pos);
+}
+
+void sysobj_uart_handle_config_gallery_delete(uint8_t src_id, uint8_t slot)
+{
+  face_gallery_status_t st = app_pipeline_gallery_delete(slot);
+  uint8_t payload[3] = {(uint8_t)st, slot, FaceGallery_Count()};
+  gallery_send(src_id, SYSOBJ_UART_CONFIG_SUBTYPE_GALLERY_DELETE, payload,
+               sizeof(payload));
+}
+
+void sysobj_uart_handle_config_gallery_import_q7(uint8_t src_id,
+                                                 const uint8_t *data,
+                                                 uint8_t data_len)
+{
+  face_gallery_status_t st = FACE_GALLERY_ERR_NAME;
+  if (data != NULL && data_len >= 1) {
+    uint8_t name_len = data[0];
+    if (name_len > 0 && name_len <= FACE_GALLERY_NAME_MAX &&
+        data_len == (uint8_t)(1 + name_len + FACE_GALLERY_EMBEDDING_SIZE)) {
+      st = app_pipeline_gallery_import_q7(
+          (const char *)&data[1], name_len,
+          (const int8_t *)&data[1 + name_len]);
+    }
+  }
+  gallery_send_status(src_id, SYSOBJ_UART_CONFIG_SUBTYPE_GALLERY_IMPORT_Q7, st);
+}
+
 /**
  * @brief  Main program
  * @param  None
@@ -208,6 +309,18 @@ static void main_thread_fct(void *arg) {
   uint32_t preemptPriority;
   uint32_t subPriority;
   IRQn_Type i;
+
+  /* A debugger RAM launch is not guaranteed to reset NVIC external-interrupt
+   * state. Do not inherit enabled/pending IRQs from ROM, a previous image, or
+   * an interrupted debug session. BSP/HAL initialization below re-enables
+   * every interrupt the application actually uses. */
+  for (uint32_t bank = 0; bank <
+       (sizeof(NVIC->ICER) / sizeof(NVIC->ICER[0])); bank++) {
+    NVIC->ICER[bank] = 0xffffffffUL;
+    NVIC->ICPR[bank] = 0xffffffffUL;
+  }
+  __DSB();
+  __ISB();
 
   HAL_NVIC_GetPriority(SysTick_IRQn, HAL_NVIC_GetPriorityGrouping(),
                        &preemptPriority, &subPriority);

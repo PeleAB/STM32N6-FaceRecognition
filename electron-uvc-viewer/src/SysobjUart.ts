@@ -18,6 +18,13 @@ export const SysobjUartManageSubtype = {
 export const SysobjUartConfigSubtype = {
     PARAM_READ: 0x01,
     PARAM_WRITE: 0x02,
+    ENROLL: 0x06,
+    COMMIT_ENROLL: 0x07,
+    CLEAR_EMBEDDINGS: 0x08,
+    GALLERY_LIST: 0x09,
+    GALLERY_STATUS: 0x0A,
+    GALLERY_DELETE: 0x0B,
+    GALLERY_IMPORT_Q7: 0x0C,
 } as const;
 
 export interface SysobjUartMsg {
@@ -263,6 +270,73 @@ export function createParamWriteMsg(paramId: number, value: number): SysobjUartM
         msg_subtype: SysobjUartConfigSubtype.PARAM_WRITE,
         data,
     };
+}
+
+function configRequest(subtype: number, data?: Uint8Array): SysobjUartMsg {
+    return { src_id: 0x01, dst_id: 0x02, is_ack: 0, need_ack: 0,
+        msg_type: SysobjUartMsgType.CONFIG, msg_subtype: subtype, data };
+}
+
+export function createEnrollMsg(name: string): SysobjUartMsg {
+    return configRequest(SysobjUartConfigSubtype.ENROLL,
+        new TextEncoder().encode(name).slice(0, 15));
+}
+export function createCommitEnrollMsg(): SysobjUartMsg {
+    return configRequest(SysobjUartConfigSubtype.COMMIT_ENROLL);
+}
+export function createClearGalleryMsg(): SysobjUartMsg {
+    return configRequest(SysobjUartConfigSubtype.CLEAR_EMBEDDINGS);
+}
+export function createGalleryListMsg(): SysobjUartMsg {
+    return configRequest(SysobjUartConfigSubtype.GALLERY_LIST);
+}
+export function createGalleryStatusMsg(): SysobjUartMsg {
+    return configRequest(SysobjUartConfigSubtype.GALLERY_STATUS);
+}
+export function createGalleryDeleteMsg(slot: number): SysobjUartMsg {
+    return configRequest(SysobjUartConfigSubtype.GALLERY_DELETE,
+        new Uint8Array([slot]));
+}
+export function createGalleryImportMsg(name: string, embeddingQ7: Int8Array): SysobjUartMsg {
+    const encodedName = new TextEncoder().encode(name).slice(0, 15);
+    if (embeddingQ7.length !== 128) throw new Error('Expected a 128-value embedding');
+    const data = new Uint8Array(1 + encodedName.length + embeddingQ7.length);
+    data[0] = encodedName.length;
+    data.set(encodedName, 1);
+    data.set(new Uint8Array(embeddingQ7.buffer, embeddingQ7.byteOffset,
+        embeddingQ7.byteLength), 1 + encodedName.length);
+    return configRequest(SysobjUartConfigSubtype.GALLERY_IMPORT_Q7, data);
+}
+
+export interface GalleryStatus {
+    result: number;
+    active: boolean;
+    samples: number;
+    required: number;
+    count: number;
+    name: string;
+}
+export interface GalleryEntry { slot: number; name: string }
+
+export function parseGalleryStatus(data: Uint8Array): GalleryStatus | null {
+    if (data.length < 6 || data.length < 6 + data[5]) return null;
+    return { result: data[0], active: data[1] !== 0, samples: data[2],
+        required: data[3], count: data[4],
+        name: new TextDecoder().decode(data.slice(6, 6 + data[5])) };
+}
+
+export function parseGalleryList(data: Uint8Array): { result: number; entries: GalleryEntry[] } | null {
+    if (data.length < 2) return null;
+    const entries: GalleryEntry[] = [];
+    let pos = 2;
+    for (let i = 0; i < data[1]; i++) {
+        if (pos + 2 > data.length) return null;
+        const slot = data[pos++], len = data[pos++];
+        if (pos + len > data.length) return null;
+        entries.push({ slot, name: new TextDecoder().decode(data.slice(pos, pos + len)) });
+        pos += len;
+    }
+    return { result: data[0], entries };
 }
 
 export interface ParamReadResponse {

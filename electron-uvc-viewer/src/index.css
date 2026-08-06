@@ -469,6 +469,20 @@ body {
 }
 
 /* Telemetry Controls */
+
+.gallery-enroll { display: flex; flex-direction: column; gap: 0.65rem; }
+.gallery-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.gallery-actions .btn { padding-left: 0.45rem; padding-right: 0.45rem; }
+.gallery-progress { display: flex; flex-direction: column; gap: 0.45rem; color: var(--text-secondary); font-size: 0.78rem; }
+.gallery-progress-bar { height: 6px; overflow: hidden; border-radius: 4px; background: var(--bg-tertiary); }
+.gallery-progress-bar span { display: block; height: 100%; background: var(--accent); transition: width 180ms ease; }
+.gallery-message { color: var(--text-secondary); font-size: 0.75rem; line-height: 1.35; }
+.gallery-list { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.35rem; }
+.gallery-row { display: flex; align-items: center; justify-content: space-between; padding: 0.45rem 0.55rem; border-radius: 6px; background: var(--bg-tertiary); }
+.gallery-row span { display: flex; flex-direction: column; gap: 0.1rem; font-size: 0.8rem; }
+.gallery-row small { color: var(--text-muted); font-size: 0.65rem; }
+.gallery-empty { color: var(--text-muted); font-size: 0.75rem; padding: 0.35rem 0; }
+.btn-text.danger { color: var(--error); }
 .telemetry-card {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border-color);
